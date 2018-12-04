@@ -1,0 +1,376 @@
+1
+00:00:00,0 --> 00:00:01,636
+So like I mentioned before, there's some
+
+2
+00:00:01,636 --> 00:00:09,636
+plus and minuses to both composite resources and partial configurations and this is taking a look at what it
+
+3
+00:00:09,636 --> 00:00:15,636
+looks like in kind of a DevOps environment where you're deploying to a pull server and you're going through
+
+4
+00:00:15,636 --> 00:00:22,636
+dev, test, prod, and what have you. In this example, I have the security, SQL, and IIS, partial configurations
+
+5
+00:00:22,636 --> 00:00:26,636
+in a web app that actually depends on those things to actually work.
+
+6
+00:00:26,636 --> 00:00:35,636
+And in a continuous integration deployment kind of environment, you go through and I the security guy create
+
+7
+00:00:35,636 --> 00:00:39,636
+my partial configuration, I deploy it, it's out on a pull server.
+
+8
+00:00:39,636 --> 00:00:44,636
+If there are any nodes that need it, aside from that DependsOn, they're going to pull it down and start
+
+9
+00:00:44,636 --> 00:00:49,636
+applying those things. Assuming you have DependsOn correctly done between all of these, it's going to wait
+
+10
+00:00:49,636 --> 00:00:55,636
+until it has all of them to apply them. So each of those partial configs go out to release.
+
+11
+00:00:55,636 --> 00:01:00,636
+They're out there sitting on the pull server. I deploy my web application.
+
+12
+00:01:00,636 --> 00:01:05,636
+It goes out there. A target node pulls it down, applies it, everything's happy, everything's good.
+
+13
+00:01:05,636 --> 00:01:13,636
+And then my security guy comes along and says I'm going to create version two of this thing and this is a little misleading.
+
+14
+00:01:13,636 --> 00:01:18,636
+There are version numbers on this slide, version numbers don't exist on partial configs like I mentioned before,
+
+15
+00:01:18,636 --> 00:01:25,636
+so when you have dependencies and stuff like that, if you push a new version of this thing, the security to
+
+16
+00:01:25,636 --> 00:01:31,636
+your pull server, the client's going to say, is there a configuration that has changed with this?
+
+17
+00:01:31,636 --> 00:01:37,636
+Yep. Alright I'm going to pull that thing down and apply it. So in this case, I go through my process of,
+
+18
+00:01:37,636 --> 00:01:42,636
+or I the security owner say I'm going to go through my process of build, test, and release, and then push
+
+19
+00:01:42,636 --> 00:01:43,636
+that thing out
+
+20
+00:01:43,636 --> 00:01:49,636
+to the pull server. In the meantime, Mr. WebApp 1 has never done any testing on that.
+
+21
+00:01:49,636 --> 00:01:53,636
+So unless the security guy knows WebApp 1, all of these
+
+22
+00:01:53,636 --> 00:01:58,636
+things are above me, but depend on me, they're going to get affected by this thing when I push that thing out
+
+23
+00:01:58,636 --> 00:02:01,636
+to the pull server. So in this case, you're going to have this
+
+24
+00:02:01,636 --> 00:02:07,636
+WebApp that has a new setting that's being applied that could affect it and you have no idea that happened.
+
+25
+00:02:07,636 --> 00:02:13,636
+So that's one of the things, and in some cases, if I'm the security guy, I don't care if I break WebApp 1.
+
+26
+00:02:13,636 --> 00:02:18,636
+If I have a security issue, I want that thing out there. So there are some situations where you may want to
+
+27
+00:02:18,636 --> 00:02:23,636
+do that kind of thing, but other situations where you're going to be like whoa, I don't want to know about
+
+28
+00:02:23,636 --> 00:02:28,636
+everybody in the world that's going to use my particular configuration here.
+
+29
+00:02:28,636 --> 00:02:31,636
+So that's where you get into the world where you have composite resources.
+
+30
+00:02:31,636 --> 00:02:33,636
+So I have a composite resource,
+
+31
+00:02:33,636 --> 00:02:42,636
+same kind of situation, these three composite resources, I'm using them as the WebApp guy, so they are all in my WebApp.
+
+32
+00:02:42,636 --> 00:02:49,636
+I'm using them. All things are good. That WebApp that I own that I'm using those things go through the dev,
+
+33
+00:02:49,636 --> 00:02:54,636
+test, prod out there, everything's working good and the security guy comes along and goes I'm going to make
+
+34
+00:02:54,636 --> 00:02:58,636
+this change to the security configuration, that doesn't affect my app at all.
+
+35
+00:02:58,636 --> 00:03:00,636
+Nothing happened because this happens,
+
+36
+00:03:00,636 --> 00:03:06,636
+these get pulled together at compile time. So when I'm ready to release my new version of my app, I
+
+37
+00:03:06,636 --> 00:03:14,636
+do my new version of my app. It's reusing the new versions of those composite resources, I go through my test
+
+38
+00:03:14,636 --> 00:03:21,636
+production and deploy that thing and everything's happening. So if you don't know about all of the up services
+
+39
+00:03:21,636 --> 00:03:26,636
+that are making use of your resources, then composite resources would kind of play into that a bit better,
+
+40
+00:03:26,636 --> 00:03:29,636
+so there are different situations where you want to do the different things.
+
+41
+00:03:29,636 --> 00:03:35,636
+Does that make sense? Alright, I see some heads nodding, other one's yawning
+
+42
+00:03:35,636 --> 00:03:42,636
+and sleeping, but head _____. Is it the plan to take one path moving forward or are you going to continue to---
+
+43
+00:03:42,636 --> 00:03:45,636
+No. Like I said, I think there are good circumstances
+
+44
+00:03:45,636 --> 00:03:49,636
+for using either one. Like the security example is a good example.
+
+45
+00:03:49,636 --> 00:03:55,636
+If you're the security guy, you want to make sure the settings are set a particular way and if it breaks
+
+46
+00:03:55,636 --> 00:03:58,636
+somebody, then they're going to come back to you and yell and you're going to tell them what they're doing wrong.
+
+47
+00:03:58,636 --> 00:04:05,636
+But if you determine that you need to support both of these methods in order to support those different
+
+48
+00:04:05,636 --> 00:04:12,636
+scenarios, whereas you could recode and support all those scenarios in one feature.
+
+49
+00:04:12,636 --> 00:04:18,636
+Okay. That's sort of a question. Yep. Okay, it's a feature request.
+
+50
+00:04:18,636 --> 00:04:27,636
+Yes, it is. Put it on UserVoice. Okay, Get-ConfigurationStatus, Get-DscConfigurationStatus.
+
+51
+00:04:27,636 --> 00:04:35,636
+We had some feedback from the previous release that it wasn't easy to determine the status of previous configuration runs.
+
+52
+00:04:35,636 --> 00:04:43,636
+So the purpose of this is to get the status of previous configuration operations.
+
+53
+00:04:43,636 --> 00:04:50,636
+A couple of use cases. If you call it with no parameters, it'll just get the status of the last operation.
+
+54
+00:04:50,636 --> 00:05:01,636
+You can add the all flag and get the status of all logged operations and you can add the CimSession and get
+
+55
+00:05:01,636 --> 00:05:11,636
+remote operations with the previous two combinations. I've also updated our public module of xDscDiagnostics
+
+56
+00:05:11,636 --> 00:05:20,636
+and provided access to historical verbose output. This is not a feature DSC provides, but the information is
+
+57
+00:05:20,636 --> 00:05:27,636
+there and it works a significant percentage of the time.
+
+58
+00:05:27,636 --> 00:05:28,636
+I'm not going to make
+
+59
+00:05:28,636 --> 00:05:41,636
+for promises that I can't live up to. It doesn't work all the time, but it's useful.
+
+60
+00:05:41,636 --> 00:05:57,636
+So let me start my demo. So first, I'll just show you the all. You can get that it'll just show one, but not all.
+
+61
+00:05:57,636 --> 00:06:05,636
+So I've had several runs and the first one I'll get is I'll go get the first initial attempt and get it in the
+
+62
+00:06:05,636 --> 00:06:13,636
+status object and I'll show you what that looks like. So my first initial attempt was success with three
+
+63
+00:06:13,636 --> 00:06:21,636
+resources, but there's more details in the status object, several rich objects.
+
+64
+00:06:21,636 --> 00:06:31,636
+I also, like you see here, there's many different types, Consistency, Initial, Reboot, LocalConfiguration.
+
+65
+00:06:31,636 --> 00:06:35,636
+I'm not going to go through all of them. I'll go through a couple during the demo.
+
+66
+00:06:35,636 --> 00:06:42,636
+But let's look at all the settings. We have MetaConfiguration here, so each time it runs, we record what
+
+67
+00:06:42,636 --> 00:06:49,636
+the MetaConfiguration is, so you can go back and see maybe it didn't run because the MetaConfiguration was wrong
+
+68
+00:06:49,636 --> 00:06:54,636
+and we have the resource if this is a success, so we only have resources in Desired State.
+
+69
+00:06:54,636 --> 00:06:56,636
+So let's look at the
+
+70
+00:06:56,636 --> 00:07:06,636
+rich object MetaConfiguration and we have, I was pushing to the machine, everything's pretty much the default state here.
+
+71
+00:07:06,636 --> 00:07:18,636
+Let's go look at those resources in the Desired State. So I had three things here, the testUser, DontRunAs,
+
+72
+00:07:18,636 --> 00:07:25,636
+and the RunAs. This is the demo I did earlier for you. So let's look, we have a JobId.
+
+73
+00:07:25,636 --> 00:07:30,636
+This is how we track, when you send us an operation, we track it by a JobId.
+
+74
+00:07:30,636 --> 00:07:35,636
+So now I'm going to run that cmdlet that I added and we'll get the details.
+
+75
+00:07:35,636 --> 00:07:40,636
+So we have all the verbose output. This gets it from a JSON file.
+
+76
+00:07:40,636 --> 00:07:43,636
+I ran it with--- Question, Travis. Yeah?
+
+77
+00:07:43,636 --> 00:07:47,636
+I had a quick question on how is that historical information attached?
+
+78
+00:07:47,636 --> 00:07:53,636
+Like is there any information on how far back, even a limitation on how far back in time you can go?
+
+79
+00:07:53,636 --> 00:07:57,636
+Yeah, I believe it's set in the MetaConfig
+
+80
+00:07:57,636 --> 00:08:05,636
+StatusRetentionTimeInDays. It's cache. I'll get to it later in the demo on where it's cache.
+
+81
+00:08:05,636 --> 00:08:12,636
+I believe I will, unless I removed it. So I'll go through a reboot.
+
+82
+00:08:12,636 --> 00:08:21,636
+We store this for reboot operations as well. So I didn't show you the status object, but the status object
+
+83
+00:08:21,636 --> 00:08:26,636
+is pretty much the same, so we have the verbose or an operation that counted as a reboot.
+
+84
+00:08:26,636 --> 00:08:35,636
+So this was something you couldn't get before. And yeah, here like this all of this information is stored in
+
+85
+00:08:35,636 --> 00:08:41,636
+this directory in here under System32\Configuration\ConfigurationStatus.
+
+86
+00:08:41,636 --> 00:08:54,636
+We have MOFs that store what the end box cmdlet is giving you and JSON files, which store that verbose output.
+
+87
+00:08:54,636 --> 00:09:01,636
+And if you notice, not all the MOFs here have the verbose, so if they don't have the JSON file, we don't have
+
+88
+00:09:01,636 --> 00:09:08,636
+the verbose output for those operations. So here's a failure just to get something interesting.
+
+89
+00:09:08,636 --> 00:09:14,636
+We have resources not in Desired State, so these objects are pretty rich.
+
+90
+00:09:14,636 --> 00:09:21,636
+We have the exception details with StackTraces, the full serialization of the exception object.
+
+91
+00:09:21,636 --> 00:09:28,636
+So you can go back and figure out why this failed, what line it failed on, etc.
+
+92
+00:09:28,636 --> 00:09:38,636
+Here I just did a throw, so it's not that interesting and it was in a ScriptBlock, so it doesn't actually
+
+93
+00:09:38,636 --> 00:09:47,636
+have a line number. But that's ConfigurationStatus. Alright,
+
+94
+00:09:47,636 --> 00:59:59,999
+so next I'll give
+

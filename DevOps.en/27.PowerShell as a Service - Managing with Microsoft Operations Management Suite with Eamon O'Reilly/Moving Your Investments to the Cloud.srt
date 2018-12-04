@@ -1,0 +1,252 @@
+1
+00:00:00,0 --> 00:00:08,046
+Okay, so I'm going to hand over to Ed and he'll talk a little bit about if you want to, how do you bring it over.
+
+2
+00:00:08,046 --> 00:00:14,046
+Okay, so I started off by talking about how we honor your investment in PowerShell.
+
+3
+00:00:14,046 --> 00:00:21,046
+Well then that makes us say well okay, well dude, so obviously the language by being able to use the PowerShell
+
+4
+00:00:21,046 --> 00:00:24,046
+language and stuff, but you've also got scripts that you've already written
+
+5
+00:00:24,046 --> 00:00:31,046
+and a lot of those scripts you can bring directly into our service to be able to run immediately.
+
+6
+00:00:31,046 --> 00:00:38,046
+Some of them, you're going to want to change a little bit. So how many of you ever remember that Don Jones
+
+7
+00:00:38,046 --> 00:00:42,046
+said don't use Write-Host that every time you use Write-Host, you kill a kitten right.
+
+8
+00:00:42,046 --> 00:00:50,046
+Okay, well not only that, it's going to kill your automation script.
+
+9
+00:00:50,046 --> 00:00:55,046
+Okay, you may not like kittens. I actually saw a picture of a dog sitting there typing Write-Host,
+
+10
+00:00:55,046 --> 00:01:04,046
+Write-Host, Write-Host. But so use Write-Output, it's simple. Write a PowerShell script that goes through
+
+11
+00:01:04,046 --> 00:01:08,046
+every single one of your PowerShell scripts and changes Write-Host to Write-Output.
+
+12
+00:01:08,046 --> 00:01:13,046
+Actually hmm, that might be a good scripting guy article. It'd be easy to do it.
+
+13
+00:01:13,046 --> 00:01:20,046
+And you're already set. Now the nice thing about Write-Output is not so much from when you're actually doing
+
+14
+00:01:20,046 --> 00:01:29,046
+your automation because, as Eamon said, we have great logging, but when you're testing, when you're testing
+
+15
+00:01:29,046 --> 00:01:35,046
+your automation to make sure that it wants to work, yeah it's nice if you have something that kind of comes out.
+
+16
+00:01:35,046 --> 00:01:41,046
+This is kind of like using Set-Debug preference or something like that where you use your Write-Debug,
+
+17
+00:01:41,046 --> 00:01:46,046
+but we just use Write-Output and I don't know what would happen if I used Write-Debug.
+
+18
+00:01:46,046 --> 00:01:48,046
+It may work, it might not. I just figured I wouldn't.
+
+19
+00:01:48,046 --> 00:01:49,046
+No, we suggest Write-Verbose.
+
+20
+00:01:49,046 --> 00:01:57,046
+Yeah, Write-Verbose. Okay, so that would be better. But yeah, or Write-Output just to throw you some little
+
+21
+00:01:57,046 --> 00:02:01,046
+status points up, as you're writing this stuff for the very first time.
+
+22
+00:02:01,046 --> 00:02:03,046
+And no Read-Host.
+
+23
+00:02:03,046 --> 00:02:07,046
+Yeah, absolutely. Don't Read-Host. Obviously, that's not going to work.
+
+24
+00:02:07,046 --> 00:02:14,046
+Don't use Get-Credential. A lot of stuff like that. I've actually got an article that's kind of in the
+
+25
+00:02:14,046 --> 00:02:22,046
+works right now that I'm going to have on the OMS team blog where I'm going to go into some much more detail
+
+26
+00:02:22,046 --> 00:02:30,046
+about the stuff that you want to clean out of your PowerShell script before you stuff them into automation.
+
+27
+00:02:30,046 --> 00:02:33,046
+Another thing you want to do is you're going to want to modularize.
+
+28
+00:02:33,046 --> 00:02:41,046
+That's actually a word I made up back for my step-by-step 2.0 book where you take your script and can kind of
+
+29
+00:02:41,046 --> 00:02:46,046
+break them into component pieces, okay. So you want to do that because
+
+30
+00:02:46,046 --> 00:02:52,046
+if you break your scripts up into component pieces, rather than having these great big old monolithic,
+
+31
+00:02:52,046 --> 00:02:57,046
+I call them Frankenscripts, break it up into small discreet pieces, that way you can reuse them.
+
+32
+00:02:57,046 --> 00:03:07,046
+So for instance, if you've got a script that sends, that calls SMTP mail because you want to send out an email
+
+33
+00:03:07,046 --> 00:03:12,046
+or something, that makes a nice little piece. You can just kind of store it up there and you can just simply
+
+34
+00:03:12,046 --> 00:03:18,046
+call it, bring it in whenever you want to. Although, we've got some stuff that's coming, you're not going to
+
+35
+00:03:18,046 --> 00:03:26,046
+want to do that because we're building in the email notification features, so you'll want to be able to try
+
+36
+00:03:26,046 --> 00:03:28,046
+to take advantage of that as well.
+
+37
+00:03:28,046 --> 00:03:37,046
+We have, we've got a scheduler that's really cool and so you can create multiple schedules and then just
+
+38
+00:03:37,046 --> 00:03:41,046
+attach that schedule to your script however you want. It's going to just run.
+
+39
+00:03:41,046 --> 00:03:43,046
+You're going to get all of the notification.
+
+40
+00:03:43,046 --> 00:03:53,046
+Anybody that's ever tried to use even the PowerShell scheduler, or the App command, or the Windows Vista
+
+41
+00:03:53,046 --> 00:03:59,046
+scheduler, we've got like three or four different schedule engines built-in to Windows, none of which is
+
+42
+00:03:59,046 --> 00:04:05,046
+perfect, yet each of which has major problems and issues around reporting credentials and all of that stuff
+
+43
+00:04:05,046 --> 00:04:11,046
+and then when you start trying to test these things, it takes forever because you have to schedule it to run,
+
+44
+00:04:11,046 --> 00:04:16,046
+you go to test it and you don't know if it was a credential issue, an access issue, a resource issue, or what that
+
+45
+00:04:16,046 --> 00:04:23,046
+caused, or just I forgot to close a curly brace. You don't know what caused that script to fail.
+
+46
+00:04:23,046 --> 00:04:31,046
+Well with our resources and logging and stuff, you're going to be able to figure that out.
+
+47
+00:04:31,046 --> 00:04:37,046
+Workflow. Workflow is the way to go around here and I'm going to show you that in a little bit.
+
+48
+00:04:37,046 --> 00:04:45,046
+Now this last thing here. Authoring in the ISE. I use the PowerShell ISE all the time.
+
+49
+00:04:45,046 --> 00:04:48,046
+I love the fact that it's expandable and we can do the add-ons and stuff.
+
+50
+00:04:48,046 --> 00:04:53,046
+I love the fact that we've got it up on GitHub now, PowerShell Gallery you can download new versions of it, yeah,
+
+51
+00:04:53,046 --> 00:05:02,046
+all that stuff. Joe Levy wrote an ISE add-on, matter of fact, that's going to be in tomorrow's OMS blog.
+
+52
+00:05:02,046 --> 00:05:08,046
+I'm going to talk about that. So he wrote an ISE add-on that connects automatically to automation,
+
+53
+00:05:08,046 --> 00:05:14,046
+allows you to pull in your runbooks, you've got IntelliSense right there in the ISE, it creates a local
+
+54
+00:05:14,046 --> 00:05:23,046
+store right in your profile, we use JSON to keep it in sync with the runbooks and stuff that's available in
+
+55
+00:05:23,046 --> 00:05:33,046
+your automation, and you can test it right there. That's what I say, so I can edit, I can save a draft to
+
+56
+00:05:33,046 --> 00:05:38,046
+the cloud, yeah, I can publish it to the cloud, yeah, I can test it from the cloud, I can run it local,
+
+57
+00:05:38,046 --> 00:05:45,046
+however I want. It is a very, very, very cool thing and it's only on version .2.
+
+58
+00:05:45,046 --> 00:05:50,046
+Yeah, can you imagine what it's going to be like when it finally gets to version 1.0?
+
+59
+00:05:50,046 --> 00:05:51,046
+It is
+
+60
+00:05:51,046 --> 00:05:57,046
+open source, by the way. It is published in the PowerShell Gallery, which of course also means that it's
+
+61
+00:05:57,046 --> 00:06:06,046
+back in GitHub. And so if you want to contribute, if you want to fork it and add some stuff to it yourself,
+
+62
+00:06:06,046 --> 00:06:08,046
+you're more than welcome to do that.
+
+63
+00:06:08,046 --> 00:59:59,999
+Yep. I can show later on too. I'll show you a link to it if you want to start the preview.
+

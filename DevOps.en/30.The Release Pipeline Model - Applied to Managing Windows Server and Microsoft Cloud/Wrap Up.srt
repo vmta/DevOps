@@ -1,0 +1,112 @@
+1
+00:00:00,0 --> 00:00:08,032
+Just to start wrapping up, these are the, since we're at PowerShell Summit, learn Pester, learn PSake,
+
+2
+00:00:08,032 --> 00:00:14,032
+learn PSDeploy, go take a look at OVF. As you get further down the line, there are so many DevOps tools,
+
+3
+00:00:14,032 --> 00:00:21,032
+so as we update this slide, we'll continue growing this list, and in the whitepaper, we actually call out a wide variety.
+
+4
+00:00:21,032 --> 00:00:29,032
+Yeah, and one thing, I have a session on essential skills for DevOps world or something to that effect later this afternoon.
+
+5
+00:00:29,032 --> 00:00:32,032
+Michael is going to come join as well, so one of the things
+
+6
+00:00:32,032 --> 00:00:38,032
+we're going to talk about is build pipelines and the importance of continuous delivery and testing and all that,
+
+7
+00:00:38,032 --> 00:00:42,032
+so we can definitely have more time to dive into some of these concepts if you still wanted to.
+
+8
+00:00:42,032 --> 00:00:45,032
+We will make this probably my last slide.
+
+9
+00:00:45,032 --> 00:00:46,032
+Yep.
+
+10
+00:00:46,032 --> 00:00:51,032
+This is a huge point, so I just want to land this before we leave.
+
+11
+00:00:51,032 --> 00:00:59,032
+Coming from an infrastructure background, it's in our nature to say I found a new thing, this is my thing now,
+
+12
+00:00:59,032 --> 00:01:05,032
+and I'm going to focus on that and there's a couple of things that make this type of platform work.
+
+13
+00:01:05,032 --> 00:01:08,032
+One is you've got to get buy-in, right, from others in your org.
+
+14
+00:01:08,032 --> 00:01:13,032
+You can't do this alone because it only works if everyone agrees that the tests have to pass before we move forward.
+
+15
+00:01:13,032 --> 00:01:18,032
+The other is, keep your options open. So in the paper, we talk about things like how do you use this together
+
+16
+00:01:18,032 --> 00:01:23,032
+with ConfigMan and what's it look like to use this together with Group Policy because you're not going to cut
+
+17
+00:01:23,032 --> 00:01:32,032
+this over overnight and it's your job as you are the people, right, you are the people in your organization
+
+18
+00:01:32,032 --> 00:01:39,032
+that they look to as the lead architect that says how do we do this smart guy, right, and the answer is it's
+
+19
+00:01:39,032 --> 00:01:44,032
+not going to be a okay, well I stopped using this tool and now I'm using this tool and now we're a lot better, right.
+
+20
+00:01:44,032 --> 00:01:49,032
+That's just a tool change. It's the process change that makes this so valuable.
+
+21
+00:01:49,032 --> 00:01:56,032
+So we don't want to look like this with your precious. And now I've got my build server and now I'm just
+
+22
+00:01:56,032 --> 00:02:00,032
+linked to this stuff, it's all I care about now. Nope, you've still got all the tools you had before.
+
+23
+00:02:00,032 --> 00:02:05,032
+It's a process change and you can bring all of these things forward and that's how you be the hero for your
+
+24
+00:02:05,032 --> 00:02:10,032
+organization and help them get into this new world.
+
+25
+00:02:10,032 --> 00:02:17,032
+So yeah, we'll talk about this applying this same model to everything and making it visible and everybody
+
+26
+00:02:17,032 --> 00:02:21,032
+should be on success. So we'll continue onto this such thing then.
+
+27
+00:02:21,032 --> 00:02:21,5
+Thank you.
+
+28
+00:02:21,5 --> 00:59:59,999
+Great.
+

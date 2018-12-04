@@ -1,0 +1,408 @@
+1
+00:00:00,0 --> 00:00:01,1
+Kind of, sort of?
+
+2
+00:00:01,1 --> 00:00:04,4
+Let's do resources real quick.
+
+3
+00:00:04,4 --> 00:00:06,984
+Now this is supposed to have my beauty demo, but my beauty demo might fail
+
+4
+00:00:06,984 --> 00:00:12,984
+because the one---I use config names and we'll see how it goes.
+
+5
+00:00:12,984 --> 00:00:13,984
+Huh, what?
+
+6
+00:00:13,984 --> 00:00:15,984
+(Audience comment)
+
+7
+00:00:15,984 --> 00:00:21,21
+No, I don't want to do that. I don't have that much time. Well we'll see.
+
+8
+00:00:21,21 --> 00:00:28,984
+We'll see the beauty demo is awesome. Some if it'll work. So let's go down here and let's talk about resources.
+
+9
+00:00:28,984 --> 00:00:31,984
+Resources are more challenging.
+
+10
+00:00:31,984 --> 00:00:45,984
+Before we go on, can I ask you a question? So is there any reason to use config names other than GUID?
+
+11
+00:00:45,984 --> 00:00:46,984
+No.
+
+12
+00:00:46,984 --> 00:00:49,5
+I like GUID names. I don't think they're a problem.
+
+13
+00:00:49,5 --> 00:00:51,984
+Stick it with GUIDs then.
+
+14
+00:00:51,984 --> 00:01:01,984
+Well here's one thing we all just now learned. GUIDs work, and quite honestly, like I said, Steve and I still
+
+15
+00:01:01,984 --> 00:01:05,984
+prefer GUIDs, other guys prefer, yeah you prefer GUIDs, use GUIDs.
+
+16
+00:01:05,984 --> 00:01:07,984
+All the GP guys always use GUIDs.
+
+17
+00:01:07,984 --> 00:01:11,984
+There you go, so yeah, there you go. There's no reason not to use GUIDs.
+
+18
+00:01:11,984 --> 00:01:16,984
+This was something they threw in because everybody was, you've got to imagine everybody that starts with DSC,
+
+19
+00:01:16,984 --> 00:01:21,984
+they were complaining about the GUIDs because they didn't know what the hell a GUID was and they couldn't
+
+20
+00:01:21,984 --> 00:01:26,984
+figure out what they were doing with it and there was no, they didn't think of, somebody said well let's make
+
+21
+00:01:26,984 --> 00:01:31,984
+an Excel spreadsheet. No, don't do that, but you know. So that's why they put in config names.
+
+22
+00:01:31,984 --> 00:01:36,984
+I like config names. It's really useful, but. Guys, I'm going to make a couple of, I've got a configure that's
+
+23
+00:01:36,984 --> 00:01:39,984
+going to make some cool web servers.
+
+24
+00:01:39,984 --> 00:01:43,984
+You're about up to here with DSC making web servers, aren't you? Yeah, I know.
+
+25
+00:01:43,984 --> 00:01:48,984
+If you came to my thing on Sunday, we made domain controllers and stuff like that, but I know, it's kind of irritating.
+
+26
+00:01:48,984 --> 00:01:54,984
+It's just easy to do. I'll show you this config here in, if you want to see it, I'll give you the details of it.
+
+27
+00:01:54,984 --> 00:01:59,984
+This is just one of my configs. I separate my config data. It's going to build two different websites.
+
+28
+00:01:59,984 --> 00:02:01,984
+I've got two different roles in here.
+
+29
+00:02:01,984 --> 00:02:07,984
+It's going to use web as one of the roles, which configures a base web server with only the components that
+
+30
+00:02:07,984 --> 00:02:12,984
+I want configured in it. Then one of them is going to do an open site, which is just a regular HTTP site on
+
+31
+00:02:12,984 --> 00:02:17,984
+one server and one's going to do a secured site with an application and a custom resource.
+
+32
+00:02:17,984 --> 00:02:22,984
+I'm pointing this out because you're going to be writing custom resources left and right.
+
+33
+00:02:22,984 --> 00:02:25,984
+You've got to make sure you package them correctly for your pull server.
+
+34
+00:02:25,984 --> 00:02:27,984
+So let me just kind of show you here.
+
+35
+00:02:27,984 --> 00:02:32,984
+I guess I should run that because I'm going to need it. Oh, don't you dare.
+
+36
+00:02:32,984 --> 00:02:41,984
+Oh. Alright. What was the problem with this the last time I did this?
+
+37
+00:02:41,984 --> 00:02:46,984
+Could not find XDNS server. Oh, I haven't put the resources out yet.
+
+38
+00:02:46,984 --> 00:02:51,984
+See this red squiggly line? that means my authoring box doesn't have the resources.
+
+39
+00:02:51,984 --> 00:02:53,984
+That's part of my demo was to show you that.
+
+40
+00:02:53,984 --> 00:02:56,984
+I saw that one earlier. I noticed the red squiggles.
+
+41
+00:02:56,984 --> 00:03:00,984
+Yeah, I didn't even read my own comment that says yeah, look at the red squiggle.
+
+42
+00:03:00,984 --> 00:03:04,984
+So here's what I'm going to do. I'm going to copy the resources to my authoring box.
+
+43
+00:03:04,984 --> 00:03:11,984
+It goes out to Windows PowerShell modules and now the red squigglies, let me close this, and guys this is
+
+44
+00:03:11,984 --> 00:03:14,984
+one of those things you have to close it and reopen it.
+
+45
+00:03:14,984 --> 00:03:16,984
+(Audience comment)
+
+46
+00:03:16,984 --> 00:03:22,984
+Yeah, yeah. It won't re, yeah that it's not refreshing. I saw that was getting voted up too, that's good.
+
+47
+00:03:22,984 --> 00:03:32,984
+So now hopefully, my come on make the red squigglies go away. No.
+
+48
+00:03:32,984 --> 00:03:37,984
+XWebAdministration multiple yeah, yeah, yeah, yeah, yeah, yeah, yeah.
+
+49
+00:03:37,984 --> 00:03:47,984
+This is the problem I had yesterday. Find-module xwebadministration.
+
+50
+00:03:47,984 --> 00:03:54,984
+By the way, this is something that will happen to you, so might as well.
+
+51
+00:03:54,984 --> 00:04:01,984
+AllVersions. NuGet, NuGet I am up to here with you updating NuGet.
+
+52
+00:04:01,984 --> 00:04:08,984
+Chocolatey NuGet. Oh. So here's the deal, a couple of days ago, a new version of this came out and that's what's
+
+53
+00:04:08,984 --> 00:04:16,984
+breaking my demo. I need to be on 1.9 and it's currently on 1.10, so let me get rid of on my machine has 1.10,
+
+54
+00:04:16,984 --> 00:04:28,984
+let me get rid of it and that's where I'm going to uninstall, uninstall-module -name xwebadministration.
+
+55
+00:04:28,984 --> 00:04:29,984
+Did I spell that right?
+
+56
+00:04:29,984 --> 00:04:30,984
+You did.
+
+57
+00:04:30,984 --> 00:04:46,984
+Okay, good. MinimumVersion1.10.0.0. Let's try this again.
+
+58
+00:04:46,984 --> 00:04:53,984
+No squigglies. Okay. Oh, don't. Golf clap. Anyway, so this is going to install.
+
+59
+00:04:53,984 --> 00:04:55,984
+Let me just run this, guys, so
+
+60
+00:04:55,984 --> 00:04:59,984
+we can start him off because he takes a few minutes to run and then we can kind of talk about him.
+
+61
+00:04:59,984 --> 00:05:04,984
+Notice I got two MOFs out there, s1 and s2. I'm going to show you another trick because I had my cute little
+
+62
+00:05:04,984 --> 00:05:09,984
+coding trick here and then Morawski yelled at me, so I'm going to show you, oh I'm going to change the names
+
+63
+00:05:09,984 --> 00:05:20,984
+of those files, so let me just rename them. I'm using a config name for those and let me make a checksum for them.
+
+64
+00:05:20,984 --> 00:05:29,984
+Ta-da. And I'm going to put them up on the pull server and here's the important part for this section.
+
+65
+00:05:29,984 --> 00:05:34,984
+I'm just going to put the configs up there, but now here's the hard part.
+
+66
+00:05:34,984 --> 00:05:41,984
+The resources have to get copied up there. Now they have to be copied into the DSC Service Modules folder,
+
+67
+00:05:41,984 --> 00:05:48,984
+but here's the challenging part. On your authoring box, your resources are PowerShell modules.
+
+68
+00:05:48,984 --> 00:06:00,984
+They have to be zipped and use a special name. The special name is the name of the module_it's version number.
+
+69
+00:06:00,984 --> 00:06:07,984
+If you screw this up, it'll never work. You can't invent your own format for this name or the version numbering.
+
+70
+00:06:07,984 --> 00:06:14,984
+Here's where you have to go for this. The version numbering is in the manifest of each resource.
+
+71
+00:06:14,984 --> 00:06:15,984
+Now let me
+
+72
+00:06:15,984 --> 00:06:17,984
+give you an example here. Here's one of my custom, this is my custom resource.
+
+73
+00:06:17,984 --> 00:06:26,984
+I'm going to go into the manifest, see the module number? However that module number is listed must be the
+
+74
+00:06:26,984 --> 00:06:30,984
+way that it appears in the zip name. People mess this up all the time.
+
+75
+00:06:30,984 --> 00:06:38,984
+And I'm going to give you an example. I want you to see this because I looked at all the modules and got
+
+76
+00:06:38,984 --> 00:06:47,984
+their version numbers. This one was 1.2.0.0. This one was just 1.0.
+
+77
+00:06:47,984 --> 00:06:52,984
+It didn't have the other two, so it's got to match exact of what's in the manifest.
+
+78
+00:06:52,984 --> 00:06:53,984
+Does that make sense?
+
+79
+00:06:53,984 --> 00:07:01,984
+Now here's the beauty of this. Because that version number is in there, you can have newer versions of these modules.
+
+80
+00:07:01,984 --> 00:07:06,984
+You can put them on your pull server. So you have version control on the pull server.
+
+81
+00:07:06,984 --> 00:07:12,984
+Maybe you have 50 machines using version 1.2 and you want to put a 1.3 version of the resource up, but you don't
+
+82
+00:07:12,984 --> 00:07:17,984
+want to break the 50 machines that are out there. You want to put a new version up and maybe put that on like
+
+83
+00:07:17,984 --> 00:07:23,984
+three machines you want to test. The beauty to that is just astounding in production.
+
+84
+00:07:23,984 --> 00:07:30,984
+There's only one small problem. How many of you know that class-defined resources, we don't have versioning
+
+85
+00:07:30,984 --> 00:07:36,984
+in class-defined. So here's the deal, I don't write class-defined resources other than to entertain myself
+
+86
+00:07:36,984 --> 00:07:41,984
+because I can't use them on a pull server because I can't version them, so I use standard resources.
+
+87
+00:07:41,984 --> 00:07:48,984
+Anyway, it doesn't matter. Actually, this PSWA authorization is a class-defined resource, but I'm not putting
+
+88
+00:07:48,984 --> 00:07:49,984
+another version up because it won't work.
+
+89
+00:07:49,984 --> 00:07:58,984
+So I'm going to zip this. Zip, zip, zip, zip, zip, zip. And you need a checksum for those zips.
+
+90
+00:07:58,984 --> 00:08:04,984
+That way we know if it's been changed. Yeah.
+
+91
+00:08:04,984 --> 00:08:10,984
+(Audience question)
+
+92
+00:08:10,984 --> 00:08:15,984
+No. You still have to put the version number in there that's in the manifest for the class.
+
+93
+00:08:15,984 --> 00:08:21,984
+So that's actually really important. It's just you'll never be able to put another one on there until they fix this.
+
+94
+00:08:21,984 --> 00:08:25,984
+(Audience comment)
+
+95
+00:08:25,984 --> 00:08:31,984
+Because it doesn't know how to, it doesn't actually, the LCM doesn't know how to look for it with a class-defined resource.
+
+96
+00:08:31,984 --> 00:08:37,984
+They know this is an issue and they're going to fix it, but this has actually been on UserVoice for quite some time.
+
+97
+00:08:37,984 --> 00:08:45,984
+This has been an ongoing thing. And the thing is that in production is where you feel the pain.
+
+98
+00:08:45,984 --> 00:08:48,984
+Literally, Morawski and I were going through this because we were yelling at each other back and forth
+
+99
+00:08:48,984 --> 00:08:54,984
+because over skype one day because I'm like use class, use class, and he's like every version of a class-defined
+
+100
+00:08:54,984 --> 00:08:59,984
+resource, I have to bring up a new pull server because that's the only way you can do it.
+
+101
+00:08:59,984 --> 00:09:07,984
+Yeah. Ooh, and I'm like okay you win. Anyways, so let me copy these up and we'll run this and give it a shot,
+
+102
+00:09:07,984 --> 00:59:59,999
+see how well it works here.
+

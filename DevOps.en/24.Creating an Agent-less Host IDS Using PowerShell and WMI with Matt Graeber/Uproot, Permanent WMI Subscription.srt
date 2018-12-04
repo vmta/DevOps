@@ -1,0 +1,532 @@
+1
+00:00:00,0 --> 00:00:06,42
+Alright, so building on Matt's use case for that lateral movement detection, he showed how we would use
+
+2
+00:00:06,42 --> 00:00:11,42
+wbemtest in order to kind of detect what's going on for method calls.
+
+3
+00:00:11,42 --> 00:00:17,42
+We want to go ahead and probably create a permanent WMI event subscription, and so the way that we would do
+
+4
+00:00:17,42 --> 00:00:23,42
+that by hand, kind of like the old school way, I guess, is that we would have to go onto MSDN, figure out what
+
+5
+00:00:23,42 --> 00:00:30,42
+the properties that are associated with an EventFilter class are, and then we would by hand create our event filter, right.
+
+6
+00:00:30,42 --> 00:00:37,42
+And so in this case, I'm using a property hash table in order to allow me to pass arguments to the
+
+7
+00:00:37,42 --> 00:00:42,42
+New-CimInstance cmdlet, and so, in this case, we have a name, which is EXT-ProcessCreateMethod.
+
+8
+00:00:42,42 --> 00:00:48,42
+The EXT stands for extrinsic. We want the EventNamespace to be cimv2 and then this is our query, the same query
+
+9
+00:00:48,42 --> 00:00:54,42
+that Matt was showing where we're looking for Win32_Process and the method name over here is going to be Create.
+
+10
+00:00:54,42 --> 00:01:01,42
+And then the query language, in this case and most cases, is WQL WMI query language.
+
+11
+00:01:01,42 --> 00:01:07,42
+And then we're able to store that filter once it's created in the filter variable.
+
+12
+00:01:07,42 --> 00:01:13,42
+Alright, so that's been created. Next, we'll go, in this case, we want to write events to the event log.
+
+13
+00:01:13,42 --> 00:01:18,42
+That's the ideal situation because you have things like Windows event forwarding to be able to centralize
+
+14
+00:01:18,42 --> 00:01:25,42
+your event log. And so, why do some kind of like duct tape solution when you can just write to the Windows
+
+15
+00:01:25,42 --> 00:01:30,42
+event log, which is the supported login mechanism for the operating system.
+
+16
+00:01:30,42 --> 00:01:36,42
+And so, what we're doing here is we have an array called the template array and that's going to have the
+
+17
+00:01:36,42 --> 00:01:41,42
+actual data that will be written into the event log, and so in this case, we want to have an alert that says
+
+18
+00:01:41,42 --> 00:01:47,42
+lateral movement detected and then we want to store like hey the namespace, the object path, the method name,
+
+19
+00:01:47,42 --> 00:01:55,42
+and the command executed and then we have the actual properties that the NTEventLogEventConsumer class needs.
+
+20
+00:01:55,42 --> 00:02:05,42
+And in this case, we found that the WSHEventLog source is the best one and if you use EventID 8, in particular,
+
+21
+00:02:05,42 --> 00:02:11,42
+you can write arbitrary data to the event log, so that's like the one EventID in a source that just allows
+
+22
+00:02:11,42 --> 00:02:14,42
+you to write whatever you want, and so Matt I don't know how you figured that out, but.
+
+23
+00:02:14,42 --> 00:02:22,42
+I was really confused by that. I never really knew how like event sources worked under the hood and I had a
+
+24
+00:02:22,42 --> 00:02:27,42
+buddy who's really good forensics who kind of dug into that and explained it to me.
+
+25
+00:02:27,42 --> 00:02:36,42
+So the EventID refers to a specific like template string entry within that event source, so that event source
+
+26
+00:02:36,42 --> 00:02:44,42
+corresponds to, it's usually like a resource only DLL that within one of its resources is just a huge array
+
+27
+00:02:44,42 --> 00:02:46,42
+of these template strings, and
+
+28
+00:02:46,42 --> 00:02:54,42
+NWSH like the eighth string is just basically like a %S format string, which allows you to write any data
+
+29
+00:02:54,42 --> 00:03:02,42
+that you want using that source and EventID. So that had been documented on the internet like this is what
+
+30
+00:03:02,42 --> 00:03:08,42
+you would use to write arbitrary data to the event log, but it was never explained why, so that's why.
+
+31
+00:03:08,42 --> 00:03:10,42
+Thanks Willy.
+
+32
+00:03:10,42 --> 00:03:15,42
+Yeah, so while he was doing that, I basically showed the contents of the filtering consumer variables just to
+
+33
+00:03:15,42 --> 00:03:24,42
+show that this is an instance of a filter, event filter class, and this is an instance of an NTEventLogEvent class,
+
+34
+00:03:24,42 --> 00:03:27,42
+NTLogEvent, I don't know, I can't think of it off the top of my head.
+
+35
+00:03:27,42 --> 00:03:32,42
+I'm now confused. Okay, and then what we need to do is we need to create the FilterToConsumerBinding and
+
+36
+00:03:32,42 --> 00:03:37,42
+we're going to pass a reference to the filter and a reference to the consumer.
+
+37
+00:03:37,42 --> 00:03:47,42
+And so, alright. And so, voila, now we have a FilterToConsumerBinding or a Permanent WMI Event subscription
+
+38
+00:03:47,42 --> 00:03:52,42
+is the term that we're using for that. Okay, so now what we should be able to do is call the
+
+39
+00:03:52,42 --> 00:03:59,42
+Win32_ProcessCreate method and we should get an event that's written to the Windows event log.
+
+40
+00:03:59,42 --> 00:04:04,42
+And so, we're going to try that. Fingers crossed. This has given me some problems a couple times,
+
+41
+00:04:04,42 --> 00:04:11,42
+but and it's a live demo. Alright, so now what we're going to do is we're going to read from the Windows
+
+42
+00:04:11,42 --> 00:04:15,42
+event log using the source WSH looking for a message of lateral movement detected.
+
+43
+00:04:15,42 --> 00:04:21,42
+There should be a couple examples because I've practiced this recently, but here is that cmd.exe.
+
+44
+00:04:21,42 --> 00:04:29,42
+And so, in general, what we could do is Get-EventLog to kind of show that I didn't have those prestaged
+
+45
+00:04:29,42 --> 00:04:38,42
+or -LogName Application -Source WSH and then we can do, what is it, Newest 1.
+
+46
+00:04:38,42 --> 00:04:46,42
+And so that just got written at 18:34 and it's 18:35 on this system, so just showing that actually did in fact
+
+47
+00:04:46,42 --> 00:04:53,42
+write to the event log just now. Alright, so we have now detected probably the most common lateral movement
+
+48
+00:04:53,42 --> 00:04:58,42
+technique out there. Obviously, there's tons of lateral movement techniques, and so this is just one of them,
+
+49
+00:04:58,42 --> 00:05:06,42
+but it's a really good start and there's not a detection mechanism for that I'm aware of in public.
+
+50
+00:05:06,42 --> 00:05:07,42
+Right, exactly.
+
+51
+00:05:07,42 --> 00:05:14,42
+Alright. So we're going to move on. Alright, so that was kind of painful, right, and in theory I would have been
+
+52
+00:05:14,42 --> 00:05:19,42
+going back and forth to MSDN to figure out the different properties and things of that nature, so we wrote
+
+53
+00:05:19,42 --> 00:05:26,42
+the WMI event module in order to kind of simplify this and extract out some of the complexities, and so we
+
+54
+00:05:26,42 --> 00:05:34,42
+have things like New-WmiEventFilter, New-WmiEventConsumer, New-NTEventLogEventConsumer to be more specific,
+
+55
+00:05:34,42 --> 00:05:37,42
+New-WmiEventSubscription. So let's take a look at this.
+
+56
+00:05:37,42 --> 00:05:43,42
+It's also worth mentioning that Trevor Sullivan wrote the power event or power events module a long time ago
+
+57
+00:05:43,42 --> 00:05:52,42
+and that's also a great utility. It also has an extremely useful whitepaper that shows you like how to register
+
+58
+00:05:52,42 --> 00:05:57,42
+these things, how to use wbemtest, and use those notification queries for testing your event, so that's highly
+
+59
+00:05:57,42 --> 00:05:59,42
+recommended as well.
+
+60
+00:05:59,42 --> 00:06:01,42
+Alright, so what I'm doing now.
+
+61
+00:06:01,42 --> 00:06:03,42
+(Audience question)
+
+62
+00:06:03,42 --> 00:06:09,42
+It's just empty. Don't judge me.
+
+63
+00:06:09,42 --> 00:06:11,42
+(Audience comment)
+
+64
+00:06:11,42 --> 00:06:16,376
+Oh good. Yeah, no it's just empty.
+
+65
+00:06:16,376 --> 00:06:17,377
+Classic June Blender question.
+
+66
+00:06:17,377 --> 00:06:17,5
+I know, gosh.
+
+67
+00:06:17,5 --> 00:06:23,42
+June, I have another module that I would like your help on in a little bit.
+
+68
+00:06:23,42 --> 00:06:29,42
+So yeah, what I was trying to show before I got in trouble was
+
+69
+00:06:29,42 --> 00:06:35,42
+that now what we have is we have the new WMI filter and there's a specific parameter for every property that
+
+70
+00:06:35,42 --> 00:06:40,42
+you're going to need to pass to it, right, and so in this case, it needs a name, an event namespace, a query,
+
+71
+00:06:40,42 --> 00:06:48,42
+and a query language, so I'm just kind of typing those out, Win32_ProcessStartTrace, so this is going to
+
+72
+00:06:48,42 --> 00:06:55,42
+basically capture every time a process is started. And we've kind of gone away for this example from trying to
+
+73
+00:06:55,42 --> 00:07:02,42
+do something fancy just to try and do something that we could trigger very easily, and so WQL will fill in automatically.
+
+74
+00:07:02,42 --> 00:07:10,42
+There's that filter, it's called testfilter, in this case, so then if we do Help Get, this is a fun one,
+
+75
+00:07:10,42 --> 00:07:18,42
+so whoops, not Get, sorry, New. Alright, so New-WmiEventConsumer.
+
+76
+00:07:18,42 --> 00:07:22,42
+Like we said, there's five different types of event consumers that you could create and within each or
+
+77
+00:07:22,42 --> 00:07:30,42
+different event consumers, there are multiple ways to call them, and so there's like 37 million parameter sets
+
+78
+00:07:30,42 --> 00:07:34,42
+in this situation, and so you can filter through these and try to determine what you want to do.
+
+79
+00:07:34,42 --> 00:07:39,42
+In this case, we know that we want to use the NTEventLogEventConsumer, so we can do
+
+80
+00:07:39,42 --> 00:07:43,42
+New-NTEventLogEventConsumer, whoops, whoops, that's not what we want.
+
+81
+00:07:43,42 --> 00:07:46,42
+Does anyone else know the pain of parameter set common notorial explosion?
+
+82
+00:07:46,42 --> 00:07:56,42
+Yeah, that cmdlet or that function has I think like 400 lines of parameters, so yeah, that was a pain.
+
+83
+00:07:56,42 --> 00:08:00,42
+And so in this case, NTEventLog has two different ways that you can use it.
+
+84
+00:08:00,42 --> 00:08:07,42
+The first example is if you want to do it locally or use the computer name variable or parameter.
+
+85
+00:08:07,42 --> 00:08:12,42
+If you want to use a CIM session in order to push it out to a remote system over CIM, then you can use the
+
+86
+00:08:12,42 --> 00:08:19,42
+second parameter set. And so in this example, we want to use a name, a Category, an EventID, an EventType,
+
+87
+00:08:19,42 --> 00:08:25,42
+InsertionStrings, which are what we want to actually write to the event log and then the number of insertion
+
+88
+00:08:25,42 --> 00:08:32,42
+strings and the source name, right, so that's a lot of stuff that we would have to remember if this didn't tell us.
+
+89
+00:08:32,42 --> 00:08:43,42
+Yep, that didn't work. Okay, so name, we're going to call it testconsumer -Category, we'll say 0, EventID.
+
+90
+00:08:43,42 --> 00:08:50,42
+The things that actually matter in this case are the EventID has to be 8, and then EventType we'll say 2 I
+
+91
+00:08:50,42 --> 00:08:59,42
+think as a warning. InsertionStringTemplates, I'm just going to write, what did I do, let's see.
+
+92
+00:08:59,42 --> 00:09:08,42
+ProcessName, so we're going to say ProcessName Started. And so that should be written to the event log.
+
+93
+00:09:08,42 --> 00:09:10,42
+Let's see what else we need here.
+
+94
+00:09:10,42 --> 00:09:11,42
+The length, right?
+
+95
+00:09:11,42 --> 00:09:18,42
+SourceName, yeah, WSH and then NumberOfInsertionStrings is a 1. So I just ran that.
+
+96
+00:09:18,42 --> 00:09:25,42
+Now I have a test consumer, which is going to write ProcessName has started to the EventLog.
+
+97
+00:09:25,42 --> 00:09:34,42
+And then, whoops, then what we can do is help New-WmiEventSubscription and this tells us how we're going to
+
+98
+00:09:34,42 --> 00:09:39,42
+do this, how we're going to create a binding. I just kind of renamed it as subscription because that makes a
+
+99
+00:09:39,42 --> 00:09:44,42
+little more sense. And so, we can do New-WmiEventSubscription. We're going to give it a FilterName
+
+100
+00:09:44,42 --> 00:09:54,42
+testfilter ConsumerName or ConsumerType, it's an NTEventLogEventConsumer ConsumerName, and it's going to be a testconsumer.
+
+101
+00:09:54,42 --> 00:10:00,42
+And so there it is. Now the subscription has been created. So let's go back, well actually, we just start
+
+102
+00:10:00,42 --> 00:10:12,42
+our random process. Calc. Okay, so calc has been created, so now we can do Get-EventLog -LogName Application.
+
+103
+00:10:12,42 --> 00:10:15,42
+It's not a security-related talk if calc isn't popping.
+
+104
+00:10:15,42 --> 00:10:25,42
+Yeah, exactly. Source WSH. And so, there you see in the message, calc.exe started, so now we're monitoring
+
+105
+00:10:25,42 --> 00:10:31,42
+for process creation. Process creation is obviously going to be a very loud signature, so you've just kind of
+
+106
+00:10:31,42 --> 00:10:38,42
+got to take that for what that is. Let me go back here and kind of clear everything out.
+
+107
+00:10:38,42 --> 00:10:46,42
+Okay, so that is the Generic WmiEvent module. Obviously, you don't necessarily for more complicated filters
+
+108
+00:10:46,42 --> 00:10:53,42
+and things of that nature, you don't want to necessarily remember all of that, and so we've kind of made a
+
+109
+00:10:53,42 --> 00:10:59,42
+mechanism for storing your filters and consumers and things of nature.
+
+110
+00:10:59,42 --> 00:11:06,42
+And so in this case, we basically take that hash table and we store it in a file, and then we .source it,
+
+111
+00:11:06,42 --> 00:11:11,42
+so now once we .source it, $props represents what's in that file.
+
+112
+00:11:11,42 --> 00:11:15,42
+The caveat here is that you should before you .source a file,
+
+113
+00:11:15,42 --> 00:11:16,42
+you should probably
+
+114
+00:11:16,42 --> 00:11:19,42
+know what's actually in that file because you're running arbitrary code.
+
+115
+00:11:19,42 --> 00:11:24,42
+So yesterday, the PowerShell team talked about how they're coming out with a way to like signature an entire module.
+
+116
+00:11:24,42 --> 00:11:31,42
+That would be a very good use case here is that you're signaturing that none of the filters have been changed, basically.
+
+117
+00:11:31,42 --> 00:11:34,42
+Or none of the filters or consumers.
+
+118
+00:11:34,42 --> 00:11:42,42
+Alright, so then what we can do is we can just splat props, and so now we've created that filter,
+
+119
+00:11:42,42 --> 00:11:45,42
+so we're kind of trying to make this a little bit easier.
+
+120
+00:11:45,42 --> 00:11:51,42
+So Uproot has a bunch of these built-in signatures in the form of a hash table, which is then splatted to the
+
+121
+00:11:51,42 --> 00:11:52,42
+functions that he just showed you.
+
+122
+00:11:52,42 --> 00:11:57,42
+And so everything is known as props in the way that we've done it so far, so now I just created an event filter
+
+123
+00:11:57,42 --> 00:12:05,42
+with significantly less typing and then we're going to, actually let's just copy this entire thing,
+
+124
+00:12:05,42 --> 00:12:09,42
+and we'll run that, and now we've created the consumer. And so what this consumer is doing in particular is
+
+125
+00:12:09,42 --> 00:12:15,42
+we're monitoring for a Startup command creation, so this is an intrinsic event.
+
+126
+00:12:15,42 --> 00:12:22,42
+I believe right now it's pulling within 10, so every 10 seconds, it's going to pull and look for a new Startup command.
+
+127
+00:12:22,42 --> 00:12:26,42
+And one of the reasons why 10 is okay is because if it's a persistence mechanism, then it's probably
+
+128
+00:12:26,42 --> 00:12:29,42
+going to be there for longer than 10 minutes, if that's what we're worried about.
+
+129
+00:12:29,42 --> 00:12:36,42
+And so now we can go ahead and create a value in the run key. And so, we're going to create a value called
+
+130
+00:12:36,42 --> 00:12:43,42
+Jared with an argument of cmd.exe. So as soon as the system rebooted or in the case of the system starting
+
+131
+00:12:43,42 --> 00:12:50,42
+up again, a command shell will be popped, and so I don't know if that's super cool, but it will get the point across.
+
+132
+00:12:50,42 --> 00:13:00,42
+And so that was created and now we can check to see that it wrote, and as you can see, I've practiced this
+
+133
+00:13:00,42 --> 00:59:59,999
+a few times before we did this, but in general, it writes out to the EventLog and says hey an autorun entry was added.
+

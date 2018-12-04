@@ -1,0 +1,253 @@
+PowerShell & DevOps Global Summit 2016 Sessions
+by June Blender, Josh Atwell, Adam Driscoll, Neema Saeedi, Paul Higinbotham, Mark Gray, Kirk Munro, Michael Greene, Jeff Hicks, Don Jones, Jason Helmick, Jared Atkinson, Adam Platt, Ashley McGlone, Lee Holmes, Rohn Edwards, Angel Calvo, Ed Wilson, Mike F. Robbins, J. Keith Bankston, Luc Dekens, and David Wilson
+
+Explore advanced tips and tricks from leading PowerShell experts and core PowerShell product team members in these in-depth sessions from the PowerShell & DevOps Global Summit 2016.
+
+Course Overview1m 13s
+	Course Overview1m 13s
+Active Directory DSC45m 59s
+	Introduction2m 25s
+	DC Deployment Using ARM Template and Custom DSC Configuration7m 11s
+	Refining DSC Configuration from Template21m 11s
+	Calling Script9m 53s
+	Closing and Q&A5m 16s
+Advanced Parameter Completion49m 7s
+	Introduction, Using ValidateSet, and Dynamic Parameters5m 43s
+	Abusing ValidateSet5m 6s
+	Argument Completers11m 44s
+	Improving Get-Command11m 45s
+	Native Completers3m 25s
+	Completion Order3m 3s
+	Abusing Native Completers8m 19s
+Assume Breach - Designing for the Inevitable43m 24s
+	Introduction11m 2s
+	Your Turn5m 23s
+	Data Is a Liability12m 0s
+	The Hackers Perspective10m 18s
+	Structured Thinking About Security4m 40s
+DSC Secured Pull Servers38m 57s
+	Introduction5m 2s
+	Configuring an HTTPS Pull Server9m 54s
+	Deploying the Pull Server8m 30s
+	High Availability and Load Balancers6m 32s
+	Testing the Pull Server5m 23s
+	Q&A3m 35s
+Getting Started with Classes in PowerShell v540m 4s
+	Introduction to Object Oriented Programming7m 38s
+	Basics of PowerShell Classes14m 46s
+	Extending from Base Classes7m 24s
+	Extending from .NET Classes3m 24s
+	DSC Resources and PowerShell Classes4m 31s
+	Q&A2m 19s
+Creating a PowerShell Toolkit to Demystify DSC46m 29s
+	Introduction5m 38s
+	Building an SMB Pull Server6m 54s
+	Push Mode12m 28s
+	Pull Mode13m 14s
+	Cleanup and Bonus Content8m 14s
+Debugging PowerShell49m 28s
+	Introduction3m 51s
+	Dealing with PowerShell Errors7m 24s
+	Identifying Error Sources12m 22s
+	Troubleshooting with Historical Data14m 34s
+	Debugging with Breakpoints5m 54s
+	Defensive Scripting Techniques3m 58s
+	Advanced Debugging Scenarios and Closing1m 21s
+DSC for VMware vSphere - Outside the Box39m 51s
+	Introduction4m 9s
+	vSphere and PowerCLI13m 33s
+	Test Lab4m 13s
+	DSC Resource Modules4m 1s
+	vSphere Tree Nodes5m 19s
+	API Methods and Clusters6m 3s
+	Q&A2m 31s
+The Future of PowerShell ISE and Editor Services47m 27s
+	Introduction7m 48s
+	PowerShell ISE Preview9m 31s
+	ISE Preview Priorities5m 37s
+	PowerShell Editor Services11m 41s
+	Cross-editor Extensibility Model Demo9m 56s
+	Closing and Q&A2m 52s
+LCM Deep Dive - The Unsung Hero of DSC56m 18s
+	Introduction40s
+	Desired State Configuration Overview1m 16s
+	Partial Configurations10m 58s
+	How the LCM Works6m 22s
+	Communication - Configuration, Ports, and Protocols - Outgoing19m 45s
+	PowerShell v5.0 vs. v4.05m 6s
+	Conclusion and Lightning Round12m 9s
+Old Dog, New Tricks: Digital Forensics with PowerShell50m 8s
+	Introduction8m 4s
+	Reading a Disk - Volumes Contents6m 3s
+	Reading Master Boot Record3m 29s
+	Reading Volume Boot Record, Master File Table3m 18s
+	Understanding the Data Attribute and the Index Allocation Attribute6m 17s
+	Parsing the Directory Structure7m 47s
+	Performing a Web Server Investigation11m 30s
+	Initial Findings1m 22s
+	Future of PowerForensics2m 15s
+PowerShell DSC - A Look Under the Hood with Travis Plunk48m 24s
+	Introduction3m 17s
+	Encrypted MOFs10m 1s
+	Configuration Reuse15m 17s
+	Partial Configurations in Delivery Pipeline9m 49s
+	Pull Server V29m 57s
+Real World Test Driven Development with Pester45m 17s
+	Introduction5m 46s
+	Help-driven Development2m 58s
+	Pester Syntax9m 39s
+	Testing with Pester12m 33s
+	Testing with Pester - Part 29m 54s
+	Testing Modules and Conclusions4m 24s
+Stupid DSC Tricks50m 29s
+	Introduction, Dynamic Printer Mapping Example13m 32s
+	MOFs5m 22s
+	Downsides of MOFs4m 9s
+	Use Cases for DSC14m 27s
+	Use Cases for DSC - Part 212m 57s
+Accelerated Toolmaking: Copying PowerShell Commands1h 39m 4s
+	Introduction8m 55s
+	Creating a Proxy Script9m 50s
+	Refining Proxy Script Parameters10m 21s
+	Tool Accelerators - Get-CommandMetadata10m 11s
+	Tool Accelerators - Copy-Command and Wrapper24m 44s
+	Tool Accelerators - Get-CimInstance4m 25s
+	Tool Accelerators - CIMScriptMaker5m 47s
+	Tool Accelerators - Get-MyADUser7m 23s
+	Tool Accelerators - Get-MyHistory and Tee-MyObject6m 46s
+	Q&A10m 38s
+Domain-Specific Languages in PowerShell: A Brief History and an Ongoing Experiment45m 37s
+	Introduction: What Is a Domain Specific Language?7m 21s
+	My First Domain Specific Language11m 10s
+	System.Management.Automation.Language.DynamicKeyword6m 17s
+	Redefining How DSLs Are Created with LanguagePx18m 26s
+	ScsmMpcPx - A More Complicated Example2m 20s
+Managing the Infrastructure Stack with PowerShell1h 13m 41s
+	Introduction4m 47s
+	Why PowerShell the Stack?5m 34s
+	Infrastructure Tools and Use Cases14m 36s
+	PowerActions2m 44s
+	Core Challenges3m 16s
+	Application DNA - Applying Relationship Maps5m 41s
+	Why App DNA?5m 50s
+	App DNA - Growth Areas1m 47s
+	Q&A17m 30s
+	Provisioning Storage Function Demo3m 3s
+	PowerActions Demo2m 36s
+	Final Thoughts and Q&A6m 11s
+Nano Server and Remote Management44m 1s
+	Introduction: Customer Feedback and Our Server Journey6m 10s
+	Nano Server: Roles and Features, PowerShell Core4m 31s
+	Remote Server Management Tools9m 10s
+	Nano Server: Cloud Application Platform and Developer Experience13m 2s
+	Emergency Management Console4m 13s
+	Containers, Road Map, and Next Steps6m 53s
+PowerShell Team: Present and Future with Kenneth Hansen1h 21m 8s
+	Introduction3m 55s
+	Past Year13m 52s
+	What Did We Learn?11m 59s
+	Engineering Moving Forward13m 24s
+	Looking Forward - Windows11m 47s
+	Looking Forward / Predictions - PowerShell5m 35s
+	Future of PowerShell Documentation5m 8s
+	Looking Forward / Predictions - PowerShell Continued15m 25s
+Active Directory Forensics with PowerShell45m 50s
+	Introduction5m 41s
+	New Objects, Get Protected Group Member Changes12m 53s
+	ACL Changes12m 1s
+	Recycle Bin4m 19s
+	Get User Membership History6m 4s
+	Resources and Conclusion4m 49s
+Building Modules Using Metaprogramming46m 8s
+	Introduction to Metaprogramming9m 25s
+	Creating Multiple Commands from the Same Script Block11m 31s
+	CIM Commands12m 9s
+	Simple WPF Module13m 1s
+	Converting to DSC in a VMware vSphere Environment39m 47s
+	Agenda and Recap of DSC and vSphere5m 42s
+	Get-Inventory...or Not7m 33s
+	Location, Location, Location11m 31s
+	Future Extensions / Fixes6m 19s
+	Q&A8m 40s
+Creating an Agent-less Host IDS Using PowerShell and WMI with Matt Graeber54m 11s
+	Introduction6m 52s
+	WMI Eventing Refresher10m 40s
+	Signature Development Methodology9m 14s
+	Signature Development Results5m 17s
+	Uproot, Permanent WMI Subscription13m 6s
+	Generic HTTP Consumer, Signature Files8m 58s
+Highly Available DSC Pull Server43m 27s
+	Introduction2m 51s
+	Configuring an HTTPS Pull Server6m 55s
+	Deploying the Pull Server9m 23s
+	High Availability and Load Balancers9m 10s
+	Testing the Pull Server6m 50s
+	Q&A8m 16s
+Package Management in PowerShell with Raghu Shantha42m 50s
+	Introduction4m 36s
+	Package Management Architecture and PowerShellGet6m 7s
+	PowerShell Gallery2m 24s
+	Using PowerShellGet and PowerShell Gallery4m 24s
+	Package Management Improvements7m 7s
+	Authoring a Package Management Provider3m 3s
+	Concepts Relating to CI/CD1m 41s
+	Private PowerShell Gallery Repositories13m 25s
+PowerShell as a Service: Managing with Microsoft Operations Management Suite with Eamon O'Reilly45m 32s
+	Introduction5m 56s
+	Automation Trend4m 7s
+	Microsoft Operations Management Suite5m 34s
+	Automation Service Overview6m 1s
+	Cloud Configuration & Automation5m 14s
+	Moving Your Investments to the Cloud6m 11s
+	Bringing Your Investments to the Automation Service8m 7s
+	Integrating Into Other OMS/Azure Services3m 13s
+	Review and Wrap Up1m 4s
+PowerShell Module Development Lifecycle38m 46s
+	Introduction1m 55s
+	Application Development Lifecycle - Process and Tools5m 8s
+	GitHub Setup and Basics8m 43s
+	Using AppVeyor for Continuous Delivery7m 26s
+	Running Build Tests6m 3s
+	Publishing to PowerShell Gallery and Adding Secure Variables8m 0s
+	Considerations and Wrap Up1m 29s
+PowerShell 5.0 Advanced Debugging41m 35s
+	Introduction6m 37s
+	Runspaces in PowerShell15m 27s
+	Q&A5m 47s
+	Debugging DSC Class Resources11m 25s
+	Wrap Up2m 17s
+The Release Pipeline Model: Applied to Managing Windows Server and Microsoft Cloud51m 43s
+	Introduction5m 50s
+	Shift3m 36s
+	Configuration as Code4m 0s
+	The Release Pipeline7m 20s
+	Managing Changes9m 42s
+	Triggering a Build7m 52s
+	Testing7m 10s
+	Release3m 41s
+	Wrap Up2m 27s
+Building Unconventional SQL Server Tools45m 40s
+	Introduction7m 4s
+	Exploring the SQL Environment, Cmdlets, and Client Tools3m 29s
+	SQL 2014 Client Tools4m 20s
+	Querying SQL Server3m 43s
+	SQL Management Objects7m 43s
+	Using PowerShell vs. SQL7m 8s
+	Audit Transaction Logs5m 43s
+	Restoring Database3m 26s
+	Wrap Up3m 0s
+What DevOps Really Looks Like43m 42s
+	Introduction - What DevOps Is Not2m 48s
+	DevOps - It's Absolutely Not Marketing1m 56s
+	DevOps - It's Definitely Not For Everyone2m 42s
+	DevOps Facts and Example6m 29s
+	Set up Environment, Compile and Inject Code, Run Automated Tests9m 22s
+	Failure Is An Option9m 44s
+	Mapping Philosophy2m 22s
+	Before DevOps vs. After DevOps2m 30s
+	DevOps Isn't One Thing4m 55s
+	Wrap Up50s
+
+Level Intermediate
+Duration 25h 35m
+Released 29 Apr 2016

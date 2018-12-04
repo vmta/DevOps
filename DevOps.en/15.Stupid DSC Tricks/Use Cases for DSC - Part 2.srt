@@ -1,0 +1,496 @@
+1
+00:00:00,0 --> 00:00:09,087
+What else? Who else is moving toward a servers are cattle, not pets, kind of environment and are using DSC to
+
+2
+00:00:09,087 --> 00:00:20,087
+help with that in some ways? Yeah? (Audience comment) Good. DSC and Chef, yeah.
+
+3
+00:00:20,087 --> 00:00:24,087
+And it works? You're standing, so I'm assuming that there hasn't been a blood bath.
+
+4
+00:00:24,087 --> 00:00:29,087
+Not yet. Not yet. It's possible. You just have to decide that you're going to change your processes.
+
+5
+00:00:29,087 --> 00:00:38,087
+And you know what, if there's a theme to this whole discussion, it's forget what you know and think about fresh, right.
+
+6
+00:00:38,087 --> 00:00:44,087
+That's what this whole thing is. Forget what DSCs architecture is as you've been told.
+
+7
+00:00:44,087 --> 00:00:48,087
+What could you do with it if you just stepped outside of the lines a little bit?
+
+8
+00:00:48,087 --> 00:00:54,087
+Forget about well you've got to have a machine name. Do you really?
+
+9
+00:00:54,087 --> 00:01:00,087
+Right. So just step outside those lines a bit. What are some other architectural things that you wish DSC did
+
+10
+00:01:00,087 --> 00:01:06,087
+that you just don't think it can do? Oh, that's right. Everyone's completely happy with the product and
+
+11
+00:01:06,087 --> 00:01:21,087
+doesn't want any changes to it. I forgot. (Audience comment) Ah, that is actually really good.
+
+12
+00:01:21,087 --> 00:01:27,087
+Dave Wyatt and I have an argument about this and I'm afraid he's right, the bastard, because I wanted to make,
+
+13
+00:01:27,087 --> 00:01:33,087
+so the question was what about one DSC resource calling another DSC resource and you might think why would
+
+14
+00:01:33,087 --> 00:01:44,087
+you do that? Well here's a really good example. Let's say I wanted to write a dynamic evaluation resource.
+
+15
+00:01:44,087 --> 00:01:51,087
+Okay, so in my configuration script, it would say pick a basic resource that you like.
+
+16
+00:01:51,087 --> 00:02:03,087
+Oh, that's good. File. So let's say we only want a copy of this file if this thing in WMI is set to this value,
+
+17
+00:02:03,087 --> 00:02:09,087
+right, something like that. So my idea was we'll write a resource and let's query this WMI class, compare it to
+
+18
+00:02:09,087 --> 00:02:17,087
+this value, and if it's true, run the file resource with tab to indent these settings.
+
+19
+00:02:17,087 --> 00:02:25,087
+If it's not true, tab to indent, run the file resource with these settings instead, right.
+
+20
+00:02:25,087 --> 00:02:31,087
+And so we kind of went down this and I said so look and there are two answers.
+
+21
+00:02:31,087 --> 00:02:41,087
+Answer one, if you are using function-based resources, you can totally do this because they're just modules.
+
+22
+00:02:41,087 --> 00:02:48,087
+So you're if then resource, if we can call it that, can we call it that if then, your if then resource can
+
+23
+00:02:48,087 --> 00:02:54,087
+just go load the module into its scope and call the test in a set and it can just manually pretend that it's
+
+24
+00:02:54,087 --> 00:03:01,087
+the LCM and run those things. It's a little harder with class-based resources because if a class-based
+
+25
+00:03:01,087 --> 00:03:07,087
+resource attempts to instantiate another one, you actually get an error saying that there's a configuration,
+
+26
+00:03:07,087 --> 00:03:12,087
+a consistency check already in progress, like the LCM gets involved and stomps on you.
+
+27
+00:03:12,087 --> 00:03:18,087
+So we haven't figured out a work-a-round for that yet. But for function-based ones, you can have one
+
+28
+00:03:18,087 --> 00:03:24,087
+resource call another. Class ones, I still think there has to be a way to step out of the scope and get into it,
+
+29
+00:03:24,087 --> 00:03:31,087
+but we haven't gotten it to do what we want quite yet. (Audience question)
+
+30
+00:03:31,087 --> 00:03:34,087
+Sure. Change the INI file, restart the server. We still have INI files?
+
+31
+00:03:34,087 --> 00:03:45,087
+That's awesome. I love INI files. What else? Anybody tried to do anything crazy with DSC or are you just
+
+32
+00:03:45,087 --> 00:03:52,087
+doing like file, package, network, firewall. Yeah, just the basics.
+
+33
+00:03:52,087 --> 00:03:55,087
+Nah, go home and get crazy with it. Go nuts with it. Try weird stuff.
+
+34
+00:03:55,087 --> 00:03:59,087
+Set yourself up a little lab. What do you need like three machines, client, server, pull server.
+
+35
+00:03:59,087 --> 00:04:04,087
+Do crazy stuff because crazy stuff is how we break it and crazy stuff is how we break push the edges.
+
+36
+00:04:04,087 --> 00:04:09,087
+And until we try to break it, nobody can fix it, so we have to try and break it first and let's find out
+
+37
+00:04:09,087 --> 00:04:14,087
+where it's not doing what we think it needs to do so that we can tell the team because that's really what
+
+38
+00:04:14,087 --> 00:04:19,087
+they want to hear, right, they know they're just guessing as to what we need based on conversations they've
+
+39
+00:04:19,087 --> 00:04:24,087
+had, but they need more conversations and we've got to try and break stuff, we've got to try and push the
+
+40
+00:04:24,087 --> 00:04:28,087
+edges of it and find out you know what this model would work really well except for this one thing it won't
+
+41
+00:04:28,087 --> 00:04:35,087
+let me do. Can you take that off? Make a case for it. Reporting's tooling.
+
+42
+00:04:35,087 --> 00:04:42,087
+Yeah, go ahead. One thing I'd like to see is something to deploy the DSC in an existing machine so you
+
+43
+00:04:42,087 --> 00:04:48,087
+generate configuration like based out of this because… Sure, point DSC at a machine and have it just
+
+44
+00:04:48,087 --> 00:04:55,087
+generate a config for how that machine is set up. Two responses, response number one, that's tooling, right,
+
+45
+00:04:55,087 --> 00:04:58,087
+that's not so we got to make sure we're differentiating between platform and tooling.
+
+46
+00:04:58,087 --> 00:05:02,087
+DSC is not tooling. DSC is platform. So what you're after is a tool because that's not something you're
+
+47
+00:05:02,087 --> 00:05:05,087
+going to do every five minutes. You're going do it as a provisioning thing.
+
+48
+00:05:05,087 --> 00:05:09,087
+We'd also like tools to do reporting for God's sake, that'd be nice.
+
+49
+00:05:09,087 --> 00:05:13,087
+We'd like tools to be able to keep track of what config was supposed to go to what machine.
+
+50
+00:05:13,087 --> 00:05:16,087
+That'd be great. All that will be called system center expensive something, something, something, something
+
+51
+00:05:16,087 --> 00:05:22,087
+I'm sure, one day. So we'll diverge to tooling for just a second.
+
+52
+00:05:22,087 --> 00:05:28,087
+I don't think you do want that. I think people think they want that and I hear that a lot, but let's go down
+
+53
+00:05:28,087 --> 00:05:34,087
+that rabbit hole a little bit because when you point that thing at that machine, is it just going to enumerate
+
+54
+00:05:34,087 --> 00:05:44,087
+every single registry key, file, service, process ever? Or is it supposed to compare like a base OS with?
+
+55
+00:05:44,087 --> 00:05:53,087
+It gets really tough and Windows has got 632 quad zillion management points and it doesn't know which one you care about.
+
+56
+00:05:53,087 --> 00:06:01,087
+Now what I would say is that it's probably legit to ask for a tool like the packaging tools used to do where
+
+57
+00:06:01,087 --> 00:06:07,087
+it can watch. Yes. Right. Okay, I've got everything up. Here's my base image.
+
+58
+00:06:07,087 --> 00:06:15,087
+Begin watching. Yeah, but except people make that. Right, that's what, oh heck, they used to be a sponsor
+
+59
+00:06:15,087 --> 00:06:27,087
+of us, dev power people with stuff, ScriptRock. UpGuard now. Oh, they did change their name.
+
+60
+00:06:27,087 --> 00:06:32,087
+No one knows why. Yeah, so there are people who do that. You're going to have to pay for it, but you know
+
+61
+00:06:32,087 --> 00:06:37,087
+if you want nice things, you have to pay for them. I'm not sure I would ever expect Microsoft to produce
+
+62
+00:06:37,087 --> 00:06:44,087
+that tool just because they've declined to do so in so many different iterations, the exception being App-V.
+
+63
+00:06:44,087 --> 00:06:50,087
+Right, which is part of how App-V, that's how you App-Vify an app as they watch it while you install it.
+
+64
+00:06:50,087 --> 00:06:56,087
+But they bought that from someone else, so it's hard to tell. But yeah, those tools exist.
+
+65
+00:06:56,087 --> 00:07:02,087
+Now what they don't currently do, what UpGuard does not do is make a MOF out of that, but I think that's just
+
+66
+00:07:02,087 --> 00:07:06,087
+a matter of enough customers saying you know what we'd really like.
+
+67
+00:07:06,087 --> 00:07:14,087
+How about installing MSU files? Installing? MSU files. Installing MSU, you mean patches?
+
+68
+00:07:14,087 --> 00:07:20,087
+I don't know. I go back and forth on that one. I don't view DSC as a patch deployment mechanism.
+
+69
+00:07:20,087 --> 00:07:26,087
+But what if you need a specific patch? Oh, you just need one like on a short term thing?
+
+70
+00:07:26,087 --> 00:07:31,087
+Short of just because that system for your business case needs this patch in place.
+
+71
+00:07:31,087 --> 00:07:36,087
+Yeah. And you want to make sure that it's on there, but not maybe necessarily run the entire Windows update.
+
+72
+00:07:36,087 --> 00:07:40,087
+I'm not sure. I go back and forth. I'm not saying you're wrong.
+
+73
+00:07:40,087 --> 00:07:53,087
+I'm just going to imply it. (Audience comment) And part of me says that DSC can't be the one tool you use
+
+74
+00:07:53,087 --> 00:08:00,087
+to maintain your entire infrastructure and that the best use of DSC for a software deployment situation would
+
+75
+00:08:00,087 --> 00:08:06,087
+be to use DSC to make sure that you're software deployment solution is installed and active and running and
+
+76
+00:08:06,087 --> 00:08:11,087
+then use your software deployment solution to push files and crap.
+
+77
+00:08:11,087 --> 00:08:16,087
+And the reason I say that is because software deployment is such a thing.
+
+78
+00:08:16,087 --> 00:08:18,087
+You have to track status because you want to be able to query it.
+
+79
+00:08:18,087 --> 00:08:23,087
+You have to have distribution points. You have to worry about WAN links when you're pulling software and I
+
+80
+00:08:23,087 --> 00:08:28,087
+just think that starts to get outside of basic config. I think your basic config is make sure that this
+
+81
+00:08:28,087 --> 00:08:35,087
+other solution is configured so that it will do its job. That's kind of where I sit.
+
+82
+00:08:35,087 --> 00:08:41,087
+We're in this weird space with software deployment right now. My suspicion is that as Microsoft moves more
+
+83
+00:08:41,087 --> 00:08:47,087
+and more toward a cloud command and control in tune style stuff with maybe on-prem distribution points,
+
+84
+00:08:47,087 --> 00:08:54,087
+you'll start to see that becoming easier. I think right now it's great to say just use DSC to configure your
+
+85
+00:08:54,087 --> 00:08:58,087
+patch management and software deployment solution, except we really don't have a great one.
+
+86
+00:08:58,087 --> 00:09:07,087
+We've got Windows update and SCCM and that's it. Can't we call it sick 'em anymore?
+
+87
+00:09:07,087 --> 00:09:12,087
+So yeah, that's kind of one of the reasons I'm not really looking for the package resource to be all that awesome.
+
+88
+00:09:12,087 --> 00:09:22,087
+To a point, like to the Yum RPM level sure, but I don't really want to see DSC become a whole software
+
+89
+00:09:22,087 --> 00:09:26,087
+deployment solution because we already have so many of them and they all suck.
+
+90
+00:09:26,087 --> 00:09:31,087
+So I'd rather get one of the ones we have working, but that's something fun to talk about.
+
+91
+00:09:31,087 --> 00:09:33,087
+Let's drink and talk about that because it's more interesting. Yeah.
+
+92
+00:09:33,087 --> 00:09:39,087
+So the squishy metaphor like where users and DevOps… That's not a metaphor.
+
+93
+00:09:39,087 --> 00:09:50,087
+People are squishy. Try it, poke him. Squishy. So after the point there, I can see that argument there,
+
+94
+00:09:50,087 --> 00:09:57,087
+but for the service where it's maybe there's just the one application they want and really the particular
+
+95
+00:09:57,087 --> 00:10:03,087
+latest version of… No, no, I think you and I are on the same page there.
+
+96
+00:10:03,087 --> 00:10:07,087
+I think as you get into a server and your goal is to provision a server and you need this management agent
+
+97
+00:10:07,087 --> 00:10:13,087
+and you need this and this and this, you need to get it to the point where it can participate in the rest of the infrastructure.
+
+98
+00:10:13,087 --> 00:10:22,087
+I think that's a legitimate use for DSC being able to deploy packages contingent on A, us getting something
+
+99
+00:10:22,087 --> 00:10:26,087
+that really works well like PowerShell Package Manager hopefully will for us, right.
+
+100
+00:10:26,087 --> 00:10:34,087
+We need a Yum RPM Package Manager, not just giant file full of Windows Installer files and it'd be really
+
+101
+00:10:34,087 --> 00:10:37,087
+nice if we could just burn Windows Installer to the ground and never look at it again.
+
+102
+00:10:37,087 --> 00:10:42,087
+That'd be great because it's the source of most problems because people build crappy packages.
+
+103
+00:10:42,087 --> 00:10:47,087
+Not that Windows Installer is bad, it's what people do with it, right, guns don't kill people, developers kill people.
+
+104
+00:10:47,087 --> 00:10:59,087
+So it's basically that. So I think there is definitely---this almost gets into the DevOps-ish world, right,
+
+105
+00:10:59,087 --> 00:11:05,087
+do we have, no we don't have time. Well sometime when we're drinking, get me to tell you my whole DevOps story
+
+106
+00:11:05,087 --> 00:11:10,087
+and that kind of fits in it well. One more question all the way in the back.
+
+107
+00:11:10,087 --> 00:11:20,087
+He was first. (Audience question) In doing who? Networking. Networking.
+
+108
+00:11:20,087 --> 00:11:25,087
+Love it. Switch. Oh, you mean like using DSC to manage switches and stuff?
+
+109
+00:11:25,087 --> 00:11:32,087
+Yeah, so that's pretty much your job to pressure your network vendor because Microsoft has already done all
+
+110
+00:11:32,087 --> 00:11:38,087
+the work they need to do in that space. They've created a reference OMI stack, right.
+
+111
+00:11:38,087 --> 00:11:47,087
+OMI is basically a super lightweight WS-MAN stack and a super lightweight CIM repository that doesn't require a repository.
+
+112
+00:11:47,087 --> 00:11:52,087
+It's all in memory, so it's designed to run small footprint, small processor, it's designed to run in embedded
+
+113
+00:11:52,087 --> 00:11:58,087
+devices like switches and there's at least one company, Dell, that's already jumping on this bandwagon and you
+
+114
+00:11:58,087 --> 00:12:04,087
+can shove them off into one of their switches and it'll do it. So that's happening.
+
+115
+00:12:04,087 --> 00:12:07,087
+You've just got to make your vendor jump on board. Who's your vendor?
+
+116
+00:12:07,087 --> 00:12:12,087
+Cisco? It will be Cisco and Azure. Yep, have fun. Good luck with that.
+
+117
+00:12:12,087 --> 00:12:17,087
+(Audience comment) Cisco and some of their stuff is, yeah, and they'll roll it across generations.
+
+118
+00:12:17,087 --> 00:12:22,087
+The fact is that Microsoft with DSC did the most intelligent thing I've seen the company do in a long time
+
+119
+00:12:22,087 --> 00:12:28,087
+and they didn't invent a lot of new crap. They just adopted standards that we're already out there, and so for
+
+120
+00:12:28,087 --> 00:12:33,087
+other companies to jump on doesn't mean they have to bow down to Redmond, they're just doing what the rest of
+
+121
+00:12:33,087 --> 00:12:39,087
+the industry had already decided, but not actually implement it. Microsoft was the first to put a big
+
+122
+00:12:39,087 --> 00:12:44,087
+implementation out there and got the ball rolling, so that's already happening.
+
+123
+00:12:44,087 --> 00:12:49,087
+So look, cool. Guys, we're at the end. Thanks very much and enjoy the dinner on tonight.
+
+124
+00:12:49,087 --> 00:59:59,999
+Thank you. And let's keep talking and having ideas. Yeah.
+

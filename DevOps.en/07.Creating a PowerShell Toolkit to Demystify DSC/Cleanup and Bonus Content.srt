@@ -1,0 +1,288 @@
+1
+00:00:00,75 --> 00:00:07,447
+Okay, so we've got a few more minutes, so I've got some bonus content.
+
+2
+00:00:07,447 --> 00:00:13,447
+What I also do when I do a demo, just so you guys know is I actually write code to undo everything I just did,
+
+3
+00:00:13,447 --> 00:00:18,447
+so I can actually just highlight this region and we are done with this, so I can just run this and with
+
+4
+00:00:18,447 --> 00:00:20,447
+Desired State Configuration, I can actually
+
+5
+00:00:20,447 --> 00:00:26,447
+put it back in the state it was before I started so that way my demo is clean and I can run it again.
+
+6
+00:00:26,447 --> 00:00:37,447
+Okay, so I'm on my base machine now, so this is live stuff here.
+
+7
+00:00:37,447 --> 00:00:42,447
+Let's go ahead and import this module. It'll take a second and we'll set our, we'll increase our font,
+
+8
+00:00:42,447 --> 00:01:00,447
+so people can actually see this. Okay, so the way I designed my tools, I want to show you this MrDSC module.
+
+9
+00:01:00,447 --> 00:01:06,447
+So what I did I ran a directory of Get-ChildItem on the directory that contains this module.
+
+10
+00:01:06,447 --> 00:01:10,447
+So what I do actually break down all the functions into their own ps1 file
+
+11
+00:01:10,447 --> 00:01:17,447
+and the ps1 file is named the same thing as the function. I'm going to show you what the module and the
+
+12
+00:01:17,447 --> 00:01:22,447
+module manifest looks like and there's some issues you can run into with this.
+
+13
+00:01:22,447 --> 00:01:27,447
+So I have, I created a Pester test, but it's not a standard Pester test.
+
+14
+00:01:27,447 --> 00:01:32,447
+I actually wrapped inside a function and parameterized it because it's a Pester test I want to run on any
+
+15
+00:01:32,447 --> 00:01:37,447
+module and I don't want to duplicate that code. So
+
+16
+00:01:37,447 --> 00:01:43,447
+when I run that test, it's actually going to go out and test and make sure that all the files in that folder
+
+17
+00:01:43,447 --> 00:01:51,447
+match the functions to export on the module manifest. So I'll show you what that, so this is what the Pester
+
+18
+00:01:51,447 --> 00:01:58,447
+test looks like. It's actually a function and I can feed it a module manifest path and all it does, I can give
+
+19
+00:01:58,447 --> 00:02:04,447
+it modeable, so I can use my like entire Get-Repository and have it go through every folder in there
+
+20
+00:02:04,447 --> 00:02:11,447
+and it'll make sure that I haven't left out any ps1 files that are functions that should be exported and that
+
+21
+00:02:11,447 --> 00:02:16,447
+everything lines up, so create tools to create your tools with.
+
+22
+00:02:16,447 --> 00:02:24,447
+So what my module manifest, this is what my psm1 file, so this is where you would normally have your functions,
+
+23
+00:02:24,447 --> 00:02:29,447
+so the only thing I'm doing is going through and .sourcing all my functions and I know June Blender recently
+
+24
+00:02:29,447 --> 00:02:36,447
+wrote a blog article that's somewhat related to this on the SAPIEN blog, so definitely take a look at that.
+
+25
+00:02:36,447 --> 00:02:43,447
+So if you look at my module manifest, what I found is you actually have to specify all the functions in the
+
+26
+00:02:43,447 --> 00:02:46,447
+module manifest when you're doing this
+
+27
+00:02:46,447 --> 00:02:52,447
+because if you use some sort of logic, although it'll work if you manually use import module and import that
+
+28
+00:02:52,447 --> 00:03:00,447
+module, it won't auto import if it's in the PS module path, the cmdlets won't be available.
+
+29
+00:03:00,447 --> 00:03:06,447
+And also if you upload it to the PowerShell gallery, it won't show the cmdlets in the list.
+
+30
+00:03:06,447 --> 00:03:11,447
+Have you thought about writing some things that just build that module every time you update that formula?
+
+31
+00:03:11,447 --> 00:03:16,447
+Yes. (Audience Comment)
+
+32
+00:03:16,447 --> 00:03:24,447
+So what I have here, I'm actually going to copy a command from an old version of my Get-Repository.
+
+33
+00:03:24,447 --> 00:03:30,447
+And by the way, in September, I'll be doing a tech session webinar from powershell.org on Get and using get
+
+34
+00:03:30,447 --> 00:03:35,447
+with PowerShell and you can do all your stuff right from one interface in the PowerShell ISE.
+
+35
+00:03:35,447 --> 00:03:42,447
+So anyway, now that I've copied another ps1 file, notice it fails because we're expecting, and you can't see
+
+36
+00:03:42,447 --> 00:03:52,447
+that, so we're expecting eight functions to be exported and only seven are imported because I copied a ps1
+
+37
+00:03:52,447 --> 00:03:58,447
+file in there. So I actually have a function that I can run that will give me a list of all the base file names,
+
+38
+00:03:58,447 --> 00:04:03,447
+which by the way are the functions names. There's a problem with Update-ModuleManifest in PowerShell V5
+
+39
+00:04:03,447 --> 00:04:08,447
+where I could automate the entire thing, but what I can do, I have to do a little bit of copy and pasting,
+
+40
+00:04:08,447 --> 00:04:16,447
+but I can pipe that to clip.exe and then I can open the module manifest and I can actually paste it right
+
+41
+00:04:16,447 --> 00:04:25,447
+here in FunctionsToExport because that's kind of a pain in the butt to update, so then I can save it and I can
+
+42
+00:04:25,447 --> 00:04:33,447
+run my test again. What my test does, my test actually does a force on importing the module to make sure you've
+
+43
+00:04:33,447 --> 00:04:35,447
+got the current one.
+
+44
+00:04:35,447 --> 00:04:48,447
+(Audience question) My tools, I normally don't have any private functions, but what I've see some people do
+
+45
+00:04:48,447 --> 00:04:52,447
+is create two subfolders and they'll have private in one folder and public in another and then that way they
+
+46
+00:04:52,447 --> 00:04:56,447
+can control how what's
+
+47
+00:04:56,447 --> 00:05:08,447
+exposed. Now one thing I am doing, and I'll just tell you what I'm doing, I'm actually when I do
+
+48
+00:05:08,447 --> 00:05:18,447
+Get-ChildItem to get the list, I exclude Pester test and profiles because I had an issue one day where I had
+
+49
+00:05:18,447 --> 00:05:24,447
+a problem with a profile and it's because I kept importing the profile.
+
+50
+00:05:24,447 --> 00:05:34,447
+So you'll notice that's here, so I'm excluding those. So now if we run our test again and we actually that's
+
+51
+00:05:34,447 --> 00:05:40,447
+where we're at, we just ran that. So I want to show you one more little issue here.
+
+52
+00:05:40,447 --> 00:05:49,447
+It's really common when you're writing functions, you'll say -Modules PSDesiredStateConfiguration or whatever
+
+53
+00:05:49,447 --> 00:06:07,447
+the module is. I cannot type. So I don't type in the notes. We'll get it here in a minute.
+
+54
+00:06:07,447 --> 00:06:13,447
+Okay, so it's really common to do that because things I'm doing are going to require the
+
+55
+00:06:13,447 --> 00:06:23,447
+PSDesiredStateConfiguration module. So if I go back and import that again, now I want you to notice that
+
+56
+00:06:23,447 --> 00:06:28,447
+I've got some cmdlets listed. I don't have any cmdlets in my function.
+
+57
+00:06:28,447 --> 00:06:34,447
+Well the thing is when you write your code like this, you'll end up with anything that you're telling,
+
+58
+00:06:34,447 --> 00:06:43,447
+I'm going to run this test again, notice the test failed again, but you don't want to use required modules in
+
+59
+00:06:43,447 --> 00:06:51,447
+your functions if you're breaking them out. You actually want to use, if you go up to the module manifest,
+
+60
+00:06:51,447 --> 00:07:02,447
+(Scrolling) That's it. I've actually got an example here and we're just about done.
+
+61
+00:07:02,447 --> 00:07:10,447
+As you can see my cleanup is there. So in my PowerShell toolkit that I have, I'm actually using required modules,
+
+62
+00:07:10,447 --> 00:07:17,447
+so I have Hyper-V, Pester, PushKit, and PowerShell Community Extensions, so that's what you want to do instead.
+
+63
+00:07:17,447 --> 00:07:18,447
+So you'll notice in all my functions,
+
+64
+00:07:18,447 --> 00:07:23,447
+I actually say hey if you're using this separately, then add this line and I put that in as a comment because
+
+65
+00:07:23,447 --> 00:07:29,447
+somebody can come grab one of my functions and add it to their toolkit without having to grab the whole module.
+
+66
+00:07:29,447 --> 00:07:36,447
+So we'll jump back to the slide deck real quick and then we'll be done.
+
+67
+00:07:36,447 --> 00:07:42,447
+Okay, I'd like to thank everybody who has been on the PowerShell team for the past 10 years.
+
+68
+00:07:42,447 --> 00:07:47,447
+We wouldn't be here today and we probably wouldn't have as good as job as we have if it wasn't for the PowerShell team.
+
+69
+00:07:47,447 --> 00:07:50,447
+We'd still be a click-next-admin.
+
+70
+00:07:50,447 --> 00:07:57,447
+Okay, I've got a slide of resources here. This slide deck is on GitHub already as well.
+
+71
+00:07:57,447 --> 00:08:02,447
+So powershell.org, that's why you're here today and there's a whole list of stuff.
+
+72
+00:08:02,447 --> 00:59:59,999
+And there's my contact information and that's the last slide. Thank you, guys.
+

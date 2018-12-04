@@ -1,0 +1,212 @@
+1
+00:00:00,0 --> 00:00:06,755
+Here's how the LCM works at a really high level. When it gets a MOF, right, so we're pushing them off to
+
+2
+00:00:06,755 --> 00:00:12,755
+the LCM, right, either we're pushing it or the LCM has been programmed to pull it from a pull server, right.
+
+3
+00:00:12,755 --> 00:00:16,755
+Those are the only two ways you can get them off there, right? No.
+
+4
+00:00:16,755 --> 00:00:23,755
+No. That's a trick question. Trick question, there's three ways to get them off to the LCM.
+
+5
+00:00:23,755 --> 00:00:28,755
+What's the first way? Give me one. Push. What's the other one, second?
+
+6
+00:00:28,755 --> 00:00:37,755
+Pull. The third is injection. The third is called file copy. It's very advanced, haven't really had that
+
+7
+00:00:37,755 --> 00:00:43,755
+technique for more than five or six decades. And if you're going to inject, here's what you need to know.
+
+8
+00:00:43,755 --> 00:00:46,755
+In the folder where the configurations live, you've got pending.mof.
+
+9
+00:00:46,755 --> 00:00:57,755
+It's a text file. Pending.mof is the one that you just got most recently and haven't done anything with potentially.
+
+10
+00:00:57,755 --> 00:01:02,755
+Current.mof means you are currently running a consistency check and that's the MOF you're using.
+
+11
+00:01:02,755 --> 00:01:10,755
+This is a really cool thing. Look, they're two separate files. Why are they two separate files?
+
+12
+00:01:10,755 --> 00:01:15,755
+Because if the LCM has one of them open, you can't write a new one to it, right, you guys have run into this
+
+13
+00:01:15,755 --> 00:01:21,755
+before with every file type ever on a file server. Right, so it's not like this is word collaboration.
+
+14
+00:01:21,755 --> 00:01:29,755
+So when it starts to run a consistency check, it makes a file copy of pending.mof, names it current.mof,
+
+15
+00:01:29,755 --> 00:01:35,755
+so it can have one exclusive to itself without having an exclusive lock on pending.mof.
+
+16
+00:01:35,755 --> 00:01:41,755
+So while a consistency check is running, you can overwrite pending.mof.
+
+17
+00:01:41,755 --> 00:01:42,755
+You can also do it when there isn't a consistency check running.
+
+18
+00:01:42,755 --> 00:01:44,755
+You can anytime you can do it.
+
+19
+00:01:44,755 --> 00:01:48,755
+We've also got previous.mof and that's the one I ran last time.
+
+20
+00:01:48,755 --> 00:01:53,755
+That's kind of a last known good type of recovery situation. This is
+
+21
+00:01:53,755 --> 00:01:59,755
+why if you're in DSC 5 and you're really, really messing around with like how many of you like to just kick
+
+22
+00:01:59,755 --> 00:02:03,755
+the LCM and make it run right now and not wait 15 minutes? Right.
+
+23
+00:02:03,755 --> 00:02:07,755
+You know what, you're going to live for at least 20-30 more years, let it take its time.
+
+24
+00:02:07,755 --> 00:02:12,755
+Right, you're not going to die that soon. But that's why if you screw up a config and you get the LCM into
+
+25
+00:02:12,755 --> 00:02:19,755
+kind of a ah state, you can use Remove-DscConfiguration. There's a command to remove the previous config
+
+26
+00:02:19,755 --> 00:02:25,755
+and you have switches, which one do you want to remove? Previous, current, pending, right, so you can remove
+
+27
+00:02:25,755 --> 00:02:31,755
+all of them if you want to. And that's why it's important to do that if you need to kind of get it out of
+
+28
+00:02:31,755 --> 00:02:36,755
+its own head. But so we've got these ones we can mess with. And so this takes us to a really, really kind
+
+29
+00:02:36,755 --> 00:02:42,755
+of important capability. We could, for example, tell me if you think this is crazy.
+
+30
+00:02:42,755 --> 00:02:48,755
+Let's say I write a custom resource and we're going to call it crazy resource.
+
+31
+00:02:48,755 --> 00:02:55,755
+I ship that out to all my machines, yes. I write a configuration script and all it does, the only thing in
+
+32
+00:02:55,755 --> 00:03:01,755
+my configuration script is run crazy resource, crazy resource parameter yes.
+
+33
+00:03:01,755 --> 00:03:07,755
+That's it. Okay, I run that configuration script. What gets produced?
+
+34
+00:03:07,755 --> 00:03:16,755
+The MOF. What's in the MOF? Just one thing, right. It's a text file and it says run crazy resource.
+
+35
+00:03:16,755 --> 00:03:21,755
+I push that out to my computer. It goes into pending.mof, right.
+
+36
+00:03:21,755 --> 00:03:27,755
+LCM sometime later, ah, time to run a consistency check. Fifteen minutes has expired.
+
+37
+00:03:27,755 --> 00:03:32,755
+I'm going to copy pending.mof to current.mof. I'm going to open it up.
+
+38
+00:03:32,755 --> 00:03:36,755
+At this point, is there anything stopping me from doing something to pending.mof.
+
+39
+00:03:36,755 --> 00:03:45,755
+Nope. So it runs crazy resource. Crazy resource dynamically generates a whole brand new MOF and sticks it
+
+40
+00:03:45,755 --> 00:03:55,755
+in pending.mof. Who said, ugh? I didn't say these were smart DSC tricks.
+
+41
+00:03:55,755 --> 00:04:05,755
+Look at the title of the session. And at the very end of that dynamically-produced pending.mof, it recalls itself.
+
+42
+00:04:05,755 --> 00:04:11,755
+So the last thing in there depending on everything else is call crazy resource again.
+
+43
+00:04:11,755 --> 00:04:15,755
+And so it runs that. That'll take a minute, two, whatever it takes.
+
+44
+00:04:15,755 --> 00:04:24,755
+LCM waits 13, 14, 15 minutes, okay, pending.mof copying it over to current.mof and wow, look at all this stuff
+
+45
+00:04:24,755 --> 00:04:33,755
+that's in here and all those decisions were just made 15 minutes ago and they were made locally on that machine.
+
+46
+00:04:33,755 --> 00:04:37,755
+You could obviously do a hybrid approach, right. That's kind of an extreme example to lay it out.
+
+47
+00:04:37,755 --> 00:04:44,755
+You could certainly ship out a MOF that had a lot of your base configuration stuff and then called crazy resource
+
+48
+00:04:44,755 --> 00:04:52,755
+to just dynamically add-in printer mappings or whatever dynamic more local intelligence things.
+
+49
+00:04:52,755 --> 00:04:57,755
+You could evaluate the WMI repository, you can make decisions, you've got the full PowerShell scripting
+
+50
+00:04:57,755 --> 00:05:05,755
+language at your disposal to create a new MOF that will run the next time.
+
+51
+00:05:05,755 --> 00:05:10,755
+Crazy resource could say, okay, look here's the base MOF. I'm going to copy that off here to make my own
+
+52
+00:05:10,755 --> 00:05:17,755
+little copy and I'll use that as my starting point and I'll add dynamic stuff to it as I go.
+
+53
+00:05:17,755 --> 00:59:59,999
+That's crazy. It's called crazy resource.
+

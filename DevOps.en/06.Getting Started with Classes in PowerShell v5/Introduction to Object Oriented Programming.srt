@@ -1,0 +1,348 @@
+1
+00:00:11,5 --> 00:00:18,18
+Alright. Today, we're going to be talking about getting started with classes in PowerShell v5.
+
+2
+00:00:18,18 --> 00:00:24,24
+So my name's Adam Driscoll. I was a PowerShell VPM, a cloud and data center MVP.
+
+3
+00:00:24,24 --> 00:00:28,28
+I work for a consulting firm out of the Milwaukee, Wisconsin area.
+
+4
+00:00:28,28 --> 00:00:34,34
+I do a lot of system center and Azure kind of stuff. I also worked on the PowerShell tools for Visual Studio,
+
+5
+00:00:34,34 --> 00:00:41,41
+so you might have seen that around, so started that project. Thank you very much.
+
+6
+00:00:41,41 --> 00:00:44,44
+So you'll be seeing that in the next couple versions of Visual Studio, I hope.
+
+7
+00:00:44,44 --> 00:00:49,49
+And yeah, so I'm a senior application developer at Concurrency.
+
+8
+00:00:49,49 --> 00:00:53,53
+So getting started with PowerShell classes. I kind of want to talk a little bit about object-oriented design
+
+9
+00:00:53,53 --> 00:00:59,59
+just because to understand exactly what classes are, you kind of need to understand a little bit about object orientation.
+
+10
+00:00:59,59 --> 00:01:04,64
+So the idea with object orientation is that it's a programming paradigm based on the fact that everything is
+
+11
+00:01:04,64 --> 00:01:10,70
+an object, so you don't just have functions and scripts and variables, you have these objects that have
+
+12
+00:01:10,70 --> 00:01:16,76
+particular properties or fields related to them, so that kind of maintains the state of those objects.
+
+13
+00:01:16,76 --> 00:01:24,84
+You also have functions or procedures often called methods in the .NET world and that is actually processes
+
+14
+00:01:24,84 --> 00:01:29,89
+that take place on that object. That object might be able to interact with other objects, it may change the
+
+15
+00:01:29,89 --> 00:01:35,95
+state of that particular object, but everything is composed of an object.
+
+16
+00:01:35,95 --> 00:01:39,99
+So when you start thinking about classes, you can kind of think of a class as a blueprint.
+
+17
+00:01:39,99 --> 00:01:44,104
+So this is a blueprint for a G.I. Joe Crossfire. So you can look at the blueprint.
+
+18
+00:01:44,104 --> 00:01:48,108
+It's like calling different things out in different states of this object.
+
+19
+00:01:48,108 --> 00:01:52,112
+It has four wheels. It can be on and off. It can be turning left or right.
+
+20
+00:01:52,112 --> 00:01:58,118
+It has a particular speed. Those would be the different properties of this particular G.I. Joe car.
+
+21
+00:01:58,118 --> 00:02:04,124
+The other thing that it does is it has different functions that you can apply to it, so you can turn it left,
+
+22
+00:02:04,124 --> 00:02:09,129
+you can turn it right, you can go forward and back, probably can shoot the gun or something like that.
+
+23
+00:02:09,129 --> 00:02:13,133
+Those are the different methods for this G.I. Joe car.
+
+24
+00:02:13,133 --> 00:02:16,136
+When your actually create an instance of that G.I. Joe car,
+
+25
+00:02:16,136 --> 00:02:26,146
+that is an object. So it's based on that particular blueprint, but you can create many objects based on that blueprint.
+
+26
+00:02:26,146 --> 00:02:31,151
+So when we define classes, that's what we're defining. We're defining that blueprint for the G.I. Joe car
+
+27
+00:02:31,151 --> 00:02:35,155
+and then when we actually create them with cmdlets like New-Object, we're actually creating instances of that
+
+28
+00:02:35,155 --> 00:02:38,158
+G.I. Joe car.
+
+29
+00:02:38,158 --> 00:02:46,166
+So there's a couple benefits of OOP that are kind of important to note when kind of getting into object-oriented programming.
+
+30
+00:02:46,166 --> 00:02:49,169
+The first is encapsulation, and inheritance, and then polymorphism.
+
+31
+00:02:49,169 --> 00:02:55,175
+So they're kind of some of the basic terms that you'll hear when researching OOP.
+
+32
+00:02:55,175 --> 00:03:00,180
+So the first is encapsulation. So this looks like a mess and you probably have no idea what it's doing,
+
+33
+00:03:00,180 --> 00:03:04,184
+it's hard to figure out. You'd have to know exactly what all those wires were doing to be able to do anything
+
+34
+00:03:04,184 --> 00:03:09,189
+with this particular circuit here. The same goes for scripts, so
+
+35
+00:03:09,189 --> 00:03:14,194
+you know, I've written scripts where everything's a global variable and you're just hacking out functions
+
+36
+00:03:14,194 --> 00:03:19,199
+and it gets really messy, really quickly and you hand it off to your coworker, they can't figure it out
+
+37
+00:03:19,199 --> 00:03:25,205
+because they have to know exactly about everything about that script to be able to work with it the same and
+
+38
+00:03:25,205 --> 00:03:31,211
+that's why we have this concept of encapsulation in classes. So the idea being is you have something like this
+
+39
+00:03:31,211 --> 00:03:35,215
+where on the left hand side is the inside of that Wii remote. There are all kinds of circuits,
+
+40
+00:03:35,215 --> 00:03:42,222
+there's different resistors and capacitors, there's the gyro for like moving your hand around and stuff,
+
+41
+00:03:42,222 --> 00:03:45,225
+but you don't really need to know how that works to be able to use a Wii remote.
+
+42
+00:03:45,225 --> 00:03:51,231
+You just flick your wrist, press a button, and that's because all that logic is encapsulated inside of
+
+43
+00:03:51,231 --> 00:03:54,234
+that remote and then we have a simple interface on the outside of it.
+
+44
+00:03:54,234 --> 00:04:01,241
+The same goes for classes. You have simple methods, simple states, but all the logic is kind of hidden within
+
+45
+00:04:01,241 --> 00:04:06,246
+that particular object. The other benefit that we get is inheritance.
+
+46
+00:04:06,246 --> 00:04:12,252
+So not quite as the same as inheriting money, but the idea with inheritance is that you have base classes and
+
+47
+00:04:12,252 --> 00:04:13,253
+base classes have particular
+
+48
+00:04:13,253 --> 00:04:19,259
+properties that you can inherit from other classes. So on the top here we have a wagon.
+
+49
+00:04:19,259 --> 00:04:27,267
+The wagon has wheels, you can steer it, that kind of thing, but what you can do is you can think of other
+
+50
+00:04:27,267 --> 00:04:30,270
+four-wheel vehicles. There are more specific versions of a wagon.
+
+51
+00:04:30,270 --> 00:04:34,274
+They introduce new functionality. They behave a little bit differently.
+
+52
+00:04:34,274 --> 00:04:39,279
+They might look different. So on the left of a car, it's got an engine, it still has four wheels, it can still
+
+53
+00:04:39,279 --> 00:04:45,285
+steer, but it's a more specific version of a wagon. On the right-hand side, you have a four-wheel bike.
+
+54
+00:04:45,285 --> 00:04:50,290
+You pedal it, you can still steer, and from there, you can actually base class it down to even more specific
+
+55
+00:04:50,290 --> 00:04:57,297
+versions, flying cars or Teslas, a bike with a little roof on top of it, so you don't get wet in the rain.
+
+56
+00:04:57,297 --> 00:05:03,303
+But it's the same core concept and the same properties that are available in the base class are also available
+
+57
+00:05:03,303 --> 00:05:05,305
+in all the classes below it.
+
+58
+00:05:05,305 --> 00:05:09,309
+So I want to show you some examples of how we can create base classes and how we can inherit that
+
+59
+00:05:09,309 --> 00:05:15,315
+functionality, so we don't have to reimplement the concept of a wheel in all our classes.
+
+60
+00:05:15,315 --> 00:05:22,322
+Finally, there's polymorphism. So polymorphism is kind of the idea that you can extract away some of the
+
+61
+00:05:22,322 --> 00:05:26,326
+implementation details based on those base classes. So a
+
+62
+00:05:26,326 --> 00:05:30,330
+good example is an example of remotes. So all these remotes do different things.
+
+63
+00:05:30,330 --> 00:05:35,335
+All these, I think the one on the left is maybe a TV remote, middle is a receiver, and the right one is a
+
+64
+00:05:35,335 --> 00:05:39,339
+Direct TV remote. They all have different buttons, they look really complicated,
+
+65
+00:05:39,339 --> 00:05:46,346
+but they all do a similar thing. They all come from a base class remote that can turn on a device,
+
+66
+00:05:46,346 --> 00:05:50,350
+they all have a power switch. So the idea being is you can hand it
+
+67
+00:05:50,350 --> 00:05:55,355
+to someone like grandma and say, I just want you to know about the power script or the power switch.
+
+68
+00:05:55,355 --> 00:06:00,360
+You are a remote that can turn things on and off and that's all you need to know.
+
+69
+00:06:00,360 --> 00:06:06,366
+So we can do something similar with classes where we'll be able to pass base class implementations to other
+
+70
+00:06:06,366 --> 00:06:11,371
+classes and they only need to know about the very basics of the class and not all the other details that come
+
+71
+00:06:11,371 --> 00:06:17,377
+along with it. And I'll get into some examples. And I'm going to run this mostly as a demo, so I encourage
+
+72
+00:06:17,377 --> 00:06:23,383
+you guys to ask questions and I'm just going to kind of go with the flow.
+
+73
+00:06:23,383 --> 00:06:30,390
+But why do we want classes in PowerShell? For a long time, .NET developers, in general, who have gone from
+
+74
+00:06:30,390 --> 00:06:34,394
+like a C# background and come into PowerShell and been like we want classes.
+
+75
+00:06:34,394 --> 00:06:37,397
+And we want classes because we want to integrate with .NET better.
+
+76
+00:06:37,397 --> 00:06:42,402
+We want classes because we want to write something that's familiar to us rather than just scripts and modules
+
+77
+00:06:42,402 --> 00:06:48,408
+and that kind of thing. But the real reason that classes eventually got implemented was for the implementation
+
+78
+00:06:48,408 --> 00:06:50,410
+of DSC resources.
+
+79
+00:06:50,410 --> 00:06:56,416
+So if you've ever implemented a DSC resource, script-based DSC resource, it takes quite a few steps and you
+
+80
+00:06:56,416 --> 00:07:04,424
+have to actually use the MOF file format to author your class and it makes you get out of PowerShell,
+
+81
+00:07:04,424 --> 00:07:08,428
+you have to do two different things to import it and everything, so it takes a couple steps and it's not
+
+82
+00:07:08,428 --> 00:07:17,437
+really PowerShell friendly. So that's how we got classes in PowerShell was to implement DSC resources and
+
+83
+00:07:17,437 --> 00:07:19,439
+I'll show you guys some examples of that.
+
+84
+00:07:19,439 --> 00:07:23,443
+And then finally, we can take advantage of some of those object-oriented techniques I just talked about
+
+85
+00:07:23,443 --> 00:07:28,448
+actually extend from classes in the .NET framework, implement interfaces so that we can call particular we're
+
+86
+00:07:28,448 --> 00:07:32,452
+not be able to call previously in PowerShell.
+
+87
+00:07:32,452 --> 00:59:59,999
+So we are kind of entering a different realm in terms of PowerShell authoring.
+

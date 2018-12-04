@@ -1,0 +1,528 @@
+1
+00:00:00,0 --> 00:00:06,672
+So with the great things in the past, I'm really happy about what the team has accomplished, what all of you help
+
+2
+00:00:06,672 --> 00:00:11,672
+to accomplish and it's that we learn a number of things and we want to share some of those learnings because
+
+3
+00:00:11,672 --> 00:00:17,672
+I know that some of the things that we're going to talk about today are things that you are aware and we are
+
+4
+00:00:17,672 --> 00:00:23,672
+aware as well and I want to address it, we want to address it from both angles for an engineer and as well as
+
+5
+00:00:23,672 --> 00:00:30,672
+for product management because when you're thinking about, for example, agility, I've got to say something
+
+6
+00:00:30,672 --> 00:00:36,672
+that we learn in Microsoft, when you try to ship in Windows and be agile, we learned that there are some
+
+7
+00:00:36,672 --> 00:00:43,672
+interesting challenges because engineering processes, cadence tooling, we are evolving in the company.
+
+8
+00:00:43,672 --> 00:00:48,672
+Yeah, sorry about that. So I'm going to give you a good example what happened in WMF 5.0 RTM and I know this
+
+9
+00:00:48,672 --> 00:00:57,672
+was painful for some of you. What happened is that frankly we had a bug, we recalled the bug back in December.
+
+10
+00:00:57,672 --> 00:01:03,672
+The amount of time it took us from taking that bug fix, we release a WMF 5.0, it was roughly like about two
+
+11
+00:01:03,672 --> 00:01:05,672
+and a half months, almost three months.
+
+12
+00:01:05,672 --> 00:01:06,672
+It was too long.
+
+13
+00:01:06,672 --> 00:01:11,672
+It was frankly a---you can ask tons of questions like you see if I was in your place, I would be asking like
+
+14
+00:01:11,672 --> 00:01:17,672
+wow what kind of bug is this. This is like so dramatic that it's taking the team so long or they didn't know the
+
+15
+00:01:17,672 --> 00:01:24,672
+uses of it, are there more quality problems, right? In the instance, frankly is that yeah, we had a bug,
+
+16
+00:01:24,672 --> 00:01:27,672
+part of our agility, we missed this bug, but it was that reaction.
+
+17
+00:01:27,672 --> 00:01:33,672
+The amount of time that it took us to react, it was primarily driven that when you got a bill, a Windows package,
+
+18
+00:01:33,672 --> 00:01:39,672
+it just takes a lot of time. We've got to go through a number of days and processes that really doesn't tie
+
+19
+00:01:39,672 --> 00:01:44,672
+well with the Windows shipping vehicle. So moving forward, we're going to change that.
+
+20
+00:01:44,672 --> 00:01:45,672
+We'll talk a little bit more about that.
+
+21
+00:01:45,672 --> 00:01:47,672
+We're working on that and we're working with the Windows team as well.
+
+22
+00:01:47,672 --> 00:01:53,672
+People have this in focus. It's just a whole corporate effort.
+
+23
+00:01:53,672 --> 00:01:54,672
+Yeah, absolutely.
+
+24
+00:01:54,672 --> 00:01:57,672
+And our efforts as well. We're addressing it at each layer as we can, I think is the right answer.
+
+25
+00:01:57,672 --> 00:01:59,672
+So thank you for support
+
+26
+00:01:59,672 --> 00:02:06,672
+and apologize because I know this some of you took a dependency in the December release and definitely I know
+
+27
+00:02:06,672 --> 00:02:12,672
+that counts and it needs to and is something we're addressing, and we'll talk a little bit more on cloud.
+
+28
+00:02:12,672 --> 00:02:19,672
+It was a year ago Kenneth and I we were here talking about this transformation in the company culture, right.
+
+29
+00:02:19,672 --> 00:02:24,672
+The transformation is that when Satya took over the company as the CEO, it was very clear that we needed
+
+30
+00:02:24,672 --> 00:02:31,672
+to adjust, not adjust the way how we worked, but actually in the way how our engineering roles they were evolving.
+
+31
+00:02:31,672 --> 00:02:37,672
+So if you recall, the engineering role evolved in Microsoft where the developer and the tester became one
+
+32
+00:02:37,672 --> 00:02:42,672
+single role called software engineer. So we still, we've been evolving this.
+
+33
+00:02:42,672 --> 00:02:47,672
+They have a significant impact on all of us because when you think about Microsoft, we've been operating
+
+34
+00:02:47,672 --> 00:02:52,672
+under that moral for 35 years. In one day, we decide well we're just going to change all that.
+
+35
+00:02:52,672 --> 00:02:59,672
+Well a key example goes back into the open source stuff because like a few years ago, if I considered any of
+
+36
+00:02:59,672 --> 00:03:05,672
+those projects, I would have been escorted not so graciously out of the building, right.
+
+37
+00:03:05,672 --> 00:03:06,672
+SQL and Linux?
+
+38
+00:03:06,672 --> 00:03:13,672
+And so now it's a very different culture. It's a very different top/down mindset and there's
+
+39
+00:03:13,672 --> 00:03:20,672
+still a lot of how do I do my day job, exactly what am I responsible for that we still have to work through
+
+40
+00:03:20,672 --> 00:03:25,672
+and make sure we land the process, and occasionally, we're going to make just a few errors on our way,
+
+41
+00:03:25,672 --> 00:03:30,672
+so bear with us, we're on a, I think, great path, but we're not quite done yet.
+
+42
+00:03:30,672 --> 00:03:33,672
+I think we are definitely closer than ever before.
+
+43
+00:03:33,672 --> 00:03:38,672
+Amen. That's exactly right. Okay, we're sustained there.
+
+44
+00:03:38,672 --> 00:03:42,672
+As a part of that, we're actually going to continue to evolve how we're handling communications, right.
+
+45
+00:03:42,672 --> 00:03:48,672
+So let's talk about a few things going through there. One is even just during the re-release, we felt we
+
+46
+00:03:48,672 --> 00:03:55,672
+were pretty aggressive on the communication for the WMF recall. As we started the re-release over that period,
+
+47
+00:03:55,672 --> 00:03:59,672
+we kind of went a little quiet. It was like okay, we think we're going to have it the end of January and
+
+48
+00:03:59,672 --> 00:04:05,672
+then it was like oh, okay new problem, okay, into February, and I was a little frustrated from our standpoint.
+
+49
+00:04:05,672 --> 00:04:11,672
+I'm sure it was from your standpoint. And we're sort of working through exactly how when we have nothing to
+
+50
+00:04:11,672 --> 00:04:20,672
+say, we say something, so the people know we haven't forgotten you, but I've got nothing more I can tell you
+
+51
+00:04:20,672 --> 00:04:26,672
+and how do we do that? There's some pros and cons to doing that every minute versus every week versus every
+
+52
+00:04:26,672 --> 00:04:32,672
+month and sometimes as you go through that as we work this journey, there's times where as we communicate
+
+53
+00:04:32,672 --> 00:04:38,672
+more frequently, we will have a tendency to get it a little wrong because we even have been a place in that
+
+54
+00:04:38,672 --> 00:04:43,672
+case where I would have said four days before an event, hey it's going to be this date and then like three
+
+55
+00:04:43,672 --> 00:04:48,672
+days later, oh no, it's not. And so, we're struggling with ourselves and we'll work through that with the
+
+56
+00:04:48,672 --> 00:04:53,672
+community, sort of get a sense as to how we communicate these events.
+
+57
+00:04:53,672 --> 00:05:02,672
+So just to be clear, A, we definitely want you to know everything you need to know to get your jobs done and
+
+58
+00:05:02,672 --> 00:05:07,672
+to make you comfortable, and B, we're working pretty accurately through that process and how we can address
+
+59
+00:05:07,672 --> 00:05:12,672
+our needs and your needs simultaneously. We do ask for your continued support and a little patience as we
+
+60
+00:05:12,672 --> 00:05:17,672
+sort of fight through that. In general, we'll probably opt to communicate a little more than what we have in
+
+61
+00:05:17,672 --> 00:05:22,672
+the past, but just be aware that there's always trade-offs here.
+
+62
+00:05:22,672 --> 00:05:30,672
+Just as an observation, we continue to move still fairly quickly through the preview and the various models
+
+63
+00:05:30,672 --> 00:05:32,672
+and I would say finally we're beginning
+
+64
+00:05:32,672 --> 00:05:36,672
+to get it, and on the other hand, we just started the home page based on people's lack of how to where do I go
+
+65
+00:05:36,672 --> 00:05:41,672
+to get a canonical sense of what PowerShell's really doing. I get all these different blogs and so forth.
+
+66
+00:05:41,672 --> 00:05:46,672
+We started the home page for that. We started the gallery. We started all these projects up and I would say
+
+67
+00:05:46,672 --> 00:05:53,672
+that over the next five to six months we're going to be sort of more operationalizing some of the
+
+68
+00:05:53,672 --> 00:05:56,672
+communication efforts that we have around them. How do we do this?
+
+69
+00:05:56,672 --> 00:06:04,672
+One thing we've thought about doing we'll see how it flies, but it's certainly on the fun idea list is maybe
+
+70
+00:06:04,672 --> 00:06:09,672
+we'll end up doing it every other month little top of mind where I'll sit down and maybe Angel will join me
+
+71
+00:06:09,672 --> 00:06:16,672
+and we'll do a looking back last month, looking forward the next month, and here's some key technology things
+
+72
+00:06:16,672 --> 00:06:23,672
+that we're thinking about and then maybe once in a while, we'll also do maybe sort of more of a Q and A,
+
+73
+00:06:23,672 --> 00:06:28,672
+a broader Q and A with the whole community. We just finished a couple hours this morning with a group on DSC.
+
+74
+00:06:28,672 --> 00:06:33,672
+That was a useful, it turned out not to be DSC, a bunch of things, but that kind of thing is on our mind.
+
+75
+00:06:33,672 --> 00:06:39,672
+I don't know why or where we'll land on them, but we certainly want to make sure that we involve and integrate
+
+76
+00:06:39,672 --> 00:06:45,672
+more and more. Let me, I'm going to spend just a little more time, I know I should probably talk about all the
+
+77
+00:06:45,672 --> 00:06:51,672
+stuff we're going to do, but since I'm here, I guess I'll end it here and then we'll come back to it.
+
+78
+00:06:51,672 --> 00:07:01,672
+Innately, the community is immensely hugely larger than the PowerShell team.
+
+79
+00:07:01,672 --> 00:07:05,672
+Right. There are just more people out there, which is good because that's how we make money, right.
+
+80
+00:07:05,672 --> 00:07:12,672
+If we didn't, then Windows might be bad. With that many downloads, you know people are using, 1.3 million,
+
+81
+00:07:12,672 --> 00:07:17,672
+even if some are Azure, people are using the technology they've got in production.
+
+82
+00:07:17,672 --> 00:07:23,672
+There's going to be a ton of questions. I have always been astonished that for the past 10 years when we do
+
+83
+00:07:23,672 --> 00:07:33,672
+a new PowerShell session and even the getting started sessions that Don or Jeffrey occasionally do are packed
+
+84
+00:07:33,672 --> 00:07:41,672
+with 1,000 people. After 10 to 15 years, alright 13 years of talking about PowerShell at the various
+
+85
+00:07:41,672 --> 00:07:49,672
+Microsoft events, we still have hundreds and hundreds of people who have never touched it yet.
+
+86
+00:07:49,672 --> 00:07:54,672
+That's going to continue. What that means is we got a lot of people not only in the community now, but a ton
+
+87
+00:07:54,672 --> 00:08:00,672
+coming in and then we have the audacity to create new technologies like DSC, which for people who are already
+
+88
+00:08:00,672 --> 00:08:08,672
+here create a whole new set of questions and issues and things, so we rely on the community.
+
+89
+00:08:08,672 --> 00:08:14,672
+We rely on the community to help the community. I know we can't scale to do that.
+
+90
+00:08:14,672 --> 00:08:21,672
+What we can scale to do is to engage and understand when there are firestorms and engage in the firestorm,
+
+91
+00:08:21,672 --> 00:08:25,672
+try to prevent it with some documentation and we can educate the educators.
+
+92
+00:08:25,672 --> 00:08:32,672
+We can talk to you guys. Does that make sense? There is this layer between us where we just have to actually
+
+93
+00:08:32,672 --> 00:08:37,672
+use you and other people like you. When we started the first PowerShell summit, I spent a little while on this,
+
+94
+00:08:37,672 --> 00:08:41,672
+but when we started the first PowerShell summit it was because in fact we were at a Microsoft conference,
+
+95
+00:08:41,672 --> 00:08:50,672
+TechEd Europe, I think it was Berlin, and Jeffrey and I had just finished a, we'd had again a massive intro
+
+96
+00:08:50,672 --> 00:08:56,672
+session and then we'd had an ask the experts kind of a thing and we filled it and we filled it again the
+
+97
+00:08:56,672 --> 00:09:03,672
+second day we actually had to turn people away and we just said okay where can we go to give people really
+
+98
+00:09:03,672 --> 00:09:09,672
+in-depth knowledge of PowerShell. And we said, we've got to have our own little conference, don't we?
+
+99
+00:09:09,672 --> 00:09:13,672
+And then we said, that was one breath, the second breath is and we can't do it.
+
+100
+00:09:13,672 --> 00:09:20,672
+Because if we do it, Microsoft has an attention span of a nat. It's like oh, a new thing.
+
+101
+00:09:20,672 --> 00:09:26,672
+And so, we said the community has got to be able to come together and do that and that's when we worked with
+
+102
+00:09:26,672 --> 00:09:31,672
+Don and others to try to pull together the very first PowerShell summit in Red Rock Las Vegas four or five
+
+103
+00:09:31,672 --> 00:09:32,672
+years ago
+
+104
+00:09:32,672 --> 00:09:40,672
+and the intent there was we'll talk to you guys and we'll get you guys to help us improve our product because
+
+105
+00:09:40,672 --> 00:09:44,672
+you have higher access and they have a high bandwidth conference for you guys to make sure you connect with us later.
+
+106
+00:09:44,672 --> 00:09:49,672
+So I'm sorry for that long soliloquy. I just want you to get a sense of that's how I think of it, that's why we
+
+107
+00:09:49,672 --> 00:09:54,672
+spend so much time on these things. We really want to get educated by you and to make sure that you guys
+
+108
+00:09:54,672 --> 00:09:58,672
+have the right message. So if there's problems you're having in the community, if you're answering questions,
+
+109
+00:09:58,672 --> 00:10:04,672
+unable to do them, answer them, answer them, answer them, when you hit a brick wall, reach out to us directly.
+
+110
+00:10:04,672 --> 00:10:10,672
+Go ahead and reach out to the Powershell PM team at microsoft.com, go ahead and reach out directly on UserVoice.
+
+111
+00:10:10,672 --> 00:10:15,672
+Do that kind of thing which will inform us that you need help communicating with other people because we
+
+112
+00:10:15,672 --> 00:10:17,672
+don't always know. We can't always know.
+
+113
+00:10:17,672 --> 00:10:25,672
+I think I just want to highlight one point. I think that, look, we are moving a lot faster than ever before
+
+114
+00:10:25,672 --> 00:10:29,672
+and I know that we caused some pain last year with the WMF previews, right.
+
+115
+00:10:29,672 --> 00:10:34,672
+We were releasing these previews and it sounds really good, but in reality, we are not keeping track and
+
+116
+00:10:34,672 --> 00:10:39,672
+communicating how those previews they were affecting each of you with the changes that we were making in the technology.
+
+117
+00:10:39,672 --> 00:10:44,672
+So we need some times the help of the community because as we start having these communication channels,
+
+118
+00:10:44,672 --> 00:10:50,672
+if we start basically train the trainer I think at this point, which who is you, we need to be able to depend
+
+119
+00:10:50,672 --> 00:10:55,672
+on our community as well to help us through Twitter, through Facebook, through all the different channels
+
+120
+00:10:55,672 --> 00:11:01,672
+where we start seeing a lot of momentum about communicating about PowerShell issues or PowerShell feedback,
+
+121
+00:11:01,672 --> 00:11:03,672
+so it's really, really important.
+
+122
+00:11:03,672 --> 00:11:04,672
+Absolutely.
+
+123
+00:11:04,672 --> 00:11:08,672
+And just to be clear, along with the general community engagement, which we'll up a bit, we'll go through
+
+124
+00:11:08,672 --> 00:11:13,672
+that in the next slide. We do have actually in the past year, we've had hundreds, hundreds and hundreds of
+
+125
+00:11:13,672 --> 00:11:17,672
+in fact, direct customer engagement with some specific cases. If there are people you think that have a
+
+126
+00:11:17,672 --> 00:11:22,672
+particularly interesting set of use cases for PowerShell or PowerShell DSC, reach out to me,
+
+127
+00:11:22,672 --> 00:11:28,672
+my team KenHansen@powershell.com or my team and actually just talk to one of my guys or Ron Hill and we'll
+
+128
+00:11:28,672 --> 00:11:35,672
+put them on the list of people that we will potentially go and just chat with and drill a little bit into their scenario.
+
+129
+00:11:35,672 --> 00:11:40,672
+We can only spend, obviously, we only have so much effort, but it's an important list to us.
+
+130
+00:11:40,672 --> 00:11:46,672
+We're always happy to add to it and it's been I would say increasing by probably a fact of 20 over the past
+
+131
+00:11:46,672 --> 00:11:51,672
+year from what it was before, so it's not just a casual invitation.
+
+132
+00:11:51,672 --> 00:59:59,999
+It is intended to be used just use it wisely, pick good people, and we'll make sure we engage them a bit more deeply.
+

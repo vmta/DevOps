@@ -1,0 +1,164 @@
+1
+00:00:00,0 --> 00:00:07,944
+I have another tool accelerator that I call my CIMScriptMaker and this is going to use
+
+2
+00:00:07,944 --> 00:00:09,944
+a lot of the same
+
+3
+00:00:09,944 --> 00:00:17,944
+ideas about creating a wrapper function, except in this case, it is specifically for Get-CimInstance.
+
+4
+00:00:17,944 --> 00:00:23,944
+And I'm just going to run it and show you how this works. Well you'll see the results.
+
+5
+00:00:23,944 --> 00:00:35,944
+You can look through the code and discover how it works. (Clicking)
+
+6
+00:00:35,944 --> 00:00:39,944
+And this is just, it only takes one parameter, the computer name,
+
+7
+00:00:39,944 --> 00:00:46,944
+because you may want to build a command that's going to query a remote computer that has CIM classes that
+
+8
+00:00:46,944 --> 00:00:50,944
+don't exist on your computer. What this script is going
+
+9
+00:00:50,944 --> 00:00:59,944
+to do and this just kind of cheats and uses up GridView as an object picker, is it going to fail.
+
+10
+00:00:59,944 --> 00:01:12,944
+Yeah. I think I have, yeah, yeah. First thing that the script does is enumerates all of the namespaces on
+
+11
+00:01:12,944 --> 00:01:20,944
+your computer or whatever computer you specify, so I'm going to pick Root\CIMV2.
+
+12
+00:01:20,944 --> 00:01:28,944
+It then enumerates all the classes within that namespace and I just use that GridView because that was the
+
+13
+00:01:28,944 --> 00:01:31,944
+easiest GUI tool to an object
+
+14
+00:01:31,944 --> 00:01:35,944
+picker. I could go through and do WinForms and WP app with that.
+
+15
+00:01:35,944 --> 00:01:51,944
+I'm lazy, right. And I can find the class that I want, so let's do Win32, no let's do service.
+
+16
+00:01:51,944 --> 00:02:12,944
+(Searching) I could filter, but I'm committed at this point. I have an option here if you want to test the
+
+17
+00:02:12,944 --> 00:02:16,944
+class, which will basically enumerate or get an instance back.
+
+18
+00:02:16,944 --> 00:02:22,944
+Most of the time, I'm going to assume that you know what the class is ahead of time, so
+
+19
+00:02:22,944 --> 00:02:30,944
+I'm not going to test it. I can filter. So let's say I want to build it a command that's going to filter on
+
+20
+00:02:30,944 --> 00:02:45,944
+the, oh let's see, for WMI it's the status, no is it StartName, no, the state.
+
+21
+00:02:45,944 --> 00:02:50,944
+Where's state? Oh, here nice thing about our GridView, there we go.
+
+22
+00:02:50,944 --> 00:03:00,944
+Click on the column headings. So I'm going to filter on state and by default, it's going to be equal and
+
+23
+00:03:00,944 --> 00:03:13,944
+then this is just going to pop up a little VB script style and running.
+
+24
+00:03:13,944 --> 00:03:23,944
+I can then select the properties I want to display. Let's just do description, Name, Status, StartMode,
+
+25
+00:03:23,944 --> 00:03:33,944
+PathName, StartName, I don't know. And then it creates a new command.
+
+26
+00:03:33,944 --> 00:03:47,944
+It saves to the clipboard and let's then come here and paste it in, generates a quick little help, puts in all
+
+27
+00:03:47,944 --> 00:03:57,944
+of the parameters. Now I still may need to test this and tweak this a little bit, but all of that grunt work is done.
+
+28
+00:03:57,944 --> 00:04:00,944
+I just had to go through some basically wizard to pick
+
+29
+00:04:00,944 --> 00:04:10,944
+what I wanted, remember lazy. Now yeah, I mean, it took me some time to build that first tool, but now you
+
+30
+00:04:10,944 --> 00:04:18,944
+don't have to do it, so win for you.
+
+31
+00:04:18,944 --> 00:04:24,944
+So this is another way. Basically I built a wrapper function. I'm still running Get-CimInstance,
+
+32
+00:04:24,944 --> 00:04:26,944
+but everything else that I want to do,
+
+33
+00:04:26,944 --> 00:04:36,944
+it's all done for me. I didn't have to create any of this code really from scratch as you saw.
+
+34
+00:04:36,944 --> 00:04:51,944
+Alright, questions before I get into the last part here and we look at some other before and after tools.
+
+35
+00:04:51,944 --> 00:05:01,944
+No, we're all good? I was just curious. Did you ever build anything to wrap thread line executables?
+
+36
+00:05:01,944 --> 00:05:14,944
+I have done things to take the output, yeah that's a little trickier because you're not really wrapping,
+
+37
+00:05:14,944 --> 00:05:21,944
+yeah, I've done some stuff for like Netstat to build a command that would run Netstat and then parse the output,
+
+38
+00:05:21,944 --> 00:05:33,944
+so you could do that. I don't have any cheats like these because every output would be different.
+
+39
+00:05:33,944 --> 00:05:39,944
+And hopefully, there are PowerShell versions or tools to do what you might have been using a command line tool for.
+
+40
+00:05:39,944 --> 00:05:43,944
+Not always, but.
+
+41
+00:05:43,944 --> 00:59:59,999
+Alright, so here is,
+

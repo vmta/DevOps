@@ -1,0 +1,692 @@
+1
+00:00:00,0 --> 00:00:04,757
+Alright. Enough of the distant past. Moving to the past year.
+
+2
+00:00:04,757 --> 00:00:09,757
+So what an amazing year. I mean we made a lot of changes in PowerShell.
+
+3
+00:00:09,757 --> 00:00:14,757
+And really the PowerShell ecosystem and the technologies, I mean we, one of the things that probably you are
+
+4
+00:00:14,757 --> 00:00:19,757
+obviously very familiar as the work that we do in Windows and Windows Server and you know it started only
+
+5
+00:00:19,757 --> 00:00:24,757
+last year, there was a number of technical previews that we have released.
+
+6
+00:00:24,757 --> 00:00:30,757
+It's through those technical previews we have released as well multiple WMF previews and it was an extraordinary
+
+7
+00:00:30,757 --> 00:00:34,757
+journey for us because we learned tons and we're going to talk a little bit more about that.
+
+8
+00:00:34,757 --> 00:00:40,757
+But actually we want to highlight that while we're still releasing WMF to each of you in a frequently basis,
+
+9
+00:00:40,757 --> 00:00:44,757
+we've also been releasing management technologies in Windows and Windows Server.
+
+10
+00:00:44,757 --> 00:00:50,757
+And in a couple of weeks, we're going to be launching the technical preview 5 Windows Server 2016.
+
+11
+00:00:50,757 --> 00:00:56,757
+You're going to see some additional innovation that we are planning to release for both PowerShell and DSC.
+
+12
+00:00:56,757 --> 00:00:57,757
+And talking about WMF 5,
+
+13
+00:00:57,757 --> 00:01:04,757
+I can't resist, how's that for a download list. That's probably the fastest adoption I've ever seen of
+
+14
+00:01:04,757 --> 00:01:10,757
+Windows Management Framework, and in fact, it's going, we don't actually have the next week there.
+
+15
+00:01:10,757 --> 00:01:15,757
+We actually just finished week six and it keeps accelerating. So certainly, we've got people interested.
+
+16
+00:01:15,757 --> 00:01:20,757
+They're landing it and just to point to the final PS resistance,
+
+17
+00:01:20,757 --> 00:01:29,757
+that's what's in it. That's a carefully curated list and we expect there will be a test on it somewhere at
+
+18
+00:01:29,757 --> 00:01:34,757
+the end of the summit to make sure we've covered all possible capabilities.
+
+19
+00:01:34,757 --> 00:01:37,757
+You know, there's a lot there. There's a lot to tell people about.
+
+20
+00:01:37,757 --> 00:01:40,757
+There's a lot to speak to.
+
+21
+00:01:40,757 --> 00:01:47,757
+And you know the area that I think that, well recently, about a month ago we released the PowerShell gallery.
+
+22
+00:01:47,757 --> 00:01:48,757
+How many of you are using the PowerShell
+
+23
+00:01:48,757 --> 00:01:55,757
+gallery today? I mean, wow. This is pretty awesome. We had this vision back about a year ago about creating
+
+24
+00:01:55,757 --> 00:02:03,757
+a repository, public repository for all of our community to come to basically share and make available resources
+
+25
+00:02:03,757 --> 00:02:08,757
+to help us just adopting some of the new features of PowerShell and one of things that we learned when we did
+
+26
+00:02:08,757 --> 00:02:13,757
+the launch, I mean look at the downloads per month. It's quite remarkable.
+
+27
+00:02:13,757 --> 00:02:16,757
+I mean, right now is one of the faster galleries that we have in Microsoft.
+
+28
+00:02:16,757 --> 00:02:18,757
+I think of the number right now. How many downloads we have so far?
+
+29
+00:02:18,757 --> 00:02:20,757
+About 1.3 million.
+
+30
+00:02:20,757 --> 00:02:26,757
+One point three million downloads of PowerShell artifacts I have already have occurred in the gallery.
+
+31
+00:02:26,757 --> 00:02:33,757
+Now as we talk through that a little bit, there is something worth noting, so the caveat, and that's that
+
+32
+00:02:33,757 --> 00:02:38,757
+although there's, I think this month we had almost 450,000 downloads, so it continues to accelerate rapidly.
+
+33
+00:02:38,757 --> 00:02:48,757
+Some of those do come from the Azure RM profile, and so there's kind of, right, about 150,000 over the last 6 weeks.
+
+34
+00:02:48,757 --> 00:02:56,757
+On the other hand, 150, the 450, probably 500,000, 600,000 in the past 6 weeks minus 150,000 is still a hell
+
+35
+00:02:56,757 --> 00:03:04,757
+of a lot of downloads. So absolutely amazing ramp up, in spite of the actual sort of thing.
+
+36
+00:03:04,757 --> 00:03:10,757
+We'll work with Azure to make sure the numbers get a little crisper, but it's been a phenomenal adoption.
+
+37
+00:03:10,757 --> 00:03:17,757
+One thing that you heard probably earlier today from Neema, the product manager who presented the Nano coverage,
+
+38
+00:03:17,757 --> 00:03:23,757
+is that the effort that we have made in PowerShell to also read faster PowerShell for the full CLR dependency
+
+39
+00:03:23,757 --> 00:03:30,757
+to a core CLR dependency. This was something that was really important and in order to bring together a lighter,
+
+40
+00:03:30,757 --> 00:03:36,757
+a smaller version of the OS. You make a high performance. When you're looking at the numbers, they aren't showing
+
+41
+00:03:36,757 --> 00:03:42,757
+in that graph. They intend to actually show you kind of the impact that we have.
+
+42
+00:03:42,757 --> 00:03:46,757
+In delivering the PowerShell, there's going to lean, it's going to be faster, and it's going to actually start
+
+43
+00:03:46,757 --> 00:03:53,757
+moving towards to a more CoreCLR dependency in the future. I think this is really important as we start
+
+44
+00:03:53,757 --> 00:03:57,757
+building the new server in Nano, so here that's something to highlight.
+
+45
+00:03:57,757 --> 00:04:05,757
+Open source. We have been moving about as fast as we can within the resource constraints we have and the
+
+46
+00:04:05,757 --> 00:04:13,757
+business constraints we have to go to open source. That journey just started and already we've actually got
+
+47
+00:04:13,757 --> 00:04:16,757
+a ton of opportunity, certainly the gallery is certainly one thing.
+
+48
+00:04:16,757 --> 00:04:22,757
+At that gallery, it's where we sometimes forget that we just launched this gallery in like April, May.
+
+49
+00:04:22,757 --> 00:04:28,757
+It was just like almost a year ago, 2015. It's not very old. We're certainly out of the preview mode and
+
+50
+00:04:28,757 --> 00:04:31,757
+people are using it in production all the time, so it's a great thing.
+
+51
+00:04:31,757 --> 00:04:36,757
+We've also got the Script Analyzer, a bunch of editor services, the Visual Studio Code, and of course,
+
+52
+00:04:36,757 --> 00:04:38,757
+the OpenSSH, which we're looking forward to.
+
+53
+00:04:38,757 --> 00:04:43,757
+To making available. We'll talk a little bit more in the future about that.
+
+54
+00:04:43,757 --> 00:04:48,757
+We want to thank each of you because I know that many of you in this room, the other people who are going to
+
+55
+00:04:48,757 --> 00:04:54,757
+be watching this, they really have helped the team, engineering team, in particular, about just start
+
+56
+00:04:54,757 --> 00:04:59,757
+evolving ourselves into this open source culture.
+
+57
+00:04:59,757 --> 00:05:05,757
+So an interesting story is even before, we had just finished putting the gallery up and we hadn't yet made it public.
+
+58
+00:05:05,757 --> 00:05:12,757
+We hadn't told anybody. We had just put it up there, no it wasn't in preview, it was just they didn't tell
+
+59
+00:05:12,757 --> 00:05:19,757
+anybody it was up there and we were going to announce it the next day, and within hours, we got 600 lines of
+
+60
+00:05:19,757 --> 00:05:24,757
+submission of poll request that actually go would you please take these in.
+
+61
+00:05:24,757 --> 00:05:28,757
+How the hell did they find it and now they decide they're going to just?
+
+62
+00:05:28,757 --> 00:05:33,757
+This guy must have been waiting for this. Oh my gosh. Oh, they did it and just landed on it.
+
+63
+00:05:33,757 --> 00:05:38,757
+Within a few minutes after that, we got back to him and said oh could you make this tweak to your code and
+
+64
+00:05:38,757 --> 00:05:42,757
+then we'll take it and he did minutes later. So just a great, it's been a great experience.
+
+65
+00:05:42,757 --> 00:05:46,757
+Thank you very much for your overall support of that effort and of all of our efforts.
+
+66
+00:05:46,757 --> 00:05:47,757
+We cannot do it without you.
+
+67
+00:05:47,757 --> 00:05:53,757
+And especially we want to thank some people for their contributions because we've got some names here of
+
+68
+00:05:53,757 --> 00:06:00,757
+people who really had an impact in our community on and delivering value into our open source projects.
+
+69
+00:06:00,757 --> 00:06:08,757
+We have Iain Brighton and our thanks for the Hyper-VM, the DNS, ActiveDirectory, and DHCPServer,
+
+70
+00:06:08,757 --> 00:06:14,757
+some great effort and work there. We really appreciate him. Aleksandar Nikolic for all the documentation.
+
+71
+00:06:14,757 --> 00:06:20,757
+Boy, open documentation. Thank you. Very useful and helpful. Everybody cares about that.
+
+72
+00:06:20,757 --> 00:06:24,757
+Keith Hill. I know I've got a Keith Hill here. Don't I have a Keith Hill?
+
+73
+00:06:24,757 --> 00:06:29,757
+He's been around? No. Did I see him? I didn't see him. Alright, I know what I don't know.
+
+74
+00:06:29,757 --> 00:06:36,757
+Apparently, he's not here. Clint Branham. We have a Clint. And Daniel Scott-Raynsford.
+
+75
+00:06:36,757 --> 00:06:42,757
+These guys have really done a great job and we just want to say thank you publicly here, and of course,
+
+76
+00:06:42,757 --> 00:06:46,757
+we'll say thank you to them also in person for their great effort.
+
+77
+00:06:46,757 --> 00:06:51,757
+And this will continue. Every while we'll say thanks to a few key contributors across our community who have
+
+78
+00:06:51,757 --> 00:06:52,757
+really helped us move forward.
+
+79
+00:06:52,757 --> 00:06:59,757
+And I think, are we giving something away for the contributors? We are, yeah.
+
+80
+00:06:59,757 --> 00:07:03,757
+Well these people in this particular case, Michael Green, if they are here, they can just see him.
+
+81
+00:07:03,757 --> 00:07:11,757
+Michael Green has for them $15,000 worth of Azure money useful for one month.
+
+82
+00:07:11,757 --> 00:07:15,757
+So one free month, that's a subscription to Azure.
+
+83
+00:07:15,757 --> 00:07:18,757
+So basically, one month unlimited almost.
+
+84
+00:07:18,757 --> 00:07:19,757
+Almost, depend on the usage. A lot.
+
+85
+00:07:19,757 --> 00:07:21,757
+Depending on what you use.
+
+86
+00:07:21,757 --> 00:07:22,757
+That's a lot.
+
+87
+00:07:22,757 --> 00:07:26,757
+So it's a substantial amount. We really do want to say thanks. Our appreciation, not just to them, but to every
+
+88
+00:07:26,757 --> 00:07:30,757
+single one of you who have contributed over time. If we could do it, we'd give it to everybody who
+
+89
+00:07:30,757 --> 00:07:31,757
+contributed any code.
+
+90
+00:07:31,757 --> 00:07:32,757
+Absolutely.
+
+91
+00:07:32,757 --> 00:07:35,757
+Well we thank you. We really appreciate it. One more hand for these guys who contributed,
+
+92
+00:07:35,757 --> 00:07:36,757
+even though they're not there.
+
+93
+00:07:36,757 --> 00:07:42,757
+Thank you.
+
+94
+00:07:42,757 --> 00:07:45,757
+Our thanks. Oh, the home page.
+
+95
+00:07:45,757 --> 00:07:46,757
+The home page.
+
+96
+00:07:46,757 --> 00:07:47,757
+We released the home page last year.
+
+97
+00:07:47,757 --> 00:07:52,757
+Yeah, last year again. Last year a side project out of Joey, Neema, and a few others.
+
+98
+00:07:52,757 --> 00:07:56,757
+They've done a great job. Okay, how many people have actually been to the PowerShell home page?
+
+99
+00:07:56,757 --> 00:08:03,757
+Wahoo! Not that many. It's worth going to. It's not that hard to find.
+
+100
+00:08:03,757 --> 00:08:10,757
+It's microsoft.com/powershell, so you can find it pretty easily.
+
+101
+00:08:10,757 --> 00:08:16,757
+It is where we'll probably start driving a little more traffic. Even right now, of course, we have I
+
+102
+00:08:16,757 --> 00:08:24,757
+know 60,000 I guess home page visits here in this past month or so, which is not huge for our traffic,
+
+103
+00:08:24,757 --> 00:08:30,757
+but it's a substantial. The key is we'll start probably putting more announcements actually on the home page
+
+104
+00:08:30,757 --> 00:08:35,757
+and then blogging almost directly referring to that. So as we'll start doing stuff, it'll start coming up,
+
+105
+00:08:35,757 --> 00:08:39,757
+we'll start doing the advertisements, we'll start talking about maybe PowerShell around the world as we
+
+106
+00:08:39,757 --> 00:08:46,757
+started doing any celebration stuff for the 10-year exact date anniversary, we probably will put it up there
+
+107
+00:08:46,757 --> 00:08:50,757
+first and then we'll blog about it and that will enable us to actually to shift our blog a little bit,
+
+108
+00:08:50,757 --> 00:08:55,757
+and I'll talk about it a little later, to a little more chatty, a little less formal tone, a little more the
+
+109
+00:08:55,757 --> 00:09:03,757
+formal stuff up on the home page, but it's well worth your perusal and occasional look at.
+
+110
+00:09:03,757 --> 00:09:08,757
+And if there's things that you think ought to be there that are not, feel free to tell us and I think it's
+
+111
+00:09:08,757 --> 00:09:12,757
+even worth a UserVoice. Feel free to actually put it on UserVoice if you want to.
+
+112
+00:09:12,757 --> 00:09:15,757
+It's just a way to actually communicate with us.
+
+113
+00:09:15,757 --> 00:09:21,757
+And then we're just going to I'm just going to go very quick about other things that we delivered last year,
+
+114
+00:09:21,757 --> 00:09:26,757
+well, actually even within the last few months. Right, you know one of the things that we've been doing,
+
+115
+00:09:26,757 --> 00:09:31,757
+it started with Lee Holmes with JEA. How many of you are using JEA today in your enterprises?
+
+116
+00:09:31,757 --> 00:09:33,757
+The few, the brave.
+
+117
+00:09:33,757 --> 00:09:41,757
+I highly encourage to really look in JEA as a vehicle to really think about security and protection in your environment.
+
+118
+00:09:41,757 --> 00:09:47,757
+Definitely one thing too that we are doing is the editing piece and as well as some encrypting MOFs.
+
+119
+00:09:47,757 --> 00:09:50,757
+I think that this is something that is becoming more and more important.
+
+120
+00:09:50,757 --> 00:09:55,757
+One of the things that we are learning with security is that PowerShell is becoming quite popular and you'll
+
+121
+00:09:55,757 --> 00:10:00,757
+probably start seeing in the news, actually today there was a new article about DSC,
+
+122
+00:10:00,757 --> 00:10:01,757
+in Hacker News,
+
+123
+00:10:01,757 --> 00:10:05,757
+yeah in Hacker News and we're going to start seeing more and more of this.
+
+124
+00:10:05,757 --> 00:10:11,757
+It's fantastic that we see the popularity and the send time, this creates obviously a challenge for all of us
+
+125
+00:10:11,757 --> 00:10:16,757
+about how we start protecting PowerShell in investments and implementation in the enterprise.
+
+126
+00:10:16,757 --> 00:10:20,757
+So this is just in a starting point of what we're going to be doing in the future and you're going to start
+
+127
+00:10:20,757 --> 00:10:25,757
+seeing a lot more and more security focus, but here's to highlight some of the things that we have released so far.
+
+128
+00:10:25,757 --> 00:10:28,757
+Now there's a thing coming in the next 5.1 update.
+
+129
+00:10:28,757 --> 00:10:35,757
+Yeah. There's this concept about assume breach that we are focusing as well, so we'll talk a little bit more about later.
+
+130
+00:10:35,757 --> 00:10:40,757
+And the PowerShell support and DSC integration for the OMS automation.
+
+131
+00:10:40,757 --> 00:10:45,757
+I think that was, I don't know, how many of you know about Azure automation?
+
+132
+00:10:45,757 --> 00:10:50,757
+Okay. So one of the things that, thank you, one of the things that we learned with Azure automation is that
+
+133
+00:10:50,757 --> 00:10:56,757
+when we introduced the integration of native PowerShell and DSC, we saw an incredible adoption and I think it
+
+134
+00:10:56,757 --> 00:11:02,757
+like about 25% of people in Azure automation today they are using some shape or form of DSC and I think that
+
+135
+00:11:02,757 --> 00:11:06,757
+this is an important thing to highlight because one of the things that we are learning now with PowerShell is
+
+136
+00:11:06,757 --> 00:11:10,757
+that we want to start integrating more and more into the cloud. It's starting to provide more of an extra
+
+137
+00:11:10,757 --> 00:11:17,757
+service for our customers and the community. DSC Linux.
+
+138
+00:11:17,757 --> 00:11:20,757
+It's been great because they finally put it out on the, I think, the open source code actually got it in
+
+139
+00:11:20,757 --> 00:11:24,757
+December 2015, so we're sort of starting down there. This is another good path for us.
+
+140
+00:11:24,757 --> 00:11:31,757
+We are going to slowly, but surely as we know try to give PowerShell technologies so you can use them where
+
+141
+00:11:31,757 --> 00:11:36,757
+you need to. Overall, and I think DSC on Linux is the first kind of effort, sort of get our feet wet,
+
+142
+00:11:36,757 --> 00:11:42,757
+and sort of understand what that process looks like, so we're really excited about that effort and hope it moves forward.
+
+143
+00:11:42,757 --> 00:11:47,757
+I think over time trying to consolidate. Right now, they're two separate code bases.
+
+144
+00:11:47,757 --> 00:11:48,757
+I think we're going to bring the code bases together and that is the plan.
+
+145
+00:11:48,757 --> 00:11:53,757
+And over time want to bring them together so the Windows and the Linux code base would perhaps be the same.
+
+146
+00:11:53,757 --> 00:11:57,757
+That'll take us a little bit of time to do that though and some shifts, just work with us.
+
+147
+00:11:57,757 --> 00:12:04,757
+One of the advantages of doing stuff open is everybody sort of gets to see it and use it early.
+
+148
+00:12:04,757 --> 00:12:11,757
+One of the disadvantages is everybody gets to see it and use it early and stuff changes a little bit,
+
+149
+00:12:11,757 --> 00:12:17,757
+and so we're going to try to be a little more directional, I think, in our communication, in our guide and
+
+150
+00:12:17,757 --> 00:12:20,757
+say look here's how we're, we'll be a little more open about here's where we're going with this,
+
+151
+00:12:20,757 --> 00:12:24,757
+here's what we're doing on this source project, and work through both the RFC process. and we'll cover that a
+
+152
+00:12:24,757 --> 00:12:28,757
+little more later, but just get your heads up. This is one of the great things.
+
+153
+00:12:28,757 --> 00:12:31,757
+One of the other things we sort of skipped by is the Azure Extension Handler.
+
+154
+00:12:31,757 --> 00:12:34,757
+We've had some pretty good traction with that right now with here right now where, of course,
+
+155
+00:12:34,757 --> 00:12:39,757
+you can automatically do DSC, get stuff uploaded, downloaded, create your Azure VMs a lot more easily than
+
+156
+00:12:39,757 --> 00:12:41,757
+you could before.
+
+157
+00:12:41,757 --> 00:12:47,757
+Yeah, I think we are planning to continue updating the Azure Extension Handler with additional modules as
+
+158
+00:12:47,757 --> 00:12:52,757
+well with this configuration and yeah. And so that's something that is going to be a continued this point moving forward.
+
+159
+00:12:52,757 --> 00:13:00,757
+And then finally, the DSC integration with Chef, in particular, but as well as with Ansible.
+
+160
+00:13:00,757 --> 00:13:07,757
+You know actually we should really thank Steve because Steve has done a lot of work to really take the power
+
+161
+00:13:07,757 --> 00:13:13,757
+of DSC as a platform and really start to integrate it with Chef and I figured that was an amazing collaboration,
+
+162
+00:13:13,757 --> 00:13:14,757
+so thank you for doing that.
+
+163
+00:13:14,757 --> 00:13:15,757
+That's great.
+
+164
+00:13:15,757 --> 00:13:21,757
+I'm expecting a t-shirt by the way. Looking forward for the t-shirt.
+
+165
+00:13:21,757 --> 00:13:24,757
+And we also worked with others, so we can't only love him.
+
+166
+00:13:24,757 --> 00:13:29,757
+No. When you build a platform, we have an awful lot of people.
+
+167
+00:13:29,757 --> 00:13:33,757
+You can have preference, but at the end of the day, we are building a platform and I think that this is
+
+168
+00:13:33,757 --> 00:13:37,757
+something that I think you're going to start seeing a lot more continuity is how we start basically
+
+169
+00:13:37,757 --> 00:13:43,757
+integrating the platform with other open source projects. This is something that we're going to be doing
+
+170
+00:13:43,757 --> 00:13:44,757
+more and more.
+
+171
+00:13:44,757 --> 00:13:48,757
+And we appreciate anybody who layers tools over the platform that we have, we'll have to do some,
+
+172
+00:13:48,757 --> 00:13:50,757
+but God bless the ISEs and tooling.
+
+173
+00:13:50,757 --> 00:59:59,999
+Yes.
+

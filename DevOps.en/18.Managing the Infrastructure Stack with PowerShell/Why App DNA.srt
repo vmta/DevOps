@@ -1,0 +1,216 @@
+1
+00:00:00,0 --> 00:00:02,467
+but what ends up happening is like
+
+2
+00:00:02,467 --> 00:00:05,467
+why would you do this? Well you're going to get quicker reporting.
+
+3
+00:00:05,467 --> 00:00:14,467
+You already have those relationship maps in place so that six hours can get down to more like 30 minutes.
+
+4
+00:00:14,467 --> 00:00:18,467
+Getting that information faster, being able to have quicker time to resolution.
+
+5
+00:00:18,467 --> 00:00:23,467
+So if you have an issue, you already have that relationship map.
+
+6
+00:00:23,467 --> 00:00:28,467
+And I know there's like some change management databases out there that have similar types of information.
+
+7
+00:00:28,467 --> 00:00:35,467
+There's products like Zenoss that do a similar type of thing from an operation standpoint, but that's not
+
+8
+00:00:35,467 --> 00:00:42,467
+necessarily helpful in a PowerShell script standpoint when you're trying to automate.
+
+9
+00:00:42,467 --> 00:00:48,467
+That's helpful from an operation standpoint and be able to get visibility, but.
+
+10
+00:00:48,467 --> 00:00:52,467
+PowerShell's free. And PowerShell's free. That's a really excellent point.
+
+11
+00:00:52,467 --> 00:00:56,467
+Like the cost and the barrier to entry of PowerShell is phenomenal.
+
+12
+00:00:56,467 --> 00:01:02,467
+It's the best value in IT. And then from here, you also can do faster implementation.
+
+13
+00:01:02,467 --> 00:01:08,467
+So let's say that you do need to make that type of change. You're able to go in and execute and find the
+
+14
+00:01:08,467 --> 00:01:14,467
+information and find those relationships and execute those cmdlets regardless of where you are in the stack
+
+15
+00:01:14,467 --> 00:01:24,467
+without having to do the query and the work that I'm doing, and again it's still early, if it's changed and
+
+16
+00:01:24,467 --> 00:01:29,467
+it's not accurate, it'll throw an error. Just handle the error.
+
+17
+00:01:29,467 --> 00:01:38,467
+Then you do your query. If in the catch, there is an error, do the query and see if it works that time and update.
+
+18
+00:01:38,467 --> 00:01:42,467
+And then you can just update the object, right?
+
+19
+00:01:42,467 --> 00:01:49,467
+Improving the value stream. From a DevOps perspective, being able to reduce time because
+
+20
+00:01:49,467 --> 00:01:54,467
+I'm not kidding myself, right. In some respects, this is only going to shave a little bit of time on things
+
+21
+00:01:54,467 --> 00:02:02,467
+that we do on a day-to-day basis, but when you start looking at things that you're doing frequently like
+
+22
+00:02:02,467 --> 00:02:08,467
+provisioning out environments and destroying them and moving your software development lifecycle,
+
+23
+00:02:08,467 --> 00:02:12,467
+seconds make a big difference, right.
+
+24
+00:02:12,467 --> 00:02:17,467
+So yesterday during the talk about dynamic parameter sets, I started thinking and I brainstormed with several
+
+25
+00:02:17,467 --> 00:02:24,467
+of you about the ramifications of things that you could do like when you're going to deploy knowing that
+
+26
+00:02:24,467 --> 00:02:30,467
+there's certain Datastores that would be preferred, certain capabilities, if you know it needs to be on a
+
+27
+00:02:30,467 --> 00:02:37,467
+VLAN and you want to keep it isolated to a specific server, since you already have the data collected,
+
+28
+00:02:37,467 --> 00:02:50,467
+you could prepopulate in your functions the, what do they call it again, it started with C, help me out here folks.
+
+29
+00:02:50,467 --> 00:02:57,467
+The dynamic parameters. Anyway. So it will prepopulate options so that when you go to choose, you can see
+
+30
+00:02:57,467 --> 00:03:04,467
+the ones that need up, so you can have all the networks listed with the VLAN associated or have the storage
+
+31
+00:03:04,467 --> 00:03:11,467
+with the percent free so that you're identifying something that has more resources available,
+
+32
+00:03:11,467 --> 00:03:18,467
+making it easier for the user to be able to do this automation without having to do all these queries and
+
+33
+00:03:18,467 --> 00:03:23,467
+lookups and understand everything that's happening in the background.
+
+34
+00:03:23,467 --> 00:03:31,467
+And then, when you look at the extensibility into other tools like vRealize Orchestrator, for instance,
+
+35
+00:03:31,467 --> 00:03:36,467
+or PowerActions, like I mentioned, or Microsoft Orchestrator, whatever, System Center, Service Now,
+
+36
+00:03:36,467 --> 00:03:40,467
+anything that can execute a script
+
+37
+00:03:40,467 --> 00:03:47,467
+being able to speed that implementation has tremendous value because there's a truism I've learned and you've
+
+38
+00:03:47,467 --> 00:03:56,467
+probably seen this in your environments as well. When you're delivering IT services to people, they will fight
+
+39
+00:03:56,467 --> 00:04:03,467
+against your processes if they feel like they can get it faster another way.
+
+40
+00:04:03,467 --> 00:04:12,467
+They will spend budget stupidly often to get something faster. And so, what we found was if you wanted
+
+41
+00:04:12,467 --> 00:04:19,467
+people to fall in line with your process and things like that, you make it super-fast and easy for the
+
+42
+00:04:19,467 --> 00:04:26,467
+preferred way and painfully difficult the other way. Take cost completely out it.
+
+43
+00:04:26,467 --> 00:04:32,467
+And so when you start demonstrating that not only are you delivering a service, but you can deliver it faster
+
+44
+00:04:32,467 --> 00:04:40,467
+and more succinctly efficiently, right, very consistently, you'll find that your adoption to those efforts
+
+45
+00:04:40,467 --> 00:04:48,467
+will go way up. Same goes for when you're sharing scripts. So when you look at implementing something with
+
+46
+00:04:48,467 --> 00:04:58,467
+PowerActions and vRealize Orchestrator and sharing code with others, I think most of us would tend to deliver a function.
+
+47
+00:04:58,467 --> 00:05:02,467
+Because I know in the environments I've worked in that I would create a script and I would tell them,
+
+48
+00:05:02,467 --> 00:05:09,467
+and I think we've all done this, I think we all still do from time to time, but at the very top you have some
+
+49
+00:05:09,467 --> 00:05:16,467
+documentation there and you then you say fill out these four fields that are associated with your environment
+
+50
+00:05:16,467 --> 00:05:23,467
+for running this script. And then go and dot source it, run it, and things like that.
+
+51
+00:05:23,467 --> 00:05:31,467
+Well as you look to increase adoption, you turn those things into functions and not only do you make it to
+
+52
+00:05:31,467 --> 00:05:39,467
+where they are filling out information, you could then extend the parameter set or the dynamic parameters,
+
+53
+00:05:39,467 --> 00:05:45,467
+you can extend that, pulling from that data, and you're now giving them an opportunity to do it faster with
+
+54
+00:05:45,467 --> 00:59:59,999
+less effort, and more importantly, they don't have to call you asking you how to use it.
+

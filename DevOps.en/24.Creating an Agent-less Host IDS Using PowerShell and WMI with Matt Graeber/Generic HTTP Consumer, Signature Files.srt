@@ -1,0 +1,384 @@
+1
+00:00:00,0 --> 00:00:09,5
+So now we're able to monitor for ProcessStarts, for lateral movement, for registry, autorun additions,
+
+2
+00:00:09,5 --> 00:00:16,083
+but what if you don't have like Windows event forwarding working or you're a consultant like me and the
+
+3
+00:00:16,083 --> 00:00:21,083
+company that you're consulting for doesn't have the time to set up Windows event forwarding, right.
+
+4
+00:00:21,083 --> 00:00:29,083
+What we did is we decided to make this what I call the active script generic HTTP consumer, and so as you can
+
+5
+00:00:29,083 --> 00:00:36,083
+see lots of fun VB script. I never knew that to escape a quote, you had to use three quotes or there's some
+
+6
+00:00:36,083 --> 00:00:43,083
+weird thing like that. I have no idea. But generally, what we're doing is we're using, we're basically creating
+
+7
+00:00:43,083 --> 00:00:51,083
+an instance of the Microsoft XML HTTP comma object and then we're using that to basically post data to a
+
+8
+00:00:51,083 --> 00:01:00,083
+specific listening post or a CIM in some cases. So we've got it working definitely with Splunk, Elk, or Logstash
+
+9
+00:01:00,083 --> 00:01:08,083
+and we've got it working with QRadar, which is, I think, I don't know who makes that, IBM I think.
+
+10
+00:01:08,083 --> 00:01:12,083
+And so, what we're doing is we're taking that target event and the reason why it's generic is this works with
+
+11
+00:01:12,083 --> 00:01:20,083
+literally any WMI, well not every WMI, but all the ones that I've tested it works with and it will basically
+
+12
+00:01:20,083 --> 00:01:26,083
+create a JSON representation of that object and then post it out to your CIM, which is most CIMs are going to
+
+13
+00:01:26,083 --> 00:01:32,083
+have some sort of REST ingestion, rest API ingestion. And then basically, we create the
+
+14
+00:01:32,083 --> 00:01:37,083
+ActiveScriptEventConsumer with that script and tell it we want to use VB script as the scripting engine.
+
+15
+00:01:37,083 --> 00:01:39,083
+So going back.
+
+16
+00:01:39,083 --> 00:01:43,083
+Is there a reason you're not using like Invoke-WebRequest or anything like that?
+
+17
+00:01:43,083 --> 00:01:47,083
+Because we're not relying upon PowerShell whatsoever.
+
+18
+00:01:47,083 --> 00:01:49,083
+Yep. There's no reason you couldn't.
+
+19
+00:01:49,083 --> 00:01:57,083
+Yeah, so we want to avoid the like startup of processes and because like PowerShell startup is a relatively
+
+20
+00:01:57,083 --> 00:02:03,083
+expensive process when you're talking about monitoring every process creation and it will also create or even
+
+21
+00:02:03,083 --> 00:02:06,083
+a yeah, an infinite loop. Alright,
+
+22
+00:02:06,083 --> 00:02:08,083
+so what we're going to do is we're going to create a filter real quick.
+
+23
+00:02:08,083 --> 00:02:15,083
+This is that ProcessStartTrace filter, then we're going to create this ActiveScriptEventConsumer and it's
+
+24
+00:02:15,083 --> 00:02:19,083
+going to ask me my IP, so I'm just going to do it to localhost because why not.
+
+25
+00:02:19,083 --> 00:02:25,083
+And so now you see like the IP was filled in. That's pretty nifty.
+
+26
+00:02:25,083 --> 00:02:29,083
+And then we're going to create a subscription that binds those two together,
+
+27
+00:02:29,083 --> 00:02:38,083
+so AS_GenericHTTP ProcessStartTrace. Next what I want to do, so right now I am literally every process that's created.
+
+28
+00:02:38,083 --> 00:02:43,083
+I'm sending out an HTTP POST request to my localhost. This is really small.
+
+29
+00:02:43,083 --> 00:02:44,083
+Can you guys actually see that?
+
+30
+00:02:44,083 --> 00:02:45,083
+Yes.
+
+31
+00:02:45,083 --> 00:02:52,083
+Okay. It's not like the details of what I'm about to aren't what is it called PowerCat, yeah.
+
+32
+00:02:52,083 --> 00:02:58,083
+So a buddy of mine wrote PowerCat, which is a netcat implementation in PowerShell, and so we can listen on
+
+33
+00:02:58,083 --> 00:03:09,083
+Port 80 and then start some random process. And so now we see that consent.exe, which is that what is it called,
+
+34
+00:03:09,083 --> 00:03:16,083
+the UNC, I think, or yeah. That's the process that's associated with that, and so we see things like
+
+35
+00:03:16,083 --> 00:03:22,083
+consent.exe, we see the ProcessID, ParentProcessID, SessionID, Time_created, so on and so forth, so this would
+
+36
+00:03:22,083 --> 00:03:30,083
+literally work with any type of WMI class, in this case, we used the Win32_ProcessStartTrace class.
+
+37
+00:03:30,083 --> 00:03:35,083
+One thing that Matt eluded to is that you have to kind of when you're looking at intrinsic versus extrinsic
+
+38
+00:03:35,083 --> 00:03:44,083
+events, Win32_ProcessStartTrace is extrinsic meaning that as soon as a process is created, it's going to fire the event.
+
+39
+00:03:44,083 --> 00:03:50,083
+Win32_Process can be used intrinsically with the instance creation event, but it's, you have a polling
+
+40
+00:03:50,083 --> 00:03:55,083
+interval, so you could make that 1 second, but you could also make it a 100 seconds, and so you have a chance
+
+41
+00:03:55,083 --> 00:04:01,083
+that you might miss processes being created. The Win32_Process class has significantly more information like
+
+42
+00:04:01,083 --> 00:04:07,083
+the executable path and the command-line and things of that nature, so it's kind of a tradeoff which one you
+
+43
+00:04:07,083 --> 00:04:10,083
+want to use. Do you want the one that's definitely going to fire or do you want the one that's going to give
+
+44
+00:04:10,083 --> 00:04:15,083
+you more fidelity on the data. And so, maybe you might even use both.
+
+45
+00:04:15,083 --> 00:04:20,083
+And so, in theory, there's more going on in the background, but netcat or PowerCat only will capture one
+
+46
+00:04:20,083 --> 00:04:22,083
+packet at a time.
+
+47
+00:04:22,083 --> 00:04:28,083
+Alright. How am I doing on time? I'm over, but. Alright, we'll skip over this part.
+
+48
+00:04:28,083 --> 00:04:34,083
+In general, you can also enumerate WMI event subscriptions using WMI event, so you could do like
+
+49
+00:04:34,083 --> 00:04:38,083
+Get-WmiEventFilter, Get-NTEventLogEventConsumer, so on and so forth.
+
+50
+00:04:38,083 --> 00:04:45,083
+That's pretty simple. Okay, so we also created a Register-PermanentWmiEvent to where literally everything is
+
+51
+00:04:45,083 --> 00:04:53,083
+done from one cmdlet, and so if we show the help of this, again tons of parameter sets, so you've got to kind of
+
+52
+00:04:53,083 --> 00:04:56,083
+figure out how you want to use it and what.
+
+53
+00:04:56,083 --> 00:04:57,083
+(Audience comment)
+
+54
+00:04:57,083 --> 00:05:03,083
+Yeah, yeah. June, please help. And so what we're doing here is we're creating a, we're going to be splatting
+
+55
+00:05:03,083 --> 00:05:08,083
+again, so we have a Name and MyFirstSubscription, EventNamespace root\cimv2, Query SELECT* From
+
+56
+00:05:08,083 --> 00:05:15,083
+_InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA Win32_Process and then we're doing query language WQL.
+
+57
+00:05:15,083 --> 00:05:20,083
+In this case, we're using a LogFileEventConsumer, so Register-PermanentWmiEvent has access to use all
+
+58
+00:05:20,083 --> 00:05:27,083
+different event consumer types, and so we're going to write a file called temp\test.log and we're going to
+
+59
+00:05:27,083 --> 00:05:32,083
+anytime a process is created, we're going to write that TargetInstance to that log.
+
+60
+00:05:32,083 --> 00:05:34,083
+Does it automatically append?
+
+61
+00:05:34,083 --> 00:05:42,083
+Yes, yep. Alright, so that's been created all in one-fail swoop.
+
+62
+00:05:42,083 --> 00:05:52,083
+We can show that we have the event filter, whoops, there, let's see, and we have the event consumer.
+
+63
+00:05:52,083 --> 00:05:58,083
+So now what I could do is start some random process called Notepad, right, that's a good example.
+
+64
+00:05:58,083 --> 00:06:02,083
+We'll leave that running for now because remember this is an intrinsic event, so we need it to stay running
+
+65
+00:06:02,083 --> 00:06:08,083
+for a bit, and then hopefully this file has been created already, but we're just going to get content, and so here's
+
+66
+00:06:08,083 --> 00:06:15,083
+the contents, there's been a few processes created, right, and so Notepad.exe, scrcons.exe, which is an
+
+67
+00:06:15,083 --> 00:06:22,083
+artifact of that ActiveScriptEventConsumer run-in. So that scrcons.exe is going to actually execute that VB script
+
+68
+00:06:22,083 --> 00:06:30,083
+in the ActiveScriptEventConsumer and it does some work to like batch up those ActiveScriptEventConsumer hits.
+
+69
+00:06:30,083 --> 00:06:34,083
+And then like wmiPrvSe.exe was running as well.
+
+70
+00:06:34,083 --> 00:06:39,083
+And you could filter for those particular ones that you know were not a problem and are likely…?
+
+71
+00:06:39,083 --> 00:06:40,083
+Yeah, exactly.
+
+72
+00:06:40,083 --> 00:06:41,083
+Absolutely, yeah.
+
+73
+00:06:41,083 --> 00:06:42,083
+You could build that in too.
+
+74
+00:06:42,083 --> 00:06:46,083
+And so that's where you would want to like store off your filter so that you don't have to constantly remember
+
+75
+00:06:46,083 --> 00:06:55,083
+how to type that entire thing. Alright. So there's that. Alright, one last thing before we're done is so
+
+76
+00:06:55,083 --> 00:07:01,083
+when I'm deploying out let's say 20 signatures at a time, I don't necessarily want to sit there and type out
+
+77
+00:07:01,083 --> 00:07:06,083
+Register-PermanentWmiEventSubscription and let me do this and let me do that one, and so on and so forth.
+
+78
+00:07:06,083 --> 00:07:14,083
+So we created this concept called like Signature Files, and so what it is it's literally like a custom object
+
+79
+00:07:14,083 --> 00:07:18,083
+that's going to have a FilterName, a ConsumerName, and a ConsumerType.
+
+80
+00:07:18,083 --> 00:07:24,083
+This is assuming that in the filter's directory within the uproot module, you have a filter named
+
+81
+00:07:24,083 --> 00:07:29,083
+EXT-ProcessCreateMethod and in the consumer's directory in the Uproot module, you have an
+
+82
+00:07:29,083 --> 00:07:34,083
+Nt_ProcessCreateMethod, so there's a little bit of overhead here. It's not just going to magically do it for you.
+
+83
+00:07:34,083 --> 00:07:40,083
+But that subscription is already defined out. I think there's like 12 subscriptions and all I have to do is
+
+84
+00:07:40,083 --> 00:07:46,083
+say Install-UprootSignature -SigFile EventLog and this will, the SigFiles are in the Signature directory in
+
+85
+00:07:46,083 --> 00:07:52,083
+the Uproot module, and so I could, let's see, I have two Basic and EventLogs, so there's like a dynamic parameter,
+
+86
+00:07:52,083 --> 00:08:01,083
+which will look up your SigFiles for you, and when you run that, fingers crossed, oh well let me clear out everything.
+
+87
+00:08:01,083 --> 00:08:15,083
+Now you get to see Get-WmiEventConsumer and Remove-CimInstance, so this is how you kill off the ones that you already have.
+
+88
+00:08:15,083 --> 00:08:23,083
+I've done this a lot recently if you can't tell. Alright, and then we're going to re-run that, install, fingers crossed.
+
+89
+00:08:23,083 --> 00:08:27,083
+Okay, so now it all installed. It kind of looks like it didn't do anything, but we could do
+
+90
+00:08:27,083 --> 00:08:34,083
+Get-WmiEventFilter and there's 12-ish filters there, right, it's all just kind of magic,
+
+91
+00:08:34,083 --> 00:08:41,083
+Get-WmiEventSubscription and we see all see all the different subscriptions, so we can enumerate that.
+
+92
+00:08:41,083 --> 00:08:44,083
+And that is the end of my presentation.
+
+93
+00:08:44,083 --> 00:08:48,083
+If anybody has any questions, I think it's lunch time, so I'm really to stay around and answer any questions
+
+94
+00:08:48,083 --> 00:08:51,083
+anybody has and get in more depth.
+
+95
+00:08:51,083 --> 00:08:52,083
+Yeah, we'll take them offline. Thank you.
+
+96
+00:08:52,083 --> 00:59:59,999
+Cool.
+

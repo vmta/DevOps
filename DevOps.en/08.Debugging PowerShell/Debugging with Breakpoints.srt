@@ -1,0 +1,260 @@
+1
+00:00:00,5 --> 00:00:05,466
+Okay, so some debugging with breakpoints. Let me show you something really quick here.
+
+2
+00:00:05,466 --> 00:00:17,466
+I'm going to put a breakpoint and I run this. Okay, so I'm on a breakpoint right now and the breakpoint I'm
+
+3
+00:00:17,466 --> 00:00:22,466
+on is the first line in my script on Get-Service. When you're dealing with breakpoints, most people think of
+
+4
+00:00:22,466 --> 00:00:27,466
+in ISE these visual breakpoints where you go to a line and you just hit F9 to turn on a breakpoint and then
+
+5
+00:00:27,466 --> 00:00:31,466
+F5 to run your script and you work with the breakpoint from there.
+
+6
+00:00:31,466 --> 00:00:37,466
+And that's really useful and there are some things that you should know that you can do, so once you're on a
+
+7
+00:00:37,466 --> 00:00:42,466
+breakpoint, excuse me, and these work for on the PowerShell native console, as well, so if you're in server
+
+8
+00:00:42,466 --> 00:00:46,466
+core where you don't have ISE or just in some environment where you are working on the command-line,
+
+9
+00:00:46,466 --> 00:00:50,466
+you can still have breakpoints and look around and do debugging without it.
+
+10
+00:00:50,466 --> 00:00:55,466
+So you can use L to take a look at where you are and you can see the asterisk on the left-hand side showing
+
+11
+00:00:55,466 --> 00:01:02,466
+you where you're at. You can do, what are the other commands I want to show, K, the call stack, in this case,
+
+12
+00:01:02,466 --> 00:01:08,466
+there's only one call, but it's very useful to figure out which commands were invoked to get me to this point.
+
+13
+00:01:08,466 --> 00:01:13,466
+You can run H to see a list of all the commands I can run while I'm in the debugger and these are good to
+
+14
+00:01:13,466 --> 00:01:19,466
+learn and practice, especially stepInto, stepOver, and stepOut, knowing how those work.
+
+15
+00:01:19,466 --> 00:01:23,466
+StepInto will go into a function if you're calling the function, so you debug inside that function.
+
+16
+00:01:23,466 --> 00:01:29,466
+StepOut will if you're in a function because you stepped in accidentally, and you think I'm done debugging here,
+
+17
+00:01:29,466 --> 00:01:35,466
+I want to go up one level, it'll just run the rest of that code and then continue debugging at the next line
+
+18
+00:01:35,466 --> 00:01:41,466
+after the function call outside of the function. And stepOver is basically saying I don't want to go in this function.
+
+19
+00:01:41,466 --> 00:01:45,466
+I'm debugging something at the level I'm in right now, so that's where you stepOver.
+
+20
+00:01:45,466 --> 00:01:49,466
+So those are really useful, as well as continue basically says let it running or quit, I'm done debugging and
+
+21
+00:01:49,466 --> 00:01:57,466
+I want to stop debugging altogether. So learning how these commands work can be really helpful when you're debugging.
+
+22
+00:01:57,466 --> 00:02:01,466
+And there's also shortcuts, so if you're in ISE, you can learn shortcuts up here in the Debug menu,
+
+23
+00:02:01,466 --> 00:02:07,466
+F10, F11, Shift+F11, all of these, or of course, you can use the menu items if you like.
+
+24
+00:02:07,466 --> 00:02:16,466
+Yes. Have you heard of any way to automatically skip over like certain funky calls that you always wanted more?
+
+25
+00:02:16,466 --> 00:02:21,466
+Like say you have a log line and you log XML, but you never want to actually step into that and debug it,
+
+26
+00:02:21,466 --> 00:02:26,466
+you just want to always skip over that? So there is a property or it's an attribute.
+
+27
+00:02:26,466 --> 00:02:31,466
+So inside of a function, do you own the code? Okay, so if you own the code, at the very top of your function,
+
+28
+00:02:31,466 --> 00:02:39,466
+put System.Diagnostics.DebuggerHidden open bracket, close bracket inside of square brackets because it's an attribute.
+
+29
+00:02:39,466 --> 00:02:42,466
+You put that at the top and the debugger is going to totally ignore it.
+
+30
+00:02:42,466 --> 00:02:46,466
+It won't step in if you want it to. Thank you. You're welcome.
+
+31
+00:02:46,466 --> 00:02:53,466
+So, great question. So alright, working with debugger on these breakpoints is useful, but there are other
+
+32
+00:02:53,466 --> 00:02:57,466
+things you can do beyond the built-in breakpoints support in PowerShell that are kind of fun.
+
+33
+00:02:57,466 --> 00:03:02,466
+So I have this module called DebugPX, so I'm going to import it.
+
+34
+00:03:02,466 --> 00:03:08,466
+And now that I've imported it, I can just run Enter-Debugger and I'm in the debugger.
+
+35
+00:03:08,466 --> 00:03:12,466
+Or I can use BP or breakpoint because those are aliases for the command.
+
+36
+00:03:12,466 --> 00:03:19,466
+So I can now, maybe I've been working on a system where I don't have PowerShell ISE, but I have Notepad
+
+37
+00:03:19,466 --> 00:03:24,466
+because I'm on server core and I'm debugging something and I don't want to do line breakpoints because I don't
+
+38
+00:03:24,466 --> 00:03:31,466
+want to count where lines are, but I have the code. I can crack open my ps1 file in Notepad, type in breakpoint,
+
+39
+00:03:31,466 --> 00:03:35,466
+and then save the file, and then run it, and that'll be the debugger on that breakpoint.
+
+40
+00:03:35,466 --> 00:03:41,466
+And that's only if you're using DebugPX because that's part of the code that I've written and I've managed my own modules.
+
+41
+00:03:41,466 --> 00:03:45,466
+And it's the same the debugger as everything, right. So I can still look around, I can still get the help
+
+42
+00:03:45,466 --> 00:03:53,466
+information, it's just another way to enter the debugger. So now let me quit out of the debugger.
+
+43
+00:03:53,466 --> 00:03:58,466
+So yeah, BP's an alias. This one's kind of cool. It works in pipelines.
+
+44
+00:03:58,466 --> 00:04:03,466
+So if you're debugging something in the middle of it and you want to stop during the pipeline process,
+
+45
+00:04:03,466 --> 00:04:08,466
+you can just inject this breakpoint or enter debugger command right in the middle and that'll do it,
+
+46
+00:04:08,466 --> 00:04:14,466
+and you can also do it conditionally. So in this line right here, breakpoint, I'm going to stop when I'm on
+
+47
+00:04:14,466 --> 00:04:20,466
+the Windows update service in this pipeline. So I can run that and it runs through all my what ifs and then
+
+48
+00:04:20,466 --> 00:04:26,466
+when I hit Windows update, it stops. So if you're looking for some obscure conditions that happen in a pipeline,
+
+49
+00:04:26,466 --> 00:04:31,466
+this can be really useful in figuring out and stopping at that point in time because something actually
+
+50
+00:04:31,466 --> 00:04:38,466
+happened that you were waiting for. Oh, and they can also have reminder texts.
+
+51
+00:04:38,466 --> 00:04:43,466
+So sometimes you might have a situation that happens once in a while, really, really weird.
+
+52
+00:04:43,466 --> 00:04:48,466
+You can't figure it out. It's just a bug that shows up on three or four machines in your environment and
+
+53
+00:04:48,466 --> 00:04:51,466
+it's really, really just infrequent and you don't know what's going on.
+
+54
+00:04:51,466 --> 00:04:58,466
+Well you can put in those scripts if you wanted to, you can put a breakpoint with the condition basically
+
+55
+00:04:58,466 --> 00:05:05,466
+being that weird condition that you're looking for, and some message saying just notifying the person when it actually happens.
+
+56
+00:05:05,466 --> 00:05:11,466
+So if I run this, then I get this text BREAKPOINT ZOMG, it happened, to let me know.
+
+57
+00:05:11,466 --> 00:05:17,466
+You know, it could be call Kirk Munro because it's the issue he was looking for and then I can actually
+
+58
+00:05:17,466 --> 00:05:23,466
+troubleshoot and debug and see what's going on. So for weird stuff, that's kind of handy.
+
+59
+00:05:23,466 --> 00:05:26,466
+I don't use that often, but once in a while it can help.
+
+60
+00:05:26,466 --> 00:05:29,466
+Oh, and also all these breakpoint commands work in unsaved files.
+
+61
+00:05:29,466 --> 00:05:33,466
+They work if you're using F8, and of course, this is all PowerShell V3 or later.
+
+62
+00:05:33,466 --> 00:05:38,466
+PowerShell V5 has a wait debugger command, which is slightly different from this Enter debugger command that
+
+63
+00:05:38,466 --> 00:05:44,466
+I wrote a while back. There are some pros and cons to both. They do some things I don't do with jobs.
+
+64
+00:05:44,466 --> 00:05:49,466
+I do some things they don't do with conditional breakpointing, and messaging, and pipelining, and stuff,
+
+65
+00:05:49,466 --> 00:59:59,999
+so they both are complimentary and you can zoom both with version 5 if you like, as well.
+

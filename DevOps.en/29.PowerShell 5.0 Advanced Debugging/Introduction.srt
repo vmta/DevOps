@@ -1,0 +1,244 @@
+1
+00:00:12,12 --> 00:00:18,18
+My name is Paul Higinbotham. I'm here to talk about PowerShell Advanced Debugging.
+
+2
+00:00:18,18 --> 00:00:23,23
+Welcome.
+
+3
+00:00:23,23 --> 00:00:32,32
+I'm a software developer on the Microsoft PowerShell core team, so there's my contact information.
+
+4
+00:00:32,32 --> 00:00:38,38
+Feel free to contact me. I've been working on the PowerShell team for almost six years now,
+
+5
+00:00:38,38 --> 00:00:44,44
+which interestingly makes me still kind of a newbie. PowerShell has been around for a long time.
+
+6
+00:00:44,44 --> 00:00:49,49
+A lot of people on the team have been there for 10 years or more.
+
+7
+00:00:49,49 --> 00:00:59,59
+One of my areas that I work on in PowerShell responsibility for is remoting, some of the debugging stuff,
+
+8
+00:00:59,59 --> 00:01:09,69
+workflow, actually a lot of different areas, but mostly PowerShell remoting and remoting related systems.
+
+9
+00:01:09,69 --> 00:01:17,77
+So what I want to talk about today is more advanced scenarios in PowerShell script debugging.
+
+10
+00:01:17,77 --> 00:01:24,84
+This slide is really just about motivation. When you have script that's just not working, there's a lot of
+
+11
+00:01:24,84 --> 00:01:28,88
+ways you can diagnose it and try to figure out what's going on and fix it.
+
+12
+00:01:28,88 --> 00:01:33,93
+A lot of times you get away with just looking at script output, verbose output, trying to figure out what's
+
+13
+00:01:33,93 --> 00:01:37,97
+going on with your script and sometimes you can fix it at that point.
+
+14
+00:01:37,97 --> 00:01:43,103
+But really, a lot of the times, what you really would like to do is just get a debugger on it, a script debugger
+
+15
+00:01:43,103 --> 00:01:49,109
+and PowerShell actually has a pretty nice script debugger that you can use to break into script,
+
+16
+00:01:49,109 --> 00:01:58,118
+step through script, set breakpoints, that sort of thing. But traditionally, it only works for interactive
+
+17
+00:01:58,118 --> 00:02:07,127
+scripts, scripts that you run in the ISE or in the console. But PowerShell is a pretty capable platform and
+
+18
+00:02:07,127 --> 00:02:12,132
+allows you to create and run scripts that are not being run interactively.
+
+19
+00:02:12,132 --> 00:02:19,139
+They can be run as background scripts, they can be run as part of an application that hosts PowerShell and
+
+20
+00:02:19,139 --> 00:02:24,144
+these are more complex scenarios where you can have complex script.
+
+21
+00:02:24,144 --> 00:02:30,150
+I think we'd like to debug, like have a debugger on it and be able to step through the script, but previously,
+
+22
+00:02:30,150 --> 00:02:37,157
+that just was not possible. You can only debug the script if you were running with an ISE.
+
+23
+00:02:37,157 --> 00:02:42,162
+So anyway, this talk about how to use some of the new PowerShell Version 5 features for debugging these more
+
+24
+00:02:42,162 --> 00:02:53,173
+difficult scenarios, and of course, one of the great examples is DSC script resources, so that'll be one of the demos.
+
+25
+00:02:53,173 --> 00:03:00,180
+So live debugging goal. What you want to do when you want to put a debugger on script.
+
+26
+00:03:00,180 --> 00:03:05,185
+Basically the script is not working, you want to find the issue that's breaking your script code,
+
+27
+00:03:05,185 --> 00:03:15,195
+fix a problem, and move on, and usually the first step is trying to get debugger onto your script.
+
+28
+00:03:15,195 --> 00:03:20,200
+And again, as I mentioned before, debugging interactive scripts is really easy and PowerShell, you open the
+
+29
+00:03:20,200 --> 00:03:27,207
+script file in ISE, set line breakpoints, you run the script, you step through it, you can see what's going
+
+30
+00:03:27,207 --> 00:03:29,209
+on, so that's really nice.
+
+31
+00:03:29,209 --> 00:03:35,215
+But debugging non-interactive scripts is more difficult, actually it was impossible until version 5,
+
+32
+00:03:35,215 --> 00:03:38,218
+and these kind of scripts are like background running scripts. PowerShell
+
+33
+00:03:38,218 --> 00:03:50,230
+has a rich set of APIs that let you create scripts that can run concurrently, that can run in the background very easily.
+
+34
+00:03:50,230 --> 00:03:55,235
+It's not running in the ISE or in the console, so how do you debug something like that.
+
+35
+00:03:55,235 --> 00:04:01,241
+Some examples of that are you can have like a custom management tool that's based on PowerShell and
+
+36
+00:04:01,241 --> 00:04:10,250
+PowerShell scripts, WinRM remote host when you do PowerShell remoting, WinRM creates a process that hosts
+
+37
+00:04:10,250 --> 00:04:18,258
+PowerShell, and within that, runs the script remotely on a remote machine for you, so that's just an example
+
+38
+00:04:18,258 --> 00:04:24,264
+of how PowerShell can be hosted in a process. And then, of course, the most complex scenario is the
+
+39
+00:04:24,264 --> 00:04:30,270
+DSC configuration scripts when they run. They run on a,
+
+40
+00:04:30,270 --> 00:04:38,278
+usually on a different computer in some kind of a hosting process inside a runspace, and if you have DSC
+
+41
+00:04:38,278 --> 00:04:42,282
+configuration script that's not working correctly, how do you debug that?
+
+42
+00:04:42,282 --> 00:04:47,287
+Preferably like bugger in the context on which it runs. I mean a lot of times you're developing probably your
+
+43
+00:04:47,287 --> 00:04:54,294
+configuration scripts in some kind of a mock up on your dev machine works fine, but then when you deploy it
+
+44
+00:04:54,294 --> 00:04:59,299
+onto another machine, it's not working. So what we would really like to do is be able to put a debugger on
+
+45
+00:04:59,299 --> 00:05:04,304
+that live session and debug that script in that context.
+
+46
+00:05:04,304 --> 00:05:10,310
+So the main concept for advanced debugging, I think, is redirection.
+
+47
+00:05:10,310 --> 00:05:16,316
+The whole idea is putting a debugger on the script that's running is basically you have ISE on your dev computer
+
+48
+00:05:16,316 --> 00:05:21,321
+and you want to point that or redirect that to where the script is running and debug it.
+
+49
+00:05:21,321 --> 00:05:29,329
+And there's like three cmdlets that conform to this redirection paradigm, one is Enter-PSSession,
+
+50
+00:05:29,329 --> 00:05:36,336
+that's actually a cmdlet that's been around since version 2 and that's how you do remoting, interactive remoting.
+
+51
+00:05:36,336 --> 00:05:42,342
+You would Enter-PSSession and you're basically redirecting the command-line to a remote machine.
+
+52
+00:05:42,342 --> 00:05:47,347
+So when you type in the command-line, it's being executed on the remote machine and then of course,
+
+53
+00:05:47,347 --> 00:05:55,355
+output's going back into the console. But what's new for v5 is two new cmdlets.
+
+54
+00:05:55,355 --> 00:05:56,356
+One is called Enter-PSHostProcess
+
+55
+00:05:56,356 --> 00:06:05,365
+and what that does is that allows you to redirect the command-line to a local process on your machine and
+
+56
+00:06:05,365 --> 00:06:10,370
+that can work within a remote session, so you can connect to a remote machine, and then on that remote machine,
+
+57
+00:06:10,370 --> 00:06:15,375
+you can connect to any process that's hosting PowerShell, and then when you execute commands,
+
+58
+00:06:15,375 --> 00:06:19,379
+it's actually executing in that environment.
+
+59
+00:06:19,379 --> 00:06:26,386
+And then the third thing is, third cmdlet, is called Debug-Runspace and what Debug-Runspace does is basically
+
+60
+00:06:26,386 --> 00:06:31,391
+redirect the debugger. It points the debugger at a particular runspace
+
+61
+00:06:31,391 --> 00:59:59,999
+that's executing the script, and so then you can debug that script in that context.
+

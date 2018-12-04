@@ -1,0 +1,252 @@
+1
+00:00:00,0 --> 00:00:06,319
+So today it's only GitHub that we directly integrate with. I have some sample PowerShell out there that allows
+
+2
+00:00:06,319 --> 00:00:12,319
+you to basically connect to local.get, to TFS online, and you could basically use any kind of source
+
+3
+00:00:12,319 --> 00:00:18,319
+control you want and it basically just runs and I can share that later if you like.
+
+4
+00:00:18,319 --> 00:00:22,319
+Yeah, I've been on the online system, TFS is already showing up with coming soon.
+
+5
+00:00:22,319 --> 00:00:33,319
+I know. It's coming I would assume is the keyword there. It is coming, but we don't have a date on it yet,
+
+6
+00:00:33,319 --> 00:00:40,319
+but there are some ways to do it today. I actually have a little script that just runs and does that automatically.
+
+7
+00:00:40,319 --> 00:00:44,319
+There's lots of ways to do it, especially with our web host. But yeah, we're going to try to make the integration tighter.
+
+8
+00:00:44,319 --> 00:00:47,319
+(Audience comment)
+
+9
+00:00:47,319 --> 00:00:49,319
+Yeah.
+
+10
+00:00:49,319 --> 00:00:58,319
+(Audience question)
+
+11
+00:00:58,319 --> 00:01:03,319
+So today we store them and it's kind of a similar type of thing to the key vault, but we have our own store,
+
+12
+00:01:03,319 --> 00:01:08,319
+a secure store in the back-end that we use, and then we put them out as needed at runtime.
+
+13
+00:01:08,319 --> 00:01:14,319
+You could use key vault cmdlets if you want to store them there and then at runtime pull them into your script
+
+14
+00:01:14,319 --> 00:01:20,319
+if you didn't want us to store them, but it's a very similar back-end security model we have on key vault.
+
+15
+00:01:20,319 --> 00:01:30,319
+(Audience comment)
+
+16
+00:01:30,319 --> 00:01:37,319
+No you won't. So the question was if you wanted to sync with your local.get or your local source TFS,
+
+17
+00:01:37,319 --> 00:01:42,319
+does that mean we have to open up a bunch of ports so that we can connect to it to pull out those committed
+
+18
+00:01:42,319 --> 00:01:48,319
+runbooks and scripts. And you don't and the one way you don't have to do it is I kind of showed it, but I didn't
+
+19
+00:01:48,319 --> 00:01:53,319
+talk about it while I was. We have a hybrid worker in our service, and so what the hybrid worker does,
+
+20
+00:01:53,319 --> 00:01:59,319
+you can deploy this into your own environment on-premises and then it reaches out for work, so it's only
+
+21
+00:01:59,319 --> 00:02:04,319
+outbound ports that it has to go, so there's no holes being punched into your firewall, it's just an outbound
+
+22
+00:02:04,319 --> 00:02:12,319
+port you have to open and then that's how you can actually sync everything up and then send it up to there.
+
+23
+00:02:12,319 --> 00:02:16,319
+Okay, so let me just kind of, I know I flew by a little bit on that, but I just wanted to level set everyone.
+
+24
+00:02:16,319 --> 00:02:20,319
+Hopefully, you got a view for what we offer, but it really comes down to these major areas.
+
+25
+00:02:20,319 --> 00:02:21,319
+I won't go through each one,
+
+26
+00:02:21,319 --> 00:02:27,319
+but obviously everything's through the browser, so you can access it anywhere so all of the user experience,
+
+27
+00:02:27,319 --> 00:02:31,319
+all the authoring you can do up there in the browser as well. I might show that later.
+
+28
+00:02:31,319 --> 00:02:36,319
+We have full role-based access control, so if you want to say only certain parts of your organization have
+
+29
+00:02:36,319 --> 00:02:41,319
+access and certain automation accounts, you can actually assign an operator role and they can just execute
+
+30
+00:02:41,319 --> 00:02:46,319
+stuff in there. They can't actually modify, look at any of the credentials, do any of that.
+
+31
+00:02:46,319 --> 00:02:49,319
+Similarly, you saw some of the source control versioning work that we we've done.
+
+32
+00:02:49,319 --> 00:02:54,319
+From the authoring, we have two ways, this is the PowerShell summit, but we also offer graphical authoring if
+
+33
+00:02:54,319 --> 00:02:58,319
+you want to use that, and you can use graphical authoring with PowerShell and vice versa.
+
+34
+00:02:58,319 --> 00:03:03,319
+But obviously, we have an authoring experience for PowerShell directly in the browser as well.
+
+35
+00:03:03,319 --> 00:03:06,319
+So if you want to do authoring in there and you're on the road and you need to fix something up,
+
+36
+00:03:06,319 --> 00:03:11,319
+you can directly do it inside the browser, and test it, and then deploy it.
+
+37
+00:03:11,319 --> 00:03:15,319
+I didn't jump on the gallery. I think we may show that later, but we have a gallery experience that we can integrate with.
+
+38
+00:03:15,319 --> 00:03:18,319
+This allows you to pull all of your modules from PowerShell Gallery.
+
+39
+00:03:18,319 --> 00:03:24,319
+Everything's going to PowerShell Gallery, so if stuff isn't up there that you need, either please right it
+
+40
+00:03:24,319 --> 00:03:28,319
+yourself and upload it or ask us and we'll try to upload it as well, but everything we're doing is building
+
+41
+00:03:28,319 --> 00:03:33,319
+upon PowerShell Gallery as the kind of the source and the community content that's up there, so we don't want
+
+42
+00:03:33,319 --> 00:03:37,319
+to trade another one because there's such a huge ecosystem around it already.
+
+43
+00:03:37,319 --> 00:03:43,319
+And he says modules on the PowerShell Gallery, but we also have scripts up on the PowerShell Gallery as well,
+
+44
+00:03:43,319 --> 00:03:49,319
+and so if you've just written kind of a quick script or workflow or something like that, you'll be able to pull
+
+45
+00:03:49,319 --> 00:03:51,319
+that down from the gallery as well.
+
+46
+00:03:51,319 --> 00:03:54,319
+Yeah, it just got added the script read to recently, so it's another way in.
+
+47
+00:03:54,319 --> 00:03:58,319
+We're going to kind of do first class integration with that very soon.
+
+48
+00:03:58,319 --> 00:04:02,319
+I won't go through the runbook engine. You can probably imagine, but everything is built, so we run all of this
+
+49
+00:04:02,319 --> 00:04:05,319
+security and isolate it in the back-end for you.
+
+50
+00:04:05,319 --> 00:04:11,319
+So we basically create a host that you can run all your PowerShell in the service and it can scale as many as
+
+51
+00:04:11,319 --> 00:04:16,319
+you want, it's resilient, it can failover, you can specify which regions, all of that kind of capability,
+
+52
+00:04:16,319 --> 00:04:21,319
+you just get for free by moving things to the service. And it has a because it's a service, you can integrate
+
+53
+00:04:21,319 --> 00:04:25,319
+it very easy. I'll show you some of the ways you can extend and integrate into the service because it has
+
+54
+00:04:25,319 --> 00:04:30,319
+REST APIs that you can integrate with, as well as obviously all of the cmdlets, which were the Azure cmdlets
+
+55
+00:04:30,319 --> 00:04:33,319
+that you can manage it.
+
+56
+00:04:33,319 --> 00:04:37,319
+The integration I talked a bit about, so I won't spend any time with that, but I mentioned earlier
+
+57
+00:04:37,319 --> 00:04:44,319
+that through the key value property of PowerShell is not just a great language, but it's because everybody
+
+58
+00:04:44,319 --> 00:04:49,319
+and a lot of our partners and competitors have really on boarded with PowerShell as the way to manage systems,
+
+59
+00:04:49,319 --> 00:04:54,319
+and not just Windows systems, but actually management systems and even clouds.
+
+60
+00:04:54,319 --> 00:04:59,319
+I don't know if any of you guys have tried the AWS module that's out there, but it's like it's pretty awesome.
+
+61
+00:04:59,319 --> 00:05:04,319
+They have like I think 700 different cmdlets for managing every single thing you could do against AWS and
+
+62
+00:05:04,319 --> 00:05:10,319
+all of that can be run inside of our service, so it really kind of shows the power of using PowerShell,
+
+63
+00:05:10,319 --> 00:59:59,999
+but the ecosystem around it, it really does allow the integration to take place.
+

@@ -1,0 +1,408 @@
+1
+00:00:13,13 --> 00:00:19,19
+Alright. Everybody, I'm Lee Holmes if we haven't met before. I've been an engineer on the PowerShell team
+
+2
+00:00:19,19 --> 00:00:25,25
+since the beginning and always been involved deeply in security.
+
+3
+00:00:25,25 --> 00:00:31,31
+So how many people here are involved in some degree of creating, creating any infrastructure,
+
+4
+00:00:31,31 --> 00:00:36,36
+creating any software, creating any websites, do any of that DevOps stuff.
+
+5
+00:00:36,36 --> 00:00:40,40
+Okay, so everybody, you know, we're involved with creating stuff.
+
+6
+00:00:40,40 --> 00:00:45,45
+That's what we do day to day. Now when you start talking about creating stuff, you're going to be really
+
+7
+00:00:45,45 --> 00:00:52,52
+happy at the end of I created this thing, it's beautiful, put it up on the web, it's so shiny, and you call
+
+8
+00:00:52,52 --> 00:00:56,56
+your mom, it's like hey mom take a look at this. I've got stuff on the web and she comes and takes a look at
+
+9
+00:00:56,56 --> 00:01:08,68
+it and she goes why does it say hacked by Russia? So the thing is, as happy as we are to create new stuff,
+
+10
+00:01:08,68 --> 00:01:13,73
+other people are just as happy of breaking new stuff. When we're creating new stuff, we've got to keep in
+
+11
+00:01:13,73 --> 00:01:19,79
+mind that there's another side than just the glorious creating of new things.
+
+12
+00:01:19,79 --> 00:01:25,85
+There's also making sure that the new stuff that you create doesn't become the next newspaper headline.
+
+13
+00:01:25,85 --> 00:01:32,92
+So we're going to talk about how you define and how you design software infrastructures and components and
+
+14
+00:01:32,92 --> 00:01:40,100
+designs that are robust and able to prevent some of these attacks that you keep on hearing about.
+
+15
+00:01:40,100 --> 00:01:47,107
+Now the key for doing this is called assume breach. If you were at Jared's talk just before, he talked about
+
+16
+00:01:47,107 --> 00:01:53,113
+part of his job is customers. He comes in and helps them find attackers on their network.
+
+17
+00:01:53,113 --> 00:02:01,121
+Now we used to be in this place of designing software where we said we're going to set up this really strict,
+
+18
+00:02:01,121 --> 00:02:07,127
+strict wall on the outside. We're going to put up a web server and we're going to have like people with AKs
+
+19
+00:02:07,127 --> 00:02:12,132
+like watching for everybody to come and were going to just like lock that down and that's about where we
+
+20
+00:02:12,132 --> 00:02:21,141
+think we're done. Where we have to move, it is absolutely impossible to truly, truly defend that boundary.
+
+21
+00:02:21,141 --> 00:02:26,146
+Where we have to move when it comes to software design is assume breach.
+
+22
+00:02:26,146 --> 00:02:33,153
+Assume that people will come in and then take steps to design your architecture in such a way, design your systems
+
+23
+00:02:33,153 --> 00:02:39,159
+in such a way that you can limit the damage that happens from that breach.
+
+24
+00:02:39,159 --> 00:02:45,165
+Now you're saying Lee, you've got cars up here, so let's talk about cars.
+
+25
+00:02:45,165 --> 00:02:51,171
+There is a company or there this is an institute out there, a non-profit institute called the Institute for Highway Safety.
+
+26
+00:02:51,171 --> 00:02:58,178
+It's actually driven by insurance companies. It's non-profit and they look at real data in the real world
+
+27
+00:02:58,178 --> 00:03:05,185
+about how people are getting impacted in terms of collisions and everything else, so they obviously work to
+
+28
+00:03:05,185 --> 00:03:11,191
+reduce the number of collisions, so making day time running lights and that kind of thing.
+
+29
+00:03:11,191 --> 00:03:19,199
+But what's important is that they also constitute and they consider the crash scenarios.
+
+30
+00:03:19,199 --> 00:03:25,205
+They want to make sure that when the crash actually does happen that you're more safe than you were before,
+
+31
+00:03:25,205 --> 00:03:34,214
+that you're more likely to survive one of these crashes. So they were funded in 1959 and they've been doing
+
+32
+00:03:34,214 --> 00:03:36,216
+some work since then.
+
+33
+00:03:36,216 --> 00:03:44,224
+Now they have a couple tests. So you tend to see the straight head-on crashes, two cars smashing together.
+
+34
+00:03:44,224 --> 00:03:49,229
+They found through data that that's not really the kind of crash that happens.
+
+35
+00:03:49,229 --> 00:03:55,235
+What often happens is they call it the overlap test, so you really have two cars, maybe they're going head on,
+
+36
+00:03:55,235 --> 00:04:00,240
+but at that last minute they swerve and they only crash 40% of the bumpers.
+
+37
+00:04:00,240 --> 00:04:06,246
+They've found also that there's another type of crashes where people just like drift a little bit in their
+
+38
+00:04:06,246 --> 00:04:12,252
+lanes and they have a very, very small overlap in their crash, so 25%.
+
+39
+00:04:12,252 --> 00:04:19,259
+Maybe they hit a telephone pole or a tree. They, of course, they do side crashes, rear impacts, things like that.
+
+40
+00:04:19,259 --> 00:04:26,266
+So these are the kind of things that they test for and see how well vehicles survive.
+
+41
+00:04:26,266 --> 00:04:28,268
+Now in 2009,
+
+42
+00:04:28,268 --> 00:04:37,277
+they marked their 50 year anniversary. They crashed a 1959 Chevrolet Bel Air, which was a regular car at the
+
+43
+00:04:37,277 --> 00:04:46,286
+time, with a 2009 Chevrolet Malibu, which was a pretty good performing car in terms of crashes.
+
+44
+00:04:46,286 --> 00:04:56,296
+So this is what 50 years of assume crash brings you in a world where people's lives are in danger.
+
+45
+00:04:56,296 --> 00:05:02,302
+So you got the red team at the left, crash! This looks brutal. You never want to see this.
+
+46
+00:05:02,302 --> 00:05:09,309
+Both cars look like they've been destroyed. You see the front ends completely crumbling, bits and pieces everywhere.
+
+47
+00:05:09,309 --> 00:05:16,316
+This is going to be a bad traffic day. What you see here on the right, the Bel Air, this is where it gets interesting.
+
+48
+00:05:16,316 --> 00:05:23,323
+Not only the front crumple zone collapse, but so did the entire passenger compartment.
+
+49
+00:05:23,323 --> 00:05:32,332
+Now if you take a look from the side of the driver, no seatbelts, no airbags, steering column comes right at him.
+
+50
+00:05:32,332 --> 00:05:36,336
+He's not being protected by anything in the assume crash mentality.
+
+51
+00:05:36,336 --> 00:05:41,341
+If you take a look at this, they think that this probably would have been a fatal collision.
+
+52
+00:05:41,341 --> 00:05:47,347
+This is a 40 mile an hour collision. This is not that much. Now you're taking a look at the Chevrolet Malibu.
+
+53
+00:05:47,347 --> 00:05:56,356
+This is a very controlled crash. You see the airbag deploys, the persons impact and recovery within the car
+
+54
+00:05:56,356 --> 00:06:03,363
+is very well controlled. What they found is that this person probably suffered a minor foot injury.
+
+55
+00:06:03,363 --> 00:06:08,368
+So when you take the assume breach mentality, so the assume crash mentality, when you go from just this idea
+
+56
+00:06:08,368 --> 00:06:13,373
+of hardening the outside to you know what crashes are going to happen,
+
+57
+00:06:13,373 --> 00:06:20,380
+we need to take steps to make our systems and our cars capable of remediating this.
+
+58
+00:06:20,380 --> 00:06:28,388
+Then you get from a situation of a life-ending collision at 40 miles an hour to somebody getting a minor foot injury.
+
+59
+00:06:28,388 --> 00:06:33,393
+We can do the exact same things with our systems.
+
+60
+00:06:33,393 --> 00:06:40,400
+So you see here, just cosmetically at the top, they look pretty bad, but take a look at the passenger compartments.
+
+61
+00:06:40,400 --> 00:06:49,409
+The Malibu, like the door opens still. The Bel Air, you know, you're completely crushed.
+
+62
+00:06:49,409 --> 00:06:55,415
+Now an interesting thing too is they just started the small frontal overlap testing, 2012 they introduced
+
+63
+00:06:55,415 --> 00:07:03,423
+this getting new data that these are very dangerous collisions. There were some poor performers.
+
+64
+00:07:03,423 --> 00:07:08,428
+When they started crashing cars with the small overlap, a lot of fatal injuries.
+
+65
+00:07:08,428 --> 00:07:15,435
+In only two years, they started doing some research. What are some of these cars doing that are making these
+
+66
+00:07:15,435 --> 00:07:23,443
+crashes more recoverable? So in 2014, they had a journal publication taking some common design practices
+
+67
+00:07:23,443 --> 00:07:29,449
+from the auto industry for people who had been very successful at this small frontal overlap testing.
+
+68
+00:07:29,449 --> 00:07:34,454
+They called it the stop car crash journal and it's actually the guy's name.
+
+69
+00:07:34,454 --> 00:07:38,458
+I think he was born for this because you don't want to start the mess for sure.
+
+70
+00:07:38,458 --> 00:07:45,465
+So here we're at some of the techniques they used. So nearly everybody did a bunch of reinforcement around the doorframe.
+
+71
+00:07:45,465 --> 00:07:52,472
+So obviously, when you've got a small frontal overlap, the doorframes and the car frame takes a lot of load.
+
+72
+00:07:52,472 --> 00:07:58,478
+A lot of people added a side frame that was also kind of very strict and rigid.
+
+73
+00:07:58,478 --> 00:08:02,482
+The ones that did the best integrated well with the doorframe so that there was an additional load path
+
+74
+00:08:02,482 --> 00:08:09,489
+during an impact to spread it throughout the whole frame, rather than just crumpling that front corner of the wheel well.
+
+75
+00:08:09,489 --> 00:08:13,493
+They added engagement extensions here you see at the bottom left.
+
+76
+00:08:13,493 --> 00:08:20,500
+Now the trick for these things is that these things were actually more robust to a crash than the rest of the car.
+
+77
+00:08:20,500 --> 00:08:26,506
+So this thing engages first, sends the car kind of more sideways and more of a spin, and what that ends up
+
+78
+00:08:26,506 --> 00:08:33,513
+happening is you don't have as rough of a deceleration frontally and it gets kind of sent into some side spin.
+
+79
+00:08:33,513 --> 00:08:39,519
+So everybody who was successful at this had to make sure that the side spin didn't send you out of the way
+
+80
+00:08:39,519 --> 00:08:45,525
+for avoiding the airbags themselves, but a couple kind of design principles that people could use and now
+
+81
+00:08:45,525 --> 00:08:52,532
+you started being able to see these design principles coming into other car models and doing a great job at
+
+82
+00:08:52,532 --> 00:09:00,540
+vastly improving their ability to survive one of these attacks.
+
+83
+00:09:00,540 --> 00:09:05,545
+Now we're not here obviously, we're not the auto industry. We're talking about cyber, right, cyber threats,
+
+84
+00:09:05,545 --> 00:09:13,553
+cyber intrusions, all that kind of stuff. So the Verizon Enterprise Data Breach report is really good.
+
+85
+00:09:13,553 --> 00:09:20,560
+I find it really good reading to understand the context of the industry and what are the kind of attacks that we're seeing.
+
+86
+00:09:20,560 --> 00:09:25,565
+A lot of times you're going to notice here down in the near the bottom there's the professional column.
+
+87
+00:09:25,565 --> 00:09:32,572
+That's kind of the stuff that we'll be involved with a lot. What you'll see here is cyber espionage is
+
+88
+00:09:32,572 --> 00:09:40,580
+getting a ton of the types of attacks. You also see crimeware is being used in a ton of ton of the attacks.
+
+89
+00:09:40,580 --> 00:09:44,584
+So this is kind of the thing. This is kind of like your small frontal overlap and your large overlap and
+
+90
+00:09:44,584 --> 00:09:54,594
+your side crashes. What can we do to start preventing some of these cyber-attacks and some of these crimeware attacks?
+
+91
+00:09:54,594 --> 00:09:57,597
+Now when somebody finally gets in with crimeware, what does it look like?
+
+92
+00:09:57,597 --> 00:10:06,606
+Crimeware is a pretty big thing. We call it malware, but malicious stuff ultimately get used for something else.
+
+93
+00:10:06,606 --> 00:10:12,612
+Now when somebody clicks on a malware, they get infected by malware, the malware is most commonly going to be
+
+94
+00:10:12,612 --> 00:10:17,617
+used for further command and control within that infrastructure.
+
+95
+00:10:17,617 --> 00:10:22,622
+Maybe it'll be used for a commanding control infrastructure for another attack, but it's likely that you're
+
+96
+00:10:22,622 --> 00:10:29,629
+going to have persistent interaction with an attacker. Sometimes it's used just as a denial of service,
+
+97
+00:10:29,629 --> 00:10:34,634
+bot, or a host for something else.
+
+98
+00:10:34,634 --> 00:10:42,642
+Another one here is cyber espionage. So this is like the APT kind of stuff, right, the bad actors from Canada.
+
+99
+00:10:42,642 --> 00:10:48,648
+So mostly what they're after are secrets. They get into your enterprise and they're going to be looking for
+
+100
+00:10:48,648 --> 00:10:55,655
+credentials, databases, all that kind of stuff. So we can take a look at the kind of attacks that are
+
+101
+00:10:55,655 --> 00:10:59,5
+happening in the industry and start to let this inform the way that we talk about our systems and the way we
+
+102
+00:10:59,5 --> 00:59:59,999
+consider our systems.
+

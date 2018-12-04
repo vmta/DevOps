@@ -1,0 +1,104 @@
+1
+00:00:00,0 --> 00:00:05,688
+So this is all really cool and you can do all kinds of cool stuff with PowerShell classes, but the other thing
+
+2
+00:00:05,688 --> 00:00:10,688
+that you can do is you can actually extend from .NET classes.
+
+3
+00:00:10,688 --> 00:00:21,688
+So what we could do is you could say class DoubleList and there's a nifty little thing that you can do now,
+
+4
+00:00:21,688 --> 00:00:31,688
+using namespace System.Collections.Generic. So using namespace, have you ever had to type out a really long
+
+5
+00:00:31,688 --> 00:00:37,688
+type name like that before? So what using namespace allows you to do is to not have to do that, so like if I
+
+6
+00:00:37,688 --> 00:00:47,688
+did New-object -type name, I could just do List int right? If IntelliSense ever worked.
+
+7
+00:00:47,688 --> 00:00:56,688
+And it didn't actually, he'll actually go back to that. So that works because I'm using a namespace now,
+
+8
+00:00:56,688 --> 00:01:01,688
+so it shortens all those namespaces, so this is kind of a concept that's always been in C# and vb.net where
+
+9
+00:01:01,688 --> 00:01:07,688
+you can kind of shorten namespaces without having to type it out throughout your entire script.
+
+10
+00:01:07,688 --> 00:01:13,688
+But if we wanted to actually extend from a list like that what we could say is DoubleList.
+
+11
+00:01:13,688 --> 00:01:23,688
+I think there's a bug here I was going to email people about. I'm going to actually take this again and
+
+12
+00:01:23,688 --> 00:01:27,688
+we're going to extend from that class. So now we have this DoubleList class.
+
+13
+00:01:27,688 --> 00:01:40,688
+We say new-Object DoubleList. That works because it is just a more specific version of a generic list that
+
+14
+00:01:40,688 --> 00:01:46,688
+has integer types. But let's say we wanted to double all the input as we add it to that particular list.
+
+15
+00:01:46,688 --> 00:01:55,688
+So what we're going to do with our new method and we're going to say add, we want to take an integers of some
+
+16
+00:01:55,688 --> 00:02:01,688
+value and we want to add it to the list. So there's this really cool syntax that you have to use to actually
+
+17
+00:02:01,688 --> 00:02:12,688
+get to the base class where you actually say List int this .Add value.
+
+18
+00:02:12,688 --> 00:02:21,688
+So what this actually does is it actually casts this variable into the base class' type and then calls
+
+19
+00:02:21,688 --> 00:02:26,688
+that version of Add. Otherwise, you're going to end up calling yourself and it's going to be recursive.
+
+20
+00:02:26,688 --> 00:02:35,688
+So in this case, what we want to actually do is multiply by 2. So every time I call add, call the base class'
+
+21
+00:02:35,688 --> 00:02:45,688
+version, but before we do that actually multiply it by 2. So we create a DoubleList, something like that,
+
+22
+00:02:45,688 --> 00:02:57,688
+like DL.Add 2, DL and I can see it outputs 4. So this is an example of how we can actually extend from .NET types.
+
+23
+00:02:57,688 --> 00:02:58,688
+So we can do all kinds of things like
+
+24
+00:02:58,688 --> 00:03:06,688
+I've seen examples of people extending from Windows forms controls to do new user controls, to do new Windows,
+
+25
+00:03:06,688 --> 00:03:16,688
+that kind of thing, without having to do any kind of add type stuff, so that is an example of that.
+
+26
+00:03:16,688 --> 00:59:59,999
+Alright, so now I kind of want to talk about DSC resources and why we have PowerShell classes at all.
+

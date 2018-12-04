@@ -1,0 +1,476 @@
+1
+00:00:00,0 --> 00:00:04,144
+The first demo I'm going to go through is the first domain-specific language that I wrote in PowerShell and
+
+2
+00:00:04,144 --> 00:00:08,144
+that was back in my Power GUI days. So
+
+3
+00:00:08,144 --> 00:00:15,144
+PowerGUI is a PowerShell editor from years gone by and it was created by Quest and back when I said I started
+
+4
+00:00:15,144 --> 00:00:19,144
+working on PowerShell, I was fortunate enough to hear about this team that had Quest working on this product,
+
+5
+00:00:19,144 --> 00:00:26,144
+so I changed from mapping LDAP stuff to doing PowerShell by joining the PowerGUI team and did development and
+
+6
+00:00:26,144 --> 00:00:31,144
+then evangelism, and architecture, and eventually product management before they put it on the shelf because
+
+7
+00:00:31,144 --> 00:00:36,144
+it was free and not making money for them and they didn't like that.
+
+8
+00:00:36,144 --> 00:00:42,144
+And so during that time, and there were two versions of it, there was PowerGUI and there was the VESI for
+
+9
+00:00:42,144 --> 00:00:45,144
+Virtualization EcoShell and they were both the same thing, one was just a skin version of the other.
+
+10
+00:00:45,144 --> 00:00:49,144
+How many people, by the way, know PowerGUI in the room? Great! Okay.
+
+11
+00:00:49,144 --> 00:00:53,144
+I ask it sometimes and I see like two hands and stuff, so I'm thinking oh really it's that old, but no,
+
+12
+00:00:53,144 --> 00:00:59,144
+this is cool that you guys still know about it. So yeah, so back in those days when I used to work on power packs
+
+13
+00:00:59,144 --> 00:01:08,144
+and adding PowerGUI for those of you who don't know, one of the features it had was a management shell-like
+
+14
+00:01:08,144 --> 00:01:13,144
+user interface that was driven by PowerShell, and so you could add nodes and put your data in the middle and
+
+15
+00:01:13,144 --> 00:01:19,144
+have actions for the data on the right-hand side much like you see in MMC and modern management tools and with
+
+16
+00:01:19,144 --> 00:01:25,144
+that I did some tinkering with some domain-specific language work and I'll show you what that looks like.
+
+17
+00:01:25,144 --> 00:01:34,144
+So the first thing I'm going to do is load this ps1 file and just to show you how old this is, I haven't gone
+
+18
+00:01:34,144 --> 00:01:41,144
+and brought this forth into the world of modules yet. This is just a ps1 script file that I dot-sourced because
+
+19
+00:01:41,144 --> 00:01:46,144
+it contains a lot of functions and it doesn't use a lot of the modern even PowerShell v2 features just
+
+20
+00:01:46,144 --> 00:01:52,144
+because it's that old, but I still keep it kicking around. I intend to bring it forward with this DSL work
+
+21
+00:01:52,144 --> 00:01:58,144
+that I do, it's just not quite there yet. But it's interesting to show that you can do this using the old
+
+22
+00:01:58,144 --> 00:02:03,144
+PowerShell techniques of doing things. So when I load it, it adds all these huge amount of functions and
+
+23
+00:02:03,144 --> 00:02:09,144
+it's all about Visio, right. So it's fun when you're working with Visio to do automatic generation of
+
+24
+00:02:09,144 --> 00:02:16,144
+documents based on something and the most common example that I used to do back in the day was based on your
+
+25
+00:02:16,144 --> 00:02:20,144
+infrastructure, specifically on your virtualization infrastructure.
+
+26
+00:02:20,144 --> 00:02:25,144
+So I could take this and I could automatically generate infrastructure of well VMware at the time,
+
+27
+00:02:25,144 --> 00:02:30,144
+that's what my focus was when I started doing this work, and it would show your host and then all the virtual
+
+28
+00:02:30,144 --> 00:02:36,144
+machines all lined up in this diagram that's drawn on the screen for you while you run the command and so
+
+29
+00:02:36,144 --> 00:02:42,144
+it's kind of I guess sexy in terms of technology just in terms of seeing the UI show up on the screen while
+
+30
+00:02:42,144 --> 00:02:45,144
+you do it and it was fun to do.
+
+31
+00:02:45,144 --> 00:02:52,144
+But if you look at these, this is not domain-specific because these are just PowerShell commands, verb-noun,
+
+32
+00:02:52,144 --> 00:02:59,144
+so you could go through and create Visio documents using these just like you could any PowerShell set of
+
+33
+00:02:59,144 --> 00:03:06,144
+commands today and that was useful and I did it this way intentionally and actually this is probably how I
+
+34
+00:03:06,144 --> 00:03:13,144
+would create a lot of DSLs because this allows me to do one-off things by having the verb-noun structure,
+
+35
+00:03:13,144 --> 00:03:18,144
+but if I'm doing something entirely from scratch and I'm not just taking a Visio document that already exists
+
+36
+00:03:18,144 --> 00:03:22,144
+and going in and tweaking something on it, that's where the DSV comes in.
+
+37
+00:03:22,144 --> 00:03:30,144
+So let me show you an example of what that looks like. So, yeah, let me show you this file.
+
+38
+00:03:30,144 --> 00:03:33,144
+I mean you guys can look at this file and I'll share all this content.
+
+39
+00:03:33,144 --> 00:03:38,144
+I'll send it to Richard and he'll make it available to you. So this file contains the Visio commands.
+
+40
+00:03:38,144 --> 00:03:45,144
+By the way, just on the experimental line, these commands, I haven't gone through and tested this a whole lot
+
+41
+00:03:45,144 --> 00:03:51,144
+with PowerShell v5 and Visio 2016 just because it hasn't been a high priority for me, but I still have I've
+
+42
+00:03:51,144 --> 00:03:59,144
+got it working for Visio 2016 and PowerShell 5, so if you run this stuff and you find bugs in it, that's not a surprise.
+
+43
+00:03:59,144 --> 00:04:05,144
+Don't think well why is he releasing this stuff if it's in this state.
+
+44
+00:04:05,144 --> 00:04:08,144
+Technically, I'm not really releasing it. I'm sharing it as a set of examples and kind of things you guys
+
+45
+00:04:08,144 --> 00:04:13,144
+can do with it, and so take that caveat and feel free to experiment and take a look, but don't necessarily
+
+46
+00:04:13,144 --> 00:04:18,144
+build your production on it and have your manager come upset when it's not working.
+
+47
+00:04:18,144 --> 00:04:25,144
+So an example of how this might look in the DSL. If you notice, let me flip back for a second, the key piece,
+
+48
+00:04:25,144 --> 00:04:31,144
+the entry point into the DSL is right at the very bottom of this set of commands so that alias of Visio to the
+
+49
+00:04:31,144 --> 00:04:40,144
+Use-Visio command, that lets me jump into this kind of magic. So look at the top example here.
+
+50
+00:04:40,144 --> 00:04:46,144
+You can see the structure of the document being defined in the language itself, and so this is where
+
+51
+00:04:46,144 --> 00:04:51,144
+domain-specific comes to play, right, because I'm working with Visio, so the domain is Visio,
+
+52
+00:04:51,144 --> 00:04:56,144
+and anywhere where I'm dealing with Visio elements, those are the key points that I'm going to be talking
+
+53
+00:04:56,144 --> 00:05:02,144
+about in my structured domain-specific language. So I can create a new, I can open up Visio with a Visio
+
+54
+00:05:02,144 --> 00:05:07,144
+command and then I can define some defaults, the default background and the default page theme, and by the
+
+55
+00:05:07,144 --> 00:05:12,144
+way the default background doesn't work in 2016 right now. It'll just generate a warning.
+
+56
+00:05:12,144 --> 00:05:15,144
+And then I can go and I can create a new document. So then you can see I go into this document with a
+
+57
+00:05:15,144 --> 00:05:21,144
+ScriptBlock, and in that document, I create a page, and then inside the page, I set the background and the
+
+58
+00:05:21,144 --> 00:05:28,144
+diagram style, and start tinkering with the properties and all of this using something totally different from
+
+59
+00:05:28,144 --> 00:05:34,144
+verb-noun that lets me kind of really just look at the points using terminology that I'm already familiar with
+
+60
+00:05:34,144 --> 00:05:35,144
+inside of Visio.
+
+61
+00:05:35,144 --> 00:05:42,144
+But at the same time, I can intersperse regular PowerShell because it's just PowerShell.
+
+62
+00:05:42,144 --> 00:05:47,144
+So all I'm doing here is running PowerShell, even though I have this domain-specific language and even though
+
+63
+00:05:47,144 --> 00:05:53,144
+these commands that show up like DefaultPageBackground and page and all those things are defined on the fly
+
+64
+00:05:53,144 --> 00:05:58,144
+as I run this upper Visio command so that I can, all it's doing really is taking the aliases to that huge list
+
+65
+00:05:58,144 --> 00:06:03,144
+of cmdlets that I had, right. So I'm just, as I go inside of Visio, the first thing I do is define a bunch
+
+66
+00:06:03,144 --> 00:06:07,144
+of aliases to the things that are relevant at that point in the hierarchy and then as I go into document,
+
+67
+00:06:07,144 --> 00:06:13,144
+the same thing, and so I kind of control scope and visibility just by doing some alias turning things on and off.
+
+68
+00:06:13,144 --> 00:06:16,144
+And then inside of that, I can intersperse PowerShell.
+
+69
+00:06:16,144 --> 00:06:20,144
+So here I have some script that's just going to work with my file system.
+
+70
+00:06:20,144 --> 00:06:24,144
+I'm not really doing anything like large scale infrastructure, but I can.
+
+71
+00:06:24,144 --> 00:06:28,144
+This is a simple example where I wanted to show you how this works.
+
+72
+00:06:28,144 --> 00:06:37,144
+So I'm going to take that and I'll run it. And if the demo gods are nice to me, it'll work.
+
+73
+00:06:37,144 --> 00:06:41,144
+And by the way, the reason why I'm running this inside of the outside PowerShell session and not in ISE is
+
+74
+00:06:41,144 --> 00:06:45,144
+again, the whole experimental thing. I can throw this away and continue with the rest of my content without
+
+75
+00:06:45,144 --> 00:06:50,144
+worrying about it being mucked up. So I'll just copy and paste that in and why did that paste like that.
+
+76
+00:06:50,144 --> 00:06:58,144
+Hang on. Right-click-based. Better. So now it's running and you see Visio opened up in the background and
+
+77
+00:06:58,144 --> 00:07:10,144
+let me see if I can quick go to it. Where'd it go? There. So that was kind of jumping in and progress,
+
+78
+00:07:10,144 --> 00:07:14,144
+but that's the kind of magic that happens because it's doing a lot of auto layout on the fly, right, so you can
+
+79
+00:07:14,144 --> 00:07:19,144
+picture this being larger, going across a whole lot of infrastructure, maybe going to a huge set of Hyper-V
+
+80
+00:07:19,144 --> 00:07:26,144
+hosts that are discovered through SEVMM or going into Azure and bring in virtual machines or anything related to
+
+81
+00:07:26,144 --> 00:07:31,144
+just figuring out what you have for your infrastructure and doing things that you have to do to create
+
+82
+00:07:31,144 --> 00:07:35,144
+documents that kind of manage that and show that to management who doesn't get PowerShell and doesn't know
+
+83
+00:07:35,144 --> 00:07:40,144
+how to go and ask those kind of questions and giving it to you in a way that's automatic.
+
+84
+00:07:40,144 --> 00:07:46,144
+And so you run this kind of a command and it just goes and does the PowerShell work to interrogate the system
+
+85
+00:07:46,144 --> 00:07:51,144
+and then generates the document on the fly and that's the magic of a DSL.
+
+86
+00:07:51,144 --> 00:07:55,144
+And this is again just using the old school PowerShell functions and commands.
+
+87
+00:07:55,144 --> 00:08:00,144
+And if you look at another DSL that's out there, Pester. Pester doesn't use, as far as I'm aware,
+
+88
+00:08:00,144 --> 00:08:04,144
+the internet keyword stuff. They're just using functions and commands inside and aliases and what not to
+
+89
+00:08:04,144 --> 00:08:14,144
+make the magic happen. So this allows you to do that without getting into what I think will become the go-to
+
+90
+00:08:14,144 --> 00:08:21,144
+way of doing domain-specific languages going forward. Cool? Could a provider be considered of the main system language?
+
+91
+00:08:21,144 --> 00:08:26,144
+A provider could be, but it's generalized. So go back to the definition, I mean domain-specific,
+
+92
+00:08:26,144 --> 00:08:33,144
+because, it's kind of both, right, because a provider is specific to the way that you access the different
+
+93
+00:08:33,144 --> 00:08:38,144
+data silos, but yet generalized because it covers so many different silos and anybody can create a provider
+
+94
+00:08:38,144 --> 00:08:42,144
+for any source. So yeah, it was a great question and I was thinking about talking about providers,
+
+95
+00:08:42,144 --> 00:08:47,144
+but I kind of hesitated because it's a bit of both, I guess, because you have Get-Command, Get-Child, sorry,
+
+96
+00:08:47,144 --> 00:08:53,144
+Get-Item, Get-ChildItem, all those common sets of core commands, there's like 30 of them, and they work against
+
+97
+00:08:53,144 --> 00:09:04,144
+providers, and so that's specific to the provider model, but there's no domain-specificity to the---
+
+98
+00:09:04,144 --> 00:09:09,144
+specificity, thank you---to the internal silo that you're working with.
+
+99
+00:09:09,144 --> 00:09:15,144
+So if you're working with SQL Server, the only parts related to a domain they might see are the labels like
+
+100
+00:09:15,144 --> 00:09:24,144
+tables for the tables container. You might see some of that show up in the structure, but it's not quite the same thing.
+
+101
+00:09:24,144 --> 00:09:31,144
+Oh, and also, going back to the same Visio example, so here's another example and this is just showing backing
+
+102
+00:09:31,144 --> 00:09:37,144
+off a little bit from the domain-specific language itself how I could call directly into the commands to do
+
+103
+00:09:37,144 --> 00:09:44,144
+the same thing and I could technically write this using the cmdlets, but I like the declarative nature of the
+
+104
+00:09:44,144 --> 00:09:52,144
+structure for things so that when I'm drawing out in my head the diagram of the content, I can sort of draw
+
+105
+00:09:52,144 --> 00:10:00,144
+it on the page just using this terminology. Useful? Yeah, very.
+
+106
+00:10:00,144 --> 00:10:07,144
+Okay, good. So back. Now I've just got a whole series of demos, so I'm going to jump back and forth between
+
+107
+00:10:07,144 --> 00:10:12,144
+slides and demos. So that was my first language that I did domains for, and so as I mentioned, that was back
+
+108
+00:10:12,144 --> 00:10:17,144
+in the PowerGUI days and this is fun. My son, this long, long time ago back when he was a kid because he knew
+
+109
+00:10:17,144 --> 00:10:22,144
+I was really into PowerGUI and so he made that for me one day when I was away on a trip, which is kind of fun.
+
+110
+00:10:22,144 --> 00:10:27,144
+Kids are great, right, because you just learn so much from how they do things differently than how we do things.
+
+111
+00:10:27,144 --> 00:10:32,144
+So my son is into automation, but not at all using PowerShell. His kind of automation is in Minecraft where
+
+112
+00:10:32,144 --> 00:10:38,144
+he creates these huge farms to generate these blocks that he uses throughout the rest of his world's Minecraft
+
+113
+00:10:38,144 --> 00:10:44,144
+and he's on YouTube, and he's got his channel, and he's got like a 100 videos posted, and so his automation,
+
+114
+00:10:44,144 --> 00:10:45,144
+I don't
+
+115
+00:10:45,144 --> 00:10:48,144
+understand at all because I look at those blocks and the red stone and how that all connects and I wonder how
+
+116
+00:10:48,144 --> 00:10:54,144
+is he wrap his head around that because I don't want to read text, but anyway, it's just fun to see how automation
+
+117
+00:10:54,144 --> 00:10:57,144
+applies in different ways. Oh, and I guess it's not fair if I don't mention my daughter.
+
+118
+00:10:57,144 --> 00:11:03,144
+So my daughter, she's more managerial, so her automation is more making sure I'm up at 6:00 in the morning
+
+119
+00:11:03,144 --> 00:59:59,999
+because she wants me to automate making her lunch for her for that day for school.
+

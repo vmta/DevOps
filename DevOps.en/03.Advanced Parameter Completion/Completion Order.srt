@@ -1,0 +1,144 @@
+1
+00:00:01,1 --> 00:00:02,75
+Yeah, I think we have a little bit of time for this.
+
+2
+00:00:02,75 --> 00:00:06,934
+Let's talk about the completion order precedence. So earlier I said you can override the completion behavior
+
+3
+00:00:06,934 --> 00:00:10,934
+of any command and any parameter. Well, I may have said any parameter.
+
+4
+00:00:10,934 --> 00:00:16,934
+If I did say any parameter, I was actually technically wrong. If a parameter has, if it's an enumeration
+
+5
+00:00:16,934 --> 00:00:19,934
+type or if it has a ValidateSet, you don't get to override that.
+
+6
+00:00:19,934 --> 00:00:23,934
+You can put an ArgumentCompleter, register one all you want, but it's not going to let you do it and if you
+
+7
+00:00:23,934 --> 00:00:29,934
+think about it makes sense because in those cases, you have to pick one of the valid values, and so there's
+
+8
+00:00:29,934 --> 00:00:39,934
+no need to even return a completion result. There's also next up after that, PowerShell will look for the
+
+9
+00:00:39,934 --> 00:00:46,934
+type and the attributes. After that, it will check the normal completer dictionary and whatever command
+
+10
+00:00:46,934 --> 00:00:52,934
+you're running, if there is an ArgumentCompleter that's registered for that command and that parameter
+
+11
+00:00:52,934 --> 00:00:59,934
+combination, then it will use that completer. If there isn't one registered for that, it'll check to see if
+
+12
+00:00:59,934 --> 00:01:02,934
+there's a completer registered just for the current parameter name.
+
+13
+00:01:02,934 --> 00:01:04,934
+If there is, it'll use that.
+
+14
+00:01:04,934 --> 00:01:10,934
+So after checking that regular dictionary, if no results are returned, it may have found a completer registered,
+
+15
+00:01:10,934 --> 00:01:17,934
+but if no results were returned from either of those checks, then it falls down to the next step here.
+
+16
+00:01:17,934 --> 00:01:21,934
+And the next step here is something I didn't talk about and this is a version 5 only thing.
+
+17
+00:01:21,934 --> 00:01:23,934
+I think they---well so
+
+18
+00:01:23,934 --> 00:01:28,934
+there is an ArgumentCompleter parameter attribute, so if you don't want to call Register-ArgumentCompleter,
+
+19
+00:01:28,934 --> 00:01:33,934
+you can actually put your ArgumentCompleter the exact same syntax that we were using earlier with the
+
+20
+00:01:33,934 --> 00:01:38,934
+ScriptBlock, just decorate your parameter with it when you're defining your function.
+
+21
+00:01:38,934 --> 00:01:42,934
+But if you have one of those set and you then you call Register-ArgumentCompleter later, it should be the
+
+22
+00:01:42,934 --> 00:01:47,934
+case that ArgumentCompleter you registered would win out
+
+23
+00:01:47,934 --> 00:01:54,934
+because this is a called after that. Next, there's the completion engine has some hardcoded completion behavior.
+
+24
+00:01:54,934 --> 00:01:59,934
+So earlier when we were looking at Get-Command and you saw how name and noun had completion stuff,
+
+25
+00:01:59,934 --> 00:02:01,934
+that was in there. If you ever notice like
+
+26
+00:02:01,934 --> 00:02:05,934
+when you call new object, it does type, name completion, all that stuff, there's essentially it's like a
+
+27
+00:02:05,934 --> 00:02:12,934
+giant switch statement that says well none of these other things returned completion results, so is the
+
+28
+00:02:12,934 --> 00:02:17,934
+CommandName Get-Command and is it this parameter, okay, then I know what to do.
+
+29
+00:02:17,934 --> 00:02:24,934
+If there's still by this point hasn't been any completion results returned, then it falls back to those
+
+30
+00:02:24,934 --> 00:02:26,934
+native completers that we just talked about,
+
+31
+00:02:26,934 --> 00:02:31,934
+so it checks that dictionary. So even for a normal PowerShell command, it'll check the native argument
+
+32
+00:02:31,934 --> 00:02:33,934
+completer dictionary for that. And then
+
+33
+00:02:33,934 --> 00:02:45,934
+if you still don't have any completion results returned, then it just kind of does the whole, let's see,
+
+34
+00:02:45,934 --> 00:02:50,934
+yeah, it'll just fall back to completing for the current file system, right.
+
+35
+00:02:50,934 --> 00:02:56,934
+And in here, there's some demo code that kind of shows registering multiple completers and then going in and
+
+36
+00:02:56,934 --> 00:59:59,999
+watching how they're called and it sets up the little log file on the side.
+

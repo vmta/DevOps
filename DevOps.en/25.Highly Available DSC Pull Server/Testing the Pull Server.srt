@@ -1,0 +1,288 @@
+1
+00:00:00,0 --> 00:00:04,276
+So I'm going to set the LCM for these guys.
+
+2
+00:00:04,276 --> 00:00:09,276
+What I have is this is the way I usually do my LCM configurations, I separate the config data.
+
+3
+00:00:09,276 --> 00:00:13,276
+You don't see this a lot on the internet. This is actually a really cool way to do it, so all the config
+
+4
+00:00:13,276 --> 00:00:19,276
+data's up here for the LCM and then I can just tell it how many machines, whatever machines, and what roles I
+
+5
+00:00:19,276 --> 00:00:22,276
+want them to have and I never have to touch this code down here again.
+
+6
+00:00:22,276 --> 00:00:31,276
+So I just think this is a cool way to do an LCM. It's going to do multiple machines and here's where, I had this
+
+7
+00:00:31,276 --> 00:00:39,276
+cute little line of code and apparently now in v5, you can just do this.
+
+8
+00:00:39,276 --> 00:00:45,276
+Instead of the two lines of code, I'm going to show you, I'm just going to go bump, bump.
+
+9
+00:00:45,276 --> 00:00:51,276
+Whoops. I did it to the wrong thing. I am a moron. This line of code.
+
+10
+00:00:51,276 --> 00:00:58,276
+You just give it the path to them and it'll, all the ones that it sees there, it'll just kick them out.
+
+11
+00:00:58,276 --> 00:01:18,276
+Well now I broke this update computername s1 and s2. Yeah, that's the one machine, yeah that stupid config name registration.
+
+12
+00:01:18,276 --> 00:01:25,276
+You telling me it's not going to work at all? S2 is working. I'm going to try and see if I can get s1 to work
+
+13
+00:01:25,276 --> 00:01:29,276
+because s2 just registered, so let's see here. It's going to take a minute for this config to run.
+
+14
+00:01:29,276 --> 00:01:34,276
+I'm going to re-run it again to see if it picks up s1.
+
+15
+00:01:34,276 --> 00:01:38,276
+But the idea here is besides the config name bug, we bundled and put the resources up.
+
+16
+00:01:38,276 --> 00:01:43,276
+Here's the cool thing. One machine needs all four of those resources.
+
+17
+00:01:43,276 --> 00:01:50,276
+The other machine only needs two of those resources, so we only bring down the resources that machine needs.
+
+18
+00:01:50,276 --> 00:01:55,276
+We don't just copy them all down. Now here's what's going to happen, the resources must be available on the
+
+19
+00:01:55,276 --> 00:02:02,276
+pull server when the LCM runs the MOF because the first thing he's going to do is look at the MOF and go what
+
+20
+00:02:02,276 --> 00:02:07,276
+resources do you need and then he's going to go do I have access to those.
+
+21
+00:02:07,276 --> 00:02:11,276
+So he's not even going to start jamming on it until he can get those resources down.
+
+22
+00:02:11,276 --> 00:02:17,276
+I'll show you here in a second. Oh, that was awfully quick for you.
+
+23
+00:02:17,276 --> 00:02:23,276
+That was way too quick for you. Cannot invoke, oh, it's still in progress.
+
+24
+00:02:23,276 --> 00:02:32,276
+Okay. I'm going to do something I probably shouldn't do. You're not going to let me do it, are you.
+
+25
+00:02:32,276 --> 00:02:38,276
+Well let me show you if the resources got out there and I can't believe this, but my beautiful, it worked fine
+
+26
+00:02:38,276 --> 00:02:45,276
+on Sunday before they updated the module. No, it's not put them out there yet.
+
+27
+00:02:45,276 --> 00:02:53,276
+Okay, let's do this. You're really messing up my applause line, man.
+
+28
+00:02:53,276 --> 00:03:04,276
+Yeah. Yeah. That's just a shame because I don't think either one of them got set up because it was way too fast.
+
+29
+00:03:04,276 --> 00:03:12,276
+Yeah, that's a shame. Well I'm sorry guys, but you don't get to see the pretty website.
+
+30
+00:03:12,276 --> 00:03:16,276
+Did you even care about the pretty website? Of course you cared about the pretty website and I can't get it
+
+31
+00:03:16,276 --> 00:03:20,276
+to work now! Ahh.
+
+32
+00:03:20,276 --> 00:03:24,276
+(Audience comment)
+
+33
+00:03:24,276 --> 00:03:33,276
+Well I'll tell you what. I want to make sure that we don't go over here, but maybe I can.
+
+34
+00:03:33,276 --> 00:03:46,276
+Let's do this real quick. Let me see if I can, let's do this. Remove-DscConfigurationDocument to CimSession
+
+35
+00:03:46,276 --> 00:03:57,276
+s1, oh he's only going to let me do 1, Stage pending. Now a lot of times you have to do this when you're
+
+36
+00:03:57,276 --> 00:04:02,276
+troubleshooting something that gets stuck. Okay, he doesn't have one.
+
+37
+00:04:02,276 --> 00:04:07,276
+Consistency check, yeah, yeah, yeah, yeah, yeah, okay. Now let's try to run it again.
+
+38
+00:04:07,276 --> 00:04:15,276
+Maybe I can get him to go. Come on, do me a favor, just work. You're not going to do it, are you?
+
+39
+00:04:15,276 --> 00:04:21,276
+Nope, there's something in that update that came down that he isn't going to do it.
+
+40
+00:04:21,276 --> 00:04:27,276
+Oh, this says the checksum failed. Oh, maybe I can fix this. Hold on, hold on, hold on, hold on.
+
+41
+00:04:27,276 --> 00:04:35,276
+Let's just make sure that I got everything zipped correctly and let's make sure I got some checksums.
+
+42
+00:04:35,276 --> 00:04:37,276
+We'll make new ones.
+
+43
+00:04:37,276 --> 00:04:39,276
+(Audience comment)
+
+44
+00:04:39,276 --> 00:04:44,276
+Yeah, the force is overriding it. If you don't use -Force, it won't actually overwrite your earlier checksum.
+
+45
+00:04:44,276 --> 00:04:47,276
+That's another little trick.
+
+46
+00:04:47,276 --> 00:04:50,276
+And let me copy them back up there. And let me make sure I've got them all copied.
+
+47
+00:04:50,276 --> 00:04:53,276
+You know, I may not have copied them up there, so we may still get to see a website.
+
+48
+00:04:53,276 --> 00:04:57,276
+Now I'm setting your expectations and if it blows up, I'm going to look like a moron.
+
+49
+00:04:57,276 --> 00:04:59,276
+Okay, there they are. There they are. On the pull server. Okay, let's try it again.
+
+50
+00:04:59,276 --> 00:05:08,276
+Let's try it again. Cross your fingers, right now, cross your fingers.
+
+51
+00:05:08,276 --> 00:05:13,276
+Oh well. Uncross your fingers. We're not going to get the website guys, but
+
+52
+00:05:13,276 --> 00:05:18,276
+the moral of the story is that the packaging of those modules is very finicky about the names and I want to
+
+53
+00:05:18,276 --> 00:05:29,276
+go back to this one thing on checksums. This -Force, nobody puts that in and they can't figure out why they
+
+54
+00:05:29,276 --> 00:05:32,276
+can't get their updated modules to work
+
+55
+00:05:32,276 --> 00:05:38,276
+because the checksum doesn't get updated. I think that by default, it should just overwrite it, but it doesn't.
+
+56
+00:05:38,276 --> 00:05:44,276
+So -Force is like saying overwrite the existing checksum because what it does is it goes oh, you have a checksum,
+
+57
+00:05:44,276 --> 00:05:50,276
+I'm not making a new one, which seems kind of ridonkulous to me, so -Force is very important right there to
+
+58
+00:05:50,276 --> 00:05:55,276
+make him go just do it and life is good.
+
+59
+00:05:55,276 --> 00:06:01,276
+Is it new? Because before I always deleted the checksum and then rewrite it.
+
+60
+00:06:01,276 --> 00:06:03,276
+Is -Force new?
+
+61
+00:06:03,276 --> 00:06:04,276
+Yeah.
+
+62
+00:06:04,276 --> 00:06:10,276
+I think so because I used to always delete them too. Yeah, so I'm thinking that that's new.
+
+63
+00:06:10,276 --> 00:06:14,276
+But I do know this, it doesn't work unless you have -Force. Ta-da!
+
+64
+00:06:14,276 --> 00:06:16,276
+Is that broke, an error?
+
+65
+00:06:16,276 --> 00:06:23,276
+No, it doesn't throw it because it's not an error. You say New-Checksum, it goes oh you already got one.
+
+66
+00:06:23,276 --> 00:06:30,276
+That's not an error in his mind. I think it's an error. So yeah, you end up troubleshooting it for like
+
+67
+00:06:30,276 --> 00:06:34,276
+three days because you can't figure out what's going on until you notice that the, you actually look at the
+
+68
+00:06:34,276 --> 00:06:37,276
+checksum and you notice it's not getting updated in there.
+
+69
+00:06:37,276 --> 00:06:39,276
+(Audience comment)
+
+70
+00:06:39,276 --> 00:06:42,276
+Yeah, or if you think to manually delete it and do it.
+
+71
+00:06:42,276 --> 00:06:45,276
+(Audience comment)
+
+72
+00:06:45,276 --> 00:59:59,999
+Oh yeah, in verbose you can see it. If you read the verbose output, yeah you can see it in there, yeah.
+

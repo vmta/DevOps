@@ -1,0 +1,552 @@
+1
+00:00:00,0 --> 00:00:06,739
+Alright, so let's switch over to a demo. So if June was here, she'd yell at me because she told me never to
+
+2
+00:00:06,739 --> 00:00:12,739
+actually type in a demo, so I'm going to do this entire demo typing.
+
+3
+00:00:12,739 --> 00:00:16,739
+Alright, so the first thing that we're going to do is we're going to use a new class keyword.
+
+4
+00:00:16,739 --> 00:00:18,739
+New class keyword is really straightforward.
+
+5
+00:00:18,739 --> 00:00:23,739
+It looks just like you're defining a function, or a workflow, or whatever, a configuration.
+
+6
+00:00:23,739 --> 00:00:25,739
+And then the name of your type is
+
+7
+00:00:25,739 --> 00:00:34,739
+what follows, so class Bike. I have a bike. So now what you can see is as simple as that, I have a type defined.
+
+8
+00:00:34,739 --> 00:00:43,739
+No reason to call Add type, write C# code, specify all kinds of weird string escape characters and stuff like that.
+
+9
+00:00:43,739 --> 00:00:49,739
+We have a type defined just like a DateTime object. It looks very similar.
+
+10
+00:00:49,739 --> 00:00:55,739
+Except it won't let me cast that. Right, so it's the same concept.
+
+11
+00:00:55,739 --> 00:01:02,739
+It's a type available and it's actually a .NET type, so it actually compiles down to actual .NET code.
+
+12
+00:01:02,739 --> 00:01:08,739
+So now, we want to add some properties to this bike. So what does a bike have?
+
+13
+00:01:08,739 --> 00:01:19,739
+A bike has maybe a manufacturer, a bike has a model, and a bike has a year.
+
+14
+00:01:19,739 --> 00:01:24,739
+So we can see here is I've defined different particular properties of this bike.
+
+15
+00:01:24,739 --> 00:01:28,739
+On the left hand side here you'll see that this is actually a type qualifier.
+
+16
+00:01:28,739 --> 00:01:36,739
+It specifies what type this variable or property of this object is and if you omit that, which this is optional,
+
+17
+00:01:36,739 --> 00:01:38,739
+it becomes of type object
+
+18
+00:01:38,739 --> 00:01:42,739
+and everything in .NET inherits from object because everything is an object.
+
+19
+00:01:42,739 --> 00:01:49,739
+So then you could assign any particular value to that particular property.
+
+20
+00:01:49,739 --> 00:01:56,739
+So now if I wanted to create a new instance of my bike, what I could use is New-Object just like any other
+
+21
+00:01:56,739 --> 00:02:01,739
+.NET type, once my IntelliSense stops, you can see I can create a new instance of that bike and it actually
+
+22
+00:02:01,739 --> 00:02:05,739
+lists out the properties. I have a manufacturer, a model, and a year.
+
+23
+00:02:05,739 --> 00:02:11,739
+Not very interesting because none of them are set, but what we could do is you could actually specify default values.
+
+24
+00:02:11,739 --> 00:02:18,739
+So if I want to say my default value for a year is 2016. So now every time I create a bike, it defaults to
+
+25
+00:02:18,739 --> 00:02:25,739
+2016, but it doesn't make much sense to have a bike without a manufacturer or a model.
+
+26
+00:02:25,739 --> 00:02:32,739
+So let's actually create a constructor. A constructor is the method that is called when you actually create
+
+27
+00:02:32,739 --> 00:02:47,739
+an instance of a class, so Manufacturer. So by default, there's always a default constructor created where
+
+28
+00:02:47,739 --> 00:02:50,739
+it is just an
+
+29
+00:02:50,739 --> 00:02:55,739
+empty method with no parameters that does nothing. In this case, this is a non-default constructor and it
+
+30
+00:02:55,739 --> 00:02:59,739
+requires that you pass in two parameters.
+
+31
+00:02:59,739 --> 00:03:05,739
+So now what we're going to do is we're actually going to want to set the manufacturer and model on this
+
+32
+00:03:05,739 --> 00:03:13,739
+instance of the object and that's where you use this keyword. This keyword is referring to the current instance
+
+33
+00:03:13,739 --> 00:03:20,739
+of this class, so in this case, I would say this.Manufacturer and then I'd take the value that was passed in
+
+34
+00:03:20,739 --> 00:03:25,739
+for the constructor. So now if I go to actually create my bike, what you'll see is you'll see an error
+
+35
+00:03:25,739 --> 00:03:28,739
+because it says that the constructor was not found.
+
+36
+00:03:28,739 --> 00:03:35,739
+Since we overrode the default constructor, we can no longer create this object without specifying those two parameters.
+
+37
+00:03:35,739 --> 00:03:40,739
+So if we ever use a New-Object to actually create objects, what you can do is you can say -ArgumentList and
+
+38
+00:03:40,739 --> 00:03:49,739
+then pass in two arguments. So now I when I create my bike, it has a manufacturer, it has a model,
+
+39
+00:03:49,739 --> 00:03:55,739
+and it has a year, so that's really cool. While we're on the topic of creating new objects,
+
+40
+00:03:55,739 --> 00:04:01,739
+let's actually check out one of the new operators that's available in PowerShell.
+
+41
+00:04:01,739 --> 00:04:06,739
+So if you haven't seen this syntax before, it's actually a new syntax that was added in PowerShell v5 to
+
+42
+00:04:06,739 --> 00:04:11,739
+actually create objects, so instead of having to use the New-Object cmdlet, you can use this shortened
+
+43
+00:04:11,739 --> 00:04:15,739
+syntax where you say the type name followed by two colons and then new
+
+44
+00:04:15,739 --> 00:04:17,739
+and pass in the arguments that you're going to call the constructor.
+
+45
+00:04:17,739 --> 00:04:20,739
+So I'll just kind of shortens the syntax is another way to create, but does
+
+46
+00:04:20,739 --> 00:04:24,739
+the exact same thing that a New-Object does.
+
+47
+00:04:24,739 --> 00:04:31,739
+Alright, so let's make this bike do something. So one thing that bikes is that they pedal.
+
+48
+00:04:31,739 --> 00:04:39,739
+So let's create a Pedal method. So pedal or methods look a lot like functions.
+
+49
+00:04:39,739 --> 00:04:48,739
+They have the function name Pedal and then two parentheses or you could put arguments and then a method body.
+
+50
+00:04:48,739 --> 00:04:50,739
+You can see I put void in front of there.
+
+51
+00:04:50,739 --> 00:04:55,739
+Void is the return type of this particular method, so with methods, you always need to specify a return type,
+
+52
+00:04:55,739 --> 00:04:57,739
+otherwise it doesn't know what it is. So in this case,
+
+53
+00:04:57,739 --> 00:05:03,739
+we say method void. We're not going to return anything from Pedal, but we want it to do something.
+
+54
+00:05:03,739 --> 00:05:08,739
+So okay. We want it to increase the speed. Every time you pedal it, let's increase the speed.
+
+55
+00:05:08,739 --> 00:05:21,739
+So I create a Speed property and then let's set the speed, whoops, not ComSpec, whoops, I have to say this.
+
+56
+00:05:21,739 --> 00:05:30,739
+I always have to say this. Alright, so now, I increase the speed every time I call pedal.
+
+57
+00:05:30,739 --> 00:05:41,739
+So let's create a new bike, start a new variable, and we can call pedal on it now, and we can dump.
+
+58
+00:05:41,739 --> 00:05:46,739
+Alright, so now you can see that when I pedal my bike,
+
+59
+00:05:46,739 --> 00:05:52,739
+the speed goes up. There's one problem with our speed variable though.
+
+60
+00:05:52,739 --> 00:05:57,739
+I can just set speed to whatever I want. Now my speed is 100, I don't have to pedal anything.
+
+61
+00:05:57,739 --> 00:06:07,739
+I wish my bike at home worked that way, right? But to alleviate that problem, what we want to do is this is where
+
+62
+00:06:07,739 --> 00:06:11,739
+the concept encapsulation comes into play. We want to hide this speed and variable.
+
+63
+00:06:11,739 --> 00:06:20,739
+So now when I try to run this, you can see that speed is no longer available because it's hidden.
+
+64
+00:06:20,739 --> 00:06:25,739
+And it no longer lets me set the speed because it's hidden and only that particular instance of that object can
+
+65
+00:06:25,739 --> 00:06:27,739
+modify the speed
+
+66
+00:06:27,739 --> 00:06:33,739
+and that allows us to control the internal state of this object and not allow people to mess with our speed
+
+67
+00:06:33,739 --> 00:06:35,739
+without calling pedal.
+
+68
+00:06:35,739 --> 00:06:39,739
+But let's say I wanted to get the speed. I do still want to know how fast I'm going, so let's put a little
+
+69
+00:06:39,739 --> 00:06:49,739
+speedometer on there. So we can say int GetSpeed return this.Speed.
+
+70
+00:06:49,739 --> 00:06:52,739
+Alright, so this is a definition of a method that has a return value.
+
+71
+00:06:52,739 --> 00:06:56,739
+You can see instead of void, I'm doing int because I'm going to be returning an integer
+
+72
+00:06:56,739 --> 00:07:00,739
+and I'm using the return statement to actually return that internal variable.
+
+73
+00:07:00,739 --> 00:07:04,739
+So although we can't set speed from outside the object, we can actually
+
+74
+00:07:04,739 --> 00:07:11,739
+return the actual value of speed via this function here now. So with this pedal there, you can see now it
+
+75
+00:07:11,739 --> 00:07:15,739
+returned that my speed is 1 because I pedaled once with that bike.
+
+76
+00:07:15,739 --> 00:07:23,739
+So a couple interesting notes about methods and partial classes, you need the return statement.
+
+77
+00:07:23,739 --> 00:07:27,739
+If I get rid of this return statement, you can see it's going to give me an error that it says not all code
+
+78
+00:07:27,739 --> 00:07:37,739
+paths return a value within this method. It's required to return a value if you are specifying a return type like this.
+
+79
+00:07:37,739 --> 00:07:42,739
+And when it says not all code paths, you have to make sure that if you have if L statements
+
+80
+00:07:42,739 --> 00:07:46,739
+and maybe return something in the if statement, but not in the L statement, it will still give you that error
+
+81
+00:07:46,739 --> 00:07:50,739
+because you are required to return something from this method.
+
+82
+00:07:50,739 --> 00:07:54,739
+The other thing to note is that the return statement itself is required.
+
+83
+00:07:54,739 --> 00:07:58,739
+If you were actually writing a function in PowerShell, you wouldn't have to use a return statement to get
+
+84
+00:07:58,739 --> 00:08:03,739
+something to return from that method, which is another really interesting difference between PowerShell
+
+85
+00:08:03,739 --> 00:08:11,739
+methods and PowerShell functions. So if I had a function that was called GetSpeed and I did the same thing
+
+86
+00:08:11,739 --> 00:08:20,739
+where I just said speed, which would be like 1, and I called GetSpeed, it doesn't give me any errors,
+
+87
+00:08:20,739 --> 00:08:29,739
+I can run this and it outputs 1. But the other thing that's interesting is that I do 1 here an then 1 here
+
+88
+00:08:29,739 --> 00:08:34,739
+and call GetSpeed, what do you expect? It's going to return 2 right because you're jumping 2 objects to the
+
+89
+00:08:34,739 --> 00:08:43,739
+pipeline in this case. So you got 2, 2 1s. If I do the same thing up here where I put 1 in there and call
+
+90
+00:08:43,739 --> 00:08:45,739
+GetSpeed, I only get 1.
+
+91
+00:08:45,739 --> 00:08:52,739
+That's because the PowerShell methods don't actually have access to dump things to the PowerShell stream or the pipeline.
+
+92
+00:08:52,739 --> 00:08:58,739
+So it doesn't---that 1 is just thrown away when that's executed.
+
+93
+00:08:58,739 --> 00:08:59,739
+And what's interesting about
+
+94
+00:08:59,739 --> 00:09:03,739
+PowerShell methods as well is that they're actually ScriptBlocks.
+
+95
+00:09:03,739 --> 00:09:11,739
+They are not compiled completely to .NET code, so you can use things like other cmdlets.
+
+96
+00:09:11,739 --> 00:09:18,739
+So in this case, I called GetSpeed and I actually wrote to the host and said Hey and it returned 1.
+
+97
+00:09:18,739 --> 00:09:23,739
+So there's a couple of gotchas with using methods. So it is PowerShell, but it needs to be formatted in a
+
+98
+00:09:23,739 --> 00:09:27,739
+specific way to kind of play in the .NET world, so
+
+99
+00:09:27,739 --> 00:09:35,739
+that's how that works. Alright, so let's look at one more concept, kind of basic concept that I want to talk about
+
+100
+00:09:35,739 --> 00:09:39,739
+and is that the fact that we can actually create enumerations.
+
+101
+00:09:39,739 --> 00:09:46,739
+I think he has a question. Oh, sorry. Go ahead. Is there any other way to create more of like a read-only
+
+102
+00:09:46,739 --> 00:09:51,739
+type property where you still want to see it as a property, but not have it modifiable?
+
+103
+00:09:51,739 --> 00:09:54,739
+That is a really good question. I did not find a good way to do that.
+
+104
+00:09:54,739 --> 00:10:00,739
+(Audience comment) No, there isn't. Okay. So this kind of reminds me of Java.
+
+105
+00:10:00,739 --> 00:10:12,739
+You can do static, yep. Can you do static properties? Yep. (Audience comment)
+
+106
+00:10:12,739 --> 00:10:18,739
+Yeah, so this would be a static property. No, that's in C#. Sorry, go ahead.
+
+107
+00:10:18,739 --> 00:10:29,739
+Can you do more than one overload, but where you say New bike and you do it with the one variable, rather than two?
+
+108
+00:10:29,739 --> 00:10:36,739
+Yep. So overloaded or nothing exactly. So if you were to just get rid of maybe you didn't want manufacturer
+
+109
+00:10:36,739 --> 00:10:40,739
+in there and just wanted the model. Yep. Yep, you could do that or you could nothing.
+
+110
+00:10:40,739 --> 00:10:46,739
+You could put back in the original with nothing. You could do bike.
+
+111
+00:10:46,739 --> 00:10:50,739
+Oh, yeah right. Like this. Yeah, then you put your default back again.
+
+112
+00:10:50,739 --> 00:10:53,739
+Yep, exactly.
+
+113
+00:10:53,739 --> 00:11:01,739
+One other question. After you've defined the class of what variable, can you still look at the Speed property
+
+114
+00:11:01,739 --> 00:11:13,739
+by just a $bypass speed? No. So if I went Bike.Speed, oh wait, maybe you can.
+
+115
+00:11:13,739 --> 00:11:18,739
+It doesn't make sense though. Do you know why that is Jeff?
+
+116
+00:11:18,739 --> 00:11:25,739
+That seems like a bug? Well normally what I do is I would write this separate function which would just take
+
+117
+00:11:25,739 --> 00:11:34,739
+the parameter and then brings up a class and then call repetitive. Right.
+
+118
+00:11:34,739 --> 00:11:43,739
+If you create a function and it takes a parameter to the bike and then I can just call the internal method of the class.
+
+119
+00:11:43,739 --> 00:11:49,739
+Ultimately, you don't want to have to be mucking around writing code like that.
+
+120
+00:11:49,739 --> 00:11:57,739
+You want to build _____ and you want to build functions that someone can use and then call all this that
+
+121
+00:11:57,739 --> 00:12:04,739
+you're typing now. This is a demonstration. Right. I'm really surprised you could access this because it
+
+122
+00:12:04,739 --> 00:12:15,739
+should be hidden. Can you do status also? I think if you do like bike Select *, it would do the same thing
+
+123
+00:12:15,739 --> 00:12:39,739
+Bike Getspeed down. Oh, I got you. That's interesting. Do a GetMember to that line -Force.
+
+124
+00:12:39,739 --> 00:12:46,739
+Ha ha. Interesting. So it is hidden. It's hidden. It's there, it's available.
+
+125
+00:12:46,739 --> 00:12:51,739
+But then you can Stop, right. I would say yeah, you probably can just hide it too.
+
+126
+00:12:51,739 --> 00:12:56,739
+Did you read class? Uh, huh. The class is being created every time.
+
+127
+00:12:56,739 --> 00:13:04,739
+So it really is hidden. It's not actually private. Right, okay.
+
+128
+00:13:04,739 --> 00:13:10,739
+(Audience comment) Oops. Yeah, not really it. (Audience comment)
+
+129
+00:13:10,739 --> 00:13:23,739
+Right, unless do -force and then it will be there. You could probably do it with Bike.Speed = 100.
+
+130
+00:13:23,739 --> 00:13:32,739
+Yep. Interesting. We're all learning today. You could always make it a static pin.
+
+131
+00:13:32,739 --> 00:13:45,739
+Should be able to. Yep. So then you could go Bike Speed = 100.
+
+132
+00:13:45,739 --> 00:13:52,739
+Yeah because it's no longer part of the actual object. It's part of the class itself and you can mark it static.
+
+133
+00:13:52,739 --> 00:14:03,739
+Alright. Huh? (Audience comment) It returned 0, which is kind of surprising because well it didn't find that,
+
+134
+00:14:03,739 --> 00:14:08,739
+so it probably returned the default value because it didn't know what speed it was.
+
+135
+00:14:08,739 --> 00:14:17,739
+But if I did something like, yep, so I did Bike Speed here and then…
+
+136
+00:14:17,739 --> 00:14:25,739
+(Audience Comment) We found this object. (Audience Comment) Oh, you're right.
+
+137
+00:14:25,739 --> 00:14:41,739
+(Audience discussion) Right. Yeah, pedals broke this. Right. Or we can assign it.
+
+138
+00:14:41,739 --> 00:59:59,999
+Yeah, sorry. Alright, okay.
+

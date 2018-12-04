@@ -1,0 +1,444 @@
+1
+00:00:00,0 --> 00:00:05,5
+But,  there is actually, there is good statistical information that shows that peer review
+
+2
+00:00:05,5 --> 00:00:12,863
+of changes in source control is way more effective than any change control board that's out there.
+
+3
+00:00:12,863 --> 00:00:16,863
+So I'm going to demo this first with screen shots and then I'll walk you through it, but when you go to repeat
+
+4
+00:00:16,863 --> 00:00:22,863
+this presentation, and I hope you do, I can share with you how to recreate the environment, but in case you
+
+5
+00:00:22,863 --> 00:00:27,863
+don't have time, I want to make sure that you're armed with showing people what's it look like to manage
+
+6
+00:00:27,863 --> 00:00:29,863
+change if you're using source control. So
+
+7
+00:00:29,863 --> 00:00:36,863
+this is using TFS, this is TFS Express, so you can go to microsoft.com, look for Visual Studio under the
+
+8
+00:00:36,863 --> 00:00:41,863
+bottom of it, I think you can go to visualstudio.com, just go to the bottom, and there's a link for TFS Express,
+
+9
+00:00:41,863 --> 00:00:48,863
+which for five users or less is free. So the environment that I'm connecting to is this environment and it's
+
+10
+00:00:48,863 --> 00:00:56,863
+just a TFS Express instance running in a VM on Azure. Like you said, GitHub is a perfectly great place to do
+
+11
+00:00:56,863 --> 00:01:02,863
+this kind of thing or if it's personal information or private information for your organization, you could use
+
+12
+00:01:02,863 --> 00:01:07,863
+a private repo there, you could use GitLab, GitHub Enterprise, there's just a variety of different source
+
+13
+00:01:07,863 --> 00:01:13,863
+control platforms out there. TFS is nice because for everything we're going to cover today, it offers it all,
+
+14
+00:01:13,863 --> 00:01:18,863
+so it's a one-stop shop. So this is just what it looks like. That's a project that's checked in.
+
+15
+00:01:18,863 --> 00:01:24,863
+You can see the files, you can see when the last change occurred, you can see the comments on what changed.
+
+16
+00:01:24,863 --> 00:01:30,863
+If I go look at this in Visual Studio code, so this again is free download.
+
+17
+00:01:30,863 --> 00:01:38,863
+You probably used it for things like DSC and JSON and other projects, but you can see I'm looking at making a
+
+18
+00:01:38,863 --> 00:01:45,863
+commit, so I'm saying I'm going to retire 2008-R2 because I'm only going to support 2012 and 2012-R2 now,
+
+19
+00:01:45,863 --> 00:01:51,863
+so I'm just removing that from my allowed values for the incoming parameters and I'm going to check in that change.
+
+20
+00:01:51,863 --> 00:01:56,863
+So you can see it's showing me exactly what changed. Now that's kind of an easy one because it's just
+
+21
+00:01:56,863 --> 00:02:00,863
+changing parameter values. It could be adding a network adapter.
+
+22
+00:02:00,863 --> 00:02:05,863
+It could be changing the way that the network is configured. It could be adding a new virtual network.
+
+23
+00:02:05,863 --> 00:02:11,863
+The point is that you can go see this is what I had, but I removed the line and this is what I have now and
+
+24
+00:02:11,863 --> 00:02:17,863
+you can do that commit. You can actually also do your push from within Visual Studio code and a variety of different editors.
+
+25
+00:02:17,863 --> 00:02:20,863
+You can also go out to the command-line.
+
+26
+00:02:20,863 --> 00:02:26,863
+So in this case, I made my change, but before I submit it, I'm going to run tests on my workstation because
+
+27
+00:02:26,863 --> 00:02:31,863
+I don't want to embarrass myself by checking in a change that I know is going to fail.
+
+28
+00:02:31,863 --> 00:02:33,863
+So I just invoke Pester.
+
+29
+00:02:33,863 --> 00:02:38,863
+This is the weakest set of test scripts ever, but it's just a basic deserialize the JSON, make sure that
+
+30
+00:02:38,863 --> 00:02:43,863
+everything I expected is there. So I'm just going to run Pester and it's going to make sure that what I'm
+
+31
+00:02:43,863 --> 00:02:47,863
+checking in is not junk, right, that I didn't make a silly mistake along the way.
+
+32
+00:02:47,863 --> 00:02:52,863
+And then I do a git push, in this case, it just says, yep, you modified some files, great.
+
+33
+00:02:52,863 --> 00:02:56,863
+You own the repos, so no problem push them back up there.
+
+34
+00:02:56,863 --> 00:03:03,863
+At that point, I can go look at my source history. In the browser, I can see yep, I retired 2008-R2,
+
+35
+00:03:03,863 --> 00:03:10,863
+and so if anybody ever wants to find that, it's easy to search for and if I drill into that commit, I can see
+
+36
+00:03:10,863 --> 00:03:17,863
+once again in the browser that yep this is now stored forever. I can always go back and see exactly what changed when.
+
+37
+00:03:17,863 --> 00:03:24,863
+I was logged in as TFS1, so that's who, it was Tuesday, April 5 at 5:54 PM, so I can see when, and I can see
+
+38
+00:03:24,863 --> 00:03:27,863
+any comments I wanted to add. The next
+
+39
+00:03:27,863 --> 00:03:30,863
+thing happens is build.
+
+40
+00:03:30,863 --> 00:03:33,863
+So what did we do before?
+
+41
+00:03:33,863 --> 00:03:39,863
+We waited. After that change control meeting, right, and we came in on Saturday because we hate our personal lives.
+
+42
+00:03:39,863 --> 00:03:44,863
+We made sure that all of the servers that we were going to work with are docked in RDCMan
+
+43
+00:03:44,863 --> 00:03:47,863
+so that we can remote desktop into every machine where we're going to manually make change.
+
+44
+00:03:47,863 --> 00:03:53,863
+That was always my prep for going into the change windows. Do I have my RDCMan file all set up with the
+
+45
+00:03:53,863 --> 00:03:55,863
+password stored and stuff like that.
+
+46
+00:03:55,863 --> 00:03:59,863
+So I connect to all the servers, I make changes, and then I have to do a reboot, which is where I sweat it
+
+47
+00:03:59,863 --> 00:04:06,863
+out for 30 seconds or so or 4 minutes if I'm waiting for BIOS to go through all the checks.
+
+48
+00:04:06,863 --> 00:04:12,863
+Hopefully I get everything in order, and then after I do a little dance for good luck, then I go through and
+
+49
+00:04:12,863 --> 00:04:17,863
+manually make sure that everything still works the way that I think it should.
+
+50
+00:04:17,863 --> 00:04:19,863
+Can you show us that dance?
+
+51
+00:04:19,863 --> 00:04:20,863
+What's that?
+
+52
+00:04:20,863 --> 00:04:21,863
+Can you show us that dance?
+
+53
+00:04:21,863 --> 00:04:22,863
+Maybe at the pub crawl tonight.
+
+54
+00:04:22,863 --> 00:04:23,863
+Okay.
+
+55
+00:04:23,863 --> 00:04:33,863
+I'll break out the change window tribal dance. So that last one is the scariest part, right, validating that we
+
+56
+00:04:33,863 --> 00:04:35,863
+didn't break something.
+
+57
+00:04:35,863 --> 00:04:39,863
+And then if you did, that's probably a six hour or an eight-hour change window, so now the clock is running
+
+58
+00:04:39,863 --> 00:04:46,863
+and I've got to get it fixed, but if I don't know, maybe I'm not the expert on this, I was just told that
+
+59
+00:04:46,863 --> 00:04:53,863
+there's a 0 day, so I've got to make the change. At that point, now the clock is ticking until Monday morning
+
+60
+00:04:53,863 --> 00:04:57,863
+and users are going to come in and it's going to work or it's not going to work and that's how it goes.
+
+61
+00:04:57,863 --> 00:05:02,863
+Alright, that's the life that we put ourselves into week after week or month after month, so that's what we've
+
+62
+00:05:02,863 --> 00:05:05,863
+always been doing.
+
+63
+00:05:05,863 --> 00:05:13,863
+What do we do now? As we check in that change, there's a variety of ways that this can happen, but it's going
+
+64
+00:05:13,863 --> 00:05:18,863
+to run the scripts, the supporting scripts that we put in there. So it's going to start by just evaluating
+
+65
+00:05:18,863 --> 00:05:24,863
+quality using the tests that we wrote and checked in with that configuration as code.
+
+66
+00:05:24,863 --> 00:05:30,863
+That can happen as a web hook. If it's TFS, it's all one box, so it's all part of the same system, and I'll show
+
+67
+00:05:30,863 --> 00:05:37,863
+what that looked like to turn it on. Other platforms have agents that monitor a source control and look for changes,
+
+68
+00:05:37,863 --> 00:05:43,863
+you can also schedule it to happen, you can manually key you a new build, but when it says build, I mean especially
+
+69
+00:05:43,863 --> 00:05:49,863
+like if you took Computer Science courses in college, you think of build as I'm taking my source and creating
+
+70
+00:05:49,863 --> 00:05:55,863
+an executable, like that kind of a build. Yes, that's true, but in this case, the build service is just
+
+71
+00:05:55,863 --> 00:06:02,863
+running a PowerShell script to do these things. So build really just refers to there's a server somewhere
+
+72
+00:06:02,863 --> 00:06:07,863
+that's going to take care of running these supporting scripts to make things happen for me.
+
+73
+00:06:07,863 --> 00:06:09,863
+So all that gets stored in source and we're going to, go ahead.
+
+74
+00:06:09,863 --> 00:06:14,863
+And the reason it's called a build is at the end of that process, we're going to have some artifact.
+
+75
+00:06:14,863 --> 00:06:22,863
+It may still just be a PowerShell script, it may be a module, it may be MOF files, but at the end of the day,
+
+76
+00:06:22,863 --> 00:06:28,863
+there's going to be a result of that build process that we're going to move along to do some enhance testing
+
+77
+00:06:28,863 --> 00:06:36,863
+on or just to move into deploying in the environment. So it does map really well to the concept of build because
+
+78
+00:06:36,863 --> 00:06:41,863
+there will be some output or some result of that process.
+
+79
+00:06:41,863 --> 00:06:48,863
+Yeah. An interesting thing that I have learned from customers is that
+
+80
+00:06:48,863 --> 00:06:53,863
+yes, you could go create your build server and that's the central build server for all your things, but a lot
+
+81
+00:06:53,863 --> 00:06:58,863
+of people when a team creates a new project, they have their own build server and all these teams have their
+
+82
+00:06:58,863 --> 00:07:04,863
+own build servers. They actually have configuration as code to go build a build server and the reason for
+
+83
+00:07:04,863 --> 00:07:10,863
+that is once everybody's doing this, why have down time and releasing change just because somebody else's
+
+84
+00:07:10,863 --> 00:07:14,863
+machine is down and that kind of stuff, right. It's just performing a function.
+
+85
+00:07:14,863 --> 00:07:19,863
+You can all have one place that you go look for source. You actually want to get to the point, and we'll talk
+
+86
+00:07:19,863 --> 00:07:25,863
+about this in test, where that build server is doing stuff almost all the time and we'll talk about that more
+
+87
+00:07:25,863 --> 00:07:33,863
+in test, but think about that as you can really design this for yourself, which means you don't have to change
+
+88
+00:07:33,863 --> 00:07:37,863
+the whole world to make this work, right. You could have this as an instance that handles just one project
+
+89
+00:07:37,863 --> 00:07:43,863
+that you're working on. This is also a really good opportunity to look at JEA because now you're performing
+
+90
+00:07:43,863 --> 00:07:49,863
+everything automated, so why not have a JEA. If, number one, you're building a machine using configuration as
+
+91
+00:07:49,863 --> 00:07:55,863
+code, well that's how you put a JEA endpoint on something. And number two, why give that machine total access?
+
+92
+00:07:55,863 --> 00:08:05,863
+Why not have a set of commands or a constrained endpoint that only allows build to do what it needs to do and use that.
+
+93
+00:08:05,863 --> 00:08:12,863
+And at that point, you're delivering change using build, you could have constrained endpoints for doing
+
+94
+00:08:12,863 --> 00:08:20,863
+maintenance activities, so it's not to say, I don't want to confuse this with I'm only going to do this and
+
+95
+00:08:20,863 --> 00:08:26,863
+now if there's an emergency, I'm out of luck, right, so you do want to get to the point where you're not making
+
+96
+00:08:26,863 --> 00:08:31,863
+random changes because then it didn't have an opportunity to go through test, but there's still going to be maintenance activities.
+
+97
+00:08:31,863 --> 00:08:36,863
+There's going to be weird things that come up. You might have to go get information from boxes or go check
+
+98
+00:08:36,863 --> 00:08:42,863
+the state of things, so that's an opportunity to use things like Azure automation, use JEA on the machine and
+
+99
+00:08:42,863 --> 00:08:49,863
+build out this platform. And since I don't mention it later and I don't think Joe mentioned earlier in the week,
+
+100
+00:08:49,863 --> 00:08:55,863
+Azure automation can be managed using ARM. So you could actually check into source an ARM template that
+
+101
+00:08:55,863 --> 00:09:01,863
+includes a script that should run and when it should run using hybrid runbook worker in your environment.
+
+102
+00:09:01,863 --> 00:09:03,863
+So you can coordinate all of these things together.
+
+103
+00:09:03,863 --> 00:09:04,863
+We have a question.
+
+104
+00:09:04,863 --> 00:09:05,863
+Oh, sorry.
+
+105
+00:09:05,863 --> 00:09:11,863
+I was just going to say what you described it kind of fits in well with my experience in that this is the model
+
+106
+00:09:11,863 --> 00:09:17,863
+of what it looks like at the endpoint, right, where probably somewhere on the continuum or maybe at the very
+
+107
+00:09:17,863 --> 00:09:22,863
+beginning of this, so we're not going to have all these pieces. So as we start to implement one thing, right,
+
+108
+00:09:22,863 --> 00:09:28,863
+and then we get that working right and then we get, oh why don't we add Pester or why don't we add JEA,
+
+109
+00:09:28,863 --> 00:09:33,863
+and so over time you're evolving towards that this end goal.
+
+110
+00:09:33,863 --> 00:09:40,863
+That is exactly it and you start with these things pretty much in the order in which Michael is describing them.
+
+111
+00:09:40,863 --> 00:59:59,999
+You start with source control---
+

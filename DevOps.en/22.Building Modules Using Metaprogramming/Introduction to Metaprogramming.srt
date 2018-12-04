@@ -1,0 +1,336 @@
+1
+00:00:00,0 --> 00:00:20,20
+So my name's Rohn Edwards, and today I'm going to talk about Building Modules using Metaprogramming.
+
+2
+00:00:20,20 --> 00:00:26,26
+So what do I mean when we're I say we're going to be talking about building modules with metaprogramming?
+
+3
+00:00:26,26 --> 00:00:32,32
+Actually, I don't quite know what that means, but it sounded like a really good word, but.
+
+4
+00:00:32,32 --> 00:00:33,33
+Now metaprogramming if you look up the
+
+5
+00:00:33,33 --> 00:00:40,40
+definition, I think it's the writing of computer programs that have the ability to treat other programs as their data.
+
+6
+00:00:40,40 --> 00:00:49,49
+It's also known as programs that write other programs, right. So what I'm mostly going to focus on is kind of
+
+7
+00:00:49,49 --> 00:00:56,56
+a method of making modules that I started using to improve some old commands that I had where there was a lot
+
+8
+00:00:56,56 --> 00:01:05,65
+of code reuse. We're going to, to get the concept, we'll talk conceptually what I'm talking about in just a second,
+
+9
+00:01:05,65 --> 00:01:08,68
+but before we actually get started talking about that, I want to demo what I'm talking about.
+
+10
+00:01:08,68 --> 00:01:16,76
+It's kind of hard to wrap your head around, so we will start with a very quick demo.
+
+11
+00:01:16,76 --> 00:01:25,85
+So if I look, if I Get-Module, I have two modules here called, one called the AdventureWorksReader and one
+
+12
+00:01:25,85 --> 00:01:29,89
+called the NorthwindReader. And so these modules have, they just have three commands.
+
+13
+00:01:29,89 --> 00:01:36,96
+The first one has one command that's exported Get-AwDemographics, the other one is NwCustomer and Get-NwEmployee.
+
+14
+00:01:36,96 --> 00:01:41,101
+So the Northwind and AdventureWorks databases obviously are just like database people use when they're
+
+15
+00:01:41,101 --> 00:01:49,109
+learning how to read SQL statements or create SQL statements to read out of a database.
+
+16
+00:01:49,109 --> 00:01:55,115
+But if we take a look at the syntax of, let's look at the AwDemographics one.
+
+17
+00:01:55,115 --> 00:02:05,125
+So you can see we have some parameters here. It looks like first name/last name and if we take a look at
+
+18
+00:02:05,125 --> 00:02:10,130
+NwCustomer, so we have different parameters from there. This will be important in just a second.
+
+19
+00:02:10,130 --> 00:02:19,139
+We can take a look at the help on Get-NwCustomer and if you take a look, it actually has a synopsis and a description.
+
+20
+00:02:19,139 --> 00:02:24,144
+They don't mean anything to you. I put it in just to kind of demo that we're getting help out of these
+
+21
+00:02:24,144 --> 00:02:33,153
+commands and again this will make sense in just a minute. We have some parameters that have help.
+
+22
+00:02:33,153 --> 00:02:37,157
+There were a lot of parameters. I didn't want to put help on all of them, but you can see CompanyName
+
+23
+00:02:37,157 --> 00:02:47,167
+and ContactName have help associated with them. So if we go to use these, the purpose of these commands is
+
+24
+00:02:47,167 --> 00:02:52,172
+to generate dynamic SQL statements to read out of the database, so we can do something like for the
+
+25
+00:02:52,172 --> 00:03:02,182
+AwDemographics, FirstName starts with an a. Let's just select the first 5, I guess.
+
+26
+00:03:02,182 --> 00:03:11,191
+So we're pulling data out of the AdventureWorks database. I don't know if it's actually anything that's
+
+27
+00:03:11,191 --> 00:03:20,200
+completely useful, but we can filter on multiple things, things like let's see Education, I think high school
+
+28
+00:03:20,200 --> 00:03:25,205
+is something that you can filter on there. We can come---you know there's---I don't know if you noticed
+
+29
+00:03:25,205 --> 00:03:32,212
+there was a GroupBy and an OrderBy common parameter between the two modules and the functions we were looking at.
+
+30
+00:03:32,212 --> 00:03:40,220
+So we can---you notice we have some IntelliSense here and we can do a GroupBy, let's GroupBy the Education
+
+31
+00:03:40,220 --> 00:03:47,227
+and Gender maybe. So you can see that behind the scenes it's generating this dynamic SQL and that's not a big deal.
+
+32
+00:03:47,227 --> 00:03:57,237
+There's a log of modules that can do this kind of stuff. What is, I think, kind of neat is if we look at the
+
+33
+00:03:57,237 --> 00:04:03,243
+way these modules were actually built. So here's the NorthwindReader and you can see that it's calling
+
+34
+00:04:03,243 --> 00:04:08,248
+another script, but here's how these commands are actually defined.
+
+35
+00:04:08,248 --> 00:04:14,254
+So this first one's about 50 lines it looks like. So you come in, you can look that that's where that help
+
+36
+00:04:14,254 --> 00:04:20,260
+we were looking at is coming from, but all this has is a param block.
+
+37
+00:04:20,260 --> 00:04:28,268
+Actually, let's do this. The only thing that this, and you notice instead of function, we have this keyword,
+
+38
+00:04:28,268 --> 00:04:35,275
+I guess, I put that in air quotes called DbReaderCommand, this little domain-specific language, but we give
+
+39
+00:04:35,275 --> 00:04:39,279
+this keyword and we give the function name and then you'll also see these fake attributes.
+
+40
+00:04:39,279 --> 00:04:47,287
+Right now they just say magic in front of them so that I can tell that they're fake, but that combined with a
+
+41
+00:04:47,287 --> 00:04:52,292
+real param block with help mixed in with those parameters and that's it.
+
+42
+00:04:52,292 --> 00:05:03,303
+That param block is enough to build that command that we saw, oh and we didn't actually, I did not demo Get-NwEmployee.
+
+43
+00:05:03,303 --> 00:05:09,309
+So if you look here, we actually have formatting in there. If you take a look at, send that to format list,
+
+44
+00:05:09,309 --> 00:05:17,317
+you'll see more is coming across than what we get by default. So let's go back and look at the Get-NwEmployee.
+
+45
+00:05:17,317 --> 00:05:24,324
+You'll see that mixed in with these fake attributes, you have this FormatTableColumn.
+
+46
+00:05:24,324 --> 00:05:29,329
+So putting one of those in is enough to tell it that we're going to want this in a view and we want that
+
+47
+00:05:29,329 --> 00:05:36,336
+and behind the scenes it's generating some formatting ps1 XML files and adding all that.
+
+48
+00:05:36,336 --> 00:05:39,339
+So this isn't, I'm not really so much
+
+49
+00:05:39,339 --> 00:05:48,348
+trying to demonstrate these modules. It's more the concept behind why what we're going to kind of cover is useful.
+
+50
+00:05:48,348 --> 00:05:51,351
+Alright, so
+
+51
+00:05:51,351 --> 00:05:56,356
+why would you want to do that? Hopefully, after demoing that a little bit, it starts to kind of become a
+
+52
+00:05:56,356 --> 00:06:04,364
+little bit clear. Right, so what those commands were doing, let me start with the precursor to this module.
+
+53
+00:06:04,364 --> 00:06:11,371
+Years and years ago, about four years ago, I started making commands to look into the SCCM database at work.
+
+54
+00:06:11,371 --> 00:06:16,376
+SCCM has an amazing amount of information and so I started out, I think the first command I made was like
+
+55
+00:06:16,376 --> 00:06:21,381
+Get-SCCM computer so that I could look at relevant information on a computer.
+
+56
+00:06:21,381 --> 00:06:26,386
+I could search by a name, by an IP address, by a specific model number.
+
+57
+00:06:26,386 --> 00:06:30,390
+I could look for computers that hadn't checked in a certain amount of time.
+
+58
+00:06:30,390 --> 00:06:39,399
+And so, I spent a lot of time, I made a nice param block and inside the function I made logic that I could
+
+59
+00:06:39,399 --> 00:06:45,405
+map all that stuff together. I spent a good amount of time and I made what I thought was a very useful command.
+
+60
+00:06:45,405 --> 00:06:52,412
+And then I wanted more information out of there. So I came up with another SQL statement that I thought was very useful.
+
+61
+00:06:52,412 --> 00:06:58,418
+I chopped it up. I copied the original command, generated a new command, based off of that, I went in and
+
+62
+00:06:58,418 --> 00:07:04,424
+changed everything that I needed to do. Within 10 minutes, I was able to have another very useful command.
+
+63
+00:07:04,424 --> 00:07:12,432
+Fast forward 10 months, a year, and I have 20 commands that I've built up, but over time, each one of those
+
+64
+00:07:12,432 --> 00:07:15,435
+commands are a little bit different and I added more functionality to some of them.
+
+65
+00:07:15,435 --> 00:07:19,439
+As you saw there, we had the ability to do a GroupBy and an OrderBy.
+
+66
+00:07:19,439 --> 00:07:24,444
+So maybe the first command I didn't think of that and I didn't think of the ability to do a negation, to be able
+
+67
+00:07:24,444 --> 00:07:31,451
+to negate a specific parameter that came in. But 20 commands in, maybe I have added that functionality.
+
+68
+00:07:31,451 --> 00:07:37,457
+And now I have 19 commands that I have to kind of go back and port that functionality into and I don't have time
+
+69
+00:07:37,457 --> 00:07:43,463
+to do that kind of thing. So I had on my to-do list for a very long time a way, I needed to come up with a
+
+70
+00:07:43,463 --> 00:07:52,472
+way to make it, that I didn't have to go back and do that. I wanted to make kind of an engine so that I could
+
+71
+00:07:52,472 --> 00:08:06,486
+use the same exact code for each module or for each function and have it, by doing that, I was able to,
+
+72
+00:08:06,486 --> 00:08:13,493
+if I came across a bug, I could fix it in one place, and then reimport the module, and all the bugs were fixed.
+
+73
+00:08:13,493 --> 00:08:18,498
+If I wanted to add functionality, I could fix it in one place and all the commands could come along for the ride.
+
+74
+00:08:18,498 --> 00:08:26,506
+And the only work that's left after you do that is to come up with that the command definition that we had,
+
+75
+00:08:26,506 --> 00:08:29,509
+which as you can see there again, that was just essentially a param block.
+
+76
+00:08:29,509 --> 00:08:37,517
+That was very, very, very easy I guess you call it a domain-specific language.
+
+77
+00:08:37,517 --> 00:08:44,524
+So anyway, it takes code reuse kind of to the extreme and instead of having commands that generate static
+
+78
+00:08:44,524 --> 00:08:52,532
+code that I can then save, I can just edit things on the fly and then import them.
+
+79
+00:08:52,532 --> 00:08:59,539
+So it's definitely, it's probably really only useful in certain scenarios.
+
+80
+00:08:59,539 --> 00:09:03,543
+I have a couple of code examples. We're not going to kind of cover how all that works because honestly and
+
+81
+00:09:03,543 --> 00:09:10,550
+truly, the behind the scenes of that is pretty ugly right now. It's really big and clunky, but I do have a
+
+82
+00:09:10,550 --> 00:09:17,557
+couple of examples I think that could be useful. They're very, and I think they're simple enough that we can
+
+83
+00:09:17,557 --> 00:09:23,563
+kind of go through how to build the first one so because I'm sure somebody else can kind of take these same
+
+84
+00:09:23,563 --> 00:59:59,999
+techniques and come up with something better than, you know I can.
+

@@ -1,0 +1,344 @@
+1
+00:00:00,0 --> 00:00:07,572
+Then I create a test for every example. Now I'm going to take you through about seven minutes of syntax.
+
+2
+00:00:07,572 --> 00:00:12,572
+Are we good so far? Everybody happy? Okay. I'm going to take you through about seven minutes of syntax
+
+3
+00:00:12,572 --> 00:00:20,572
+where we're going to discuss the Pester syntax and its natural language.
+
+4
+00:00:20,572 --> 00:00:26,572
+You've often heard these called DSL, or Domain Specific Language, right.
+
+5
+00:00:26,572 --> 00:00:31,572
+It's just its natural language for comparing actual to expected values.
+
+6
+00:00:31,572 --> 00:00:37,572
+So my hint to those of you who are learning Pester is to either learn the syntax if that works for you and
+
+7
+00:00:37,572 --> 00:00:44,572
+forget it or don't even learn the syntax, just go with the natural language.
+
+8
+00:00:44,572 --> 00:00:50,572
+Okay and I threw, these slides go up on GitHub, and they're available to use, so I threw in a little glossary
+
+9
+00:00:50,572 --> 00:00:56,572
+for those of you who are unfamiliar with the terms. They're not defined in help files.
+
+10
+00:00:56,572 --> 00:01:04,572
+Okay. So Describe is a container, okay, and I consider it the naming container.
+
+11
+00:01:04,572 --> 00:01:10,572
+If you look up in the upper right-hand corner, there's going to be a little breadcrumb trail and that's a
+
+12
+00:01:10,572 --> 00:01:14,572
+good thing to watch for. You'll see how these pieces interact with each other.
+
+13
+00:01:14,572 --> 00:01:22,572
+Okay. So describe, I considered describe to be the naming container because when you run Invoke-Pester to
+
+14
+00:01:22,572 --> 00:01:32,572
+run your tests, there are TestName and Tag parameters and they always refer to the test name and the tag on
+
+15
+00:01:32,572 --> 00:01:38,572
+the Describe block, right. There are other containers in Pester and they have names.
+
+16
+00:01:38,572 --> 00:01:46,572
+The names are always required and they are almost always arbitrary, but when you use TestName and Invoke-Pester,
+
+17
+00:01:46,572 --> 00:01:54,572
+it only looks at the names of the Describe blocks, so it's my naming container.
+
+18
+00:01:54,572 --> 00:02:00,572
+Oh, it creates a scope for both mocking and TestDrive and we'll talk about those in a little more detail,
+
+19
+00:02:00,572 --> 00:02:06,572
+and again, the name is required and arbitrary. One more thing and this gets everybody, see the curly brace
+
+20
+00:02:06,572 --> 00:02:14,572
+that's on the same line as the Describe keyword, that curly brace, regardless of your favorite curly brace
+
+21
+00:02:14,572 --> 00:02:25,572
+style, is required to be on the same line as Pester because that ScriptBlock is the value of a positional parameter, right.
+
+22
+00:02:25,572 --> 00:02:32,572
+So if you did put it on the next line, you'd have to use that awful back tick, right, hopefully without a space
+
+23
+00:02:32,572 --> 00:02:35,572
+following it, right. Okay. But there's a
+
+24
+00:02:35,572 --> 00:02:42,572
+wonderful error message and I think when you see it, remind yourself of the value of excellent error messages.
+
+25
+00:02:42,572 --> 00:02:48,572
+There's an error message in Pester. If it can't find the ScriptBlock, it said did you put the curly brace on
+
+26
+00:02:48,572 --> 00:02:52,572
+the next line. Okay. It's great.
+
+27
+00:02:52,572 --> 00:03:01,572
+It's wonderful. The other thing is that if you omit the required name parameter, it assumes that this script,
+
+28
+00:03:01,572 --> 00:03:07,572
+well PowerShell, so it's looking for a string followed by a ScriptBlock, these are all positional parameters,
+
+29
+00:03:07,572 --> 00:03:14,572
+that's how it does the natural language, so if you happen to omit the name, PowerShell converts the
+
+30
+00:03:14,572 --> 00:03:18,572
+ScriptBlock to a string and then it can't find the ScriptBlock. Okay.
+
+31
+00:03:18,572 --> 00:03:26,572
+So if you omit the name, you'll get one of those errors that said did you put your curly brace on the next line,
+
+32
+00:03:26,572 --> 00:03:35,572
+right, even if you didn't. Context is also a container. Look, keep your eye on the breadcrumbs.
+
+33
+00:03:35,572 --> 00:03:42,572
+It's a container inside Describe. It's an optional container. You don't need to use this one, right.
+
+34
+00:03:42,572 --> 00:03:49,572
+They added it for organization, but it's very important because context is the smallest container that creates
+
+35
+00:03:49,572 --> 00:03:58,572
+a mocking scope. There are smaller containers, but they will not contain a mock in Pester 3.4.0.
+
+36
+00:03:58,572 --> 00:04:04,572
+Okay. The name again is required and arbitrary.
+
+37
+00:04:04,572 --> 00:04:12,572
+The next container is It. It is a required container inside either describe or context.
+
+38
+00:04:12,572 --> 00:04:19,572
+It encloses your tests. It is the smallest test container, but it does not contain mocks.
+
+39
+00:04:19,572 --> 00:04:24,572
+It does not create a mocking scope. It also has a name that's required and arbitrary.
+
+40
+00:04:24,572 --> 00:04:32,572
+Should is not a container. Should is actually a function. It compares actual to expected values.
+
+41
+00:04:32,572 --> 00:04:42,572
+You always pipe to it and it does that comparison based on the value of the B operator that follows it,
+
+42
+00:04:42,572 --> 00:04:47,572
+so this is a very typical should format.
+
+43
+00:04:47,572 --> 00:04:55,572
+And these are all the wonderful comparison operators. Okay. They change, so keep an eye on them.
+
+44
+00:04:55,572 --> 00:05:02,572
+Not all of them are documented. I noticed last night, BeOfType, which is one that I use frequently is not
+
+45
+00:05:02,572 --> 00:05:06,572
+documented, but I owe those guys some favors, so I'll probably throw that in.
+
+46
+00:05:06,572 --> 00:05:13,572
+These are fantastic. Learn these and use them. They will help you in your tests.
+
+47
+00:05:13,572 --> 00:05:19,572
+Oh, and then mock, which is my absolute favorite part of Pester.
+
+48
+00:05:19,572 --> 00:05:25,572
+It lets you fake the input to the cmdlet that you're testing, right.
+
+49
+00:05:25,572 --> 00:05:31,572
+It is absolutely invaluable. I heard some people say that they're using Pester, but they're not using mocking.
+
+50
+00:05:31,572 --> 00:05:39,572
+This is the way that you make your code independent of your environment and independent of code that it interacts with.
+
+51
+00:05:39,572 --> 00:05:44,572
+Okay, and what it does is it fakes the input to the command that you're testing.
+
+52
+00:05:44,572 --> 00:05:54,572
+Okay, so the command that you mock, does not run. And instead, you provide the fake output so that when the
+
+53
+00:05:54,572 --> 00:06:00,572
+command that you're testing runs, it gets the output that you specify instead of running that command.
+
+54
+00:06:00,572 --> 00:06:05,572
+So you do not mock the command that you're testing, right, because it won't run.
+
+55
+00:06:05,572 --> 00:06:14,572
+You mock the command that provides input to your test command. So in this case, you see my cursor?
+
+56
+00:06:14,572 --> 00:06:21,572
+Good, okay. So in this case, we're testing new user, right, but we're mocking a helper function that it
+
+57
+00:06:21,572 --> 00:06:28,572
+calls, Get-UserType. Okay, and we're going to mock it with admin so that when New-User creates its object,
+
+58
+00:06:28,572 --> 00:06:34,572
+it gets admin. I could put anything in there and one of the things I'd want to test is all the valid values
+
+59
+00:06:34,572 --> 00:06:43,572
+and at least one invalid value. Okay. Let's see, oh and in unit test, you mock all calls to other cmdlets,
+
+60
+00:06:43,572 --> 00:06:47,572
+that's the isolation feature. Oh, we're doing pretty well
+
+61
+00:06:47,572 --> 00:06:55,572
+on time. Good. Mock does not scope to It blocks. Okay. So the mock that's done the mock of Get-ChildItem
+
+62
+00:06:55,572 --> 00:06:59,572
+in the first It block, also affects the output in the second one.
+
+63
+00:06:59,572 --> 00:07:06,572
+The smallest mocking context is, oh sorry, the smallest mocking scope is context.
+
+64
+00:07:06,572 --> 00:07:12,572
+Okay. Boy, did I learn that the hard way.
+
+65
+00:07:12,572 --> 00:07:18,572
+And then TestDrive, which creates basically a virtual file system just for tests.
+
+66
+00:07:18,572 --> 00:07:25,572
+This is something that the Pester team could've made us do as testers, but instead, they handled it
+
+67
+00:07:25,572 --> 00:07:29,572
+themselves and it was a brilliant decision. Here's how it works.
+
+68
+00:07:29,572 --> 00:07:37,572
+Whenever I answer a Describe block, I get a brand new test file system.
+
+69
+00:07:37,572 --> 00:07:45,572
+That's just for my tests. I can write files in it, I can read files from it, I can change them without
+
+70
+00:07:45,572 --> 00:07:53,572
+affecting the file system on my machine, and more importantly, without being dependent on the contents of my
+
+71
+00:07:53,572 --> 00:07:59,572
+personal file system so that it works on my machine. Okay, and what's really going on is that it's creating
+
+72
+00:07:59,572 --> 00:08:09,572
+a temporary drive in ENV temp, right. But so you refer to TestDrive by as TestDrive: like C: right,
+
+73
+00:08:09,572 --> 00:08:17,572
+always with a colon or the TestDrive variable holds the fully-qualified path to the current TestDrive.
+
+74
+00:08:17,572 --> 00:08:26,572
+Okay and you'll see me using this when I create paths. You answer a Describe block, you get a brand new
+
+75
+00:08:26,572 --> 00:08:33,572
+TestDrive, you leave the Describe block, that TestDrive is gone, you open a new Describe block, you get a
+
+76
+00:08:33,572 --> 00:08:39,572
+brand new one. Okay. So there's no pollution between tests. It was a brilliant move.
+
+77
+00:08:39,572 --> 00:08:45,572
+Again, if you see these guys, pat them on the back. This is a huge facility.
+
+78
+00:08:45,572 --> 00:08:47,572
+Okay.
+
+79
+00:08:47,572 --> 00:08:49,572
+There's some scoping stuff and we can
+
+80
+00:08:49,572 --> 00:08:56,572
+talk about that if we have some time. In module scope is an Uber container just for testing modules and what
+
+81
+00:08:56,572 --> 00:09:06,572
+it does is it creates all of the test elements in module scope, which means that the test has access to all
+
+82
+00:09:06,572 --> 00:09:13,572
+of the elements of the module including elements that are not exported, right, like variables and like those
+
+83
+00:09:13,572 --> 00:09:22,572
+helper funs that you need to mock. Okay. So when you're testing a module, this is almost a required thing to use.
+
+84
+00:09:22,572 --> 00:09:29,572
+This one has a required name, but the name is not arbitrary and it must match the actual module name.
+
+85
+00:09:29,572 --> 00:09:33,572
+Okay. And then the final thing is the wonderful
+
+86
+00:09:33,572 --> 00:59:59,999
+Invoke-Pester cmdlet and let's get to some code.
+

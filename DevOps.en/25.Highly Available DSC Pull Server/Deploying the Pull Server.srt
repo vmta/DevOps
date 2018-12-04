@@ -1,0 +1,344 @@
+1
+00:00:00,0 --> 00:00:03,684
+Now we're going to do it another way. A lot of people like this way.
+
+2
+00:00:03,684 --> 00:00:11,684
+I like this way because here's the thing, GUIDs are hard to manage because you can't tell what's inside the config.
+
+3
+00:00:11,684 --> 00:00:16,684
+In other words, you see a number and when you get 6,000 up there, well which one configures SNMP?
+
+4
+00:00:16,684 --> 00:00:24,684
+I don't know. Now it becomes really hard. Now most of us have created our tooling where we put the GUID
+
+5
+00:00:24,684 --> 00:00:29,684
+into a database along with a description of what it is and all that kind of stuff, so in other words,
+
+6
+00:00:29,684 --> 00:00:34,684
+we're kind of writing our own version of Chef, but it's really easy to---did I say that word Chef, yes,
+
+7
+00:00:34,684 --> 00:00:39,684
+I said that---but it's really easy to do your own tooling for this, it's just you're probably going to want it.
+
+8
+00:00:39,684 --> 00:00:48,684
+So let me show you another way. This is a new way. This came out last April in the previews stream of things.
+
+9
+00:00:48,684 --> 00:00:53,684
+I'm going to do the same thing I did before. I've got a simple config.
+
+10
+00:00:53,684 --> 00:00:59,684
+I'm going to run the config. It's going to say s1.mof. Here's what I'm going to do, I'm going to rename the
+
+11
+00:00:59,684 --> 00:01:01,684
+config, but I'm going to name it with
+
+12
+00:01:01,684 --> 00:01:12,684
+something a human can understand. See it's going to be---you don't look happy about this, but you should be.
+
+13
+00:01:12,684 --> 00:01:20,684
+So I'm going to rename it to RoleSNMP. I going to make a checksum for it because we always got to do the checksum.
+
+14
+00:01:20,684 --> 00:01:25,684
+And then, da, ta, da, na, na, na, na, na, I'm going to copy it up to the pull server again.
+
+15
+00:01:25,684 --> 00:01:36,684
+But now watch, looky, looky, looky, looky. Which one do you understand?
+
+16
+00:01:36,684 --> 00:01:47,684
+Yeah, see how cool this is? This also brings up a security issue because when it's a GUID, nobody knows what's inside.
+
+17
+00:01:47,684 --> 00:01:52,684
+When it's not a GUID and you use a human name, they know exactly what that config does.
+
+18
+00:01:52,684 --> 00:01:57,684
+That could be an issue. That's why you probably heard the team talking about this is why we're encrypting the
+
+19
+00:01:57,684 --> 00:02:02,684
+MOFs because of this right here.
+
+20
+00:02:02,684 --> 00:02:09,684
+So, but it's easier to manage. It's really cool. Now what we have to do is we now have to do something
+
+21
+00:02:09,684 --> 00:02:12,684
+kind of special. We need to teach
+
+22
+00:02:12,684 --> 00:02:18,684
+our pull server how to work with this technology called configuration names.
+
+23
+00:02:18,684 --> 00:02:22,684
+Now what Microsoft did is they're like, you can figure out what the configs are, so you can set any node to
+
+24
+00:02:22,684 --> 00:02:27,684
+pull any config because it's English readable, we're going to set up a registration key.
+
+25
+00:02:27,684 --> 00:02:32,684
+It's basically just a shared secret. We're going to put the shared secret on the pull server and we're going
+
+26
+00:02:32,684 --> 00:02:39,684
+to teach the LCM what the shared secret is. Only if you know the shared secret---how can you ask a question about that?
+
+27
+00:02:39,684 --> 00:02:40,684
+(Audience comment)
+
+28
+00:02:40,684 --> 00:02:42,162
+Oh go ahead.
+
+29
+00:02:42,162 --> 00:02:48,684
+I'm assuming that you do the name, the configurations, the pull server seem to be running on v5.
+
+30
+00:02:48,684 --> 00:02:51,684
+Oh, I should have mentioned that. Thank you very much. You are absolutely correct.
+
+31
+00:02:51,684 --> 00:02:57,684
+This has to be v5 deal. Config names, at least the last time I checked, did not work in v4.
+
+32
+00:02:57,684 --> 00:03:04,684
+So and then also, then I guess it applies that this node also has to be running in v5.
+
+33
+00:03:04,684 --> 00:03:11,684
+The node can be, as long as the LCM is version 2, so they updated v4 to have an LCM too.
+
+34
+00:03:11,684 --> 00:03:16,684
+So the LCM could be a version 4 that's been updated. Again, a really great question.
+
+35
+00:03:16,684 --> 00:03:18,684
+Guys, we need this registration key, so
+
+36
+00:03:18,684 --> 00:03:23,684
+I'm going to create a text file with a registration key in it. Of course, what we want you to put in here is a
+
+37
+00:03:23,684 --> 00:03:24,684
+GUID.
+
+38
+00:03:24,684 --> 00:03:27,684
+Good. I'm just using some numbers so you can see that it doesn't matter what you put in here.
+
+39
+00:03:27,684 --> 00:03:36,684
+So I'm just doing 1234567, I'll make this file, I'm going to copy this registration key up to the pull server
+
+40
+00:03:36,684 --> 00:03:42,684
+to a very specific location, WindowsPowerShell\DscService. This is the root folder for the configuration and
+
+41
+00:03:42,684 --> 00:03:49,684
+modules folders for the pull server and with that, thinking I don't have to prove to you that it's up there,
+
+42
+00:03:49,684 --> 00:03:54,684
+but let's go ahead and prove to you that it's up there. There's my registration keys.
+
+43
+00:03:54,684 --> 00:04:05,684
+Got it? So now all I need to do is teach the LCM and I'm going to pick on the computer too.
+
+44
+00:04:05,684 --> 00:04:10,684
+I don't need a GUID anymore in this LCM config, so I remarked it out, so you can see it's out, but what I do
+
+45
+00:04:10,684 --> 00:04:16,684
+need to do is teach him the registration key and the configuration name.
+
+46
+00:04:16,684 --> 00:04:24,684
+So if you look down here, I set the ConfigurationID to blank because we're not using GUIDs and down here,
+
+47
+00:04:24,684 --> 00:04:29,5
+RegistrationKey and what role or what config name do I want him to use.
+
+48
+00:04:29,5 --> 00:04:32,684
+Does that make sense? It's actually really, really easy.
+
+49
+00:04:32,684 --> 00:04:39,684
+(Audience question)
+
+50
+00:04:39,684 --> 00:04:49,684
+Some day. Also, I want you, great question, because I want you to also notice the word configuration names
+
+51
+00:04:49,684 --> 00:04:57,684
+and see my note that says there can be only one. Today, there can be only one.
+
+52
+00:04:57,684 --> 00:05:03,303
+Perhaps in the future, you could actually ask it for multiple roles and it'll munge it down to a single MOF.
+
+53
+00:05:03,303 --> 00:05:04,304
+(Audience comment)
+
+54
+00:05:04,304 --> 00:05:14,684
+Yeah. So I'm going to run this. Whoops. Hang on, hang on, hang on.
+
+55
+00:05:14,684 --> 00:05:20,684
+I screwed something up. What did I screw up? Connecting to remote server failed with username or password is incorrect.
+
+56
+00:05:20,684 --> 00:05:30,684
+What the hell are you talking about? My invoke-command failed? Wait a minute.
+
+57
+00:05:30,684 --> 00:05:35,684
+Wait a minute. Anybody see what I screwed up? Thumbprint because it's an empty string.
+
+58
+00:05:35,684 --> 00:05:55,684
+Yeah, I know. Oh, come on. Invoke-command Computer dc. I don't think my, wait a minute, I know my pull
+
+59
+00:05:55,684 --> 00:06:09,684
+server is running. Oh, I don't know why he's in the middle of a reboot, but he had, and the thing is, I have the
+
+60
+00:06:09,684 --> 00:06:17,684
+LCM set on him to reboot if needed and apparently he needed. So anyway, back to.
+
+61
+00:06:17,684 --> 00:06:26,684
+Sorry about that. Let's try this again. Hey, here we go. That's much better.
+
+62
+00:06:26,684 --> 00:06:34,684
+So I'm going to now set that LCM on machine number 2 with that information and if we did everything correct,
+
+63
+00:06:34,684 --> 00:06:40,684
+put the registration key up, name the configs, configure the LCM correctly, if we did everything correct,
+
+64
+00:06:40,684 --> 00:06:49,684
+oh wait a minute, did I get another red splat? The underlying error is attempt to register agent, oh don't you
+
+65
+00:06:49,684 --> 00:07:03,684
+do this to me. Seriously? Come on. I'll tell you what this is in a minute, what this error is.
+
+66
+00:07:03,684 --> 00:07:06,684
+If I run update, it'll suddenly work.
+
+67
+00:07:06,684 --> 00:07:12,684
+And mine's not and I'll explain to you in a minute why. Do you get the kind of concept though of using a config name?
+
+68
+00:07:12,684 --> 00:07:18,684
+I've got good news and I've got bad news with config names. The good news is it's pretty easy to manage because
+
+69
+00:07:18,684 --> 00:07:26,684
+now you can understand what the files are, it's easy to set up nodes with it, a lot of people really like this.
+
+70
+00:07:26,684 --> 00:07:34,684
+I'm going to get to the bad news in a minute. Look at the bottom of the screen, see.
+
+71
+00:07:34,684 --> 00:07:46,684
+So here's part of the bad news. If you want to use config names, you're pull server must be a graphical server.
+
+72
+00:07:46,684 --> 00:07:56,684
+I only work on Core servers. I only work on Core servers. I only work on Core servers.
+
+73
+00:07:56,684 --> 00:08:02,684
+I only work on Core servers. My pull server has to be a graphical-based server.
+
+74
+00:08:02,684 --> 00:08:09,684
+The reason is that when they wrote all this up, there's some dependencies still on the graphical desktop.
+
+75
+00:08:09,684 --> 00:08:17,684
+They are in the process of fixing it right now. As a matter of fact, the guy who is fixing it was here
+
+76
+00:08:17,684 --> 00:08:23,684
+yesterday morning going I'm fixing it. Because it's kind of embarrassing, right?
+
+77
+00:08:23,684 --> 00:08:27,684
+Your crap doesn't work on a Core Server from the team that made the Core Server and told everybody it's got
+
+78
+00:08:27,684 --> 00:08:33,684
+to be Core. Okay, you don't see the hilarity to that, but I certainly do.
+
+79
+00:08:33,684 --> 00:08:37,684
+There's another issue too. You are not going to reboot on me again.
+
+80
+00:08:37,684 --> 00:08:44,684
+Oh, okay. Just whatever. There's another issue. I built my pull server and when you build a pull server,
+
+81
+00:08:44,684 --> 00:08:49,684
+you need to get a module from the gallery called XPS Desired State Configuration.
+
+82
+00:08:49,684 --> 00:08:54,684
+Unfortunately, that module has changed version numbers as they're trying to fix this configuration thing.
+
+83
+00:08:54,684 --> 00:09:02,684
+Twice in the last few days. I have the latest one and the latest one is causing an agent registration error
+
+84
+00:09:02,684 --> 00:09:09,684
+and that's the red error I got from server 2. You will get that error if you use config names today.
+
+85
+00:09:09,684 --> 00:09:17,684
+Hopefully, 3.10.0.0 will ship soon and that will fix it all. Are you with me?
+
+86
+00:09:17,684 --> 00:59:59,999
+I apologize. It's just it is what it is right now.
+

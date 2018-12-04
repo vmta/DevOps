@@ -1,0 +1,316 @@
+1
+00:00:00,0 --> 00:00:03,759
+Step away from and take away that core knowledge of the systems,
+
+2
+00:00:03,759 --> 00:00:06,759
+the expert knowledge that you all have.
+
+3
+00:00:06,759 --> 00:00:11,759
+It actually becomes more important.
+
+4
+00:00:11,759 --> 00:00:17,759
+So these are the four things. In writing the whitepaper, we had to boil it down and every one of these has
+
+5
+00:00:17,759 --> 00:00:24,759
+eight things, but we wanted to get down to what are the core concepts if I'm looking at this for the first time
+
+6
+00:00:24,759 --> 00:00:30,759
+that I can categorize this information to pieces I can digest one at a time.
+
+7
+00:00:30,759 --> 00:00:35,759
+So we're going to go through each of these and the pattern in the paper is written in a similar fashion is
+
+8
+00:00:35,759 --> 00:00:42,759
+what is this and then what does this mean to me if I'm working in operations, right, because these things all,
+
+9
+00:00:42,759 --> 00:00:47,759
+I mean, especially if you have in-house developers, these are things that they talk about right, but these are
+
+10
+00:00:47,759 --> 00:00:51,759
+not things that we normally talk about in operations.
+
+11
+00:00:51,759 --> 00:00:55,759
+I'm not expecting you to read this slide, like I said, the slides will be available and this is obviously in the
+
+12
+00:00:55,759 --> 00:01:02,759
+paper as well, but we tried to capture what are the problems that this actually is trying to solve.
+
+13
+00:01:02,759 --> 00:01:09,759
+So we're going to dig into these a lot, but I hate just reading off a slide, so I'm going to dig in deep to those.
+
+14
+00:01:09,759 --> 00:01:14,759
+So if we talk about source first, that's the first big bullet.
+
+15
+00:01:14,759 --> 00:01:21,759
+What did we do before? Right, so I'm going to describe change management, even though we're talking about source control.
+
+16
+00:01:21,759 --> 00:01:26,759
+So I wanted to introduce a change, right, so I spin up a VM, I'm going to prototype the change there,
+
+17
+00:01:26,759 --> 00:01:35,759
+and then I went and I submitted the change form and then I went to my change advisory board and I present it.
+
+18
+00:01:35,759 --> 00:01:41,759
+I've tested this, I'm going to introduce a new policy setting, I've created a VM that looks like that server,
+
+19
+00:01:41,759 --> 00:01:48,759
+I created a sub OU, I moved the machine object into that sub OU, I applied the policy there, if all goes well,
+
+20
+00:01:48,759 --> 00:01:56,759
+then I'm going to also introduce that policy to the OU, to the policy that applies to the whole OU and cross
+
+21
+00:01:56,759 --> 00:02:00,759
+my fingers that things don't explode because I don't really understand what most of these servers look like,
+
+22
+00:02:00,759 --> 00:02:05,759
+right, because who knows if yesterday somebody RDPd into it and made a change.
+
+23
+00:02:05,759 --> 00:02:12,759
+I have no idea. So I need a rabbit's foot and a change form and I'm going to see how this goes.
+
+24
+00:02:12,759 --> 00:02:17,759
+When we get to change advisory board, we're going to argue because somebody's going to say why do you need to
+
+25
+00:02:17,759 --> 00:02:20,759
+make that change. It's probably going to break my stuff.
+
+26
+00:02:20,759 --> 00:02:28,759
+We're going to try to catch, if two of us are going to implement something that's similar and we might bump
+
+27
+00:02:28,759 --> 00:02:34,759
+into each other even possibly in the same maintenance window, so that's a little scary, and then, of course,
+
+28
+00:02:34,759 --> 00:02:40,759
+we're going to go to the build documentation for that server and update it because we always do that.
+
+29
+00:02:40,759 --> 00:02:45,759
+So the first that happens is we don't prototype in a VM and we don't update our docs.
+
+30
+00:02:45,759 --> 00:02:51,759
+We just show up, well we might submit the change form, right, and then we show up and present.
+
+31
+00:02:51,759 --> 00:02:56,759
+The next thing that happens is we're the cool kid because we're the expert, so we don't ever even submit the change form.
+
+32
+00:02:56,759 --> 00:03:00,759
+We just walk in, throw down our laptop, and say Saturday I'm going to make this change, deal with it,
+
+33
+00:03:00,759 --> 00:03:06,759
+and that's kind of change goes and then arguments happen. And then at the end, we just present an argue,
+
+34
+00:03:06,759 --> 00:03:11,759
+and then lastly, we just argue, and it's pretty much how change management actually happens.
+
+35
+00:03:11,759 --> 00:03:15,759
+That's what we did before.
+
+36
+00:03:15,759 --> 00:03:20,759
+So what do we do now? We start with configuration as code.
+
+37
+00:03:20,759 --> 00:03:25,759
+So instead of doing documentation at the end, which we never did, we just update the configuration file so
+
+38
+00:03:25,759 --> 00:03:32,759
+that is the documentation for how this thing is built. It's also how the machine, it's how the work is performed,
+
+39
+00:03:32,759 --> 00:03:37,759
+so if we didn't get it right, it didn't get built that way, so we know that this is right as we go.
+
+40
+00:03:37,759 --> 00:03:47,759
+Included in that source control, so when I say source control, I'm talking about things like TFS,
+
+41
+00:03:47,759 --> 00:03:52,759
+talked about subversion, git was the one that for some reason what not landing in my head and that's the most popular one.
+
+42
+00:03:52,759 --> 00:03:57,759
+Not visual source safe. Not SharePoint versioning.
+
+43
+00:03:57,759 --> 00:04:00,759
+It could be a file share, in fact, I talked to---
+
+44
+00:04:00,759 --> 00:04:03,759
+no, no, no---
+
+45
+00:04:03,759 --> 00:04:04,759
+it should not be a file share.
+
+46
+00:04:04,759 --> 00:04:06,759
+It is not a file share.
+
+47
+00:04:06,759 --> 00:04:12,759
+But I will relate it this way because it makes it a little bit easier to digest.
+
+48
+00:04:12,759 --> 00:04:16,759
+a lot of people in this room probably have a background where at some point you worked on desktops and you
+
+49
+00:04:16,759 --> 00:04:21,759
+probably had a file share full of apps that you deployed using something to those desktops.
+
+50
+00:04:21,759 --> 00:04:26,759
+Think about it like that, right, you had a folder structure and you had versions of those apps and you put
+
+51
+00:04:26,759 --> 00:04:30,759
+them there, and with those apps, you probably had a batch file that did a silent install.
+
+52
+00:04:30,759 --> 00:04:34,759
+We just want to start thinking about it that way, right, so we're going to take the way we're configuring
+
+53
+00:04:34,759 --> 00:04:39,759
+these servers, we're going to pair it up with a script that automatically deploys that file,
+
+54
+00:04:39,759 --> 00:04:44,759
+the Pester scripts that evaluate the quality of that and we're putting all that stuff together.
+
+55
+00:04:44,759 --> 00:04:50,759
+And then your release of it could be a web server, it could be Active Directory domain controller, it could be
+
+56
+00:04:50,759 --> 00:04:54,759
+an Exchange box, whatever, you're defining a version that's yours.
+
+57
+00:04:54,759 --> 00:05:03,759
+So that's you're, like you might be working on DNS Server version 7.4, and 7.4 doesn't mean that it's DNS
+
+58
+00:05:03,759 --> 00:05:12,759
+version 7.4, it means for you, this is your 7.4 release of that part of your infrastructure and that's kind of
+
+59
+00:05:12,759 --> 00:05:16,759
+how we can relate source control back into this. There's a version associated with how that infrastructure
+
+60
+00:05:16,759 --> 00:05:23,759
+is configured right now. So we make the change. We're going to talk about testing in a lot more depth,
+
+61
+00:05:23,759 --> 00:05:31,759
+but you're actually going to run tests locally on your machine to say yep, it looks like I've done this correctly,
+
+62
+00:05:31,759 --> 00:05:33,759
+and then you're actually going to do a push.
+
+63
+00:05:33,759 --> 00:05:40,759
+So if you're familiar with git, and even if you're using TFS, git.exe will be your front-end in most cases.
+
+64
+00:05:40,759 --> 00:05:46,759
+You're going to do a clone to your machine, you can pull changes that other people have made, you can push
+
+65
+00:05:46,759 --> 00:05:52,759
+your changes back, and if two teams are working on this at the same time, that somebody owns that repo,
+
+66
+00:05:52,759 --> 00:05:59,759
+they can do a pull request. It means that they can take DNS 7.4 offline, maybe they wanted to submit a
+
+67
+00:05:59,759 --> 00:06:05,759
+change to you, they can submit change .7.5, you review it, it'll show you line by line what exactly changed.
+
+68
+00:06:05,759 --> 00:06:08,759
+We're going to take a look at this. Here's what's most important,
+
+69
+00:06:08,759 --> 00:06:14,759
+as those things get checked back in, some people call it check in, some people call it a push,
+
+70
+00:06:14,759 --> 00:06:19,759
+there's metadata that happens. Who made the change? When did it happen?
+
+71
+00:06:19,759 --> 00:06:26,759
+There's comments to explain why did that happen and you can literally hold these things side by side and see
+
+72
+00:06:26,759 --> 00:06:31,759
+I can see right here that now we were static IP, now we're dynamic IP.
+
+73
+00:06:31,759 --> 00:06:37,759
+Like all of these things are side by side in a window and you can see exactly when that happened.
+
+74
+00:06:37,759 --> 00:06:44,759
+The state of DevOps survey that's been going on for the past three years, the fourth year of the survey is
+
+75
+00:06:44,759 --> 00:06:54,759
+going on now, Dr. Nicole Forsgren has been doing research on the statistics based off that survey.
+
+76
+00:06:54,759 --> 00:07:01,759
+One of the findings that they had was that change argument change control board thing there is way less
+
+77
+00:07:01,759 --> 00:07:10,759
+effective than source control and peer review of changes as they go out into your infrastructure, and so there's
+
+78
+00:07:10,759 --> 00:07:18,759
+a paper that's out there. I will be blogging the link to that probably later today if you want to dive into
+
+79
+00:07:18,759 --> 00:59:59,999
+kind of the science of it.
+

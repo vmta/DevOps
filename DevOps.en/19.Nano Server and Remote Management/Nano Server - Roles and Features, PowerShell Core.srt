@@ -1,0 +1,168 @@
+1
+00:00:00,504 --> 00:00:04,504
+So the next statement, we need server configuration optimized for the cloud.
+
+2
+00:00:04,504 --> 00:00:08,504
+How do we do that?
+
+3
+00:00:08,504 --> 00:00:15,504
+So Nano headless 64-bit only and as a deployment option of Windows Server.
+
+4
+00:00:15,504 --> 00:00:21,504
+We've refactored it from the ground up, we're focusing on this CloudOS infrastructure, and born-in-the-cloud
+
+5
+00:00:21,504 --> 00:00:26,504
+applications, roles, servers that currently exist that are in use every day, we want to make those be first
+
+6
+00:00:26,504 --> 00:00:38,504
+priority workloads on Nano Server. And so this is what the new picture looks like.
+
+7
+00:00:38,504 --> 00:00:43,504
+So with roles and features, we kind of went along the zero-footprint model and even inside the company when
+
+8
+00:00:43,504 --> 00:00:47,504
+teams are trying to bring components to Nano, they're saying well why don't I just bring everything I got and
+
+9
+00:00:47,504 --> 00:00:52,504
+we tell them to take this opportunity and look at what they have and see whether or not it makes sense to
+
+10
+00:00:52,504 --> 00:00:57,504
+bring it to headless Nano Server world and whether it is adequately manageable using PowerShell's from the
+
+11
+00:00:57,504 --> 00:01:05,504
+other manageability tools we'll talk about. So all of the roles and going into TP5, this will change slightly,
+
+12
+00:01:05,504 --> 00:01:10,504
+will live outside of Nano Server, so we're talking standalone packages that you can pull down and install,
+
+13
+00:01:10,504 --> 00:01:16,504
+sound familiar to another operating system maybe. With that being said, the goal is to be able to pull these
+
+14
+00:01:16,504 --> 00:01:23,504
+packages similar to how you add Windows features to Windows 10 right now on demand, the way you want them,
+
+15
+00:01:23,504 --> 00:01:29,504
+when you want them, and to have the small amount of time between when you say install and when that role is running.
+
+16
+00:01:29,504 --> 00:01:40,504
+So the initial pool of roles is there, so Hyper-V, storage, clustering, DNS and IIS have rolled out recently.
+
+17
+00:01:40,504 --> 00:01:45,504
+In the latest builds you're going to see bigger, more improvements in the next release of Nano Server for
+
+18
+00:01:45,504 --> 00:01:57,504
+those two, and of course, CoreCLR, .NET Core, and we're really focusing on trying to bring driver support to Nano Server.
+
+19
+00:01:57,504 --> 00:02:02,504
+So all the drivers that are needed for networking storage, one by one, we're making sure that they're
+
+20
+00:02:02,504 --> 00:02:09,504
+compatible and that there's a reasonable story to get those injected into your Nano image.
+
+21
+00:02:09,504 --> 00:02:14,504
+Anti-malware, so Windows Defender is an optional package. We're working with the Windows Defender team
+
+22
+00:02:14,504 --> 00:02:21,504
+closely to make sure that signatures are updated via Windows Update, so you'll have a fully-maintained
+
+23
+00:02:21,504 --> 00:02:26,504
+anti-malware option on Nano Server still. It's not the wild west.
+
+24
+00:02:26,504 --> 00:02:37,504
+And then, SC and inside agents are underway and we hope to roll those out alongside the next release.
+
+25
+00:02:37,504 --> 00:02:43,504
+So PowerShell Core. So how many of you, I'm not going to ask how many of you have worked with PowerShell,
+
+26
+00:02:43,504 --> 00:02:48,504
+how many of you have worked with PowerShell Core? Okay. And for those of you that have your hands up,
+
+27
+00:02:48,504 --> 00:02:55,504
+keep them up, keep them up, how many are on IOT? Alright, okay.
+
+28
+00:02:55,504 --> 00:03:01,504
+So a few people. So the whole point of core is to refactor everything to run on CoreCLR.
+
+29
+00:03:01,504 --> 00:03:09,504
+That means that you'll have one common core between IOT and Nano and anything else we decide to do with .NET Core.
+
+30
+00:03:09,504 --> 00:03:13,504
+Full PowerShell language compatibility is there. Remoting is there.
+
+31
+00:03:13,504 --> 00:03:19,504
+So all those things that you expect for command invocation, PSSessions all work.
+
+32
+00:03:19,504 --> 00:03:27,504
+Core engine components are certain to get more green-lit, things like DSC are starting to show up and they're
+
+33
+00:03:27,504 --> 00:03:36,504
+fully-fledged functionality. Support for all cmdlet types. I heard some people in the room chattering about
+
+34
+00:03:36,504 --> 00:03:45,504
+C# and scripts and CIM, so all that stuff works. And the intent here as we work within the company to bring
+
+35
+00:03:45,504 --> 00:03:50,504
+cmdlets over is to make sure that people are bringing them over in the most future proof way possible.
+
+36
+00:03:50,504 --> 00:03:55,504
+So if there's somebody writing underlying code, we're not just picking up cmdlets from full and bringing it
+
+37
+00:03:55,504 --> 00:03:59,504
+over and we recommend when you do that, when you're working on your code too, don't just bring it
+
+38
+00:03:59,504 --> 00:04:06,504
+over blindly, take a look at what benefits Core will give you and whether or not your functionality makes sense.
+
+39
+00:04:06,504 --> 00:04:12,504
+And so, limited set of cmdlets initially, but we're adding cmdlets every day internally and those are
+
+40
+00:04:12,504 --> 00:04:18,504
+reflected in technical preview builds that you guys see. And as I'm sure some of you have seen on the client
+
+41
+00:04:18,504 --> 00:04:25,504
+with Windows 10 insider program, if you're on the fast string, you're getting updates to PowerShell whenever
+
+42
+00:04:25,504 --> 00:59:59,999
+a new build drops, so we're hoping to have that same mechanism with .NET.
+

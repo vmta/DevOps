@@ -1,0 +1,844 @@
+1
+00:00:00,04 --> 00:00:04,04
+So here are the challenges I ran into deploying a domain controller using this technique.
+
+2
+00:00:04,04 --> 00:00:13,04
+Well, number one, the template that was out there on the Azure resource templates was kind of dated.
+
+3
+00:00:13,04 --> 00:00:18,04
+It used an old version, an old, stale version of the xActiveDirectory resource module.
+
+4
+00:00:18,04 --> 00:00:20,04
+It didn't have all the new bells and whistles.
+
+5
+00:00:20,04 --> 00:00:29,04
+It still was using the xDisk DSC resource module, which has been deprecated now and it's now in xStorage.
+
+6
+00:00:29,04 --> 00:00:34,04
+And then there's the xNetworking was out-of-date, so I basically, I found this template that I could use,
+
+7
+00:00:34,04 --> 00:00:40,04
+but it was way out of date. I needed to fix it up. The other thing I wanted to do is I want to put my own
+
+8
+00:00:40,04 --> 00:00:45,04
+domain controller DSC configuration in there. I didn't want to take the one that was in the template.
+
+9
+00:00:45,04 --> 00:00:50,04
+I wanted to write my own, put that up in there as well. And then what I also learned was that when I was
+
+10
+00:00:50,04 --> 00:00:58,04
+trying to pass parameters in, with the Azure template, it uses a JSON and when I was trying to pass an array,
+
+11
+00:00:58,04 --> 00:01:01,04
+I couldn't figure out how to get the array to go through in a JSON parameter.
+
+12
+00:01:01,04 --> 00:01:03,04
+Maybe some of you guys know that, but I couldn't figure that out.
+
+13
+00:01:03,04 --> 00:01:10,04
+So but it was better, it was cleaner, instead, if I could just put my configuration script in one file and my
+
+14
+00:01:10,04 --> 00:01:17,04
+psd configuration data file for DSC in another separate file, it has all of my AD configuration information in it.
+
+15
+00:01:17,04 --> 00:01:23,04
+So those two files, plus the Azure JSON stuff. So here's the process.
+
+16
+00:01:23,04 --> 00:01:29,04
+I installed that xActiveDirectory resource module on a VM to start testing with.
+
+17
+00:01:29,04 --> 00:01:33,04
+I wrote and tested my AD DSC configuration, how I wanted it to build.
+
+18
+00:01:33,04 --> 00:01:39,04
+I just tested that on a local VM just getting my configuration tuned the way I wanted.
+
+19
+00:01:39,04 --> 00:01:45,04
+And then I basically took the arm template that I found out on GitHub and I just mashed those two together and
+
+20
+00:01:45,04 --> 00:01:52,04
+this was a lot of mashing to make that stuff work right. But I basically took my configuration, mashed it up
+
+21
+00:01:52,04 --> 00:01:55,04
+together with that template, and
+
+22
+00:01:55,04 --> 00:02:00,04
+there are just a couple files there. So there's something on azuredeploy.json,
+
+23
+00:02:00,04 --> 00:02:07,04
+which is what the Azure Resource Manager cmdlet uses to go find the information, where to point things,
+
+24
+00:02:07,04 --> 00:02:11,04
+and what values you're going to pass in, things like that.
+
+25
+00:02:11,04 --> 00:02:15,04
+Then there's a zip file. How many have done the Azure DSC extension?
+
+26
+00:02:15,04 --> 00:02:21,04
+Have you worked with that? And when you publish a DSC configuration to Azure, there's this zip file that it builds.
+
+27
+00:02:21,04 --> 00:02:32,04
+All that is a PS1 script file holding your DSC configuration script and then zipped up in there are the resource
+
+28
+00:02:32,04 --> 00:02:37,04
+module folders that need to be installed on that target, that machine.
+
+29
+00:02:37,04 --> 00:02:42,04
+And then there's a configuration data file. How many have done DSC with a configuration data file?
+
+30
+00:02:42,04 --> 00:02:47,04
+Alright, or you used the -ConfigurationData when you build a DSC, right, you pass that in.
+
+31
+00:02:47,04 --> 00:02:51,04
+So this is just that, that's a hash table file. It's got all my parameters in there.
+
+32
+00:02:51,04 --> 00:02:56,04
+So those are the files that are hosted out on GitHub. By the end of this session, you'll be able to go out
+
+33
+00:02:56,04 --> 00:03:03,04
+to GitHub and take the exact same files that I published out there, download it, one file, out of that GitHub
+
+34
+00:03:03,04 --> 00:03:09,04
+repository to your machine and run it and build a domain controller 10 times a day if you wanted in your own
+
+35
+00:03:09,04 --> 00:03:17,04
+instance of Azure. You can also use that code as a reference template for just how do I do a domain controller
+
+36
+00:03:17,04 --> 00:03:22,04
+with DSC and that's what we're going to get into in just a second here when we start looking at the code.
+
+37
+00:03:22,04 --> 00:03:26,04
+So then I deployed this template to Azure and did it work the first time?
+
+38
+00:03:26,04 --> 00:03:34,04
+No. So it's fail, tweak, fail, tweak, fail, tweak, and bashing head on keyboard until finally it works, then success.
+
+39
+00:03:34,04 --> 00:03:39,04
+Yay, alright. So that's, right, that's how we script. Right, we just keep trying until it works and then we,
+
+40
+00:03:39,04 --> 00:03:44,04
+you know, fist bump, right. So yeah.
+
+41
+00:03:44,04 --> 00:03:49,04
+So let's take a look then at the actual files behind this. Let's get this,
+
+42
+00:03:49,04 --> 00:03:54,04
+let's get this going. So there's xActiveDirectory Resource Module.
+
+43
+00:03:54,04 --> 00:03:59,04
+You can do Install-Module xActiveDirectory. I've already got that done, so I'm not going to worry about that right now.
+
+44
+00:03:59,04 --> 00:04:06,04
+You can just slide this down out of the way. And so I can look at my resources in that module and so forth,
+
+45
+00:04:06,04 --> 00:04:15,04
+but I don't want to go into that. I want to spend more time on focusing on the DSC configuration script.
+
+46
+00:04:15,04 --> 00:04:22,04
+So here we go. I've got a configuration called CreateADDomainWithData, which is kind of the difference here.
+
+47
+00:04:22,04 --> 00:04:27,04
+There are a lot of templates out there for deploying a domain controller with DSC, but this one is actually
+
+48
+00:04:27,04 --> 00:04:33,04
+going to show you a fully populated OU user and group data structure.
+
+49
+00:04:33,04 --> 00:04:41,04
+So what we're going to do is, this is just a standard DSC configuration and this is the one that came with the
+
+50
+00:04:41,04 --> 00:04:45,04
+Azure resource template that I snagged off of GitHub. Let me show you where that is, by the way.
+
+51
+00:04:45,04 --> 00:04:47,04
+You need to see this place.
+
+52
+00:04:47,04 --> 00:04:54,04
+So out on GitHub, there's a github/Azure/azure-quickstart-templates.
+
+53
+00:04:54,04 --> 00:05:03,04
+There are, I haven't counted, I'm guessing dozens, hundreds of these, any kind of ready-made recipe you just
+
+54
+00:05:03,04 --> 00:05:05,04
+want to go
+
+55
+00:05:05,04 --> 00:05:09,04
+spin up some environment with multiple servers all talking to one another and happy.
+
+56
+00:05:09,04 --> 00:05:13,04
+In Azure, without having to do that manually, there you go. There's all
+
+57
+00:05:13,04 --> 00:05:20,04
+kinds of those quick templates right there. Well one of these is a domain, so that's what I started with.
+
+58
+00:05:20,04 --> 00:05:23,04
+And so this configuration came out of that and then I had to tweak it up.
+
+59
+00:05:23,04 --> 00:05:30,04
+I had to import the PSDesiredStateConfiguration default module because v5 complains now if you don't do that.
+
+60
+00:05:30,04 --> 00:05:35,04
+Importing the xActiveDirectory module, the xStorage module, and we're taking a parameter for the domain
+
+61
+00:05:35,04 --> 00:05:41,04
+credentials because when you build a DC, you've got to give it credentials in a couple places.
+
+62
+00:05:41,04 --> 00:05:45,04
+So now let's get into the actual DSC configuration piece. This is what you came for.
+
+63
+00:05:45,04 --> 00:05:56,04
+So LocalConfigurationManager. This is the v4 syntax for the LCM and DSC and that's okay, it still works in v5.
+
+64
+00:05:56,04 --> 00:06:02,04
+The reason we put it here is because in Azure when I spin this up, what happens is it's going to run this
+
+65
+00:06:02,04 --> 00:06:08,04
+whole configuration, it's going to spin out localhost.mof and localhost.mega.mof and it's going to configure
+
+66
+00:06:08,04 --> 00:06:14,04
+the LCM and then it's going to actually apply the configuration to the local box and Azure just makes all
+
+67
+00:06:14,04 --> 00:06:25,04
+that happen magically with the DSC extension. So what I did there is I said hey continue after reboot because
+
+68
+00:06:25,04 --> 00:06:27,04
+when you do a domain controller
+
+69
+00:06:27,04 --> 00:06:31,04
+promotion here, it's going to have to take a reboot and you want to make sure that the configuration
+
+70
+00:06:31,04 --> 00:06:34,04
+continues to apply after that reboot.
+
+71
+00:06:34,04 --> 00:06:40,04
+I am only going to apply it, though, I'm not going to keep checking it out later and then RebootNodeIfNeeded
+
+72
+00:06:40,04 --> 00:06:46,04
+and AllowModuleOverWrite. So when you're spinning up a domain controller in Azure,
+
+73
+00:06:46,04 --> 00:06:52,04
+does anybody know about disk caching with domain controllers. What do they prefer?
+
+74
+00:06:52,04 --> 00:06:59,04
+You don't want write caching, right? You don't want read/write caching on the disk for your database, logs,
+
+75
+00:06:59,04 --> 00:07:06,04
+sysvol, that kind of thing. So you have to---when you deploy a DC in Azure under IAZ, you have to actually
+
+76
+00:07:06,04 --> 00:07:14,04
+create a second disk, a data disk, assigned to that VM so that you can turn off that caching.
+
+77
+00:07:14,04 --> 00:07:20,04
+So that's what this is for. It's waiting for that second disk, that data disk to come up in the Azure VM
+
+78
+00:07:20,04 --> 00:07:25,04
+and that's all handled by the template. I didn't have to do any of that hard work.
+
+79
+00:07:25,04 --> 00:07:29,04
+All I had to do was just edit this configuration.
+
+80
+00:07:29,04 --> 00:07:39,04
+So Disk2 and there's a RetryInterval there that's already defined up here in our parameters for the configuration.
+
+81
+00:07:39,04 --> 00:07:47,04
+So I wait for the disk and then I use the xDisk resource to create an F drive on DiskNumber 2, that's going to
+
+82
+00:07:47,04 --> 00:07:53,04
+be our ADDataDisk in Azure. And you could just---it doesn't matter if you're doing this in Azure or not.
+
+83
+00:07:53,04 --> 00:07:58,04
+This is the same thing you would do on your local data center if you're doing this locally as well.
+
+84
+00:07:58,04 --> 00:08:05,04
+So when we're deploying domains with DSC, we have to install the AD-Domain-Services, right?
+
+85
+00:08:05,04 --> 00:08:08,04
+So we installed AD-Domain-Services and then we run
+
+86
+00:08:08,04 --> 00:08:15,04
+what used to be known as DC Promo. Now this is what we call DSC promo and it's going to call all the cmdlets
+
+87
+00:08:15,04 --> 00:08:17,04
+in the back-end to make that happen.
+
+88
+00:08:17,04 --> 00:08:23,04
+So I've installed the AD-Domain role here, also because I like to cheat and use the GUI tools from time to time,
+
+89
+00:08:23,04 --> 00:08:27,04
+I want to go ahead and put the RSAT in there for ADDS in there as well.
+
+90
+00:08:27,04 --> 00:08:37,04
+So that's going to give me my good old trusty ADUC and the AD GUI tools, AD administrative center, all that good stuff.
+
+91
+00:08:37,04 --> 00:08:44,04
+So now we're down to actually building the domain controller. And when I did this presentation last year,
+
+92
+00:08:44,04 --> 00:08:47,04
+this is essentially the same kind of stuff,
+
+93
+00:08:47,04 --> 00:08:54,04
+but this was also part of that downloaded template from the AzureRM template gallery.
+
+94
+00:08:54,04 --> 00:09:00,04
+So xADDomain is going to be my first domain controller. Here's the DomainName coming in from the parameters
+
+95
+00:09:00,04 --> 00:09:04,04
+to the whole thing, the DomainAdministratorCredential and a safemode credential.
+
+96
+00:09:04,04 --> 00:09:09,04
+Because this is just going to be a quick dev lab, I don't really care that they use the same credentials.
+
+97
+00:09:09,04 --> 00:09:15,04
+No big deal. Now notice I can specify here the Database, Log, and Sysvol Path.
+
+98
+00:09:15,04 --> 00:09:19,04
+That's kind of important. You want to put that on that F drive that has no caching on it.
+
+99
+00:09:19,04 --> 00:09:25,04
+And then it depends on the feature being installed and the disk being available.
+
+100
+00:09:25,04 --> 00:09:28,04
+If those aren't ready, then I don't want to proceed with building the DC.
+
+101
+00:09:28,04 --> 00:09:33,04
+So that's the dependency there. Make sure that all happens in the right order and then we're going to wait
+
+102
+00:09:33,04 --> 00:09:40,04
+for the domain. So what this says is domain controller is promoting here with this resource and that's going
+
+103
+00:09:40,04 --> 00:09:45,04
+to take a while and actually, it's going to force a reboot.
+
+104
+00:09:45,04 --> 00:09:50,04
+So what happens the next time that machine reboots, I've got the LCM set to continue configuring,
+
+105
+00:09:50,04 --> 00:09:55,04
+it's going to run down through, it says oh this is already done, and then it's going to check and make sure
+
+106
+00:09:55,04 --> 00:10:04,04
+that domain, alpineskihouse.com, is responsive, and once I know that the domain is up and online, then I can
+
+107
+00:10:04,04 --> 00:10:12,04
+proceed with configuring the domain. So there's an xADRecycleBin resource I wrote about 14 months ago,
+
+108
+00:10:12,04 --> 00:10:19,04
+so now I can enable the ADRecycleBin and it's going to be for this same domain and obviously I have to wait
+
+109
+00:10:19,04 --> 00:10:23,04
+for the domain before I can enable the RecycleBin there, so that's a dependency.
+
+110
+00:10:23,04 --> 00:10:30,04
+So now I've got the base domain stood up with DSC. Now
+
+111
+00:10:30,04 --> 00:10:33,04
+the next part of the configuration gets kind of interesting.
+
+112
+00:10:33,04 --> 00:10:40,04
+So what I want to do is I want to build out an OU structure and put users and groups in there.
+
+113
+00:10:40,04 --> 00:10:47,04
+So here's how I chose to do that. In DSC, we're used to the simple quick demo configurations, but did you
+
+114
+00:10:47,04 --> 00:10:53,04
+realize that you can actually put scripting and looping in the body of your DSC configuration script?
+
+115
+00:10:53,04 --> 00:10:57,04
+So now we can iterate through data. So what I did
+
+116
+00:10:57,04 --> 00:11:06,04
+was I have this psd1 data file here and this is your hash table with your AllNodes, here's the Nodename,
+
+117
+00:11:06,04 --> 00:11:12,04
+localhost, which you have to have in Azure, it has to be localhost, and then this property called
+
+118
+00:11:12,04 --> 00:11:22,04
+PSDscAllowDomainUser. Notice there's not allow, what is the unsecure password thing is not there,
+
+119
+00:11:22,04 --> 00:11:28,04
+because azure will encrypt a password automatically for me. But this little thing will snag you.
+
+120
+00:11:28,04 --> 00:11:35,04
+On v5, one of the last few iterations of v5 we introduced this safety, so we prefer that you not use domain
+
+121
+00:11:35,04 --> 00:11:40,04
+credentials for the credentials in your resources, and so there's this warning.
+
+122
+00:11:40,04 --> 00:11:48,04
+If you put Domain/Username, it's going to flag you that you're trying to use a domain credential in your configuration.
+
+123
+00:11:48,04 --> 00:11:55,04
+So you have to put this in there, PSDscAllowDomainUser = true to allow it to use a domain user account,
+
+124
+00:11:55,04 --> 00:12:02,04
+which you have to use in this case. Now this NonNodeData is just a section, of blob of data that I'm going
+
+125
+00:12:02,04 --> 00:12:12,04
+to use to build out the lab and here I've got a CSV script block or script, I'm sorry, a string, a CSV multiline
+
+126
+00:12:12,04 --> 00:12:21,04
+string that has comma-separated values for username, department, manager, and a plane text password there that
+
+127
+00:12:21,04 --> 00:12:25,04
+I really don't care about because this is my lab, alright. I'm not telling you to do this in production.
+
+128
+00:12:25,04 --> 00:12:31,04
+This is just for a lab. So I've got eight users that I'm going to spin up here with the username, their department,
+
+129
+00:12:31,04 --> 00:12:38,04
+and their title, and then I've got my OUs, RootOUs, ChildOUs, and then a TestObjCount.
+
+130
+00:12:38,04 --> 00:12:42,04
+So here are my RootOUs, Accounting, IT, Marketing, and Operations.
+
+131
+00:12:42,04 --> 00:12:49,04
+Underneath each one of those four RootOUs, I'm going to create ChildOUs, Users, Computers, and Groups.
+
+132
+00:12:49,04 --> 00:12:55,04
+That's going to be one technique that I demonstrate in how to populate the data inside the domain.
+
+133
+00:12:55,04 --> 00:13:02,04
+The other technique I'm going to use is called TestObjCount. So here I could put 5, I could put 500, I could put 5,000.
+
+134
+00:13:02,04 --> 00:13:08,04
+Whatever this number is, that's how many test user accounts and test groups it's going to build and just
+
+135
+00:13:08,04 --> 00:13:16,04
+throw like User1 into Group1, User2 into Group2, it's just populating just random data for testing in AD.
+
+136
+00:13:16,04 --> 00:13:21,04
+So this is the data then that's going in to my configuration script.
+
+137
+00:13:21,04 --> 00:13:29,04
+So now on my configuration script for each RootOU that's in that configuration data block in the RootOUs,
+
+138
+00:13:29,04 --> 00:13:37,04
+for each one of those, I'm going to create a xADOrganizationalUnit giving it a dynamic resource name there
+
+139
+00:13:37,04 --> 00:13:43,04
+and it's going to use that RootOU name, it's going to be in the DomainRoot, which I calculated right here.
+
+140
+00:13:43,04 --> 00:13:51,04
+Domain name is alpineskihouse.com. So now it becomes DC= Alpine, DC=COM.
+
+141
+00:13:51,04 --> 00:13:58,04
+So then my OU path, that's going to be the parent path for the DomainRoot, I'll give it a description,
+
+142
+00:13:58,04 --> 00:14:03,04
+use the credential that we did already, ensure that it's present, and that's going to have to wait until the
+
+143
+00:14:03,04 --> 00:14:10,04
+RecyleBin is done before it kicks in. So now that I've got the RootOUs built, it's going to loop through and
+
+144
+00:14:10,04 --> 00:14:15,04
+build each one of those RootOUs. After that, it's going to create child OUs under each one of those.
+
+145
+00:14:15,04 --> 00:14:21,04
+So here's my xADOrganizationalUnit and I'm just going to give it a dynamically calculated name inside the
+
+146
+00:14:21,04 --> 00:14:29,04
+configuration here, giving it a ChildOU, and then the parent is going to be that RootOU in the DomainRoot,
+
+147
+00:14:29,04 --> 00:14:34,04
+and in this case, I decided I guess I did in the previously as well ProtectedFromAccidentalDeletion and then
+
+148
+00:14:34,04 --> 00:14:42,04
+we'll give it a credential, Ensure that it's Present, and that's dependent on the parent RootOU being established, right?
+
+149
+00:14:42,04 --> 00:14:46,04
+So I've got to have the RootOU and then I can create all the ChildOUs under it.
+
+150
+00:14:46,04 --> 00:14:56,04
+And then finally, as I'm looping through here, I'm building a master dependency array of all the OrganizationalUnits.
+
+151
+00:14:56,04 --> 00:15:02,04
+Actually, this is going to have all the child organizational units because before I can create a user in the
+
+152
+00:15:02,04 --> 00:15:10,04
+user's ITOU, that OU has to exist, so I'm stitching together an array of all the configuration items that
+
+153
+00:15:10,04 --> 00:15:16,04
+are dependency before I start building users and groups inside those OUs.
+
+154
+00:15:16,04 --> 00:15:26,04
+So that array right there comes down next to my users section. As the dependency, it depends on that array
+
+155
+00:15:26,04 --> 00:15:36,04
+of OU configuration items that have to exist first. So now I take my UserData out of that CSV.
+
+156
+00:15:36,04 --> 00:15:42,04
+I love doing this in my scripts. I'll just take a big string block and pipe it to ConvertFrom-CSV and then
+
+157
+00:15:42,04 --> 00:15:43,04
+instantly I've got
+
+158
+00:15:43,04 --> 00:15:50,04
+a rich PowerShell object with all these properties now for first name/last name, and a department, and all that stuff.
+
+159
+00:15:50,04 --> 00:15:58,04
+So now I can create the NewADUser here with the User resource and I give it the DomainName, I give it the
+
+160
+00:15:58,04 --> 00:16:04,04
+User.UserName because now I've got the CSV data. There's the username, there's the title.
+
+161
+00:16:04,04 --> 00:16:08,04
+Now their Department is actually the RootOU.
+
+162
+00:16:08,04 --> 00:16:13,04
+The RootOU as we just looked at, Accounting, IT, Marketing, Operations, that's the department that they're in,
+
+163
+00:16:13,04 --> 00:16:17,04
+so it's going to drop them automatically into the right department.
+
+164
+00:16:17,04 --> 00:16:18,04
+The account is going to be enabled.
+
+165
+00:16:18,04 --> 00:16:24,04
+Now have you ever tried to enable an account in Active Directory that did not have a password?
+
+166
+00:16:24,04 --> 00:16:29,04
+It fails, right. You have to have a password and one that meets the complexity requirements.
+
+167
+00:16:29,04 --> 00:16:32,04
+So in this case, I have to have a
+
+168
+00:16:32,04 --> 00:16:42,04
+password defined here, which is using the old ConvertTo-SecureString from that User Password that was, again, in plaintext.
+
+169
+00:16:42,04 --> 00:16:51,04
+It's in a lab, I don't care. I never do this in production. So I'm creating credential property there and
+
+170
+00:16:51,04 --> 00:16:55,04
+the dependency and now I'm creating a new dependency for the users.
+
+171
+00:16:55,04 --> 00:16:59,04
+So before I can put those users into groups,
+
+172
+00:16:59,04 --> 00:17:05,04
+the users have to exist. So later, in my configuration when I get to the group piece, I'll list all these
+
+173
+00:17:05,04 --> 00:17:10,04
+user accounts as the dependencies before I start spinning up the groups.
+
+174
+00:17:10,04 --> 00:17:16,04
+Now the other technique I'm going to use to spin up user accounts and you could use either one of these is
+
+175
+00:17:16,04 --> 00:17:25,04
+the TestObjectCount. So 1..5 would be what the equivalent here is just the range operator there 1.. and
+
+176
+00:17:25,04 --> 00:17:29,04
+whatever number comes out of that configuration file, it could be a 1000 users.
+
+177
+00:17:29,04 --> 00:17:37,04
+I'll just go blow them all in there and build them all out. And so I'm going to create NewADUser1, 2, 3, 4, 5,
+
+178
+00:17:37,04 --> 00:17:43,04
+and give the test username 1, 2, 3, 4, 5. And then this one, in this case, I don't care if it's enabled it's
+
+179
+00:17:43,04 --> 00:17:47,04
+just going to be Enabled = false. There is no password specified.
+
+180
+00:17:47,04 --> 00:17:51,04
+I don't care for that. And again, that depends just on the RecycleBin being enabled.
+
+181
+00:17:51,04 --> 00:17:57,04
+They're not going into any OU. They're just going to drop into the default user's container.
+
+182
+00:17:57,04 --> 00:18:05,04
+Then next up are the groups. So I've got that list of RootOUs. Those RootOUs are the same thing as the department names.
+
+183
+00:18:05,04 --> 00:18:12,04
+So now I'm going to create a G_Department Name global group that's going to be Global, Security group,
+
+184
+00:18:12,04 --> 00:18:21,04
+give it a description, and then the members in that group are going to be that user's CSV data,
+
+185
+00:18:21,04 --> 00:18:28,04
+and I'm just using a simple PowerShell filter here where their RootOU was the department name for that user.
+
+186
+00:18:28,04 --> 00:18:34,04
+So if we flip over here real quick, we're basically taking this list of department, right here, for each one
+
+187
+00:18:34,04 --> 00:18:41,04
+of these user accounts and whichever username matches that RootOU, that's the OU we're going to drop them into
+
+188
+00:18:41,04 --> 00:18:48,04
+from that CSV data. And that depends on the user being created before we can actually create the group in
+
+189
+00:18:48,04 --> 00:18:52,04
+that path and populate the users into it.
+
+190
+00:18:52,04 --> 00:18:57,04
+And then the users are dependent on the OUs, so there's this nested dependency structure that makes
+
+191
+00:18:57,04 --> 00:19:00,04
+everything happen in the correct order.
+
+192
+00:19:00,04 --> 00:19:05,04
+Then down here is my 1 to infinity, however many I specify, however many I specify, how many new groups I want,
+
+193
+00:19:05,04 --> 00:19:14,04
+NewADGroup1, NewADGroup2, 3, 4, and then inside there, the member is going to be TestUser1, TestUser2, TestUser3.
+
+194
+00:19:14,04 --> 00:19:17,04
+So I just use ForEach loops
+
+195
+00:19:17,04 --> 00:19:24,04
+and a ConfigurationData.psd1 file. So you can take this, take that CSV block, put whatever you want in
+
+196
+00:19:24,04 --> 00:19:30,04
+there for users and parameters and just define and tweak this configuration, put whatever kind of OUs and users
+
+197
+00:19:30,04 --> 00:19:34,04
+and groups you want in your domain that way.
+
+198
+00:19:34,04 --> 00:19:43,04
+And this whole thing is just the script, so it starts out with configuration CreateADDomainData and then when
+
+199
+00:19:43,04 --> 00:19:51,04
+I jump to the very end, that's it. There's no calling code, it's just the configuration block here.
+
+200
+00:19:51,04 --> 00:19:57,04
+And then when the Azure DSC resource, the Azure DSC extension
+
+201
+00:19:57,04 --> 00:20:06,04
+we're going to pass in over here in the JSON file. Over here we're going to look for, we called that
+
+202
+00:20:06,04 --> 00:20:16,04
+CreateADDomainWithData, createaddomainwithdata. So over here, what we have in the resource, the JSON file,
+
+203
+00:20:16,04 --> 00:20:26,04
+is it says call this script file, CreateADDomainData.ps1, call that configuration name,
+
+204
+00:20:26,04 --> 00:20:27,04
+CreateADDomainWithData.
+
+205
+00:20:27,04 --> 00:20:34,04
+So in other words, Azure builds this VM, it copies the configuration files inside of it, and then it calls
+
+206
+00:20:34,04 --> 00:20:40,04
+this configuration function name essentially inside that file with that name.
+
+207
+00:20:40,04 --> 00:20:45,04
+And then it finds the resources that they need in this zip file.
+
+208
+00:20:45,04 --> 00:20:52,04
+The zip file is going to have the Active Directory, xActiveDirectory module, and that type of thing in it.
+
+209
+00:20:52,04 --> 00:20:59,04
+So that's the---there was some other bits that I had to hack up in the JSON file and I'm intentionally kind
+
+210
+00:20:59,04 --> 00:21:05,04
+of glossing over that part because you're going to learn this piece as well if you decide to play with the templates.
+
+211
+00:21:05,04 --> 00:59:59,999
+It's a lot of fun banging your head against the keyboard for two days, but you'll get there.  I promise.
+

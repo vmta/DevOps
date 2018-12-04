@@ -1,0 +1,84 @@
+1
+00:00:11,5 --> 00:00:20,20
+So I'm Adam Driscoll. You can talk to me on Twitter if you have ever questions after this or whenever.
+
+2
+00:00:20,20 --> 00:00:26,26
+Email me. I'm a Senior Application Developer at Concurrency. We're a small little consulting shop out of
+
+3
+00:00:26,26 --> 00:00:29,29
+the Milwaukee area. I do a lot of like azure and System Center stuff.
+
+4
+00:00:29,29 --> 00:00:36,36
+I was also the developer for the PowerShell tools for Visual Studio, so that's kind of my open source baby.
+
+5
+00:00:36,36 --> 00:00:40,40
+And today we're going to be talking about PowerShell Module Development Lifecycle.
+
+6
+00:00:40,40 --> 00:00:41,41
+So what does that actually mean?
+
+7
+00:00:41,41 --> 00:00:46,46
+So what we're going to do during this talk is cover these kind of main points.
+
+8
+00:00:46,46 --> 00:00:50,50
+First of all, I'm just going to kind of talk about what a development lifecycle is and why you want to use
+
+9
+00:00:50,50 --> 00:00:56,56
+something like this for your PowerShell modules. Then we're going to look at some tooling that you can use
+
+10
+00:00:56,56 --> 00:01:01,61
+for your development lifecycle. So we're going to start with GitHub issues and milestones.
+
+11
+00:01:01,61 --> 00:01:05,65
+So I'm going to kind of go over the basics of what that means, how to track requirements, how to do some sort
+
+12
+00:01:05,65 --> 00:01:11,71
+of design using GitHub. Then we're going to talk about GitHub for source control.
+
+13
+00:01:11,71 --> 00:01:14,74
+So there's a lot of different source control systems out there. I just picked GitHub for the purpose of this
+
+14
+00:01:14,74 --> 00:01:20,80
+demo because it's free and available on the internet. So we're going to look at the basics of that, how to get
+
+15
+00:01:20,80 --> 00:01:25,85
+your code up in there. I'm not going to get into super detailed description of all the things you can do
+
+16
+00:01:25,85 --> 00:01:30,90
+with GitHub source control because it gets pretty complex. That can be a talk in itself.
+
+17
+00:01:30,90 --> 00:01:34,94
+From there, we're actually going to talk about AppVeyor. AppVeyor is a continuous integration system that
+
+18
+00:01:34,94 --> 00:01:39,99
+you can actually hook up to your GitHub repository and it integrates really, really nicely and we're going to
+
+19
+00:01:39,99 --> 00:01:44,104
+use that for running automated Pester tests and actually yesterday, I added here for deploying to the PowerShell Gallery.
+
+20
+00:01:44,104 --> 00:01:50,110
+So we're going to use AppVeyor to deploy to the Gallery, so then our module is then available for download
+
+21
+00:01:50,110 --> 00:59:59,999
+from the gallery. So you can kind of think of this as the entire lifecycle of your module.
+

@@ -1,0 +1,64 @@
+1
+00:00:00,0 --> 00:00:07,7
+So take a look at this thing and I'm going to recommend that you go through this code.
+
+2
+00:00:07,7 --> 00:00:10,5
+It's actually pretty simple, straightforward, and easy to follow.
+
+3
+00:00:10,5 --> 00:00:16,16
+If I can, you can. Trust me. Okay.
+
+4
+00:00:16,16 --> 00:00:25,25
+So, last element, how these concepts relate to a CI/CD pipeline. And I've been running through this stuff pretty fast.
+
+5
+00:00:25,25 --> 00:00:31,31
+This whole week is primarily about how does this fit within DevOps.
+
+6
+00:00:31,31 --> 00:00:37,37
+Package management is here so that what you can do is you can say I know where to get the things that belong
+
+7
+00:00:37,37 --> 00:00:39,39
+on my box.
+
+8
+00:00:39,39 --> 00:00:46,46
+You can set up your internal repository, you can register as long as you understand what the package source
+
+9
+00:00:46,46 --> 00:00:52,5
+type is and you're not modifying it, you can take the existing package type, and say the source for all packages
+
+10
+00:00:52,5 --> 00:00:57,57
+of this type are here. Everything that I've validated is here.
+
+11
+00:00:57,57 --> 00:01:04,64
+All of my servers are only going to go here to fetch something. Then your release pipeline can make sure that
+
+12
+00:01:04,64 --> 00:01:14,74
+everything gets published there. Your DSC resources when they run will only get things from there.
+
+13
+00:01:14,74 --> 00:01:21,5
+Alright. So this is all about ensuring that you have the control to drive the system the way that you want to.
+
+14
+00:01:21,5 --> 00:01:25,85
+So now, what we're really going to do is we're going to dance here.
+
+15
+00:01:25,85 --> 00:01:31,91
+Raghu and I are going to swap out machines real quick. And I'm going to let Raghu show you how he put it all
+
+16
+00:01:31,91 --> 00:59:59,999
+together for the internal repository of private PowerShell Gallery repositories.
+

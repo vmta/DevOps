@@ -1,0 +1,156 @@
+1
+00:00:00,0 --> 00:00:05,823
+Now downsides. One, I'm not actually sure if you can do this in
+
+2
+00:00:05,823 --> 00:00:15,823
+version 5 right now because v5 introduced this new encryption, so the MOF files actually sit on the drive
+
+3
+00:00:15,823 --> 00:00:25,823
+encrypted, and I'm not sure if it would be feasible for your local crazy resource to get that same certificate
+
+4
+00:00:25,823 --> 00:00:30,823
+and encrypt them. It should be. I just haven't really dug into that.
+
+5
+00:00:30,823 --> 00:00:34,823
+It should be possible because they're not encrypted on the pull server, right.
+
+6
+00:00:34,823 --> 00:00:41,823
+They come across the pull server in clear text. Now they do that across an HTTPS channel because none of us
+
+7
+00:00:41,823 --> 00:00:46,823
+are dumb enough to run an HTTP pull server, right? Right. Right.
+
+8
+00:00:46,823 --> 00:00:52,823
+So they come across clear text through an SSL channel. The LCM is what's encrypting them to begin with.
+
+9
+00:00:52,823 --> 00:00:58,823
+Therefore, that certificate has to be somewhere on the machine we can get to it; therefore, crazy resource should
+
+10
+00:00:58,823 --> 00:01:05,823
+be able to A, decrypt it because the LCM has to be able to decrypt it, but crazy resource should definitely be
+
+11
+00:01:05,823 --> 00:01:12,823
+able to create a dynamic MOF, encrypt it, and then stick it in pending MOF, and then the LCM will copy it to
+
+12
+00:01:12,823 --> 00:01:21,823
+current, and then read it. Make sense? Seem plausible? Are there tools?
+
+13
+00:01:21,823 --> 00:01:24,823
+Are there any tools. Wow. Wow. Are there any tools for making MOFs?
+
+14
+00:01:24,823 --> 00:01:35,823
+Yeah, configuration scripts. That's not a flip answer. Right, because if crazy resource is a configuration
+
+15
+00:01:35,823 --> 00:01:42,823
+script, then PowerShell knows how to run configuration scripts and make MOFs.
+
+16
+00:01:42,823 --> 00:01:49,823
+Or if crazy resource has the ability to .source a configuration script to run it, it will produce a MOF.
+
+17
+00:01:49,823 --> 00:01:56,823
+Right, .source this file, run it, blah, MOF occurs. Right now, that's the only reliable tool we have for
+
+18
+00:01:56,823 --> 00:02:04,823
+making a MOF. Another downside is troubleshooting. It's going suck.
+
+19
+00:02:04,823 --> 00:02:06,823
+It's complicated. It's going to suck. It's going to be complicated.
+
+20
+00:02:06,823 --> 00:02:14,823
+There's a lot of moving pieces and here's the downside. Anytime you've got logic running at the furthest
+
+21
+00:02:14,823 --> 00:02:21,823
+point from you, it's harder. So if you were to do this, you'd really, really have to be disciplined about
+
+22
+00:02:21,823 --> 00:02:27,823
+logging, really disciplined about logging, ideally, into the event log because you can get to that remotely
+
+23
+00:02:27,823 --> 00:02:33,823
+fairly easily. Worst case, dumping stuff into a file that's in a well-known location so you can get to it,
+
+24
+00:02:33,823 --> 00:02:38,823
+you're going to have to log the snot out of stuff. How many of you are used to producing like nuts verbose
+
+25
+00:02:38,823 --> 00:02:45,823
+logs in your scripts. Yeah, the rest of you need to get to a point where you can raise your hands on that question
+
+26
+00:02:45,823 --> 00:02:50,823
+because it's going to need a lot of logging to do this. Now if you modularize that, if crazy resource is
+
+27
+00:02:50,823 --> 00:02:55,823
+doing five different things, mapping a printer, doing whatever crazy stuff it's doing, if you modularize that
+
+28
+00:02:55,823 --> 00:03:01,823
+really well, it should be easy to test those functions in standalone in a variety of situations,
+
+29
+00:03:01,823 --> 00:03:05,823
+run them through Pester tests, make sure they work before you deploy them.
+
+30
+00:03:05,823 --> 00:03:14,823
+Test your code. Okay. A couple folks looked surprised when I said that, so I just want to make sure.
+
+31
+00:03:14,823 --> 00:03:20,823
+Logging is going to be really, really important. The application of that MOF, right, so we created the
+
+32
+00:03:20,823 --> 00:03:27,823
+dynamic MOF, now the LCMs going to run. Ideally you want your resources, whatever resources are being called
+
+33
+00:03:27,823 --> 00:03:33,823
+by that dynamic MOF whether it's a Microsoft resource or one you've written your own, you want it to be
+
+34
+00:03:33,823 --> 00:03:40,823
+spewing a lot of log data too, like to the debug log or something like that, to the point where if you're using
+
+35
+00:03:40,823 --> 00:03:46,823
+one of the Microsoft ones and you don't feel it logs enough, you're need to walk your butt up to GitHub,
+
+36
+00:03:46,823 --> 00:03:51,823
+fork the project, add a ton of logging, and then do a request for them to pull it back in.
+
+37
+00:03:51,823 --> 00:03:56,823
+Wow. You have two lines of logging for every line of code. Yep, that's okay.
+
+38
+00:03:56,823 --> 00:04:05,823
+That's just what I feel we need. So I mean a lot of logging is going to have to be necessary here.
+
+39
+00:04:05,823 --> 00:59:59,999
+You guys don't look scared enough.
+

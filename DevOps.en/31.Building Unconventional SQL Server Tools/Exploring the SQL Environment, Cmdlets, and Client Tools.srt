@@ -1,0 +1,124 @@
+1
+00:00:00,0 --> 00:00:05,689
+So that means it's time for the demo. We'll come back for a few more slides toward the end of the session.
+
+2
+00:00:05,689 --> 00:00:10,689
+Okay, I want to show you the environment we're working with here.
+
+3
+00:00:10,689 --> 00:00:15,689
+So this machine is running Windows 10 Enterprise edition. We've got Hyper-V.
+
+4
+00:00:15,689 --> 00:00:21,689
+We've got a domain controller running and if all these are running Windows Server 2012 R2 Server Core,
+
+5
+00:00:21,689 --> 00:00:29,689
+so we a domain controller. We have a SQL 2014 box, a SQL 2008 R2, and by the way, they say you can't run
+
+6
+00:00:29,689 --> 00:00:35,689
+2008 R2 on Server Core, it's not supported, so don't try this at home, but it is running on Server Core.
+
+7
+00:00:35,689 --> 00:00:45,689
+And then this SQL03 box is a Windows 2008 non-R2 with no PowerShell and it has SQL 2005 with no PowerShell.
+
+8
+00:00:45,689 --> 00:00:51,689
+When I go to SQL Saturday events, I hear from a lot of DBAs that hey I can't write one PowerShell command to
+
+9
+00:00:51,689 --> 00:00:56,689
+query all these different versions of SQL and Windows and so on. Yeah, you can.
+
+10
+00:00:56,689 --> 00:01:00,689
+You just have to write it for the lowest common denominator. It's kind of like if you still have PowerShell
+
+11
+00:01:00,689 --> 00:01:06,689
+2, 3, and 4 in your environment, you can write one command and use it on all those machines, but unfortunately,
+
+12
+00:01:06,689 --> 00:01:11,689
+you've got to write it using v2 syntax.
+
+13
+00:01:11,689 --> 00:01:17,689
+So just to prove to you SQL03, I've tried to run PowerShell, hey it doesn't exist.
+
+14
+00:01:17,689 --> 00:01:26,689
+If I look at the Windows features, no PowerShell. And the reason I chose this version, it's going to be out
+
+15
+00:01:26,689 --> 00:01:33,689
+of, SQL 2005 I think is going out of support here in a week or so, but I wanted to get the newest version of
+
+16
+00:01:33,689 --> 00:01:41,689
+Windows Server and SQL that didn't require PowerShell. And actually, what I'm going to show you will work on
+
+17
+00:01:41,689 --> 00:01:50,689
+even older versions. So we'll switch back and forth between a couple of virtual machines.
+
+18
+00:01:50,689 --> 00:01:58,689
+I've downloaded a prep for this demo of made the text size 130, changed into the demo folder, I've set my
+
+19
+00:01:58,689 --> 00:02:03,689
+error messages to yellow because the red ones are kind of hard to read on the projector.
+
+20
+00:02:03,689 --> 00:02:09,689
+So we're going to query the servers and actually the machine I'm on just to make sure we've got connectivity
+
+21
+00:02:09,689 --> 00:02:17,689
+and also to show you the PowerShellVersion. So we've got version 4 on one of the servers, version 5 on the others,
+
+22
+00:02:17,689 --> 00:02:32,689
+and the one that doesn't have PowerShell is going to fail. And I've got detailed notes in here as well.
+
+23
+00:02:32,689 --> 00:02:38,689
+So we'll get into the entry part of this. I'm just going to enter a 1 to 1 remoting sessions on SQL02 since
+
+24
+00:02:38,689 --> 00:02:41,689
+it's SQL Server 2008 R2.
+
+25
+00:02:41,689 --> 00:02:46,689
+I want to show you the few cmdlets. I want to show you where we were and where we are as far as how many
+
+26
+00:02:46,689 --> 00:02:48,689
+cmdlets the SQL team has added.
+
+27
+00:02:48,689 --> 00:03:05,689
+(Working) And actually only two of these, three of these are part of the, so we've got two here.
+
+28
+00:03:05,689 --> 00:03:12,689
+We've got two that are part of the SQL cmdlets and the other ones are part of the SQL Server provider.
+
+29
+00:03:12,689 --> 00:03:20,689
+So in SQL 2008 R2, you've got 5 cmdlets total. That's it. That's all you get.
+
+30
+00:03:20,689 --> 00:03:25,689
+And I don't know about you, I've still got SQL 2008 boxes running in production today and I would imagine
+
+31
+00:03:25,689 --> 00:59:59,999
+that a lot of people do.
+

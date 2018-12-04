@@ -1,0 +1,560 @@
+1
+00:00:00,0 --> 00:00:04,25
+So by now, you might have realized that I've mentioned PowerShell Editor Services a few times in this talk,
+
+2
+00:00:04,25 --> 00:00:07,7
+but I haven't actually explained what it is.
+
+3
+00:00:07,7 --> 00:00:10,997
+So PowerShell Editor Services is a platform that can be used to provide a rich,
+
+4
+00:00:10,997 --> 00:00:15,997
+PowerShell development experience in any sufficiently extensible editor.
+
+5
+00:00:15,997 --> 00:00:21,997
+The benefits lie in four distinct areas, language intelligence features, interactive console experience,
+
+6
+00:00:21,997 --> 00:00:26,997
+debugging support, and other platform features, so I'll discuss all of those individually.
+
+7
+00:00:26,997 --> 00:00:33,997
+But first, it's good to sort of run through the set of common features that any PowerShell editor will need to implement.
+
+8
+00:00:33,997 --> 00:00:34,997
+First of all, it's going to need
+
+9
+00:00:34,997 --> 00:00:40,997
+a host implementation, which implements PSHost, PSHostUserInterface, and some and not of
+
+10
+00:00:40,997 --> 00:00:44,997
+PSRawHostUserInterface and for those of you who don't actually know what those things are,
+
+11
+00:00:44,997 --> 00:00:51,997
+it's probably better that you don't know, but these allow the host application to expose a PowerShell
+
+12
+00:00:51,997 --> 00:00:57,997
+runtime through the host application's user interface and they aren't super difficult to implement, but it's a
+
+13
+00:00:57,997 --> 00:01:02,997
+lot of common code that's just reimplemented everywhere. Basically, any time you want to implement a host,
+
+14
+00:01:02,997 --> 00:01:06,997
+you have to implement these things and it's kind of a little bit of a waste.
+
+15
+00:01:06,997 --> 00:01:10,997
+So when you start implementing a PowerShell host, it does more than just execute PS commands,
+
+16
+00:01:10,997 --> 00:01:15,997
+you'll quickly realize that you have to change the way you execute commands based on the state of the session.
+
+17
+00:01:15,997 --> 00:01:17,997
+Running a command in a local session is
+
+18
+00:01:17,997 --> 00:01:22,997
+different than running a command in a remote session and running a command while stopping a debugger is also
+
+19
+00:01:22,997 --> 00:01:28,997
+different than running a command just in a normal session. So this behavior isn't always straightforward to
+
+20
+00:01:28,997 --> 00:01:33,997
+understand or figure out and at some point any PowerShell host out there is going to have to learn how to do
+
+21
+00:01:33,997 --> 00:01:39,997
+these things if they want to have more advanced support in their host implementation.
+
+22
+00:01:39,997 --> 00:01:43,997
+Another critical element of a good PowerShell development experience is interactive console support.
+
+23
+00:01:43,997 --> 00:01:46,997
+So one of the biggest reasons why people tell me they'd still
+
+24
+00:01:46,997 --> 00:01:53,997
+rather use the ISE instead of VS code is that the ISE has an interactive console that's always available.
+
+25
+00:01:53,997 --> 00:01:58,997
+It's a really helpful feature if you're sort of really quickly developing script.
+
+26
+00:01:58,997 --> 00:01:59,997
+Implementing in such a console
+
+27
+00:01:59,997 --> 00:02:07,997
+isn't difficult, but it requires rewriting a lot of common logic all over again, for instance, like invoking the
+
+28
+00:02:07,997 --> 00:02:12,997
+prompt function to get someone's custom prompt or dealing with formatting of error messages,
+
+29
+00:02:12,997 --> 00:02:20,997
+just all this stuff that sort of has been done many times. More capable editors may want to provide debugger
+
+30
+00:02:20,997 --> 00:02:24,997
+integration, which requires a fair amount of work for walking the call stack, getting information about
+
+31
+00:02:24,997 --> 00:02:29,997
+variables that are in scope for each level of the call stack, and even managing the pipeline whenever you
+
+32
+00:02:29,997 --> 00:02:32,997
+want to execute commands while the debugger
+
+33
+00:02:32,997 --> 00:02:36,997
+stopped at a breakpoint. So generally, the point I'm trying to make here is that any editor integration for
+
+34
+00:02:36,997 --> 00:02:42,997
+PowerShell is going to need implementations of all of these items and it'd be great if we could use what
+
+35
+00:02:42,997 --> 00:02:46,997
+we've learned in implementing these things for the ISE and other editors so that we can make this logic
+
+36
+00:02:46,997 --> 00:02:53,997
+available to everyone else and we just so have created a platform that with the intention of solving this problem.
+
+37
+00:02:53,997 --> 00:02:56,997
+So let's talk about the features that it provides.
+
+38
+00:02:56,997 --> 00:03:05,997
+So for language features, one of the primary benefits is improved language feature support.
+
+39
+00:03:05,997 --> 00:03:08,997
+First of all, being the IntelliSense support, which is kind of like the core thing
+
+40
+00:03:08,997 --> 00:03:12,997
+you need for having a pretty good PowerShell development experience in editor.
+
+41
+00:03:12,997 --> 00:03:17,997
+It's the same IntelliSense that the ISE gets because we're using the same completions engine that comes from
+
+42
+00:03:17,997 --> 00:03:19,997
+the PowerShell runtime,
+
+43
+00:03:19,997 --> 00:03:24,997
+but we also had a new area of features called code navigations and these allow you to do things like find a
+
+44
+00:03:24,997 --> 00:03:33,997
+definition of a function or variable, find all references of a function or variable or cmdlet, and also
+
+45
+00:03:33,997 --> 00:03:41,997
+search across all the names of symbols in your workspace or the current file, which is kind of useful in VS code.
+
+46
+00:03:41,997 --> 00:03:45,997
+These features try to be pretty helpful whenever you're trying to navigate around a piece of code that you
+
+47
+00:03:45,997 --> 00:03:52,997
+haven't ever seen before or maybe a module, so they're kind of a value add that the ISE currently doesn't have.
+
+48
+00:03:52,997 --> 00:03:54,997
+We also provide rudimentary
+
+49
+00:03:54,997 --> 00:03:58,997
+symbol renaming support meaning that you can rename a cmdlet or variable and we'll
+
+50
+00:03:58,997 --> 00:04:04,997
+also change all the places where that cmdlet or variable name are used, so that's also pretty helpful.
+
+51
+00:04:04,997 --> 00:04:06,997
+So I know the really cool feature that we have
+
+52
+00:04:06,997 --> 00:04:12,997
+is that we've hooked up PowerShell script analyzer to provide real-time, rule-based script analysis in the
+
+53
+00:04:12,997 --> 00:04:15,997
+analyzer scripts rising type, so as you're writing your script,
+
+54
+00:04:15,997 --> 00:04:22,997
+you'll see little squiggle markers that say that maybe you're violating some best practice.
+
+55
+00:04:22,997 --> 00:04:27,997
+So basically, you're able to select which rules you want to apply to your scripts while you're editing them
+
+56
+00:04:27,997 --> 00:04:32,997
+and then you'll see all the stuff marked up in your file. In the near future, we'll also be able to provide
+
+57
+00:04:32,997 --> 00:04:39,997
+code corrections, which are based on the rules that you've sort of violated so if you have a squiggle marker
+
+58
+00:04:39,997 --> 00:04:43,997
+under something, you may be able to click it and see a little light bulb pops up to actually get suggestions
+
+59
+00:04:43,997 --> 00:04:48,997
+on how to fix it and then if you click the fix, it will fix it automatically for you.
+
+60
+00:04:48,997 --> 00:04:51,997
+If that's sounds interesting, I'm actually going to give a demo of an early version of this feature at the
+
+61
+00:04:51,997 --> 00:04:59,997
+lightning demos tomorrow afternoon, so be sure to see that. So once we make progress integrating editor
+
+62
+00:04:59,997 --> 00:05:04,997
+services into the ISE, I'm going to try to wire up as many of these language features as possible because the
+
+63
+00:05:04,997 --> 00:05:11,997
+ISE doesn't have a lot of these things, so we'll see if we can get some of these things actually built into the ISE.
+
+64
+00:05:11,997 --> 00:05:17,997
+So editor services interactive console experience is getting better with each release,
+
+65
+00:05:17,997 --> 00:05:22,997
+even though it isn't immediately visible within VS code. We're able to do the interactive script execution
+
+66
+00:05:22,997 --> 00:05:28,997
+and have a console experience, which supports custom prompt functions just like the ISE.
+
+67
+00:05:28,997 --> 00:05:35,997
+It even provides a choice and input prompt support even through the interactive console or natively through
+
+68
+00:05:35,997 --> 00:05:42,997
+the editor's UI, so in VS code if you run a command that causes a choice prompt to appear, you actually will
+
+69
+00:05:42,997 --> 00:05:46,997
+see a little drop-down that gives you the options in VS code's command pallet rather than get to showing up
+
+70
+00:05:46,997 --> 00:05:51,997
+in the command console, so this can be helpful for like nicer integration with the editor for various reasons
+
+71
+00:05:51,997 --> 00:05:54,997
+like if you have an extension or something.
+
+72
+00:05:54,997 --> 00:05:59,997
+It's also if you type in a command that you haven't filled in all
+
+73
+00:05:59,997 --> 00:06:04,997
+the mandatory parameters for, you need to be able to get prompted for those things, so we also the input
+
+74
+00:06:04,997 --> 00:06:09,997
+prompt support where this will show up in the UI. And I also just finished adding a
+
+75
+00:06:09,997 --> 00:06:14,997
+$profile support, which should show up in the next release of the VS code extension.
+
+76
+00:06:14,997 --> 00:06:17,997
+For those of you who aren't familiar with profile scripts, they are used to customize
+
+77
+00:06:17,997 --> 00:06:24,997
+your PowerShell session in a given host like the ISE or VS code. You can do things like load modules,
+
+78
+00:06:24,997 --> 00:06:31,997
+create commonly-used functions, set your preferred command aliases, define your custom prompt function,
+
+79
+00:06:31,997 --> 00:06:38,997
+stuff like that. This feature is really the most helpful whenever you are using interactive console from within
+
+80
+00:06:38,997 --> 00:06:43,997
+an editor, so just to make it a little more customized for your purposes.
+
+81
+00:06:43,997 --> 00:06:44,997
+We're only lacking a
+
+82
+00:06:44,997 --> 00:06:49,997
+couple of important features at this point, but I intend to have them done before we hit version 1.0 a little
+
+83
+00:06:49,997 --> 00:06:55,997
+later on this year. The first is the ability to accept credentials securely and that's only missing because
+
+84
+00:06:55,997 --> 00:07:01,997
+we haven't yet found a secure way to securely transmit the credentials you type from the editor to the language service.
+
+85
+00:07:01,997 --> 00:07:06,997
+So since we had this model where the editor is talking to the language service through some channel,
+
+86
+00:07:06,997 --> 00:07:10,997
+we want to make sure that once you type in the credentials in the editor that they're secured in the editor,
+
+87
+00:07:10,997 --> 00:07:15,997
+as well as in across the channel to get to the language service.
+
+88
+00:07:15,997 --> 00:07:22,997
+This is a little bit difficult, especially in VS code because it's a web-based application and if anyone is
+
+89
+00:07:22,997 --> 00:07:26,997
+sufficiently intelligent or crafty enough, they could probably intercept the things that you're typing in,
+
+90
+00:07:26,997 --> 00:07:32,997
+but I think that's just a general problem anyway, but that's sort of why that's missing at this point.
+
+91
+00:07:32,997 --> 00:07:38,997
+The other thing is support for remote in nested sessions. This is something that we just need to have time to do.
+
+92
+00:07:38,997 --> 00:07:42,997
+It's not very hard to achieve, so probably within the next two to three months you'll see remote session support
+
+93
+00:07:42,997 --> 00:07:49,997
+in the ISE so that you can connect to like a Nano server for script editing, debugging, that sort of thing.
+
+94
+00:07:49,997 --> 00:07:50,997
+We also
+
+95
+00:07:50,997 --> 00:07:57,997
+provide a pretty rich, local script debugging experience. You can set breakpoints on lines, commands, and arbitrary expressions.
+
+96
+00:07:57,997 --> 00:08:01,997
+You can also inspect the variables at each level of the call stack.
+
+97
+00:08:01,997 --> 00:08:05,997
+Our interactive console experience also extends to the debugger in which it allows you to
+
+98
+00:08:05,997 --> 00:08:08,997
+run commands while you're stopped at a breakpoint, so if you want to run some of the PowerShell's debugging
+
+99
+00:08:08,997 --> 00:08:15,997
+or if you want to sort of mess around with the values of variables in the running script, you can do that.
+
+100
+00:08:15,997 --> 00:08:16,997
+Keith Hill has done a
+
+101
+00:08:16,997 --> 00:08:20,997
+ton of work to improve the debugging experience that we're able to provide, so if you've never tried out the
+
+102
+00:08:20,997 --> 00:08:25,997
+debugging experience in VS code, you should give it a shot and then tell Keith thank you whenever it blows your
+
+103
+00:08:25,997 --> 00:08:31,997
+mind because it's pretty cool. So there are some other nice features
+
+104
+00:08:31,997 --> 00:08:36,997
+that the platform provides and we designed them in a way that allows you to only use the ones which you care
+
+105
+00:08:36,997 --> 00:08:41,997
+about if you're trying to integrate this with an editor. First of all, our APIs are designed in a layered
+
+106
+00:08:41,997 --> 00:08:46,997
+model where the core functionality is exposed through a set of classes, which are useable at any .NET applications.
+
+107
+00:08:46,997 --> 00:08:51,997
+So basically, you can just pull a NuGet package into your app, and I don't know, 20 lines of code and you're
+
+108
+00:08:51,997 --> 00:08:57,997
+set up and you're able to run commands and use some of these nice editor features.
+
+109
+00:08:57,997 --> 00:08:59,997
+The next layer above that
+
+110
+00:08:59,997 --> 00:09:05,997
+provides a way to host these APIs in a process, which communicate with non-.NET applications through any channel.
+
+111
+00:09:05,997 --> 00:09:07,997
+For now, this host process speaks Visual Studio
+
+112
+00:09:07,997 --> 00:09:13,997
+codes, JSON-based language, and debug server protocols and it does it over standard input/standard output,
+
+113
+00:09:13,997 --> 00:09:19,997
+so it basically VS code launches the process and just connects to the console in/console out and we're
+
+114
+00:09:19,997 --> 00:09:23,997
+basically communicating with JSON messages back and forth that way.
+
+115
+00:09:23,997 --> 00:09:28,997
+But we can also plug in different protocols, but it doesn't necessarily have to be a JSON protocol,
+
+116
+00:09:28,997 --> 00:09:33,997
+it can be something else and I might experiment with this a little bit in the future.
+
+117
+00:09:33,997 --> 00:09:34,997
+This also implies that the API can be
+
+118
+00:09:34,997 --> 00:09:40,997
+exposed both to other processes on the same machine or through a network-based channel like HTTP.
+
+119
+00:09:40,997 --> 00:09:45,997
+Adam Driscoll has helped get the ball rolling on providing a WebSocket support to make the JSON protocol
+
+120
+00:09:45,997 --> 00:09:51,997
+available as a web service that could be used either on the same machine or possibly a remote machine.
+
+121
+00:09:51,997 --> 00:09:56,997
+Once we have a chance to flesh out the support and add the appropriate WebSocket client in VS code,
+
+122
+00:09:56,997 --> 00:10:03,997
+then it would allow the users of code editors like VS code on OS 10 and Linux to edit their code from OS 10,
+
+123
+00:10:03,997 --> 00:10:10,997
+but have all the language features coming from a host app that's running within a Windows VM or potentially
+
+124
+00:10:10,997 --> 00:10:16,997
+like a service running in a cloud, so we'd give you the ability to do PowerShell development with full features
+
+125
+00:10:16,997 --> 00:10:21,997
+on those OSs without actually running PowerShell locally on the OS since we don't have that.
+
+126
+00:10:21,997 --> 00:10:24,997
+But there are a lot of possibilities here, so there's a lot of different ways to integrate this into other
+
+127
+00:10:24,997 --> 00:10:31,997
+things, so definitely see interesting things we could do. Another useful feature is PowerShell
+
+128
+00:10:31,997 --> 00:10:37,997
+gallery integration. This allows any editor to interact with the PowerShell gallery to list, install,
+
+129
+00:10:37,997 --> 00:10:45,997
+and manage PowerShell modules from any gallery repository, so not just the standard PS gallery.
+
+130
+00:10:45,997 --> 00:10:50,997
+Doug Fink helped to get the support started and I'm going to leverage the new code that you saw in the ISE
+
+131
+00:10:50,997 --> 00:10:55,997
+preview for doing module updates just sort of put that together into the editor services to provide like a
+
+132
+00:10:55,997 --> 00:10:59,997
+standard service for interacting with the PowerShell gallery.
+
+133
+00:10:59,997 --> 00:11:04,997
+And lastly, we'll be providing a new extensibility model, which will enable editor commands to be written in
+
+134
+00:11:04,997 --> 00:11:09,997
+PowerShell and to be used across all the editors that leverage editor services.
+
+135
+00:11:09,997 --> 00:11:14,997
+You'll be able to automate things in the editor like the editing text or launching actions in the editor or
+
+136
+00:11:14,997 --> 00:11:19,997
+maybe changing views. We sort of have to figure out what the common surface area is across different editors,
+
+137
+00:11:19,997 --> 00:11:24,997
+but this might be a pretty interesting way for people to use their existing PowerShell code from their modules
+
+138
+00:11:24,997 --> 00:11:29,997
+to provide new editor functionality, so that's a pretty interesting thing.
+
+139
+00:11:29,997 --> 00:11:35,497
+So this feature is actually currently in development, but it's in like its very early stages, so I've got a short
+
+140
+00:11:35,497 --> 00:59:59,999
+demo that I'll show you today about to give you an idea of what is possible with this.
+

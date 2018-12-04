@@ -1,0 +1,104 @@
+1
+00:00:00,0 --> 00:00:01,903
+the future of PowerForensics
+
+2
+00:00:01,903 --> 00:00:07,903
+basically I want to move into multiple file system support, so why not be able to parse the extended file
+
+3
+00:00:07,903 --> 00:00:13,903
+system on Linux or the hierarchy profile system on Mac or the FAT.
+
+4
+00:00:13,903 --> 00:00:18,903
+I want to start writing parses for like the SQLite databases or ESE databases.
+
+5
+00:00:18,903 --> 00:00:21,903
+WinPE, so Matt Graver wrote
+
+6
+00:00:21,903 --> 00:00:26,903
+a WinPE wrapper module that allowed us to basically create a bootable USB drive that has PowerForensics
+
+7
+00:00:26,903 --> 00:00:31,903
+loaded on it, and so you could go up to a system, plug it in, and boot from that USB drive, and you would have
+
+8
+00:00:31,903 --> 00:00:37,903
+a clean forensic environment that's on a 1 GB USB drive, and so like for instance in my pocket underneath the
+
+9
+00:00:37,903 --> 00:00:40,903
+microphone, but it's literally right there. And then
+
+10
+00:00:40,903 --> 00:00:47,903
+PowerForensics portable, which is the ability to run PowerForensics on a remote system without dropping that
+
+11
+00:00:47,903 --> 00:00:50,903
+DLL to disk, and so I don't know if we're
+
+12
+00:00:50,903 --> 00:00:51,903
+going to be to
+
+13
+00:00:51,903 --> 00:00:56,903
+show this but, it's really a pain in the butt when that messes up there.
+
+14
+00:00:56,903 --> 00:01:02,903
+Okay, almost there.
+
+15
+00:01:02,903 --> 00:01:13,903
+Come on. Oh, man. Alright, so that's skills right there. Okay, so the idea behind this is that there is
+
+16
+00:01:13,903 --> 00:01:19,903
+a function called Get-ForensicFileRecordPortable. I think that's what it says.
+
+17
+00:01:19,903 --> 00:01:24,903
+I'll walk over here so I can see better. Yeah, and so the idea is that this encoded compress file is
+
+18
+00:01:24,903 --> 00:01:30,903
+actually the base 64 compressed encoded version of that DLL. We're loading that into memory and then there's
+
+19
+00:01:30,903 --> 00:01:34,903
+a basically an API for PowerForensics where you can just use the .NET classes.
+
+20
+00:01:34,903 --> 00:01:40,903
+So in this case, you could run Get-ForensicFileRecord on a remote system over like WinRM or PowerShell
+
+21
+00:01:40,903 --> 00:01:46,903
+remoting without ever dropping, without the dependency of that DLL being on the remote system, so you're only
+
+22
+00:01:46,903 --> 00:01:52,903
+touching memory, which is a pretty cool concept. So that's that remoting capability that we're
+
+23
+00:01:52,903 --> 00:02:00,903
+trying to build in there. Yep, and so that's the end of this. Unfortunately, at the end, everything kind of
+
+24
+00:02:00,903 --> 00:02:04,903
+got messed up with the display, but if you have any questions, please feel free to see me afterwards and I'd be
+
+25
+00:02:04,903 --> 00:02:10,903
+happy to kind of demo the portable version or the WinPE or any of those types of things.
+
+26
+00:02:10,903 --> 00:59:59,999
+Thanks, guys.
+

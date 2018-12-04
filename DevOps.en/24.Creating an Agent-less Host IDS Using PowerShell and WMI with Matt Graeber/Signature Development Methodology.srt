@@ -1,0 +1,340 @@
+1
+00:00:00,0 --> 00:00:06,603
+Okay. So as you start thinking about what events you might want to create, think about the following things, right.
+
+2
+00:00:06,603 --> 00:00:12,603
+So let's say you want to start listing out the things that you'd like to detect, so service creation,
+
+3
+00:00:12,603 --> 00:00:18,603
+registry persistence, remember I showed you the Win32_StartUpCommand class, that's a great one.
+
+4
+00:00:18,603 --> 00:00:22,603
+Lateral movement, I'm going to be using this one as an example in a little bit.
+
+5
+00:00:22,603 --> 00:00:27,603
+WMI persistence, again we've already kind of talked about that, and so go down your list, start writing out
+
+6
+00:00:27,603 --> 00:00:34,603
+what you'd like to detect, and then start digging through the WMI repository and see what classes might be
+
+7
+00:00:34,603 --> 00:00:41,603
+able to match up the action that you to detect to what's in the WMI repository.
+
+8
+00:00:41,603 --> 00:00:46,603
+But before you go down that road, just consider that there might be other detection mechanisms already present,
+
+9
+00:00:46,603 --> 00:00:52,603
+so like I think it's like in Windows 7 and above, I forget what it was backported to, but you can enable
+
+10
+00:00:52,603 --> 00:00:55,603
+process auditing anyway, so that's all going to go the event log anyway, so that's all going to go to the
+
+11
+00:00:55,603 --> 00:01:00,603
+event log, so you may not need to use WMI for process auditing, but you could.
+
+12
+00:01:00,603 --> 00:01:06,603
+And then Command-line auditing, like Applocker. You can put Applocker into audit mode, like if you wanted to
+
+13
+00:01:06,603 --> 00:01:14,603
+track all modules being loaded, like all device drivers, executables and dlls that were being loaded.
+
+14
+00:01:14,603 --> 00:01:19,603
+That would already be logged to the event log if you have Applocker in force or audit mode.
+
+15
+00:01:19,603 --> 00:01:21,603
+So consider other options first
+
+16
+00:01:21,603 --> 00:01:27,603
+is what I'm saying. Now if you've determined that you really do want to use permanent WMI events,
+
+17
+00:01:27,603 --> 00:01:34,603
+consider the following. Go through and discover all of the extrinsic events that exist first because again
+
+18
+00:01:34,603 --> 00:01:41,603
+those are ideal. They will trigger immediately. And if not, then fall back to intrinsic events and just be
+
+19
+00:01:41,603 --> 00:01:50,603
+mindful of like the polling interval and whether or not you will miss events from firing.
+
+20
+00:01:50,603 --> 00:01:59,603
+Okay. Now how would you actually go about determining what classes are available, well we have PowerShell for that.
+
+21
+00:01:59,603 --> 00:02:07,603
+And then in the latter portion of my demo, I'll also be showing you how I test out my events using wbemtest,
+
+22
+00:02:07,603 --> 00:02:13,603
+the super old school tool with a terrible UI, but it's extremely useful, it works.
+
+23
+00:02:13,603 --> 00:02:21,603
+It gets the job done. Alright, so here's my first example. I'm just showing you a local events subscription
+
+24
+00:02:21,603 --> 00:02:29,603
+using Register-CimIndicationEvent and what I'm interested in is anytime a new volume is attached to my
+
+25
+00:02:29,603 --> 00:02:36,603
+computer, so by attached, I mean EventType 2 and you'd have to look that up in the documentation and the
+
+26
+00:02:36,603 --> 00:02:43,603
+action that it will perform upon that event firing is it will just print out the drive name.
+
+27
+00:02:43,603 --> 00:02:54,603
+Okay. And to register all these events like well especially permanent WMI events, you'll have to run from an elevated prompt.
+
+28
+00:02:54,603 --> 00:03:03,603
+Okay. I got my handy, dandy SAPIEN USB key here, so let's see if this fires.
+
+29
+00:03:03,603 --> 00:03:08,603
+Yep. Cool.
+
+30
+00:03:08,603 --> 00:03:17,603
+And now when I remove it, it shouldn't trigger anything because I've kind of filtered down on the event that
+
+31
+00:03:17,603 --> 00:03:18,603
+filter a little bit, so
+
+32
+00:03:18,603 --> 00:03:25,603
+where it will only trigger upon insertion. Okay. Alright, going on.
+
+33
+00:03:25,603 --> 00:03:30,603
+Here is an example of how you do a permanent WMI event subscription.
+
+34
+00:03:30,603 --> 00:03:39,603
+So here's what I want to trigger off of. It's the same query as before and then the event consumer that I
+
+35
+00:03:39,603 --> 00:03:46,603
+want to use is I want to execute PowerShell. Alright, and what I'm going to do is I'm going to pass the
+
+36
+00:03:46,603 --> 00:03:56,603
+DriveName here and this is how you specify it. So you're passing, an instance of this class is being passed
+
+37
+00:03:56,603 --> 00:04:04,603
+to the event consumer and here I'm specifying one of the properties of that class, the drive name, and I'm doing
+
+38
+00:04:04,603 --> 00:04:12,603
+something a little shady here. I'm Base64 decoding the Eicar string, which is like a test string for AV,
+
+39
+00:04:12,603 --> 00:04:18,603
+so as soon as this drops to disk, in theory, AV should detect it right away.
+
+40
+00:04:18,603 --> 00:04:24,603
+So I'm going to drop it to my USB stick without any user interaction.
+
+41
+00:04:24,603 --> 00:04:31,603
+Okay. So just imagine that this would be something like actually malicious that would infect this USB stick
+
+42
+00:04:31,603 --> 00:04:33,603
+that I'm going to insert.
+
+43
+00:04:33,603 --> 00:04:39,603
+One thing that we didn't really touch on is that those local WMI events are only persistent within, I guess,
+
+44
+00:04:39,603 --> 00:04:47,603
+the runspace or within that shell, and so once you close PowerShell out, those local WMI events are going to
+
+45
+00:04:47,603 --> 00:04:51,603
+just disappear, and so that's why the permanent WMI events, they're going to last through reboots,
+
+46
+00:04:51,603 --> 00:04:57,603
+they're just going to be there until you get rid of them, so that's why we're going that direction.
+
+47
+00:04:57,603 --> 00:05:02,603
+Yeah. Demo-ville. Oh.
+
+48
+00:05:02,603 --> 00:05:06,603
+Just to clarify, you said the intrinsic are volatile?
+
+49
+00:05:06,603 --> 00:05:11,603
+No, the local, so when you use Register-WMIEvent.
+
+50
+00:05:11,603 --> 00:05:14,603
+Just trying to think of how I can use this.
+
+51
+00:05:14,603 --> 00:05:15,603
+Yeah, no problem.
+
+52
+00:05:15,603 --> 00:05:22,603
+Okay. Alright, are we ready? So look in the bottom right of the screen and hopefully
+
+53
+00:05:22,603 --> 00:05:33,603
+when Eicar.text drops, Defender will catch it. Oh, come on Defender.
+
+54
+00:05:33,603 --> 00:05:41,603
+Oh, okay well it should have popped up, but it did actually catch it, so it won't even let me open the file
+
+55
+00:05:41,603 --> 00:05:44,603
+because it's quarantined. So
+
+56
+00:05:44,603 --> 00:05:46,603
+(Audience comment)
+
+57
+00:05:46,603 --> 00:05:59,603
+Yeah. Good job Defender. You catch the obvious. Okay, now I want to show you how I would go about
+
+58
+00:05:59,603 --> 00:06:08,603
+developing these signatures, so I wrote some helper functions to say I want to list out all of the extrinsic
+
+59
+00:06:08,603 --> 00:06:14,603
+events within every namespace in the WMI repo. And so I would literally just start going through these one by
+
+60
+00:06:14,603 --> 00:06:23,603
+one and see if anything sticks out to me. And there was one that stood out to me in the root\cimv2 namespace,
+
+61
+00:06:23,603 --> 00:06:30,603
+which was this WmiProvider_ExecMethodAsyncEvent, and in the interest of time, I'm not going to go through all
+
+62
+00:06:30,603 --> 00:06:41,603
+of this, but I will show you wbemtest and just show you that it's sort of my testing methodology here.
+
+63
+00:06:41,603 --> 00:06:50,603
+So I'll connect to the root\cimv2 namespace, answer a notification query, and so say I'm not quite sure what
+
+64
+00:06:50,603 --> 00:07:01,603
+is going to fire in here, but we'll just see what pops up. So I suspect that if I execute any WmiMethod that
+
+65
+00:07:01,603 --> 00:07:06,603
+some instances would pop-up that I might be able to get some interesting information from.
+
+66
+00:07:06,603 --> 00:07:20,603
+So I'll call the Win32_ProcessCreate method and also I'll pull a value from the registry using the StdRegProv class.
+
+67
+00:07:20,603 --> 00:07:33,603
+And let's see if we get some stuff that pops up, okay? Okay, so we got two things here.
+
+68
+00:07:33,603 --> 00:07:40,603
+Now I can double-click on one. There's a little bit of lag time between when you click on it and when you
+
+69
+00:07:40,603 --> 00:07:48,603
+get this pop-up. I'm going to hide these system properties, so I can see the actual properties of the class here
+
+70
+00:07:48,603 --> 00:07:54,603
+and what happened was, so here are some of the interesting properties.
+
+71
+00:07:54,603 --> 00:08:02,603
+So I was notified that the Create method within the Win32\Process class within the root\cimv2 namespace was
+
+72
+00:08:02,603 --> 00:08:12,603
+executed and what I found to be really cool was that it provides input parameters to that method within this embedded object.
+
+73
+00:08:12,603 --> 00:08:18,603
+So I can view that embedded object and now I get the raw command-line of what was executed.
+
+74
+00:08:18,603 --> 00:08:27,603
+So here's like ghetto, but super effective command-line auditing built into Windows, okay.
+
+75
+00:08:27,603 --> 00:08:30,603
+It's pretty cool.
+
+76
+00:08:30,603 --> 00:08:37,603
+One thing that we didn't mention also is that the Create method for the Win32_ProcessWMI class is one of the
+
+77
+00:08:37,603 --> 00:08:40,603
+top lateral movement techniques that are used by attackers,
+
+78
+00:08:40,603 --> 00:08:47,603
+and so, very frequently to get code execution on a remote system they will leverage that method, and so that's
+
+79
+00:08:47,603 --> 00:08:49,603
+why detecting it is pretty cool.
+
+80
+00:08:49,603 --> 00:08:51,603
+(Audience question)
+
+81
+00:08:51,603 --> 00:08:57,603
+Lateral movement is a, if I'm an attacker and let's say I am able to phish somebody and get access to their
+
+82
+00:08:57,603 --> 00:09:02,603
+system, I want to start spreading throughout the network to start enumerating and maybe get figure out where
+
+83
+00:09:02,603 --> 00:09:05,603
+the domain admin is logged is, so I can steal their credentials.
+
+84
+00:09:05,603 --> 00:09:11,603
+In order to get access to their system, I need some way to execute code on that system, and so that is that
+
+85
+00:09:11,603 --> 00:59:59,999
+process is called lateral movement.
+

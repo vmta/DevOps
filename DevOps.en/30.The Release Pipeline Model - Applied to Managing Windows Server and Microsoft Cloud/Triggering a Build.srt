@@ -1,0 +1,352 @@
+1
+00:00:00,0 --> 00:00:02,2
+---because that ends up being your single source of truth.
+
+2
+00:00:02,2 --> 00:00:05,366
+Then you start adding your build process and that's where you can start plugging in a bunch of other stuff
+
+3
+00:00:05,366 --> 00:00:08,366
+like what he's going to continue talking about here so.
+
+4
+00:00:08,366 --> 00:00:13,366
+I'll show you what it looks like and then we'll get to the big one.
+
+5
+00:00:13,366 --> 00:00:17,366
+So when you go to demo this, what we're really going to demo is and I'll do a comprehensive live demo at the
+
+6
+00:00:17,366 --> 00:00:21,366
+end, but trigger a build, verify that things happened, look at the report, right, so that's basically what
+
+7
+00:00:21,366 --> 00:00:27,366
+we're going to do. So in this case, this is actually the script that we'd run.
+
+8
+00:00:27,366 --> 00:00:35,366
+This is formatted using PSake. In the live environment, I'm using a new version of PSDeploy to replace this
+
+9
+00:00:35,366 --> 00:00:41,366
+big code block, and so my live demo it's a little bit cleaner. But if you're familiar again back with
+
+10
+00:00:41,366 --> 00:00:46,366
+Computer Science type concepts, you've heard the command Make. On a Linux environment, you might be spinning
+
+11
+00:00:46,366 --> 00:00:55,366
+up a project from source and Run-Make, so PSake, pronounced Saki, but the concept is to use a DSL that's similar
+
+12
+00:00:55,366 --> 00:01:03,366
+to make or rake for Ruby and have that in PowerShell. So PSake is an awesome project to look at and it allows
+
+13
+00:01:03,366 --> 00:01:09,366
+you to chain together a lot of really complex tasks. It's a lot to just a glance, but it's definitely a
+
+14
+00:01:09,366 --> 00:01:12,366
+project to look at.
+
+15
+00:01:12,366 --> 00:01:17,366
+For my build definition, which just means what are the things that are going to happen whenever the build runs,
+
+16
+00:01:17,366 --> 00:01:23,366
+I just have a PowerShell script that I'm literally, just go run that, pass it arguments, and the arguments
+
+17
+00:01:23,366 --> 00:01:28,366
+are just coming from stored variables. So just like in Azure automation, you can store assets, store variables,
+
+18
+00:01:28,366 --> 00:01:33,366
+store credentials, things like that, same thing. So my build literally is just run a PowerShell script.
+
+19
+00:01:33,366 --> 00:01:41,366
+I have two steps because TFS understands how to collect published test results, so I have Pester output to XML
+
+20
+00:01:41,366 --> 00:01:46,366
+and then this will go pick it up and make it in a nice reports for me and that's like a free bonus.
+
+21
+00:01:46,366 --> 00:01:53,366
+What we'd want to get to and Mark Grey and I have been talking about this, we want to publish a project,
+
+22
+00:01:53,366 --> 00:01:58,366
+you should really be able to sanitize this to the point where you could take that project and just make it
+
+23
+00:01:58,366 --> 00:02:04,366
+work in any build system. It could be AppVeyor, it could be Jenkins, it could be Travis, it could TeamCity,
+
+24
+00:02:04,366 --> 00:02:09,366
+it could be Visual Studio, TFS, it could be locally on your machine, you should be able to just run build
+
+25
+00:02:09,366 --> 00:02:14,366
+that PS1 and not have to worry about it, right. You might have incoming parameters, but that's about as
+
+26
+00:02:14,366 --> 00:02:19,366
+complex as it should need to be.
+
+27
+00:02:19,366 --> 00:02:23,366
+I just wanted to show quickly for this particular project, I've got a whole bunch of stored variables.
+
+28
+00:02:23,366 --> 00:02:29,366
+That's just so that my scripts can become as generic as I can make them and then I really want that to be
+
+29
+00:02:29,366 --> 00:02:33,366
+scaffolding that I can just if I want to go create new project, I shouldn't have to reinvent the wheel when
+
+30
+00:02:33,366 --> 00:02:39,366
+it comes to what does that look like to check it in and have build run it and have tests run it and run a deployment.
+
+31
+00:02:39,366 --> 00:02:45,366
+We should pretty much just be able to pass it different parameters and it should just handle it on its own.
+
+32
+00:02:45,366 --> 00:02:50,366
+And TFS is a good example where you can encrypt information as its being stored.
+
+33
+00:02:50,366 --> 00:02:55,366
+This is where for triggers I can run it by clicking Q. If I check that box for Continuous Integration,
+
+34
+00:02:55,366 --> 00:02:58,366
+then whenever I do a push, it just runs.
+
+35
+00:02:58,366 --> 00:03:02,366
+And if I click scheduled, of course, then I can set a day and a time.
+
+36
+00:03:02,366 --> 00:03:03,366
+Yeah.
+
+37
+00:03:03,366 --> 00:03:15,366
+(Audience question)
+
+38
+00:03:15,366 --> 00:03:17,366
+Steve might know that better than I do.
+
+39
+00:03:17,366 --> 00:03:26,366
+Very. So just from a standpoint of flexibility or---so the question was what's the difference between PSake
+
+40
+00:03:26,366 --> 00:03:38,366
+and MSBuild and the answer is a lot and not very much. They're both build descriptor languages, but because it's
+
+41
+00:03:38,366 --> 00:03:45,366
+PowerShell and not XML, it tends to be a lot more readable, it's a lot more lightweight to write and kind of
+
+42
+00:03:45,366 --> 00:03:51,366
+dig through, but out of the box it doesn't have all the same steps and things as MSBuild.
+
+43
+00:03:51,366 --> 00:04:03,366
+MSBuild is really optimized for building .NET or .NET DLLs, executables, web projects, stuff like that where
+
+44
+00:04:03,366 --> 00:04:12,366
+PSake is a little more open-ended and just like Rake is going to be really good at building Ruby projects,
+
+45
+00:04:12,366 --> 00:04:23,366
+and Make is going to be very good for your C projects. PSake is a really nice easy addition to not only .NET
+
+46
+00:04:23,366 --> 00:04:31,366
+projects because you can call MSBuild tasks through it, but you can also easily do a lot of your PowerShell-type
+
+47
+00:04:31,366 --> 00:04:37,366
+testing, easily get into PS Script analyzer and Pester and because you're in PowerShell at that point.
+
+48
+00:04:37,366 --> 00:04:45,366
+I should call out for PSake, so you see task depends, so task test depends on clean, which just means run as
+
+49
+00:04:45,366 --> 00:04:49,366
+script to make sure. Because this is always running over and over again in the same box, clean up anything
+
+50
+00:04:49,366 --> 00:04:57,366
+that would have been there from the last build. And then deploy depends on test and then test depends on clean.
+
+51
+00:04:57,366 --> 00:05:05,366
+So when this runs, default depends on deploy. So if we follow this backwards, it means if your tests pass,
+
+52
+00:05:05,366 --> 00:05:11,366
+go ahead and deploy and that's why it's interesting to say if you check that box for continuous integration,
+
+53
+00:05:11,366 --> 00:05:17,366
+it means you edit the file on your machine, you hit Save, type in your commit, hit Push, it's going to go to build.
+
+54
+00:05:17,366 --> 00:05:23,366
+If all of you tests pass, you're going live, right, so you could literally just from your workstation go there.
+
+55
+00:05:23,366 --> 00:05:27,366
+Or you go into your dev environment or you're going, wherever that target is.
+
+56
+00:05:27,366 --> 00:05:32,366
+Exactly. I'm like that's the most extreme that I've ever seen it, in fact, I don't know of anybody that I've
+
+57
+00:05:32,366 --> 00:05:37,366
+seen go that quickly into production. There probably are for some projects.
+
+58
+00:05:37,366 --> 00:05:39,366
+Yeah, I think we've got some customers that do that.
+
+59
+00:05:39,366 --> 00:05:41,366
+Yeah, nice.
+
+60
+00:05:41,366 --> 00:05:49,366
+In most cases, you get to the output, so in this case, for DSC maybe you've got the MOF and then somebody eyeballs it.
+
+61
+00:05:49,366 --> 00:05:53,366
+What's interesting, so we'll look at PSDeploy in the last section, actually I'll come back to that section.
+
+62
+00:05:53,366 --> 00:05:59,366
+So I just want to come back to that point you said hey that's kind of extreme and I don't know a lot of
+
+63
+00:05:59,366 --> 00:06:05,366
+people that go all that route, but I'll bet every single one of you know somebody who's downloaded a script
+
+64
+00:06:05,366 --> 00:06:12,366
+off like TechNet or something and gone and run it in production and that's got even fewer quality gates than
+
+65
+00:06:12,366 --> 00:06:14,366
+what we've just demoed here.
+
+66
+00:06:14,366 --> 00:06:15,366
+That's true.
+
+67
+00:06:15,366 --> 00:06:20,366
+Right, so this is more rigor than what a lot of us are currently doing today in our environments.
+
+68
+00:06:20,366 --> 00:06:21,366
+Very true.
+
+69
+00:06:21,366 --> 00:06:26,366
+So it's not all that crazy.
+
+70
+00:06:26,366 --> 00:06:27,366
+Sure.
+
+71
+00:06:27,366 --> 00:06:32,366
+So I noticed that you have the test in the beginning, right, so would you consider like you talked about the
+
+72
+00:06:32,366 --> 00:06:37,366
+fact that after I do this deployment, right, now I've got to test maybe my apps and different things like that
+
+73
+00:06:37,366 --> 00:06:40,366
+afterwards and I'm not really seeing that as a step.
+
+74
+00:06:40,366 --> 00:06:43,366
+Is that part of my code in terms of my configuration code?
+
+75
+00:06:43,366 --> 00:06:44,366
+I don't know what's going on there, but it's hanging.
+
+76
+00:06:44,366 --> 00:06:51,366
+Does it need to have like okay here's the five applications test that you want to do?
+
+77
+00:06:51,366 --> 00:06:58,366
+Exactly. That's the next section. But that's exactly right. Your head is in exactly the right place.
+
+78
+00:06:58,366 --> 00:07:00,366
+In fact, that's the most important thing. I just
+
+79
+00:07:00,366 --> 00:07:05,366
+wanted to show real quick. I just love this that as you run the build when you click on Console,
+
+80
+00:07:05,366 --> 00:07:11,366
+there's a PowerShell window right there in your browser showing the scripts that came from source control and
+
+81
+00:07:11,366 --> 00:07:15,366
+everything is just running right there in your browser and you can watch it and it's like oh, this work that I
+
+82
+00:07:15,366 --> 00:07:18,366
+did is happening somewhere and I can do that all day long.
+
+83
+00:07:18,366 --> 00:07:24,366
+So you might have a build fail, no problem, you can see the output, so you can go back and look and you might
+
+84
+00:07:24,366 --> 00:07:29,366
+have it send you a notification, you might just go log in the website and see it, but now you can keep track
+
+85
+00:07:29,366 --> 00:07:37,366
+of okay this worked on my machine, why isn't it working somewhere else and help troubleshoot those types of things.
+
+86
+00:07:37,366 --> 00:07:44,366
+Let's see. You also obviously can have build succeed. What's nice is when you come back and look at this later,
+
+87
+00:07:44,366 --> 00:07:48,366
+you'll see each of the steps where it went and got from source, it ran PSake, and then it published test results,
+
+88
+00:07:48,366 --> 00:59:59,999
+so you can double-click on those and actually see the full log output in the history of these builds.
+

@@ -1,0 +1,232 @@
+1
+00:00:00,0 --> 00:00:08,33
+Now this script I've actually---it was PowerShell Saturday in Charlotte several years ago, Mike Robbins,
+
+2
+00:00:08,33 --> 00:00:14,33
+I think, came up to me after the event and I'd done some talk about Active Directory and he says man I've got this
+
+3
+00:00:14,33 --> 00:00:20,33
+problem where this guy has been in the company for 20 years and he's been in every department, he's been added
+
+4
+00:00:20,33 --> 00:00:26,33
+to every group and I don't know which groups he needs to, he's basically a domain admin at this point.
+
+5
+00:00:26,33 --> 00:00:32,33
+He's got access to everybody's data because we never took him out of all those old groups.
+
+6
+00:00:32,33 --> 00:00:38,33
+Everybody can identify with that situation? So how can I find that group history mystery?
+
+7
+00:00:38,33 --> 00:00:46,33
+How can I figure that out? So I wrote this little thing with this AttributeMetadata cmdlet and what it does
+
+8
+00:00:46,33 --> 00:00:55,33
+is it's going to show me for this user, let's go look at every group they're a member of and find the date
+
+9
+00:00:55,33 --> 00:01:04,33
+that they were added to that group. So here we see for this user he was added to manufacturing in 2013,
+
+10
+00:01:04,33 --> 00:01:12,33
+accounting in 2013, HR in 2013, 2011 he was added to legal and some other test group in there.
+
+11
+00:01:12,33 --> 00:01:18,33
+Obviously this is just a tiny little lab environment, but in your real world you'll have 40 groups in there
+
+12
+00:01:18,33 --> 00:01:21,33
+and you'll be able to see using this data,
+
+13
+00:01:21,33 --> 00:01:26,33
+then going back forensically to see when they were added to every one of these groups they're a member of.
+
+14
+00:01:26,33 --> 00:01:29,33
+Is that handy? Alright, so that's called the group history mystery.
+
+15
+00:01:29,33 --> 00:01:37,33
+Yeah. I've run into something with this before where, I can't remember why it was limited to last 1,000
+
+16
+00:01:37,33 --> 00:01:42,33
+changes that had been made on a group. Have you run into something like that?
+
+17
+00:01:42,33 --> 00:01:45,33
+First I've heard of it. Okay, I need to research it further. Okay.
+
+18
+00:01:45,33 --> 00:01:49,33
+Deleted metadata will disappear after a while if the license was…
+
+19
+00:01:49,33 --> 00:01:56,33
+Right, right. So the deleted metadata will disappear. These are the ones that are still active members of the groups.
+
+20
+00:01:56,33 --> 00:01:57,33
+Yeah.
+
+21
+00:01:57,33 --> 00:02:01,33
+Yeah, what I also ran into was a group that I have that has almost everybody in the company in it and when I
+
+22
+00:02:01,33 --> 00:02:06,33
+looked up the metadata for it, I can only find the last 1,000 changes or less.
+
+23
+00:02:06,33 --> 00:02:11,33
+Oh. That was an issue too. That's probably going to be a limitation on the metadata attribute field,
+
+24
+00:02:11,33 --> 00:02:16,33
+how much it can hold I'm going to guess for a group of that size.
+
+25
+00:02:16,33 --> 00:02:26,33
+Yeah. So its binary data. Actually Brandon Shell, BS on POSH, he wrote before this cmdlet existed,
+
+26
+00:02:26,33 --> 00:02:32,33
+he wrote something that would actually, it was a very manly function that would go parse all the binary data
+
+27
+00:02:32,33 --> 00:02:35,33
+in that attribute and give you the data, but now we have a cmdlet to do it.
+
+28
+00:02:35,33 --> 00:02:48,33
+So yeah, it's a lot easier now. Does this require having admin rights for some of these to reset these?
+
+29
+00:02:48,33 --> 00:02:52,33
+Probably so because if you're looking at delegated administration in some of these places, you're going to
+
+30
+00:02:52,33 --> 00:02:58,33
+have to have domain admins because I'm thinking that every user has read to just about anything in the directory,
+
+31
+00:02:58,33 --> 00:03:02,33
+but there are going to be places where they don't have it, so yeah, you probably should use an elevated
+
+32
+00:03:02,33 --> 00:03:09,33
+account to do this. Yeah. So a smart malicious act is going to do as little as possible, as little destruction
+
+33
+00:03:09,33 --> 00:03:16,33
+to the structure as possible. Right. So the holy grail is like finding these, the holy grail would be like
+
+34
+00:03:16,33 --> 00:03:21,33
+finding a service account, Kerberos it could hash, or even the Kerberos to generate the account.
+
+35
+00:03:21,33 --> 00:03:26,33
+In other words, you could generate a KRBG, whatever KRBT, that hash.
+
+36
+00:03:26,33 --> 00:03:32,33
+Can we use these cmdlets to dig in and try to see those tickets or who's generating them?
+
+37
+00:03:32,33 --> 00:03:35,33
+Is there an account that's generating more tickets than they should?
+
+38
+00:03:35,33 --> 00:03:43,33
+You could look at the KRBTGT and look at the attributes on it and see if those, if the version stamp has been
+
+39
+00:03:43,33 --> 00:03:49,33
+incremented for that like the hash and things like that on the password attributes.
+
+40
+00:03:49,33 --> 00:04:00,33
+Now which version is it. When you do the prep on the environment, in one of the recent versions of AD,
+
+41
+00:04:00,33 --> 00:04:10,33
+it actually changes that password, so don't be surprised if you see a change in there from the original value
+
+42
+00:04:10,33 --> 00:04:15,33
+it's supposed to happen. Do you have to change it twice to change the password?
+
+43
+00:04:15,33 --> 00:04:20,33
+I don't remember. But yeah, I haven't looked at it in detail, but it's in there.
+
+44
+00:04:20,33 --> 00:04:27,33
+So we've got just a couple minutes. Let me finish up here and then we will take some more questions.
+
+45
+00:04:27,33 --> 00:04:39,33
+So last up is a GP link metadata. I'm not going to take the time to display it, but basically part of the
+
+46
+00:04:39,33 --> 00:04:44,33
+clues that we got from one of the other security vendors that were on site with this customer was that they
+
+47
+00:04:44,33 --> 00:04:51,33
+thought there was some suspicious Group Policy activity during the event window and I wanted to see what group
+
+48
+00:04:51,33 --> 00:04:54,33
+policy changes had happened in the environment.
+
+49
+00:04:54,33 --> 00:05:02,33
+So now imagine I've got an OU object, that OU object has a GP link attribute.
+
+50
+00:05:02,33 --> 00:05:08,33
+The GP link attribute is a string that holds the GUID of every policy that's linked to it.
+
+51
+00:05:08,33 --> 00:05:16,33
+So now I can just go through all the OUs, look at the metadata, and see which GP links historically have
+
+52
+00:05:16,33 --> 00:05:22,33
+been versioned recently telling me that one of the policies linked to it has recently changed.
+
+53
+00:05:22,33 --> 00:05:32,33
+Again, I can't see specifically which one. So I found some policy activity on an OU and I could see though
+
+54
+00:05:32,33 --> 00:05:40,33
+that it looked like normal behavior because there was a test OU where they had developed the policy and I
+
+55
+00:05:40,33 --> 00:05:45,33
+could see that it had been unlinked from that OU and linked to a production OU and they went back and
+
+56
+00:05:45,33 --> 00:05:51,33
+correlated it with their change logs and it was a scheduled change, it was normal, so I could not corroborate
+
+57
+00:05:51,33 --> 00:05:58,33
+the story of the vendor saying hey there's some suspicious GPO activity because I looked at it all and it looked fine.
+
+58
+00:05:58,33 --> 00:59:59,999
+So it can even take that, and there's a whole blog post on just that piece as well, if you want that.
+

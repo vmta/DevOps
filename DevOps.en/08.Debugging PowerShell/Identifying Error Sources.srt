@@ -1,0 +1,508 @@
+1
+00:00:00,5 --> 00:00:05,478
+So enough about some lighter weight techniques and changing colors.
+
+2
+00:00:05,478 --> 00:00:11,478
+When you're dealing with errors, it's really important to be able to identify what the source of the error is,
+
+3
+00:00:11,478 --> 00:00:16,478
+and so I'm going to go through a few techniques to help identify what sources of errors are.
+
+4
+00:00:16,478 --> 00:00:21,478
+This first thing, I'm just priming the pump by putting an error in the system, so let me just run this,
+
+5
+00:00:21,478 --> 00:00:29,478
+and so I've got 20 errors that I just through into my Error array and you can look at errors inside of $Error.
+
+6
+00:00:29,478 --> 00:00:35,478
+It's just an array list, so if I run that, it flies by pretty quick and there's 20 errors there, a few different
+
+7
+00:00:35,478 --> 00:00:41,478
+types thrown in with a randomizer just to make it interesting. And so, when you're dealing with this,
+
+8
+00:00:41,478 --> 00:00:43,478
+how many people have written a script and you
+
+9
+00:00:43,478 --> 00:00:48,478
+run it and then you get error, error, error, error, error, error because they're not necessarily all terminating right?
+
+10
+00:00:48,478 --> 00:00:54,478
+There's a notion of terminating errors, which is an error that when your script or your module hits it, stops dead.
+
+11
+00:00:54,478 --> 00:00:58,478
+You've got one error, which is great for a focus because you know exactly where you've got to look,
+
+12
+00:00:58,478 --> 00:01:04,478
+but it also masks other errors that are going to show up probably afterwards as you go through the debugging
+
+13
+00:01:04,478 --> 00:01:12,478
+techniques and steps to work stuff out. So a lot of times though, a lot of errors you get in PowerShell are
+
+14
+00:01:12,478 --> 00:01:17,478
+non-terminating and when you're dealing with it, it can be challenging from a large list.
+
+15
+00:01:17,478 --> 00:01:18,478
+Where do you start?
+
+16
+00:01:18,478 --> 00:01:23,478
+So you can use PowerShell itself to help prioritize what the errors are.
+
+17
+00:01:23,478 --> 00:01:30,478
+And so generally speaking when I do talks, I don't use aliases and what not.
+
+18
+00:01:30,478 --> 00:01:34,478
+Here I am because we're talking about debugging and since we're talking about debugging, I'm assuming a
+
+19
+00:01:34,478 --> 00:01:39,478
+certain base knowledge of PowerShell. If you see an alias that you don't understand up here, raise your hand,
+
+20
+00:01:39,478 --> 00:01:41,478
+let me know, I'll explain it,
+
+21
+00:01:41,478 --> 00:01:46,478
+but most of these are pretty boarder plate. I mean, some people might not know that you can use short hand
+
+22
+00:01:46,478 --> 00:01:54,478
+for parameter names, so -Des is short for description and since it's unambiguous in the Sort Object cmdlet,
+
+23
+00:01:54,478 --> 00:01:58,478
+it'll find it. But the for the most part, I'm just using a few aliases.
+
+24
+00:01:58,478 --> 00:02:03,478
+So one thing that's great when you have a whole lot of errors is to group them, so this command is going to
+
+25
+00:02:03,478 --> 00:02:10,478
+take all my errors, group them together, sort them in descending order by count, and then give me the count
+
+26
+00:02:10,478 --> 00:02:16,478
+and name, so I can prioritize. So you run a command like that and all of a sudden, that list of 20 errors
+
+27
+00:02:16,478 --> 00:02:24,478
+because much more digestible. So I can prioritize by what's most common and very quickly figure out what are
+
+28
+00:02:24,478 --> 00:02:28,478
+things I want to fix first according to how frequently they're happening.
+
+29
+00:02:28,478 --> 00:02:31,478
+I mean, the numbers can be a bit misleading, right, because you could be doing it inside of a loop and you
+
+30
+00:02:31,478 --> 00:02:34,478
+could have one bug that's much higher priority versus something that happens 50 times because you ran it
+
+31
+00:02:34,478 --> 00:02:43,478
+inside of a loop, but it still helps just in terms of digesting stuff and that mental blockage of getting rid
+
+32
+00:02:43,478 --> 00:02:49,478
+of 50 errors at once because of this, you sort of think it is by group, so you can start breaking down the
+
+33
+00:02:49,478 --> 00:02:53,478
+barriers and getting to the end solution more quickly, can be very helpful.
+
+34
+00:02:53,478 --> 00:02:58,478
+So leverage PowerShell's sorting and grouping capabilities when you're processing large amounts of errors to
+
+35
+00:02:58,478 --> 00:03:01,478
+really see what's going on. And the other thing that's cool here too
+
+36
+00:03:01,478 --> 00:03:08,478
+is this is pulling out all the source code, all of the line references, and the character references,
+
+37
+00:03:08,478 --> 00:03:14,478
+and just giving me the text, which is really useful in terms of just reading what's going on, there's nothing red
+
+38
+00:03:14,478 --> 00:03:18,478
+up there and I might be able to figure out from that exactly what's going on.
+
+39
+00:03:18,478 --> 00:03:26,478
+If I can't, I can go into $Error and see what line numbers things happened on and figure things out from there.
+
+40
+00:03:26,478 --> 00:03:28,478
+Questions so far?
+
+41
+00:03:28,478 --> 00:03:40,478
+Okay. So beyond processing large quantities of errors, there are a lot of details in errors that are very
+
+42
+00:03:40,478 --> 00:03:52,478
+worthwhile looking at when you're troubleshooting. So if I run this, okay, is that a good example?
+
+43
+00:03:52,478 --> 00:03:57,478
+Yeah, that's fine. So let me go back again. So we're at this again.
+
+44
+00:03:57,478 --> 00:04:04,478
+So here I'm looking at some error details for one of the particular errors and actually let me do one more
+
+45
+00:04:04,478 --> 00:04:12,478
+thing first that I didn't have in my script. So I'm going to pass the entire collection out to FormatList *
+
+46
+00:04:12,478 --> 00:04:24,478
+because I want to highlight something. (Scrolling) Now they're actually all showing the details, so I must
+
+47
+00:04:24,478 --> 00:04:31,478
+have a load---I've got a module called DebugPX that makes it so when I pipe to FormatList *, I don't have to
+
+48
+00:04:31,478 --> 00:04:46,478
+do -Force because typically when you run and that might still be loaded, let me just, bear with me one second.
+
+49
+00:04:46,478 --> 00:04:52,478
+No, it's not there. So typically when you pipe to Format List * from the error,
+
+50
+00:04:52,478 --> 00:04:56,478
+you're just going to see the exact same text that you see when the error shows up on screen.
+
+51
+00:04:56,478 --> 00:05:00,478
+You're not going to see properties on the left column with values on the right.
+
+52
+00:05:00,478 --> 00:05:08,478
+Typically when you run error and pipe the format list, you just won't see that because the way the PowerShell
+
+53
+00:05:08,478 --> 00:05:15,478
+team has implemented error formatting, it basically says I don't care what you told me you want,
+
+54
+00:05:15,478 --> 00:05:22,478
+unless you force it, I'm not going to give it to you, which is a bit silly and I think it's a bit of a design flaw.
+
+55
+00:05:22,478 --> 00:05:29,478
+So in one of the things I worked on is this module called DebugPX and I will get to that, but DebugPX makes
+
+56
+00:05:29,478 --> 00:05:36,478
+it so I don't have to, or sorry not DebugPX, FormatPX, that's why because FormatPX is loaded.
+
+57
+00:05:36,478 --> 00:05:42,478
+I have a bunch of modules and when I load them, they do work for me that I forget about because I load them
+
+58
+00:05:42,478 --> 00:05:45,478
+underneath my profile, so I forget to clear my profile afterwards.
+
+59
+00:05:45,478 --> 00:05:53,478
+So go back to this. Here's what you typically see, Error 0 format list* shows the exact same thing I would
+
+60
+00:05:53,478 --> 00:05:55,478
+have got when the error came up. There, glad I figured that out.
+
+61
+00:05:55,478 --> 00:06:02,478
+And if I want to see it, the whole thing, I have to pipe it to Format List * -Force and that's because of what
+
+62
+00:06:02,478 --> 00:06:08,478
+I was talking about, it would help PowerShell just implicitly think that I'm only going to give you this
+
+63
+00:06:08,478 --> 00:06:11,478
+error text, but it really is for the look of the properties
+
+64
+00:06:11,478 --> 00:06:14,478
+because when you're dealing with errors, you're often dealing with exceptions, and so there's an exception
+
+65
+00:06:14,478 --> 00:06:20,478
+property that you can dig into to figure out what's going on, if it's coming from internal code in PowerShell,
+
+66
+00:06:20,478 --> 00:06:26,478
+or a binary cmdlet, or a DLL, or something in .NET that you called, well that's going to come in often in the
+
+67
+00:06:26,478 --> 00:06:30,478
+form of an exception, and so getting out that exception detail is important.
+
+68
+00:06:30,478 --> 00:06:35,478
+Target object. That's important because what object was being referenced when this error came up.
+
+69
+00:06:35,478 --> 00:06:41,478
+Was it a file on my system? Was it a string path? So when the error path does not exist comes up,
+
+70
+00:06:41,478 --> 00:06:46,478
+that target object should be set to the path that didn't exist so I can figure out what's going on.
+
+71
+00:06:46,478 --> 00:06:52,478
+The category info, you see that by default. Other useful things are your StackTrace, ScriptTrackTrace,
+
+72
+00:06:52,478 --> 00:06:57,478
+and I'll get into that in a second, and InvocationInfo, but there's a lot of interesting hidden stuff that's
+
+73
+00:06:57,478 --> 00:07:02,478
+there that by default you don't get unless you pipe to force. So you use the force when you're looking at
+
+74
+00:07:02,478 --> 00:07:14,478
+errors or now I'll load the module that I had forgotten I had loaded and wait.
+
+75
+00:07:14,478 --> 00:07:26,478
+I have a load order that's required for one of my modules. Now I'm back normal.
+
+76
+00:07:26,478 --> 00:07:35,478
+And so yeah, with FormatPX loaded, FormatPX recognizes that when you pipe from an error to FormatList * or
+
+77
+00:07:35,478 --> 00:07:40,478
+FormatTable * for some format cmdlet, that you probably really wanted it to give it to you that format,
+
+78
+00:07:40,478 --> 00:07:46,478
+and so it respects that and just works around this one little quirk and FormatPX is up in the gallery.
+
+79
+00:07:46,478 --> 00:07:53,478
+All the modules I work on I put up in the gallery. And so now I get by default all of these full information
+
+80
+00:07:53,478 --> 00:07:58,478
+from my error messages when I wipe the FormatList *. So when you're looking at that, I mentioned there's
+
+81
+00:07:58,478 --> 00:08:03,478
+exceptions, right, so you can do, they're objects, .NET objects, same as everything else, so I can ask for
+
+82
+00:08:03,478 --> 00:08:15,478
+the exception and that again shows me text, not properties. And so I have to pipe that to FormatList and
+
+83
+00:08:15,478 --> 00:08:21,478
+again I would normally have to use the force if I was not using FormatPX to take care of it for me and then I
+
+84
+00:08:21,478 --> 00:08:30,478
+can gather all this information inside of my exception. And sometimes, there are inner exceptions,
+
+85
+00:08:30,478 --> 00:08:34,478
+and so certain times you can run into an error. This doesn't happen all that often, but it does happen
+
+86
+00:08:34,478 --> 00:08:40,478
+where the error happens several layers deep through a whole bunch of logic and DLLs and so you go from your
+
+87
+00:08:40,478 --> 00:08:45,478
+top level error to your exception, which had an inner exception, which may have another inner exception,
+
+88
+00:08:45,478 --> 00:08:51,478
+and so be aware of this inner exception property on exceptions because if the error that shows up is not
+
+89
+00:08:51,478 --> 00:08:54,478
+obvious to you off the top, what's going on,
+
+90
+00:08:54,478 --> 00:09:01,478
+it may be because the text that's exposed at the outside of the error is not descriptive enough to what
+
+91
+00:09:01,478 --> 00:09:05,478
+actually happened under the covers and you have to dig in. So yeah, just go
+
+92
+00:09:05,478 --> 00:09:09,478
+through looking at your error messages and look at these inner exceptions, in this case, there is none for this
+
+93
+00:09:09,478 --> 00:09:13,478
+particular error, but make sure you're aware of the .InnerException and that can recourse to multiple inner
+
+94
+00:09:13,478 --> 00:09:15,478
+exceptions and sometimes,
+
+95
+00:09:15,478 --> 00:09:21,478
+you dig through a few layers and you look at the text that's there and it's clear as day what went wrong,
+
+96
+00:09:21,478 --> 00:09:27,478
+but because of details of code and how logic works and how things don't necessarily always bubble up to the
+
+97
+00:09:27,478 --> 00:09:33,478
+top in the right way, it's just hidden from you. So dig through and you can find a lot of
+
+98
+00:09:33,478 --> 00:09:42,478
+interesting things. Leveraging the StackTrace. So I showed you in the FormatList * there is a
+
+99
+00:09:42,478 --> 00:09:50,478
+ScriptStackTrace and that's great for locations that are inside of PowerShell functions or scripts or modules
+
+100
+00:09:50,478 --> 00:09:54,478
+that are script modules because it will show you the StackTrace of the logic that went through to get to that
+
+101
+00:09:54,478 --> 00:10:01,478
+error, which can be very helpful in debugging and figuring out what's going on and there is also a StackTrace
+
+102
+00:10:01,478 --> 00:10:07,478
+that is for when you're dealing with compiled locations and cmdlets and DLLs that's on the actual exception,
+
+103
+00:10:07,478 --> 00:10:08,478
+or InnerException,
+
+104
+00:10:08,478 --> 00:10:13,478
+or InnerException.InnerException, and so on. So you can dig through and you can look at logic, and so this
+
+105
+00:10:13,478 --> 00:10:19,478
+is a bigger StackTrace because this particular error came from binary code and less from PowerShell code.
+
+106
+00:10:19,478 --> 00:10:24,478
+I mean there was one line in my ScriptBlock that really didn't tell me anything, but I can see, I look at this
+
+107
+00:10:24,478 --> 00:10:32,478
+from the, it's about, right, so the most the call the actually through the exception wasn't lookup
+
+108
+00:10:32,478 --> 00:10:37,478
+command information at the very top, System.Management.Automation.CommandDiscovery.LookUpCommandinfo.
+
+109
+00:10:37,478 --> 00:10:44,478
+So you look at this from a top-down from that's where the error happened to that was the first call in the
+
+110
+00:10:44,478 --> 00:10:50,478
+binary code that I invoked and it can be helpful just to figure out what logic was happening, what things went
+
+111
+00:10:50,478 --> 00:10:55,478
+through when the actual error came up.
+
+112
+00:10:55,478 --> 00:11:01,478
+This is by the way, this can be intimidating to people dealing with StackTrace is and going through the stuff,
+
+113
+00:11:01,478 --> 00:11:07,478
+but don't be afraid to roll up your sleeves, try it, if you can't figure something out, and need some help,
+
+114
+00:11:07,478 --> 00:11:12,478
+you can email me, ask a coworker, go to powershell.org on the forums, people can now help you figure these
+
+115
+00:11:12,478 --> 00:11:18,478
+things out, and you start knocking them off one at a time and working with this stuff, and it becomes a lot
+
+116
+00:11:18,478 --> 00:11:24,478
+easier relatively quickly.
+
+117
+00:11:24,478 --> 00:11:28,478
+The other thing, when you're dealing with a large quantity of errors, rather than leaving them lying around
+
+118
+00:11:28,478 --> 00:11:33,478
+in your $Error variable, I personally like to clean up my error variable because
+
+119
+00:11:33,478 --> 00:11:39,478
+when I like to just be lazy and do $Error and look at everything that's in it, but if I leave it around for a
+
+120
+00:11:39,478 --> 00:11:43,478
+long time, then I have a whole lot of stuff that I don't care about that I already dealt with a while ago,
+
+121
+00:11:43,478 --> 00:11:45,478
+so it's just a collection. You can clean things up.
+
+122
+00:11:45,478 --> 00:11:50,478
+So if you dealt with an error, you can remove that particular error just by .Remove with the actual error
+
+123
+00:11:50,478 --> 00:11:58,478
+itself or you can use index, so that removes just the particular topmost item in the error stack or I can
+
+124
+00:11:58,478 --> 00:12:05,478
+remove an entire range. This is going to remove from 0 to 10. Or I can clear the whole thing.
+
+125
+00:12:05,478 --> 00:12:11,478
+And so these are useful as you go through and deal with errors that you have just so you don't always have
+
+126
+00:12:11,478 --> 00:12:15,478
+older things you've dealt with kicking around because then you can be lazy and do $Error and see you did a
+
+127
+00:12:15,478 --> 00:59:59,999
+catch anything and no nothing came up, so good. So that's dealing with error details.
+

@@ -1,0 +1,120 @@
+1
+00:00:00,0 --> 00:00:08,596
+Okay, I'm going to quickly go through this. Because of variation
+
+2
+00:00:08,596 --> 00:00:16,596
+on the copy and commands would be to create commands based on CIM classes.
+
+3
+00:00:16,596 --> 00:00:25,596
+So instead of mucking around with CDXML, unless you just really hate yourself, create either proxy or wrapper
+
+4
+00:00:25,596 --> 00:00:33,596
+functions using Get-CimInstance for whatever class you need. Now the nice thing about CimInstance and the
+
+5
+00:00:33,596 --> 00:00:40,596
+reason I like the wrapper is because I then can very quickly either use computer name or CIM session.
+
+6
+00:00:40,596 --> 00:00:44,596
+I don't have to try to generate the, write the parameters for that to happen.
+
+7
+00:00:44,596 --> 00:00:53,596
+So I have some tools. So you could just, again, you could use the same idea of using copy command for
+
+8
+00:00:53,596 --> 00:01:02,596
+Get-CimInstance and create a proxy function, let's call, I have a call Get-CimOS because the goal will be to
+
+9
+00:01:02,596 --> 00:01:06,596
+create, so you use Get-CimInstance, Win32 operating system
+
+10
+00:01:06,596 --> 00:01:15,596
+and return a preset collection of parameters, of properties, sorry.
+
+11
+00:01:15,596 --> 00:01:27,596
+So the final version of that, that's the command, again going into the oven, is this.
+
+12
+00:01:27,596 --> 00:01:35,596
+We'll just minimize the help. So I didn't have to write all that code for the parameters for Computername
+
+13
+00:01:35,596 --> 00:01:44,596
+and CIM session. I have my verbose output, in this case, I'm adding particular parameters for the class name
+
+14
+00:01:44,596 --> 00:01:56,596
+and the name space and I'm then splatting that and I'm also doing something a little extra where I'm
+
+15
+00:01:56,596 --> 00:02:07,596
+inserting a type name for the output because at the end of my script here, I have some additional code that I
+
+16
+00:02:07,596 --> 00:02:13,596
+wrote to update the type data and format data, so this is all in one.
+
+17
+00:02:13,596 --> 00:02:20,596
+You could build this in a module. I have, just for the sake of demonstration, all in one scripts.
+
+18
+00:02:20,596 --> 00:02:29,596
+So if I run that, that loads function, adds all that type information, and let's see if this will work now.
+
+19
+00:02:29,596 --> 00:02:50,596
+Gets. So the default should be for the local computer name, you can do ComputerName.
+
+20
+00:02:50,596 --> 00:03:14,596
+Nope, (Typing) nope, core01, not 0 that's why. And if I were to just show you, if I pipe that to Get-Member,
+
+21
+00:03:14,596 --> 00:03:20,596
+you'll see that it's my custom type that added all that information.
+
+22
+00:03:20,596 --> 00:03:27,596
+I could create CIM sessions and pipe them to Get-CimOS, so I wrote it in basically to mimic
+
+23
+00:03:27,596 --> 00:03:33,596
+Get-CimInstance, but returns the variation I want, so I have a tool that I can give the help desk.
+
+24
+00:03:33,596 --> 00:03:42,596
+Oh, if you need to find an operating system about the computer, run this command, give the computer name, you're done.
+
+25
+00:03:42,596 --> 00:03:55,596
+So Get-CimInstance was kind of useful. And I also have oh this version, I also created a version that is a wrapper.
+
+26
+00:03:55,596 --> 00:04:01,596
+There's really, and it does the same thing, there's really
+
+27
+00:04:01,596 --> 00:04:08,596
+no benefit that I can tell one way or the other, at least in this particular case.
+
+28
+00:04:08,596 --> 00:04:12,596
+Only that one might be easier to understand or troubleshoot if you're looking at code or
+
+29
+00:04:12,596 --> 00:04:22,596
+kind of new to PowerShell. And I'm also going to share with you because I'm feeling like that kind of guy
+
+30
+00:04:22,596 --> 00:59:59,999
+and we have the time,
+

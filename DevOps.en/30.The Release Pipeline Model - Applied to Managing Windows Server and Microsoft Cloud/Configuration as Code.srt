@@ -1,0 +1,168 @@
+1
+00:00:00,0 --> 00:00:04,844
+I'm really excited to get that out and not have to think about it anymore.
+
+2
+00:00:04,844 --> 00:00:12,844
+I'll leave that up if anybody else wants pictures, but it's just aka.ms/thereleasepipelinemodel.
+
+3
+00:00:12,844 --> 00:00:20,844
+So this slide, I really put in for future presentations. We actually are going to make these slides public
+
+4
+00:00:20,844 --> 00:00:28,844
+and then continue iterating on them so that anyone from any organization can use them because I feel like I
+
+5
+00:00:28,844 --> 00:00:33,844
+need to weaponize everybody here to go back to your organization and be able to have this conversation.
+
+6
+00:00:33,844 --> 00:00:37,844
+So I want to make sure that this slide contains the information to do that.
+
+7
+00:00:37,844 --> 00:00:43,844
+So you probably are all familiar with configuration as code when I say that I'm talking about things like DSC.
+
+8
+00:00:43,844 --> 00:00:48,844
+The way that I talk about that with people who are new to the idea is that if you've been managing Windows Servers
+
+9
+00:00:48,844 --> 00:00:54,844
+or anything in IT, there's lots and lots and lots of APIs. So the way that you work with Active Directory is
+
+10
+00:00:54,844 --> 00:01:00,844
+different than the way that you work with WMI and the registry and the file system and DNS and then you've
+
+11
+00:01:00,844 --> 00:01:04,844
+got third-party software, you've got hardware devices and they're all different.
+
+12
+00:01:04,844 --> 00:01:11,844
+So the idea of configuration as code in the most simple concept is that I'm going to bring everything back to
+
+13
+00:01:11,844 --> 00:01:18,844
+just property value. And what's happening under the hood is all being performed by scripts written by people
+
+14
+00:01:18,844 --> 00:01:22,844
+with subject matter expertise. They are trusted and have given me good tools.
+
+15
+00:01:22,844 --> 00:01:28,844
+But at the end of the day, that file becomes my living documentation of how stuff is built.
+
+16
+00:01:28,844 --> 00:01:36,844
+So we all hate documentation, but whenever your documentation is functional, then it takes on a very different role.
+
+17
+00:01:36,844 --> 00:01:39,844
+It's something that I had to create in order to get things where I wanted them
+
+18
+00:01:39,844 --> 00:01:45,844
+and now I don't have to go write the paper with the tables that explains how the server was built.
+
+19
+00:01:45,844 --> 00:01:50,844
+So you're all familiar with DSC. I will mention that if you didn't go to other sessions that relate to this
+
+20
+00:01:50,844 --> 00:01:54,844
+Azure Resource Manager, I also look at that as configuration as code.
+
+21
+00:01:54,844 --> 00:01:59,844
+In fact, most of the examples I'm going to go through today are Azure Resource Manager deployment templates,
+
+22
+00:01:59,844 --> 00:02:03,844
+but this same model, and we'll discuss this more at the end, can apply to lots and lots of things.
+
+23
+00:02:03,844 --> 00:02:10,844
+So any time that you see an opportunity to configure something as code and put it through a release pipeline,
+
+24
+00:02:10,844 --> 00:02:14,844
+look at that as an opportunity, do an investigation, is this a way that I can make this work better.
+
+25
+00:02:14,844 --> 00:02:18,844
+And the very last bullet, I'll just let you take ownership of the last bullet.
+
+26
+00:02:18,844 --> 00:02:26,844
+Yeah, so there's a lot of great tooling that's being implemented in the DSC space and the ARM space, but at the
+
+27
+00:02:26,844 --> 00:02:35,844
+end of the day, none of that makes you a subject matter expert in the things that you have to operate, so
+
+28
+00:02:35,844 --> 00:02:42,844
+I can learn Chef, I can learn DSC, I can learn ARM, that lets me spin up a whole lot of things, but I still
+
+29
+00:02:42,844 --> 00:02:46,844
+need to know how to operate them, I still need to know what the settings mean, what the things are.
+
+30
+00:02:46,844 --> 00:02:53,844
+So nothing in this is going to replace knowledge about how these systems work.
+
+31
+00:02:53,844 --> 00:03:00,844
+If you have in-depth Active Directory experience and knowledge, that is a major plus moving into these things.
+
+32
+00:03:00,844 --> 00:03:06,844
+Even though we might not be clicking around in some of the familiar UIs, being able to deploy a resilient
+
+33
+00:03:06,844 --> 00:03:13,844
+Active Directory infrastructure as configuration as code is going to lean heavily on your experience.
+
+34
+00:03:13,844 --> 00:03:19,844
+Being able to understand how Windows services behave, especially in like Cross-platform environments.
+
+35
+00:03:19,844 --> 00:03:24,844
+You've got Linux guys come over and say hey I want to run this thing as a service.
+
+36
+00:03:24,844 --> 00:03:28,844
+No you don't. That might be what you wanted to do on Linux, but really you want to get this thing in Task
+
+37
+00:03:28,844 --> 00:03:36,844
+Scheduler or you need to create a new service that knows how to register itself and do some things.
+
+38
+00:03:36,844 --> 00:03:43,844
+You still need to have that platform knowledge, so none is that is being obviated by the configuration as
+
+39
+00:03:43,844 --> 00:03:47,844
+code space, though it may seem like it because it's kind of a simplified interface.
+
+40
+00:03:47,844 --> 00:03:54,844
+It's key value and whether it's ARM, whether it's DSC, whether it's Chef, it's oh I declare a resource and
+
+41
+00:03:54,844 --> 00:03:56,844
+then give it some properties.
+
+42
+00:03:56,844 --> 00:59:59,999
+But yeah nothing will really kind of step---
+

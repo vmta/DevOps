@@ -1,0 +1,384 @@
+1
+00:00:00,0 --> 00:00:05,317
+So here's the little module that I created. There is no code in here.
+
+2
+00:00:05,317 --> 00:00:12,317
+This is empty. This is the one that I created from my help file and here is my first test for it.
+
+3
+00:00:12,317 --> 00:00:19,317
+I'm going to go all the way up here. The rest of this talk is going to be looking at code, so I should
+
+4
+00:00:19,317 --> 00:00:26,317
+probably watch the time. Come on, June. Okay. So let me show you what one of these things looks like.
+
+5
+00:00:26,317 --> 00:00:35,317
+Pester, very reasonably, cannot handle multiple versions of your test module in the session at the same time.
+
+6
+00:00:35,317 --> 00:00:42,317
+So when you're running, you can use Pester for version 2.0 and later, but when you're running on PowerShell 5,
+
+7
+00:00:42,317 --> 00:00:49,317
+this is absolutely critical. And even if you are not running on PowerShell 5, you're users might be, right.
+
+8
+00:00:49,317 --> 00:00:57,317
+So you need to get and remove the module, any, all versions of the modules from the session, so that's the first line.
+
+9
+00:00:57,317 --> 00:01:03,317
+And then the second line is to import the version of the module that you actually want to use and to do this
+
+10
+00:01:03,317 --> 00:01:09,317
+I always use the required version parameter. Your experience may vary.
+
+11
+00:01:09,317 --> 00:01:15,317
+Other people might want to do this in a different way. And then I, because Import-Module returns a
+
+12
+00:01:15,317 --> 00:01:22,317
+non-terminating error, I use ErrorAction Stop because if it can't find my module, I don't want it to run the test.
+
+13
+00:01:22,317 --> 00:01:34,317
+Make sense? Okay. And if you are developing outside of PSModulePath, the alternative to all of this Get-Module
+
+14
+00:01:34,317 --> 00:01:40,317
+and Import-Module is to use Import-Module with a full-qualified path to the module manifest.
+
+15
+00:01:40,317 --> 00:01:48,317
+Right, that works too. But again, I use ErrorAction Stop just to make sure that, and your tests, test this.
+
+16
+00:01:48,317 --> 00:01:54,317
+Your test will run and you don't even have your module or the version of your module that you want.
+
+17
+00:01:54,317 --> 00:02:03,317
+Import-Module imports the first version of the module that it encounters, which is usually the first path in
+
+18
+00:02:03,317 --> 00:02:08,317
+PSModulePath, right, it's a discoverability issue. I do a whole talk about this.
+
+19
+00:02:08,317 --> 00:02:21,317
+Okay. Here's my InModuleScope. Let's get rid of this. Here's my InModuleScope keyword and it has the name
+
+20
+00:02:21,317 --> 00:02:30,317
+of my module. Okay. Structure make sense? Cool. So the first thing I did, actually that's a lie,
+
+21
+00:02:30,317 --> 00:02:41,317
+the first thing I did was to try to put all of this setup in my It blocks and that was just a total mess.
+
+22
+00:02:41,317 --> 00:02:49,317
+So if you have setup to do, you've heard that tests are arrange, assert, and act, right.
+
+23
+00:02:49,317 --> 00:02:56,317
+I do the arrange in a big function. Okay. And so basically what I'm doing here is I'm setting up the
+
+24
+00:02:56,317 --> 00:03:04,317
+TestDrive and I'm setting up fake profiles in the TestDrive. And so here are fake profiles paths.
+
+25
+00:03:04,317 --> 00:03:11,317
+You can see that there's no $ before PSHome because I'm fooling around in a TestDrive.
+
+26
+00:03:11,317 --> 00:03:19,317
+I provided a way for me to grab groups of those files that I needed for testing and at its heart, I take this
+
+27
+00:03:19,317 --> 00:03:32,317
+TestDrive path, I append one of those phony profile paths, and do a New-Item command on that TestDrive,
+
+28
+00:03:32,317 --> 00:03:40,317
+again with ErrorAction Stop. Make sense? So that's what I'm doing and it's much easier to do that in a
+
+29
+00:03:40,317 --> 00:03:49,317
+single function than to try to do that in my It blocks. So I'm going to go back to my help file for a second
+
+30
+00:03:49,317 --> 00:03:58,317
+to the Get-Profile cmdlet that gets profiles and I'm actually going example by example.
+
+31
+00:03:58,317 --> 00:04:04,317
+Okay. So my first example gets all profiles. It's pretty simple.
+
+32
+00:04:04,317 --> 00:04:11,317
+So here are my tests for it and you can see that I even used the example name so that I can associate each
+
+33
+00:04:11,317 --> 00:04:20,317
+example with my help file. It just gives me some guidance so that I know which sorts of tests to write.
+
+34
+00:04:20,317 --> 00:04:27,317
+So here's my Describe block and I usually use the name of the command that I'm testing in the Describe block.
+
+35
+00:04:27,317 --> 00:04:38,317
+That's just a style thing. Okay. Here's my Context block. And this is the little internal function that I
+
+36
+00:04:38,317 --> 00:04:46,317
+just showed you that I'm running. I want to test all profiles, so I test All and it returns a string because
+
+37
+00:04:46,317 --> 00:04:48,317
+I need to compare strings.
+
+38
+00:04:48,317 --> 00:04:56,317
+One of my experiences was that my tests were breaking because my types did not match.
+
+39
+00:04:56,317 --> 00:05:05,317
+Right. I would say this input is a file info object and I expect it to be this string.
+
+40
+00:05:05,317 --> 00:05:12,317
+Well it fails, right, or vice versa, right. I'm giving you a string, I expect it to be this file info object.
+
+41
+00:05:12,317 --> 00:05:20,317
+And one of the ways that I was able to get around constantly making these errors were to make the output type
+
+42
+00:05:20,317 --> 00:05:25,317
+on the functions that I'm testing explicit by using the output type attribute
+
+43
+00:05:25,317 --> 00:05:32,317
+so that I always know what the output type is. So in this case, I needed a string.
+
+44
+00:05:32,317 --> 00:05:39,317
+So I'm testing Get-Profile and I'm mocking a helper function that does not exist at this point.
+
+45
+00:05:39,317 --> 00:05:47,317
+I have no code. That file is empty, but I realize that if I want to mock the paths, I need to have a helper
+
+46
+00:05:47,317 --> 00:05:53,317
+function or something that provides those paths to the function that I'm testing.
+
+47
+00:05:53,317 --> 00:05:59,317
+Okay. So normally, when I test, I end up with more helper functions than I normally would if I wrote the code
+
+48
+00:05:59,317 --> 00:06:06,317
+without using the test-driven development process, okay, but it makes the code very modular.
+
+49
+00:06:06,317 --> 00:06:11,317
+It's actually very nice. So I'm mocking something that doesn't exist.
+
+50
+00:06:11,317 --> 00:06:22,317
+Here's my Get-Profile call. And so the first part of it gets all profiles and the second part gets only profiles.
+
+51
+00:06:22,317 --> 00:06:31,317
+Okay. And this is a pattern that I use a lot. I'm creating some fake stuff that's similar to those.
+
+52
+00:06:31,317 --> 00:06:38,317
+I'm trying to make it hard for myself, and I make sure that they're not there by doing some counting.
+
+53
+00:06:38,317 --> 00:06:45,317
+Okay and when I run this, I'm just going to run it in the console here, it will fail because I have no code.
+
+54
+00:06:45,317 --> 00:06:54,317
+Okay. Yeah. It looks like your test may be requiring something that you're not wanting, that you're not specifying.
+
+55
+00:06:54,317 --> 00:06:58,317
+You're required by this particular sorted order. Right, I sorted them.
+
+56
+00:06:58,317 --> 00:07:03,317
+Okay. Yeah, they're sorted. See the Sort-Object on Get-Profile?
+
+57
+00:07:03,317 --> 00:07:12,317
+Okay. Yeah. Yeah, good point. Thanks. Okay. So this failed because there was no code.
+
+58
+00:07:12,317 --> 00:07:18,317
+So I'm going to close this and grab the next version. The test file is virtually the same.
+
+59
+00:07:18,317 --> 00:07:25,317
+I'm going to put it over here. It helps me to have my code and test side by side.
+
+60
+00:07:25,317 --> 00:07:39,317
+Okay and here is my little Get-ProfilePath helper function and only the code that I needed in Get-Profile to
+
+61
+00:07:39,317 --> 00:07:45,317
+pass that test, which was a call to the Get-ProfilePath helper function and a Get item.
+
+62
+00:07:45,317 --> 00:07:53,317
+Okay. So this time when I go back and run that test, it passes.
+
+63
+00:07:53,317 --> 00:08:02,317
+Can you see that? I'm going to do that again. I'm going to restart the shell and run it again.
+
+64
+00:08:02,317 --> 00:08:09,317
+Okay, so that's basically the process. I take my examples, I convert them into tests, I run the test,
+
+65
+00:08:09,317 --> 00:08:21,317
+the test fails, I write the code. So let me show you what happens after a little while when it gets a little more complicated.
+
+66
+00:08:21,317 --> 00:08:30,317
+So here's my test code for the Disable-Profile cmdlet. Let's take a look at the examples for just a sec.
+
+67
+00:08:30,317 --> 00:08:36,317
+Okay. My first example gets the CurrentUser CurrentHost profile.
+
+68
+00:08:36,317 --> 00:08:46,317
+That's really easy because it's not in the System32 directory. My second example is the tougher one and this
+
+69
+00:08:46,317 --> 00:08:52,317
+is a decision, this is a design decision that I needed to make when I wrote my spec or my help file.
+
+70
+00:08:52,317 --> 00:09:00,317
+What do I do if there's something that I want to disable that I can't disable because it's in system32, right.
+
+71
+00:09:00,317 --> 00:09:06,317
+And so the design decision that I made was that it should disable what it can and write a non-terminating
+
+72
+00:09:06,317 --> 00:09:18,317
+error if it can and this is the example that shows that. Okay and you'll see the test that show it as well.
+
+73
+00:09:18,317 --> 00:09:26,317
+And then the last one just shows that if you have no profiles, there's no output and no errors.
+
+74
+00:09:26,317 --> 00:09:36,317
+And here are the tests that I wrote. You'll get all this code, but here are the tests that I wrote to test that.
+
+75
+00:09:36,317 --> 00:09:42,317
+This is the ones for Get-Profile. Let's close this. And here they are for Disable-Profile.
+
+76
+00:09:42,317 --> 00:09:51,317
+Okay. Notice that when I'm testing Disable-Profile, I'm mocking Get-Profile, okay.
+
+77
+00:09:51,317 --> 00:09:59,317
+Disable-Profile is going to call Get-Profile to get the profiles to disable and I never want a problem in
+
+78
+00:09:59,317 --> 00:10:09,317
+Get-Profile to make my test for Disable-Profile fail. Okay. So I always want to mock any cmdlet that's in
+
+79
+00:10:09,317 --> 00:10:23,317
+my module, okay. So the first one disables all the user profiles and then the second one turns out to be quite tricky.
+
+80
+00:10:23,317 --> 00:10:31,317
+Okay. So in the first case, I have multiple contexts for this because I'm using multiple mocks, but the first
+
+81
+00:10:31,317 --> 00:10:42,317
+test I tested with system32 profiles in a non-admin session and you'll see that I ran Disable-Profile,
+
+82
+00:10:42,317 --> 00:10:49,317
+I converted my non-terminating error to a terminating error with ErrorAction Stop and I used the Should Throw
+
+83
+00:10:49,317 --> 00:10:57,317
+operator to test it because it should generate an error. Now in the modular when I run it, it's a non-terminating
+
+84
+00:10:57,317 --> 00:11:02,317
+error, but here, in order to use Should Throw, I just made it a terminating error.
+
+85
+00:11:02,317 --> 00:11:10,317
+Okay? Good trick. Okay, then I tested the same system32 profiles in an admin session.
+
+86
+00:11:10,317 --> 00:11:20,317
+It should not throw and it should disable them. And then in the third case, I used all profiles in a non-admin
+
+87
+00:11:20,317 --> 00:11:28,317
+session and you'll see that some of them should error out and some of them should actually be disabled.
+
+88
+00:11:28,317 --> 00:11:37,317
+And here's that last test case where it's no profile, so I'm mocking Get-Profile with null, and when I run
+
+89
+00:11:37,317 --> 00:11:45,317
+Disable-Profile, my output should be null or empty and it doesn't write an error, even if I use ErrorAction Stop,
+
+90
+00:11:45,317 --> 00:11:54,317
+it should not throw. And I'll run this and I promise you that it works, unless it's a demo.
+
+91
+00:11:54,317 --> 00:11:59,317
+Okay. Any questions about the structure or content
+
+92
+00:11:59,317 --> 00:12:06,317
+of these tests? Yeah. So you probably should not throw. Is that applied in the throw when and you hadn't
+
+93
+00:12:06,317 --> 00:12:13,317
+sent that and it totally passed. Uh-huh. Well, so I would see the non-terminating errors, but unless I
+
+94
+00:12:13,317 --> 00:12:19,317
+was watching the test run I wouldn't see it, right, because it's going to go to the error stream instead of
+
+95
+00:12:19,317 --> 00:12:28,317
+the output stream. Right, so if I'm taking my test results and saving them somewhere in a file, I would miss that.
+
+96
+00:12:28,317 --> 00:59:59,999
+Questions? Other questions? How are we doing on time? Pretty good.
+

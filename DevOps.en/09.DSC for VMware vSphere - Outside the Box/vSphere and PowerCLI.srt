@@ -1,0 +1,520 @@
+1
+00:00:00,549 --> 00:00:07,549
+Okay, first of all, okay, I saw that most of you are aware of vSphere and VMware.
+
+2
+00:00:07,549 --> 00:00:14,549
+Just a bit of history on one slide, nothing more than that. PowerCLI was something that they started in 2007.
+
+3
+00:00:14,549 --> 00:00:21,549
+I was very lucky to get on the early beta. At that time, I think they had about 60 cmdlets, in the meantime,
+
+4
+00:00:21,549 --> 00:00:30,549
+the last one that appeared to have over 600 cmdlets. One of my pet peeves is they still have three snap-ins in there.
+
+5
+00:00:30,549 --> 00:00:33,549
+All the rest is converted to modules.
+
+6
+00:00:33,549 --> 00:00:38,549
+And Alan Renouf's excuse, Alan has nothing to do with the remaining snap-ins.
+
+7
+00:00:38,549 --> 00:00:48,549
+That's above his authority, but it will come. They will go module all the way once I don't know when and I'm
+
+8
+00:00:48,549 --> 00:00:53,549
+not working for VMware, so I have no clue about road maps and so on.
+
+9
+00:00:53,549 --> 00:00:59,549
+One thing that is quite important and I was very happy that this thing was in there from the first release
+
+10
+00:00:59,549 --> 00:01:01,549
+that's this Get-View cmdlet.
+
+11
+00:01:01,549 --> 00:01:06,549
+Now Get-View cmdlet, most of you will know it because it is the one that if you're working in larger
+
+12
+00:01:06,549 --> 00:01:14,549
+environments and I mean thousands of VMs and hundreds of hypervisors, you're well off starting to use the
+
+13
+00:01:14,549 --> 00:01:21,549
+Get-View because it performs a lot better than the native to the standard cmdlets Get-VM and Get-VMHosts.
+
+14
+00:01:21,549 --> 00:01:28,549
+But Get-View has another advantage. It allows you to interface or interact with the complete API that
+
+15
+00:01:28,549 --> 00:01:35,549
+vSphere offers you. So that is the one that allows you to go directly to the objects and the API methods
+
+16
+00:01:35,549 --> 00:01:37,549
+that are available under the covers.
+
+17
+00:01:37,549 --> 00:01:44,549
+What PowerCLI is doing, it's doing exactly the same thing. It's packaging these API calls in cmdlets for your
+
+18
+00:01:44,549 --> 00:01:48,549
+easy use and it makes a selection of the properties that it returns to you.
+
+19
+00:01:48,549 --> 00:01:55,549
+There's a lot more available under the cover, but PowerCLI and the development team are trying to do there is
+
+20
+00:01:55,549 --> 00:02:02,549
+this 80/20% they try to cover 80% of your needs by implementing about, yeah what it is it, 20% of the methods
+
+21
+00:02:02,549 --> 00:02:07,549
+in the API, and I think they did a quite good job, okay. There's 600 cmdlets.
+
+22
+00:02:07,549 --> 00:02:12,549
+I think most of the stuff that you do on a day to day basis can be done with the cmdlets, but for this
+
+23
+00:02:12,549 --> 00:02:17,549
+specific environment that we are tackling, or I was tackling the DSC part,
+
+24
+00:02:17,549 --> 00:02:28,549
+I quite soon realized that I had to go to a direct API calls, and hence, the Get-View cmdlet preference.
+
+25
+00:02:28,549 --> 00:02:36,549
+Now to give you just a small example, what you can do with Get-View, if I hope it is a bit readable because I
+
+26
+00:02:36,549 --> 00:02:42,549
+tried to minimize my code and make it large enough. The first screen shot, what you see there is that we
+
+27
+00:02:42,549 --> 00:02:49,549
+extract information for one specific ESXi node and one of the properties that it returns in this case is the
+
+28
+00:02:49,549 --> 00:02:52,549
+number of CPU's in that VM Host.
+
+29
+00:02:52,549 --> 00:03:01,549
+Now with that information, you don't know if it is at one circuit with four cores or four circuits each with one core.
+
+30
+00:03:01,549 --> 00:03:06,549
+But that information is available. It's just not presented through the PowerCLI cmdlet.
+
+31
+00:03:06,549 --> 00:03:10,549
+Now if you get to the API, that's what the second screenshot is doing.
+
+32
+00:03:10,549 --> 00:03:15,549
+It's just a calculated property where we go into the API properties.
+
+33
+00:03:15,549 --> 00:03:22,549
+You can get that information and that's how we know. Okay, this is from a demo environment I was using.
+
+34
+00:03:22,549 --> 00:03:30,549
+It's a four circuit, one core box that you see there, so that kind of information, that extra information you
+
+35
+00:03:30,549 --> 00:03:38,549
+will find by using Get-View and diving deep into the APIs and the properties that it presents.
+
+36
+00:03:38,549 --> 00:03:39,549
+So Get-View is important
+
+37
+00:03:39,549 --> 00:03:46,549
+for many reasons. Another thing, a high level view, I didn't know there were so many VMware users in this
+
+38
+00:03:46,549 --> 00:03:55,549
+audience, but still I will talk briefly about the thing. This is a very high level abstraction of your vSphere environment.
+
+39
+00:03:55,549 --> 00:04:03,549
+The top item on the right, that is the famous PowerCLI icon, and what that does is that uses PowerShell, and
+
+40
+00:04:03,549 --> 00:04:08,549
+through PowerShell, it addresses this API. That's the box that I called VI API.
+
+41
+00:04:08,549 --> 00:04:15,549
+Underneath you have all your vSphere servers. Now one thing that you should remember, the vSphere server can
+
+42
+00:04:15,549 --> 00:04:23,549
+be all vCenter or that bare hypervisor your ESXi node. Both are called a vSphere server and for both you can
+
+43
+00:04:23,549 --> 00:04:33,549
+use the same APIs. That is a big advantage. So you can connect to different environments with the same API
+
+44
+00:04:33,549 --> 00:04:38,549
+methods and find back most of the time all of the same properties.
+
+45
+00:04:38,549 --> 00:04:44,549
+Once you're there, okay, your vCenter and your ESXi nodes they talk with the vKernel, that's where your
+
+46
+00:04:44,549 --> 00:04:53,549
+virtualized hardware is translated into physical hardware and your VMs are running also underneath all these vCenter servers.
+
+47
+00:04:53,549 --> 00:05:00,549
+Just a bit of background. It's important to know what we are talking to and who we are talking with,
+
+48
+00:05:00,549 --> 00:05:03,549
+so it's this VI API.
+
+49
+00:05:03,549 --> 00:05:11,549
+Now why would I consider even looking at Desired State Configuration for my vSphere environment?
+
+50
+00:05:11,549 --> 00:05:18,549
+I put a number of arguments out on that slide. First of all, vSphere is a very complex environment.
+
+51
+00:05:18,549 --> 00:05:23,549
+If you would just look at classic configuration. Classic configuration, you have multiple components,
+
+52
+00:05:23,549 --> 00:05:31,549
+you have high availability DRS, DPM, and so on. Each of these in ten has a lot of parameters that you can
+
+53
+00:05:31,549 --> 00:05:38,549
+configure to control that specific component. So it's a very complex environment and then we fall back into
+
+54
+00:05:38,549 --> 00:05:45,549
+same argumentation why DSC in general is there. It's to monitor these kinds of environments and to correct
+
+55
+00:05:45,549 --> 00:05:47,549
+autocorrect the drift that you would have
+
+56
+00:05:47,549 --> 00:05:51,549
+on such an environment. Somebody makes a mistake, everybody can make a mistake.
+
+57
+00:05:51,549 --> 00:05:56,549
+It's your junior or your senior administrator, they all can make mistakes.
+
+58
+00:05:56,549 --> 00:06:05,549
+So that thing would solve the problem of changes and building changes to your environment.
+
+59
+00:06:05,549 --> 00:06:12,549
+And then the next realization is if you look at DSC, DSC was introduced in 4 already, but it really expanded
+
+60
+00:06:12,549 --> 00:06:17,549
+availability and the possibilities in 5, so PowerShell is there.
+
+61
+00:06:17,549 --> 00:06:24,549
+On top of PowerShell, we have PowerCLI. So everything that we require to start using DSC in vSphere,
+
+62
+00:06:24,549 --> 00:06:26,549
+the toolset is there.
+
+63
+00:06:26,549 --> 00:06:33,549
+So that is already one big step in the good direction. And for me personally, and I think a lot of other people,
+
+64
+00:06:33,549 --> 00:06:39,549
+What is quite important with the DSC, you end up with this configuration files and these configuration files
+
+65
+00:06:39,549 --> 00:06:41,549
+are nothing more than flat text files, which
+
+66
+00:06:41,549 --> 00:06:48,549
+you can put under source control. So you can align your vSphere environment on a specific version,
+
+67
+00:06:48,549 --> 00:06:53,549
+put that under source control GitHub bit bucket, whatever you want.
+
+68
+00:06:53,549 --> 00:06:57,549
+We even use ClearCase for those who still remember what that is.
+
+69
+00:06:57,549 --> 00:07:03,549
+But you can do it and you can see changes between different implementations of your configuration.
+
+70
+00:07:03,549 --> 00:07:06,549
+So that was for me one of the bigger
+
+71
+00:07:06,549 --> 00:07:14,549
+arguments to go for DSC controlled vSphere environment.
+
+72
+00:07:14,549 --> 00:07:23,549
+Okay. The problem is we mentioned those vSphere servers. It could be a vCenter, it could be an ESXi node.
+
+73
+00:07:23,549 --> 00:07:28,549
+VCenter, the early implementation was quite easy that was hosted on the Windows box, but not anymore.
+
+74
+00:07:28,549 --> 00:07:33,549
+You now have the choice to go for an appliance, the VCSA is a Linux box.
+
+75
+00:07:33,549 --> 00:07:39,549
+Secondly, the ESXi node itself is a closed box. You're not supposed to put stuff on there anymore.
+
+76
+00:07:39,549 --> 00:07:44,549
+It's for security reasons, but also for support reasons by VMware.
+
+77
+00:07:44,549 --> 00:07:49,549
+So how would we fix that? We need ultimately we need an LCM agent somewhere.
+
+78
+00:07:49,549 --> 00:07:57,549
+So my idea was to put a box in between and that is what I call this vEngine, short vEng.
+
+79
+00:07:57,549 --> 00:08:06,549
+What we do there is we install PowerCLI on there and we install the DSC agent on there and that is the one that
+
+80
+00:08:06,549 --> 00:08:11,549
+will register itself with the pull server or push server, whatever you want to use in your environment.
+
+81
+00:08:11,549 --> 00:08:18,549
+That is the client for your DSC configuration and that one will be using PowerCLI, hence the icon at the bottom
+
+82
+00:08:18,549 --> 00:08:22,549
+there, to talk with your vCenter, vSphere servers.
+
+83
+00:08:22,549 --> 00:08:28,549
+So you avoid that you have to put anything on the boxes in your vSphere environment.
+
+84
+00:08:28,549 --> 00:08:36,549
+That's the first principle that I started off. So from there out,
+
+85
+00:08:36,549 --> 00:08:44,549
+okay, I recap here quickly the argumentation that most of this already was mentioned.
+
+86
+00:08:44,549 --> 00:08:52,549
+A standalone box rarely use PowerCLI to talk to the VI API, the lifecycle transparency.
+
+87
+00:08:52,549 --> 00:08:59,549
+If you update your vSphere versions, could be vCenter, ESXi, that's transparent from what you do on this
+
+88
+00:08:59,549 --> 00:09:10,549
+vEngine that is independent because ultimately, about the only thing that you have between those two is your DSC configuration.
+
+89
+00:09:10,549 --> 00:09:14,549
+What you and that is something that I try to implement from the beginning, but I had some setbacks,
+
+90
+00:09:14,549 --> 00:09:18,549
+but it's still on my planning. Most of you
+
+91
+00:09:18,549 --> 00:09:25,549
+have probably experienced if you run a PowerCLI script, the first cmdlet that you execute, it takes more time
+
+92
+00:09:25,549 --> 00:09:32,549
+than the second one consecutive cmdlet. That hasn't proved in the latest version, but the reason for that
+
+93
+00:09:32,549 --> 00:09:33,549
+thing is
+
+94
+00:09:33,549 --> 00:09:39,549
+this just-in-time compiler that they use. So there are options where you precompile and you do your engines
+
+95
+00:09:39,549 --> 00:09:47,549
+before you actually start using PowerCLI. And my idea was, PowerShell has an older, big thing that was
+
+96
+00:09:47,549 --> 00:09:53,549
+introduced in 4, if I'm not mistaken, disconnected sessions. What you can do is you can set up a session,
+
+97
+00:09:53,549 --> 00:10:01,549
+a remote session to your local host, in that session, you load your PowerCLI environment, you do the
+
+98
+00:10:01,549 --> 00:10:08,549
+connection to your vSphere server whatever be it an ESXi or a vCenter, and then when you're done,
+
+99
+00:10:08,549 --> 00:10:13,549
+your environment is set up, you could even start a dummy first cmdlet.
+
+100
+00:10:13,549 --> 00:10:15,549
+When that is done, you disconnect the session.
+
+101
+00:10:15,549 --> 00:10:21,549
+Now once your LCM receives the first configuration, it starts, it has to start doing stuff.
+
+102
+00:10:21,549 --> 00:10:28,549
+He has to start executing cmdlets. Now at that point, he just connects to that disconnected session and
+
+103
+00:10:28,549 --> 00:10:33,549
+everything would be already there. You would have your PowerCLI loaded, you would have your connection
+
+104
+00:10:33,549 --> 00:10:39,549
+through your vCenter or vSphere server already present, so you would avoid this over it.
+
+105
+00:10:39,549 --> 00:10:46,549
+Now I had it implemented, I even have a separate module to manage and control such disconnected sessions.
+
+106
+00:10:46,549 --> 00:10:53,549
+Unfortunately, we hit the problem where the first call it works perfectly, the first conflict that you arrive,
+
+107
+00:10:53,549 --> 00:11:00,549
+second conflict is a WMI editor popping up. I'm talking with some Microsoft guys here tomorrow, I think,
+
+108
+00:11:00,549 --> 00:11:09,549
+to look further into that problem, but it's still on my planning.
+
+109
+00:11:09,549 --> 00:11:17,549
+Okay. With PowerShell 5 and the DSC options in there and having lived through all the different previews
+
+110
+00:11:17,549 --> 00:11:26,549
+that we have until we arrived at RTM, I had a few targets that the DSC resources should apply.
+
+111
+00:11:26,549 --> 00:11:29,549
+First of all, it should be class-based. Last year at
+
+112
+00:11:29,549 --> 00:11:36,549
+VMworld in August, I already presented some DSC resources, but they were all skid-based, and first of all,
+
+113
+00:11:36,549 --> 00:11:42,549
+they are slower, and secondly, they still require the handling of this MOF file, which you would divide,
+
+114
+00:11:42,549 --> 00:11:48,549
+so we decided or I decided to go for a class base that was the first thing.
+
+115
+00:11:48,549 --> 00:11:54,549
+The second thing I wanted since there are a number of distinct resources in your VNC environment that you can
+
+116
+00:11:54,549 --> 00:12:01,549
+immediately recognize a datacenter, folders, clusters, and so on, I decided to have a resource module that
+
+117
+00:12:01,549 --> 00:12:06,549
+would be comprised of multiple files. Apparently, there is an issue with that as well.
+
+118
+00:12:06,549 --> 00:12:10,549
+At the moment, you can apparently for Java-based classes only use one file, the root module.
+
+119
+00:12:10,549 --> 00:12:16,549
+You can't use multiple files, multiple pairs and ones this apparently not available at the moment.
+
+120
+00:12:16,549 --> 00:12:24,549
+So I had to merge everything back into one big file. Not a big deal, but hard to maintain, in fact.
+
+121
+00:12:24,549 --> 00:12:30,549
+Then partial configurations was a target I set myself quite early, although, after yesterday and some
+
+122
+00:12:30,549 --> 00:12:34,549
+discussions I had in the corridor here,
+
+123
+00:12:34,549 --> 00:12:43,549
+there seems to be some doubt if that is still a valid concept to apply in your environment.
+
+124
+00:12:43,549 --> 00:12:47,549
+At the moment, I'm continuing with partial configurations.
+
+125
+00:12:47,549 --> 00:12:57,549
+I'm still not 100% convinced that it's always bad, so I think I'll stick with it until the opposite is proven.
+
+126
+00:12:57,549 --> 00:13:03,549
+But okay, I'm open for suggestions. And then the other concept that I wanted to apply, that's this famous
+
+127
+00:13:03,549 --> 00:13:10,549
+what-where separation. How you implement the cluster, that client, that part in your configuration files
+
+128
+00:13:10,549 --> 00:13:18,549
+should be standard filling in the actual values, the name of the cluster, what VMware, what ESXi node should
+
+129
+00:13:18,549 --> 00:13:25,549
+be in there that should be in a separate part, and that is the part that you could ultimately put under your resource control.
+
+130
+00:13:25,549 --> 00:59:59,999
+That is the part that will change between different runs of your DSC configuration.
+

@@ -1,0 +1,132 @@
+1
+00:00:00,0 --> 00:00:17,17
+For the PowerShell DSC, A Look under the Hood. My name is Mark Gray.
+
+2
+00:00:17,17 --> 00:00:26,26
+I'm a program manager on the PowerShell team. I've been working on DSC since the beginning essentially,
+
+3
+00:00:26,26 --> 00:00:32,32
+before you guys saw it, so I've been around for a while. I have with me here Travis Plunk.
+
+4
+00:00:32,32 --> 00:00:39,39
+I'm Travis. I'm a senior software engineer on DSC. I've been working from the beginning.
+
+5
+00:00:39,39 --> 00:00:45,45
+I've worked on the engine and the Azure DSC extension for DSC.
+
+6
+00:00:45,45 --> 00:00:51,51
+Alright, so what we're going to talk about today, the format of this first of all is going to be open,
+
+7
+00:00:51,51 --> 00:00:56,56
+you guys ask questions, it's going to be very interactive hopefully.
+
+8
+00:00:56,56 --> 00:01:00,60
+Push the button. Thank you.
+
+9
+00:01:00,60 --> 00:01:07,67
+Jason even came up beforehand and said make sure you push the button.
+
+10
+00:01:07,67 --> 00:01:13,73
+So it should be very interactive, ask questions, interrupt us, let us know.
+
+11
+00:01:13,73 --> 00:01:15,75
+We have four things that we are going to dig
+
+12
+00:01:15,75 --> 00:01:20,80
+into here and then we'll leave it open for questions, so anything you guys want to ask questions about from
+
+13
+00:01:20,80 --> 00:01:21,81
+a DSC
+
+14
+00:01:21,81 --> 00:01:26,86
+perspective, let us know and we'll dig in. If we can do demos with the questions, if not, we'll just answer
+
+15
+00:01:26,86 --> 00:01:34,94
+the questions or what have you. So we're going to talk about a lot of the new features in WMF5, so the encrypted MOF.
+
+16
+00:01:34,94 --> 00:01:39,99
+We're going to dig into what the purpose of those is, what the good things are, what the bad things are,
+
+17
+00:01:39,99 --> 00:01:43,103
+all that kind of stuff. We're going to dig into configuration reuse.
+
+18
+00:01:43,103 --> 00:01:48,108
+Nobody wants to write scripts of the same stuff over and over and over and over again.
+
+19
+00:01:48,108 --> 00:01:53,113
+So in DSC, there are a number of different ways to actually reuse configurations, so we'll kind of dig into
+
+20
+00:01:53,113 --> 00:01:57,117
+those, what the good parts of it is, what the bad parts, some are good for some things and others are good
+
+21
+00:01:57,117 --> 00:02:06,126
+for other things. And then configuration status. I, as Kevin pointed out earlier on, I came from the GP world,
+
+22
+00:02:06,126 --> 00:02:12,132
+so one of my big caveats or one of my big things that I have been pushing for since being on the DSC team was
+
+23
+00:02:12,132 --> 00:02:20,140
+we're not going to build a black box from the PowerShell or from the GP perspective.
+
+24
+00:02:20,140 --> 00:02:25,145
+You had policy and what happened with the policy? I don't know, let's build a tool to figure out what happened
+
+25
+00:02:25,145 --> 00:02:29,149
+with the policy. It's policy so it should have applied, right? You don't know that.
+
+26
+00:02:29,149 --> 00:02:36,156
+So configuration status gives you a good look into what DSC did, what the status of it is, and all that kind of stuff.
+
+27
+00:02:36,156 --> 00:02:43,163
+It's actually a rich set of information in MWF5. So in MWF4, we had some basic information there.
+
+28
+00:02:43,163 --> 00:02:48,168
+We've made that really robust, so it gives you a lot of information, and we'll show you how to dig into that
+
+29
+00:02:48,168 --> 00:02:52,172
+and see all that information. And the last bit is the pull server 2.
+
+30
+00:02:52,172 --> 00:02:59,179
+There have been a lot of sessions already. All day yesterday was on DSC and pull server and all that kind of stuff.
+
+31
+00:02:59,179 --> 00:03:06,186
+We'll touch on some stuff with that, especially as it kind of relates to Devops and things like that.
+
+32
+00:03:06,186 --> 00:03:12,192
+So we'll dig into that a little bit and some things there and then open it up for questions.
+
+33
+00:03:12,192 --> 00:59:59,999
+With that I will hand it over to Travis to talk to you about the Encrypted MOFs.
+

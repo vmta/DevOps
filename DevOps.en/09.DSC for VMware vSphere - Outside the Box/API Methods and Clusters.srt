@@ -1,0 +1,220 @@
+1
+00:00:00,5 --> 00:00:07,838
+Another thing that I started using quite early is I dropped all use of the PowerCLI cmdlets and I think I
+
+2
+00:00:07,838 --> 00:00:13,838
+mentioned it earlier I went immediately for the API methods. Okay, API methods.
+
+3
+00:00:13,838 --> 00:00:18,838
+Who of you is using the Onyx WebClients or has heard of the Onyx WebClients?
+
+4
+00:00:18,838 --> 00:00:24,838
+So there's a feature where you can see all these API calls underneath the PowerCLI cmdlets.
+
+5
+00:00:24,838 --> 00:00:30,838
+It's a handy feature if you want to write some advanced functions and don't know what they are actually calling.
+
+6
+00:00:30,838 --> 00:00:35,838
+So that is the kind of stuff that you will see appearing if you start using this Onyx WebClient,
+
+7
+00:00:35,838 --> 00:00:43,838
+so you see over the deep down APIs and properties. In this case, what I'm doing here I'm just adding a
+
+8
+00:00:43,838 --> 00:00:51,838
+VMHost and ESXi node to, or standalone server, or one to a cluster, instead the if statement at the end.
+
+9
+00:00:51,838 --> 00:00:58,838
+So based on what leaf type was returned, if it's a cluster that was returned, we can use the AddHost method
+
+10
+00:00:58,838 --> 00:01:06,838
+if it's not a cluster by definition it a standalone server, then we need to use this other method with
+
+11
+00:01:06,838 --> 00:01:11,838
+somewhat different parameters.
+
+12
+00:01:11,838 --> 00:01:20,838
+So a lot of the resources that you will see when I make this public, all of them, in fact, are real API calls
+
+13
+00:01:20,838 --> 00:01:30,838
+and API objects that I'm using. And the reason I'm doing that is like I set this for speed, but also to have more features.
+
+14
+00:01:30,838 --> 00:01:34,838
+But the API methods, I can do everything. There's a lot, there's some stuff with them, but the cmdlets
+
+15
+00:01:34,838 --> 00:01:40,838
+that is not possible.
+
+16
+00:01:40,838 --> 00:01:46,838
+What I also used as a guideline and I think I mentioned an example earlier, if you look at the cluster in the
+
+17
+00:01:46,838 --> 00:01:53,838
+VMware environment, the cluster has multiple components. We have high availability, DRS, DPM.
+
+18
+00:01:53,838 --> 00:01:58,838
+All of these in turn have a lot of parameters that you can use to configure these components.
+
+19
+00:01:58,838 --> 00:01:59,838
+On the other hand,
+
+20
+00:01:59,838 --> 00:02:04,838
+if you got to the WebClient or the vSphere client, you can just right-click on the datacenter new cluster
+
+21
+00:02:04,838 --> 00:02:10,838
+and it doesn't ask you a lot of questions. It just asks you, do you want HA enabled, DRS enabled, DPM.
+
+22
+00:02:10,838 --> 00:02:13,838
+That's it. So what I decided quite early on
+
+23
+00:02:13,838 --> 00:02:20,838
+in writing these classes is I would go for the same approach. If you define a resource, a new cluster in
+
+24
+00:02:20,838 --> 00:02:26,838
+this case, no not in this case, but if you would define a new cluster, you would get all the defaults.
+
+25
+00:02:26,838 --> 00:02:33,838
+And a configuration of HA or DRS or DPM would be a separate resource, but the dependency on the cluster,
+
+26
+00:02:33,838 --> 00:02:40,838
+of course, but I would separate the complexity that way, so that's why I called this slide, keep it simple.
+
+27
+00:02:40,838 --> 00:02:41,838
+So I'd rather
+
+28
+00:02:41,838 --> 00:02:47,838
+work with all these different resources with dependencies in between them, than making one big resource with
+
+29
+00:02:47,838 --> 00:02:58,838
+tens or hundreds of parameters, which is quite complex to code and manage.
+
+30
+00:02:58,838 --> 00:03:07,838
+So where am I now? At the moment, I have a number of resources that are tested and available.
+
+31
+00:03:07,838 --> 00:03:13,838
+Those are the ones that I will publish when I'm back home from this event.
+
+32
+00:03:13,838 --> 00:03:20,838
+It's the standard stuff, folder, datacenter, we have cluster, we have VMHost in there, we have datastore in there.
+
+33
+00:03:20,838 --> 00:03:28,838
+There's one component missing that you would need if you want to actually start using it, meaning start creating
+
+34
+00:03:28,838 --> 00:03:34,838
+VMs as your network part. VSS standard switches is quite obvious.
+
+35
+00:03:34,838 --> 00:03:39,838
+This one is under the development. Distributed switches is a bit further away in the future, I'm afraid.
+
+36
+00:03:39,838 --> 00:03:48,838
+That is quite complex object, but it's on my to do list. So what I'm working on at the moment is the networking part.
+
+37
+00:03:48,838 --> 00:03:58,838
+Like I said, I will publish this quite shortly after I'm back and since the environment is quite complex,
+
+38
+00:03:58,838 --> 00:04:06,838
+I can't do that all by myself, so what I want to do is publish this, give you an idea how it can be done,
+
+39
+00:04:06,838 --> 00:04:13,838
+so there would, by definition, need to be a lot of community effort to make this complete, to be able to
+
+40
+00:04:13,838 --> 00:04:20,838
+configure your complete vSphere environment based on DSC resources in this case.
+
+41
+00:04:20,838 --> 00:04:24,838
+Like I said also in the beginning, I'm not going to show you a lot of code.
+
+42
+00:04:24,838 --> 00:04:30,838
+I have my ISE editor open. If some of you want to see some of the code or have specific questions, feel free
+
+43
+00:04:30,838 --> 00:04:37,838
+to come up after this session or anywhere in the next coming days, I'm happy to run through it and discuss
+
+44
+00:04:37,838 --> 00:04:48,838
+with you what even, even though I prefer to listen to your suggestions on how some of this stuff should be done.
+
+45
+00:04:48,838 --> 00:04:57,838
+Quick question here. If you have available vSphere DSC resources, how many would consider actually using that?
+
+46
+00:04:57,838 --> 00:05:03,838
+And is that no problem with your environment that they say this is external or we don't trust it.
+
+47
+00:05:03,838 --> 00:05:09,838
+Would you have to do a validation? Would you prefer or would you require passive built-in tests?
+
+48
+00:05:09,838 --> 00:05:15,838
+Yeah. If a structure testing. So something that made available if it comes with infrastructure testing
+
+49
+00:05:15,838 --> 00:05:21,838
+that would be more acceptable than just the resources. Yes. Okay, great.
+
+50
+00:05:21,838 --> 00:05:30,838
+So that's new point on my to do list then or anybody else who wants to volunteer for that part.
+
+51
+00:05:30,838 --> 00:05:37,838
+In fact, that's what I wanted to say in this presentation. There's another one on Wednesday where I will
+
+52
+00:05:37,838 --> 00:05:45,838
+start looking or when I will look at the reverse part because a lot of you will have existing vSphere environments.
+
+53
+00:05:45,838 --> 00:05:50,838
+Now how do you get from an existing vSphere environment to a configuration file?
+
+54
+00:05:50,838 --> 00:05:54,838
+That is the interesting part. You're not going to write, I'm not going to write them from scratch,
+
+55
+00:05:54,838 --> 00:59:59,999
+so that's for Wednesday. And in fact, this brings me to the end of my session for today.
+

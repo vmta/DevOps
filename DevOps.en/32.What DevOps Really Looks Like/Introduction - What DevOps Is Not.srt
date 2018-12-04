@@ -1,0 +1,112 @@
+1
+00:00:12,12 --> 00:00:24,5
+So low sodium, right, cloud, fat loss, right, there's all these marketing terms that get thrown around at us
+
+2
+00:00:24,5 --> 00:00:28,5
+all the time and it becomes really easy to become immune to them.
+
+3
+00:00:28,5 --> 00:00:35,5
+I mean, we're constantly having marketing stuff tossed at us. When cloud first kind of became a word in the
+
+4
+00:00:35,5 --> 00:00:43,5
+IT industry right when we ripped it off from the telecoms, it had a real concrete useful technical meaning
+
+5
+00:00:43,5 --> 00:00:48,5
+for about 10 minutes and then marketing people got a hold of it and ran away with it and suddenly everything
+
+6
+00:00:48,5 --> 00:00:52,5
+was a cloud. You can get your own personal cloud, no that's a hard drive.
+
+7
+00:00:52,5 --> 00:00:56,5
+It's not, it's hooked up to the internet sure, but that doesn't make it a cloud.
+
+8
+00:00:56,5 --> 00:00:59,5
+So everybody kind of ran away with it and the same thing happened with DevOps.
+
+9
+00:00:59,5 --> 00:01:00,5
+DevOps
+
+10
+00:01:00,5 --> 00:01:05,5
+as a term has actually been around for quite a while. It didn't really start to catch on until a couple of
+
+11
+00:01:05,5 --> 00:01:09,5
+really, really good books about it like the Phoenix project was kind of the definitive book that really got
+
+12
+00:01:09,5 --> 00:01:18,5
+people's attention on it in a big way, I guess. A lot of .coms, startups in the current era of startups
+
+13
+00:01:18,5 --> 00:01:22,5
+started using this type of an approach, so DevOps actually meant something
+
+14
+00:01:22,5 --> 00:01:31,5
+and then the marketing people got a hold of it. And all of a sudden, it's we're DevOps, here's DevOps in a box
+
+15
+00:01:31,5 --> 00:01:37,5
+and we being who we are and what we do for a living immediately started ignoring the word, justifiably, I think.
+
+16
+00:01:37,5 --> 00:01:44,5
+And so I wanted to do this talk to kind of just it's a real thing.
+
+17
+00:01:44,5 --> 00:01:49,5
+DevOps is not a marketing word. I want people to pay attention to this because it is a real thing; however,
+
+18
+00:01:49,5 --> 00:01:54,5
+it isn't something you can buy in a box. It's not shrink wrapped, you can't just wake up one morning and go
+
+19
+00:01:54,5 --> 00:01:59,5
+we should do DevOps, let's just do that. It's a massive cultural change.
+
+20
+00:01:59,5 --> 00:02:03,5
+It's a massive philosophical change and how you decide to do IT.
+
+21
+00:02:03,5 --> 00:02:09,5
+You can apply DevOps principles to one tiny project within your organization if it's got some certain
+
+22
+00:02:09,5 --> 00:02:16,5
+boundaries around it that allow that. You can run your entire IT organization according to these principles.
+
+23
+00:02:16,5 --> 00:02:22,5
+But you have to understand what it's supposed to achieve and you have to understand the tradeoffs that you
+
+24
+00:02:22,5 --> 00:02:25,5
+have to agree to make if you're going to go down this route.
+
+25
+00:02:25,5 --> 00:02:31,5
+And so, I've done a keynote a couple of times about really at a high level what DevOps is supposed to mean,
+
+26
+00:02:31,5 --> 00:02:39,5
+what it's supposed to be, but I don't often talk about what it actually looks like in terms of a concrete
+
+27
+00:02:39,5 --> 00:02:46,5
+what is this, if I'm doing this, how will I know, what's it look like, what buttons do I press to make DevOps turn on.
+
+28
+00:02:46,5 --> 00:59:59,999
+And so that's what I wanted to do today. Talk about DevOps.
+

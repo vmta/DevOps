@@ -1,0 +1,236 @@
+1
+00:00:00,0 --> 00:00:17,17
+Alright, good morning. My name is Neema, and I'm a program manager on the PowerShell team.
+
+2
+00:00:17,17 --> 00:00:24,24
+I work on PowerShell and DSC specifically and also Nano Server specifically on bringing all the cmdlets we
+
+3
+00:00:24,24 --> 00:00:30,30
+know and love from full PowerShell into the CoreCLR and Nano Server.
+
+4
+00:00:30,30 --> 00:00:35,35
+So today I'll be talking a little bit about Nano Server en masse, how we got here,
+
+5
+00:00:35,35 --> 00:00:38,38
+where we're at, and what the path is forward, and then a little bit about remote management,
+
+6
+00:00:38,38 --> 00:00:44,44
+how PowerShell integrates with Nano Server, and what we hope that you guys would do between now and the next
+
+7
+00:00:44,44 --> 00:00:50,50
+time we see you with Nano Server and kind of spreading the word on manageability in Nano Server.
+
+8
+00:00:50,50 --> 00:00:54,54
+So I'll talk a little bit about what we're hearing from customers, the journey we've gone through,
+
+9
+00:00:54,54 --> 00:01:01,61
+like I mentioned, we'll focus on three areas within Nano Server manageability, looking at PowerShell Core
+
+10
+00:01:01,61 --> 00:01:08,68
+briefly, and RSMT, the Remote Server Management Tools, take a look at some graphs and results we've seen,
+
+11
+00:01:08,68 --> 00:01:15,75
+benefits of Nano Server, and then focus on Nano Server in 2016 with containers, and then next steps from there.
+
+12
+00:01:15,75 --> 00:01:21,81
+And just a quick show of hands, how many people have had a chance to play around with Nano Server so far?
+
+13
+00:01:21,81 --> 00:01:26,86
+Great. And how many people actively use Nano Server day to day?
+
+14
+00:01:26,86 --> 00:01:32,92
+Okay. And anyone try to deploy a production workload to see if it works or not in Nano?
+
+15
+00:01:32,92 --> 00:01:37,97
+Alright, good. So this is the perfect audience for this talk. Hopefully I can convert some of you to at
+
+16
+00:01:37,97 --> 00:01:40,100
+least giving it a shot.
+
+17
+00:01:40,100 --> 00:01:46,106
+So three big drivers from our customers that have kind of led us to thinking this is why we need to define
+
+18
+00:01:46,106 --> 00:01:50,110
+Nano Server and it goes along the same tenants that brought us from Server Core to where we are now.
+
+19
+00:01:50,110 --> 00:01:56,116
+First of all, reboots impact business. We know that the people we work with often come back and say to us,
+
+20
+00:01:56,116 --> 00:02:01,121
+rebooting is a costly effort whether we're managing the systems, we're doing it for a client, or we're just
+
+21
+00:02:01,121 --> 00:02:08,128
+experimenting, uptime is really critical. So if you're patching a component you never use, it's kind of a
+
+22
+00:02:08,128 --> 00:02:13,133
+waste of a reboot cycle, and when the reboot happens, you want to get back into work and get back into work
+
+23
+00:02:13,133 --> 00:02:19,139
+and get back to your workload ASAP, not fiddle around with having post restart configuration.
+
+24
+00:02:19,139 --> 00:02:27,147
+Another big issue is server images are too big. Windows Server 2k12 R2 started to bloat up a little bit
+
+25
+00:02:27,147 --> 00:02:32,152
+towards the end there and we saw that with the Server Core option people had a slightly more lightweight option.
+
+26
+00:02:32,152 --> 00:02:39,159
+With Nano, the goal is to have the minimal, the minimal image, just the components you want so that when
+
+27
+00:02:39,159 --> 00:02:43,163
+you're transferring the images or deploying them, you can do it as quickly as possible.
+
+28
+00:02:43,163 --> 00:02:49,169
+When you're storing images, you can have per roll images customized to exactly what you want and nothing more.
+
+29
+00:02:49,169 --> 00:02:54,174
+And third, the infrastructure requiring too many resources. So this is where we're talking about an OS
+
+30
+00:02:54,174 --> 00:03:01,181
+taking up all these resources, presenting processes that are running in the background and really not giving you anything.
+
+31
+00:03:01,181 --> 00:03:07,187
+A good example of this when we've had feedback a lot about an early Windows Server 2016 TP Build are things
+
+32
+00:03:07,187 --> 00:03:11,191
+like the map service or the XBOX service. I don't want that stuff running.
+
+33
+00:03:11,191 --> 00:03:17,197
+And while we can address some of that stuff, Nano Server really is the solution to having just what you want running.
+
+34
+00:03:17,197 --> 00:03:22,202
+Also, by having a lower footprint, you can have higher VM density.
+
+35
+00:03:22,202 --> 00:03:31,211
+So where on a piece of metal, you can maybe run 2 or 3 server VMs, now you're talking about 10, 20 Nano Server VMs.
+
+36
+00:03:31,211 --> 00:03:38,218
+So this brings us to kind of our first tenant here, which is I want just the components I need and nothing more.
+
+37
+00:03:38,218 --> 00:03:43,223
+And to show you that, we'll kind of step through a quick journey of how we got to where we are.
+
+38
+00:03:43,223 --> 00:03:50,230
+So historically, Windows Server had this big footprint and you'd add on roles and features leading up to the
+
+39
+00:03:50,230 --> 00:03:59,239
+server 2K3 timeframe. With Server 2008 and 2008 R2, we took a little bit of a different methodology where we
+
+40
+00:03:59,239 --> 00:04:06,246
+provided Server Core as a GUI list option and full server that gave you all of the compatibility with
+
+41
+00:04:06,246 --> 00:04:17,257
+previous server infrastructure. With 2012 R2, we've kind of split up the GUI part and provided a minimal
+
+42
+00:04:17,257 --> 00:04:20,260
+server interface, and then on top of that, you load in the GUI Shell.
+
+43
+00:04:20,260 --> 00:04:27,267
+And as we move towards 2016 TP5, some of you that have experimented with TP4 may notice that we call this a
+
+44
+00:04:27,267 --> 00:04:35,275
+desktop experience and just server now. The default option for server is now going to be this desktop
+
+45
+00:04:35,275 --> 00:04:44,284
+experience where a lot more of the Windows 10 client shell that you see will be looped back into the server product.
+
+46
+00:04:44,284 --> 00:04:50,290
+So the Cloud journey now, these two big parts here, first of all, Azure, we want to minimize reboots here
+
+47
+00:04:50,290 --> 00:04:56,296
+because for Azure tenants, having these things constantly reboot is just interrupting services.
+
+48
+00:04:56,296 --> 00:05:02,302
+They have specific workloads that usually vesting towards some Azure resource group, which can be really
+
+49
+00:05:02,302 --> 00:05:07,307
+costly, even more so than on the on-prem solution that we previously talked about and also the provisioning
+
+50
+00:05:07,307 --> 00:05:14,314
+of a large host images has this big impact on network resources where a lot of network architects have to sit
+
+51
+00:05:14,314 --> 00:05:19,319
+around saying how many VMs are going to get deployed on this architecture every day, every week because I
+
+52
+00:05:19,319 --> 00:05:24,324
+need to allocate my network resources such that it can handle that throughput.
+
+53
+00:05:24,324 --> 00:05:32,332
+And a lot of times, that's the most bandwidth intensive action is deploying and spinning up VM resources.
+
+54
+00:05:32,332 --> 00:05:40,340
+The more recent step we've taken is with the Cloud Platform System and so Azure stack, Azure pack, the whole point
+
+55
+00:05:40,340 --> 00:05:47,347
+here is that we are bringing in a cloud in a box running everything you need to get off the ground,
+
+56
+00:05:47,347 --> 00:05:53,353
+but still there is some setup time involved, there's still some patches and reboots that cause interruptions
+
+57
+00:05:53,353 --> 00:05:59,359
+to the entire thing, and like you see here, I mean, the reboot times are still, they're acceptable, they're a lot
+
+58
+00:05:59,359 --> 00:06:05,365
+better than they have been historically, but we can get them better and that's really the primary driver
+
+59
+00:06:05,365 --> 00:59:59,999
+behind Nano is that we can do better. We have to let go of some of the past to be able to do that.
+

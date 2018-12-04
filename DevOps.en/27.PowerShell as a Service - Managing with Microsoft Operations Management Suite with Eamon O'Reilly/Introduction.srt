@@ -1,0 +1,208 @@
+1
+00:00:11,5 --> 00:00:18,18
+Alright, so we're going to talk about Windows PowerShell as a Service today, managing clouds, Windows, Linux,
+
+2
+00:00:18,18 --> 00:00:26,26
+on-premise, or public by using Microsoft Operations Management Suite or OMS for short.
+
+3
+00:00:26,26 --> 00:00:32,32
+I am Ed Wilson, and I'm sometimes referred to as the Microsoft scripting guy.
+
+4
+00:00:32,32 --> 00:00:40,40
+I also write a blog called Hey Scripting Guy that's read by quite a few people and I've started, as of January,
+
+5
+00:00:40,40 --> 00:00:48,48
+the OSM team blog and I'll show you a link to that at the end. If you haven't been reading that, that is the
+
+6
+00:00:48,48 --> 00:00:59,59
+absolute place to go to find out everything about OMS. And I am up here with my friend from the OMS team, Eamon O'Reilly.
+
+7
+00:00:59,59 --> 00:01:04,64
+Hi everyone. My name's Eamon O'Reilly. Thanks, Ed. I work on the automation of the service inside of
+
+8
+00:01:04,64 --> 00:01:09,69
+Operations Management Suite, and so we'll kind of walk you through what that looks like today mostly focused
+
+9
+00:01:09,69 --> 00:01:12,72
+on the PowerShell capabilities.
+
+10
+00:01:12,72 --> 00:01:21,81
+Okay, so what are we going to talk about today? We need to have some objections, not objections, objectives perhaps.
+
+11
+00:01:21,81 --> 00:01:27,87
+Alright, so our session objectives and our takeaways, we're going to talk about why you want to bring what
+
+12
+00:01:27,87 --> 00:01:34,94
+does PowerShell automation give to the cloud and we're going to talk about what the core capabilities are
+
+13
+00:01:34,94 --> 00:01:37,97
+that our automation services provide.
+
+14
+00:01:37,97 --> 00:01:42,102
+We'll show you a nice slide about that. It is Operations Management Suite and the idea there should think of
+
+15
+00:01:42,102 --> 00:01:48,108
+well hmm, it's a suite of product and it really is, and so what we'll talk about that how all that works.
+
+16
+00:01:48,108 --> 00:01:49,109
+We're also going to
+
+17
+00:01:49,109 --> 00:01:56,116
+yeah everybody in this room is probably familiar with the very famous PowerShell manifesto.
+
+18
+00:01:56,116 --> 00:02:04,124
+I was actually talking with a couple people from the PowerShell team right before I came in here and PowerShell
+
+19
+00:02:04,124 --> 00:02:13,133
+has been around for 10 years. It's amazing. What's really kind of trips me out a little bit is when I'm
+
+20
+00:02:13,133 --> 00:02:18,138
+reading some blog from somebody, oh well we're using this new thing called PowerShell.
+
+21
+00:02:18,138 --> 00:02:26,146
+It's like dude, yeah, but yeah so 10 years it's been around. Well one of the things that's really cool and
+
+22
+00:02:26,146 --> 00:02:33,153
+Jeffrey Snover actually republished the PowerShell Manifesto, I think, last year just kind of as a
+
+23
+00:02:33,153 --> 00:02:41,161
+retrospective, but one of the things that he laid out in that Manifesto is that we honor your investment in
+
+24
+00:02:41,161 --> 00:02:52,172
+PowerShell and they've continued to do that so that yeah stuff that you wrote back in what is PowerShell 1.0,
+
+25
+00:02:52,172 --> 00:03:00,180
+it still works today. Yeah, there may very well be some better ways of doing it, but it's still works today.
+
+26
+00:03:00,180 --> 00:03:09,189
+It's an amazing level of background compatibility back over 10 years, but not only we're talking about that you
+
+27
+00:03:09,189 --> 00:03:16,196
+can leverage or that we respect your investment in the code because to be honest, like oh man I don't want to
+
+28
+00:03:16,196 --> 00:03:21,201
+look at some of that code I wrote 10 years ago, it's embarrassing yeah.
+
+29
+00:03:21,201 --> 00:03:32,212
+But certainly, I mean, we always learn and I've written more than 5,000 PowerShell scripts and stuff I wrote
+
+30
+00:03:32,212 --> 00:03:39,219
+even last week, I think of new ways of writing it better today. But so what am I talking about leveraging that investment.
+
+31
+00:03:39,219 --> 00:03:46,226
+When we came out with your functions, and then we came out with workflows, we respected what you had learned
+
+32
+00:03:46,226 --> 00:03:52,232
+from writing functions and writing workflows. Then when we came out with DSC, we respected what you had
+
+33
+00:03:52,232 --> 00:04:00,240
+learned from working with workflows and from functions and modules and all of that stuff kind of respects each other.
+
+34
+00:04:00,240 --> 00:04:07,247
+Well with automation and with moving PowerShell into the cloud, we still respect that and allow you to
+
+35
+00:04:07,247 --> 00:04:16,256
+leverage what you've done. So as a very, very simple example, all that time you spent learning workflows
+
+36
+00:04:16,256 --> 00:04:26,266
+when we introduced it a couple of years ago, dude, it applies, and a matter a fact, dude, it applies big time,
+
+37
+00:04:26,266 --> 00:04:31,271
+so you did not waste your effort learning workflows. But anyway, I'm sorry, we're still doing objectives and takeaways.
+
+38
+00:04:31,271 --> 00:04:38,278
+So integrating automation in OMS, Azure, yeah on-premises environments, so we're going to talk about how we
+
+39
+00:04:38,278 --> 00:04:40,280
+tie all this stuff together.
+
+40
+00:04:40,280 --> 00:04:44,284
+We're going to talk about how we solve some very, very real problems.
+
+41
+00:04:44,284 --> 00:04:50,290
+Some of the problems that as a person that's been scripting for more than 25 years, questions that I've heard
+
+42
+00:04:50,290 --> 00:04:56,296
+over and over and over again for the last 25 years, we finally solved them.
+
+43
+00:04:56,296 --> 00:05:00,300
+So we've got some very, very real solutions yet to some of the problems, and so we're going to talk about that.
+
+44
+00:05:00,300 --> 00:05:07,307
+The key takeaway. We are deeply invested in PowerShell, in DSC, and all that effort that you have spent in
+
+45
+00:05:07,307 --> 00:05:16,316
+learning this technology, we're going to allow you to apply it. And as we all know, PowerShell automation,
+
+46
+00:05:16,316 --> 00:05:20,320
+we're heavily dependent upon the community. That's why we're here.
+
+47
+00:05:20,320 --> 00:05:25,325
+That's why we can have great people like Eamon take time.
+
+48
+00:05:25,325 --> 00:05:33,333
+On the OMS team, we ship about every three weeks. So he's in the middle of a release cycle, but.
+
+49
+00:05:33,333 --> 00:05:34,334
+There's always one now.
+
+50
+00:05:34,334 --> 00:05:38,338
+He's always in the middle of a release cycle. But yeah, so he's here to talk to you.
+
+51
+00:05:38,338 --> 00:05:46,346
+Definitely we want to talk to you, find out. I think that we've hit a home run with this stuff or at least a
+
+52
+00:05:46,346 --> 00:59:59,999
+good double, but a stand up double. But let us know. We're here, we want to hear your feedback.
+

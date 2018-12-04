@@ -1,0 +1,396 @@
+1
+00:00:00,0 --> 00:00:08,801
+So I'm going to show you how this looks in Visual Studio code. So let me see if I can make this look bigger.
+
+2
+00:00:08,801 --> 00:00:30,801
+(Clicking) That's too big. Anyway, so what you see here is a file that I have open and I have a function I've
+
+3
+00:00:30,801 --> 00:00:37,801
+defined, which does just really simple thing, it just writes output, and you see this cmdlet here this
+
+4
+00:00:37,801 --> 00:00:45,801
+Register-EditorExtension and basically this command is running your PowerShell session and it says I want to
+
+5
+00:00:45,801 --> 00:00:50,801
+register a new command in editor with this display name of My Command with function and also this Id,
+
+6
+00:00:50,801 --> 00:00:56,801
+which is useful maybe to identify the command from other areas. Also, you were saying basically that there's
+
+7
+00:00:56,801 --> 00:01:03,801
+a function called Invoke-MyCommand, which is this, which should be invoked whenever the command is launched.
+
+8
+00:01:03,801 --> 00:01:10,801
+So to access these commands, I'll go to the Show additional commands from PowerShell modules option.
+
+9
+00:01:10,801 --> 00:01:15,801
+And if I run that right now, it tells me that no extension commands have been loaded to the current session,
+
+10
+00:01:15,801 --> 00:01:27,801
+which is what we expect. So what I'll do is I will select this code and I'll run it with F8.
+
+11
+00:01:27,801 --> 00:01:33,801
+You'll see in the output console that I've actually ran the code and the command has been registered.
+
+12
+00:01:33,801 --> 00:01:39,801
+And now, if I go back to that same additional commands list, you'll see that My command with function now shows up.
+
+13
+00:01:39,801 --> 00:01:46,801
+So if I run that, you'll see that the right output, whoops, the right output is actually called and basically
+
+14
+00:01:46,801 --> 00:01:51,801
+just invoke my function directly and it's kind of nice because you can actually edit these things in real-time
+
+15
+00:01:51,801 --> 00:01:56,801
+and not have to like restart your editor to be able to see the updated functionality.
+
+16
+00:01:56,801 --> 00:02:02,801
+So now we can also do the same thing with ScriptBlock. So if I have another command registered here or able
+
+17
+00:02:02,801 --> 00:02:06,801
+to be registered, which actually just takes a ScriptBlock and writes an output as well.
+
+18
+00:02:06,801 --> 00:02:12,801
+I've run that one. And now let's go to the additional commands list and now we see My command with script block
+
+19
+00:02:12,801 --> 00:02:19,801
+is here, so run that, same output. So that's pretty basic, not really helpful.
+
+20
+00:02:19,801 --> 00:02:24,801
+You can do things like run Get-process or something, but yeah, maybe you could launch your build scripts or
+
+21
+00:02:24,801 --> 00:02:29,801
+maybe a deployment script. That can be kind of helpful, but the real helpful stuff comes when you start
+
+22
+00:02:29,801 --> 00:02:33,801
+actually manipulating the editor in real time. So to define this function called
+
+23
+00:02:33,801 --> 00:02:40,801
+Invoke-MyEdit and it accepts this context variable and this is a variable that comes from PowerShell Editor
+
+24
+00:02:40,801 --> 00:02:45,801
+Services and it gives you information about the current context of the editor at the time the command was invoked.
+
+25
+00:02:45,801 --> 00:02:51,801
+So we have things like the current file and we have information about like what the current user selection is
+
+26
+00:02:51,801 --> 00:02:58,801
+and where the cursor location is in the buffer. So this current MyEdit function actually will take the current
+
+27
+00:02:58,801 --> 00:03:03,801
+file and will insert text into the file and it will do it with the sort of the full range of the current file
+
+28
+00:03:03,801 --> 00:03:10,801
+meaning the entire file. So we're basically saying insert this string with this entire range, so it basically
+
+29
+00:03:10,801 --> 00:03:22,801
+overwrites the range that you've specified. So if I just type something like WHOOPS and I run this,
+
+30
+00:03:22,801 --> 00:03:31,801
+then I can go and type, whoops, additional commands, and then Apply my edit is available, so I hit that,
+
+31
+00:03:31,801 --> 00:03:35,801
+and basically it just replaces the entire buffer. So that's kind of cool.
+
+32
+00:03:35,801 --> 00:03:42,801
+I mean, another thing you can do is do some manipulation to the actual content that's already here.
+
+33
+00:03:42,801 --> 00:03:54,801
+So if I take this and say Context.CurrentFile.Contents.ToUpper and all I have to do at this point,
+
+34
+00:03:54,801 --> 00:04:01,801
+since the command is already registered is just reevaluate the function itself, and if I run it,
+
+35
+00:04:01,801 --> 00:04:06,801
+it basically uppercases everything in the file. So you can start to see where this can go.
+
+36
+00:04:06,801 --> 00:04:11,801
+You can just basically manipulate the code in place. So let's say if I wanted to actually insert some text
+
+37
+00:04:11,801 --> 00:04:18,801
+into the file, so let me comment this line out and uncomment these two lines.
+
+38
+00:04:18,801 --> 00:04:24,801
+So what I'm doing here is I'm actually creating an object that defines the range that I want to update.
+
+39
+00:04:24,801 --> 00:04:26,801
+This is not the actual desired way that I want people to do this.
+
+40
+00:04:26,801 --> 00:04:31,801
+I'll provide some overloads to this InsertText method, but for now, I'm just doing it this way.
+
+41
+00:04:31,801 --> 00:04:38,801
+So basically what I want to do is in the current file, I want to insert a line of text at, let's see if I can
+
+42
+00:04:38,801 --> 00:04:44,801
+get to the end here, at the Line 24, Column 1, and Line 24, Column 1, so that's like the start location
+
+43
+00:04:44,801 --> 00:04:49,801
+and end location. So basically what I'm saying at this cursor location, I want to insert this piece of text.
+
+44
+00:04:49,801 --> 00:05:00,801
+So if I go in, reevaluate this function and I should be able to run it and now it inserts this new line of text here.
+
+45
+00:05:00,801 --> 00:05:05,801
+So I'm basically going to format the C drive, which is nice. But anyway, hopefully that
+
+46
+00:05:05,801 --> 00:05:12,801
+shows you that yeah, we basically can do lots of stuff with this.
+
+47
+00:05:12,801 --> 00:05:19,801
+One thing you could do is have a command for your project where you automatically are able to insert comment
+
+48
+00:05:19,801 --> 00:05:26,801
+block headers for your files or maybe generate a certain type of function like you have a lot of code that
+
+49
+00:05:26,801 --> 00:05:30,801
+needs to be generated for your project, you could easily generate it using one of these commands.
+
+50
+00:05:30,801 --> 00:05:35,801
+Yep. But where's your plan just like going? Like are you thinking like in your profile or will that command
+
+51
+00:05:35,801 --> 00:05:42,801
+register just stay with this session? That's a great question. So one way is it could go in your profile.
+
+52
+00:05:42,801 --> 00:05:47,801
+Another thing I'm thinking is it would be great if there was a way that if a PowerShell module from the
+
+53
+00:05:47,801 --> 00:05:53,801
+gallery included something that registers a command like this, if we could actually identify that module as
+
+54
+00:05:53,801 --> 00:05:57,801
+having a command and load it automatically in the session, if you have maybe a command in your profile that
+
+55
+00:05:57,801 --> 00:06:04,801
+says automatically load extensions, maybe the way that happens is we have like an extra tag we put on that
+
+56
+00:06:04,801 --> 00:06:08,801
+is like a conventional tag we put on modules in the PowerShell gallery, so I can just do like grab all the
+
+57
+00:06:08,801 --> 00:06:15,801
+modules that have this command that you have, sorry, this tag that you have that are installed and just load them up.
+
+58
+00:06:15,801 --> 00:06:22,801
+For a person who writes a module who wants to actually add some extension commands from their module,
+
+59
+00:06:22,801 --> 00:06:27,801
+they can just check to see if the PSEditor object is available, and if so, they can just call the Register-Command function.
+
+60
+00:06:27,801 --> 00:06:32,801
+So I think it's going to be a little bit of both. Either people have their own sort of comment code that
+
+61
+00:06:32,801 --> 00:06:37,801
+they are going to run for registering commands or modules that you get from the gallery will have extension
+
+62
+00:06:37,801 --> 00:06:40,801
+commands that will be able to run whenever they're loaded into your session.
+
+63
+00:06:40,801 --> 00:06:47,801
+So does that answer the question? Yeah. Yeah. So yeah, I kind of want this to be the new way going forward
+
+64
+00:06:47,801 --> 00:06:53,801
+of providing new functionality to editors. The nice thing about this is that for an editor who wants to
+
+65
+00:06:53,801 --> 00:06:59,801
+provide the same extensibility, they just need to implement a few methods on an interface or potentially
+
+66
+00:06:59,801 --> 00:07:02,801
+respond to a few different messages in the JSON protocol for the host process.
+
+67
+00:07:02,801 --> 00:07:08,801
+So it should be available anywhere that the editor service is used, which is pretty cool.
+
+68
+00:07:08,801 --> 00:07:15,801
+So the first draft of this extensibility model is going to show up in versions 0.6, the next version of the
+
+69
+00:07:15,801 --> 00:07:21,801
+VS code extension, and I expect it will show up in the ISE preview probably within the next two to three months.
+
+70
+00:07:21,801 --> 00:07:28,801
+I'm going to do a little bit of work to get that started in the ISE preview for my next talk at the PSCompu,
+
+71
+00:07:28,801 --> 00:07:33,801
+but it probably won't be fully there yet before the next version of the ISE preview.
+
+72
+00:07:33,801 --> 00:07:39,801
+I've got one question. Yep. With the ISE, how do you intend to get the same functionality of it doesn't
+
+73
+00:07:39,801 --> 00:07:43,801
+have that little bar where you type it in and stuff. Right. Another great question.
+
+74
+00:07:43,801 --> 00:07:49,801
+Yeah, that's another one of the things I want to add to the ISE preview is that same kind of command palette construct.
+
+75
+00:07:49,801 --> 00:07:54,801
+So for people who haven't really used VS code very much, VS code has this really cool command palette where
+
+76
+00:07:54,801 --> 00:07:56,801
+it basically gives you every single
+
+77
+00:07:56,801 --> 00:08:02,801
+command that's available in the editor and you can type something like save and it will show you the save commands.
+
+78
+00:08:02,801 --> 00:08:07,801
+It also shows you the key binding for the command. So I would like to add something like that for the ISE
+
+79
+00:08:07,801 --> 00:08:08,801
+because I think
+
+80
+00:08:08,801 --> 00:08:14,801
+that it gives a way to surface all of the possible operations that are in the editor and allows you to add
+
+81
+00:08:14,801 --> 00:08:19,801
+your own operations at the same level as the built-in operations so that all of the functionality that's
+
+82
+00:08:19,801 --> 00:08:24,801
+in the editor currently, it's all sort of at the same level and it should be pretty helpful.
+
+83
+00:08:24,801 --> 00:08:29,801
+But definitely curious to hear if people thinks that's a bad idea or if they like it.
+
+84
+00:08:29,801 --> 00:08:33,801
+But. I'd like to see that. Yeah, yeah there's a lot of people on Twitter and I did a Twitter poll maybe two
+
+85
+00:08:33,801 --> 00:08:37,801
+months ago or something asking if people wanted to see it and generally, people seemed to be in favor of it.
+
+86
+00:08:37,801 --> 00:08:42,801
+So I'm going to give it a shot and if people don't like ultimately, I can take it back out, but I think it
+
+87
+00:08:42,801 --> 00:08:50,801
+will be helpful. Let's see. So in my mind,
+
+88
+00:08:50,801 --> 00:08:55,801
+the future of the PowerShell authoring experience is clear. Our short term goal will be to use the
+
+89
+00:08:55,801 --> 00:09:01,801
+integration of PowerShell Editor Services into the ISE preview as a way to flesh out its feature support
+
+90
+00:09:01,801 --> 00:09:05,801
+so that the same functionality can be used in many other places.
+
+91
+00:09:05,801 --> 00:09:09,801
+This should help make developer adoption of PowerShell go a lot more smoothly because developers can use the
+
+92
+00:09:09,801 --> 00:09:15,801
+tools that they already like, their editors that they already like to have a really good PowerShell development experience.
+
+93
+00:09:15,801 --> 00:09:21,801
+They don't have to go and learn VS code or the ISE or Visual Studio if they don't want to.
+
+94
+00:09:21,801 --> 00:09:26,801
+I'd also love to work with anyone who's interested in using PowerShell Editor Services in a code editor or
+
+95
+00:09:26,801 --> 00:09:33,801
+any other type of application. The project is open for contributions and other type of feedback on GitHub,
+
+96
+00:09:33,801 --> 00:09:38,801
+so if you just go check out our GitHub page, which I'll show to you later, then you'll be able to see all the
+
+97
+00:09:38,801 --> 00:09:42,801
+things that are happening. If you watch the repo, you'll see all the work in progress.
+
+98
+00:09:42,801 --> 00:09:49,801
+Usually it's just me keep talking on issues. Yeah, and the platform will get so much better with every new
+
+99
+00:09:49,801 --> 00:59:59,999
+contribution and integration, so any amount of interaction there is definitely helpful.
+

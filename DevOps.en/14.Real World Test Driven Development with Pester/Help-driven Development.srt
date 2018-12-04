@@ -1,0 +1,96 @@
+1
+00:00:00,0 --> 00:00:06,495
+So what I did was to do what Adam Platt calls help-driven development.
+
+2
+00:00:06,495 --> 00:00:12,495
+I started with my help file, right. I used my help file as my spec for my code.
+
+3
+00:00:12,495 --> 00:00:18,495
+Okay. It's just an easy way to do it and it means that I always have a spec.
+
+4
+00:00:18,495 --> 00:00:24,495
+But what I did was I realized that my help examples are my contract with the user about the behavior of my
+
+5
+00:00:24,495 --> 00:00:33,495
+code, right, and by code I mean scripts or modules. Okay. And when I make that behavioral contract,
+
+6
+00:00:33,495 --> 00:00:40,495
+I as part of that behavioral contract, when I write my examples, I show sample output.
+
+7
+00:00:40,495 --> 00:00:45,495
+That's my expected in my test. We're comparing actual to expected.
+
+8
+00:00:45,495 --> 00:00:52,495
+So I show an example of running my code and showing expected output.
+
+9
+00:00:52,495 --> 00:00:58,495
+So it's very easy to use the help examples as the test spec and the test as the code spec, of course,
+
+10
+00:00:58,495 --> 00:01:05,495
+it supports behavior-driven development and there's a feedback loop because it makes my help better.
+
+11
+00:01:05,495 --> 00:01:13,495
+So for this, I picked what I thought was the simplest possible little example.
+
+12
+00:01:13,495 --> 00:01:20,495
+I used Windows PowerShell profiles, but when I'm testing or doing demos or writing shared code, I disable them
+
+13
+00:01:20,495 --> 00:01:25,495
+because I don't want something in my profile to affect my test or my code.
+
+14
+00:01:25,495 --> 00:01:33,495
+So I had little snippets of code all over the place that disabled my profiles and re-enabled them and then
+
+15
+00:01:33,495 --> 00:01:41,495
+would get the disabled profile, so I didn't freak out and that's the little module we're going to be testing with.
+
+16
+00:01:41,495 --> 00:01:45,495
+So I actually started with a help file. Let me show this to you.
+
+17
+00:01:45,495 --> 00:01:50,495
+We're going to switch around here. Okay. This is PowerShell HelpWriter.
+
+18
+00:01:50,495 --> 00:01:59,495
+I showed it last year. And I started with a help file for a Get-Profile, Disable-Profile, and Enable-Profile
+
+19
+00:01:59,495 --> 00:02:08,495
+cmdlets and they all have these nice examples. Okay, and then I went over here to PowerShell Studio.
+
+20
+00:02:08,495 --> 00:02:17,495
+Do I need to use zoom it, can you guys see? Okay. And I did New, New Module from Help File, I went to my
+
+21
+00:02:17,495 --> 00:02:33,495
+Help Files, and there's my module. Okay. And so what PowerShell Studio did for me was it just mocked up little
+
+22
+00:02:33,495 --> 00:02:41,495
+functions for my help file. Okay. It used the output type because I was careful to specify that and it gave
+
+23
+00:02:41,495 --> 00:02:49,495
+me a little export module member statement at the end and a module manifest, and quite soon, it will also
+
+24
+00:02:49,495 --> 00:59:59,999
+give you a test file. Okay. So that's basically where I started.
+

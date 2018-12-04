@@ -1,0 +1,112 @@
+1
+00:00:00,0 --> 00:00:08,8
+So there's only one more thing that I really want to show you and that's authoring a package management provider.
+
+2
+00:00:08,8 --> 00:00:16,16
+Jennion, who's sitting over here, wrote this example back in November or thereabouts, October.
+
+3
+00:00:16,16 --> 00:00:27,27
+If you go out to github.com/OneGet, which is also oneget.org, you'll be able to find the MyAlbum-Sample-Provider.
+
+4
+00:00:27,27 --> 00:00:34,34
+If you take a look at that, what it implements is the ability to copy png files as a package, which is it's cute,
+
+5
+00:00:34,34 --> 00:00:41,41
+but what it does is it's a very good example of the things that you need to implement in order to implement
+
+6
+00:00:41,41 --> 00:00:43,43
+your own provider and why should you care.
+
+7
+00:00:43,43 --> 00:00:54,54
+We talked a lot about giving you control. Let's say you take the PowerShellGet package provider and you want
+
+8
+00:00:54,54 --> 00:00:58,58
+it to be just a little bit different or you take the NuGet package provider and you want it to be just a
+
+9
+00:00:58,58 --> 00:01:02,62
+little bit different. You want it to work with your own local repository.
+
+10
+00:01:02,62 --> 00:01:08,68
+You want it to use credentials that are available on your own local repository and required.
+
+11
+00:01:08,68 --> 00:01:16,76
+You would make a modification to that base code and update it to fit your needs.
+
+12
+00:01:16,76 --> 00:01:18,78
+So going back to my other window, the thing
+
+13
+00:01:18,78 --> 00:01:27,87
+that I'm going to point out here is there's a couple of required things that you have to implement,
+
+14
+00:01:27,87 --> 00:01:34,94
+and unfortunately, these things don't really do anything. These are the registration elements that are required.
+
+15
+00:01:34,94 --> 00:01:39,99
+You've got to implement them because otherwise package management doesn't know your package provider is there,
+
+16
+00:01:39,99 --> 00:01:47,107
+but that's not where you do the work. Okay. What you really need to take a look at in this example is this
+
+17
+00:01:47,107 --> 00:01:59,119
+set of optional elements that actually do all the work. The Get feature Get-DynamicOptions.
+
+18
+00:01:59,119 --> 00:02:05,125
+DynamicOptions are the things that are the optional parameters, the things that you can supply.
+
+19
+00:02:05,125 --> 00:02:10,130
+Everybody who is going to write their own package management provider will take advantage of this.
+
+20
+00:02:10,130 --> 00:02:14,134
+This is where you would maybe include something like credentials.
+
+21
+00:02:14,134 --> 00:02:20,140
+Most likely, if you're going to be building something around credentials, it wouldn't be optional, but you can
+
+22
+00:02:20,140 --> 00:02:23,143
+see where that fits.
+
+23
+00:02:23,143 --> 00:02:30,150
+The other thing that you're going to want to handle is dealing with a package source, so the add package source
+
+24
+00:02:30,150 --> 00:02:36,156
+and resolve package source are critically important so that you can know where to go from this package management
+
+25
+00:02:36,156 --> 00:02:40,5
+provider to get something. So you stand up your own internal repository.
+
+26
+00:02:40,5 --> 00:02:47,167
+It's a NuGet-based repository. You're storing stuff out there and you're going to require credentials.
+
+27
+00:02:47,167 --> 00:02:53,173
+You'll set that up in your own version of the NuGet package provider, you'll release it as
+
+28
+00:02:53,173 --> 00:59:59,999
+MyNugetPackageProvider, you'll resolve the package source to your internal NuGet gallery, and require the credentials, okay.
+

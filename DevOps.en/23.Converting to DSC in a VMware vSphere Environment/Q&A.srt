@@ -1,0 +1,340 @@
+1
+00:00:00,0 --> 00:00:03,3
+Anymore questions? Yes, Josh.
+
+2
+00:00:03,3 --> 00:00:08,8
+Those folders are inherently designed to obtain things.
+
+3
+00:00:08,8 --> 00:00:08,5
+Yes.
+
+4
+00:00:08,5 --> 00:00:16,215
+Do you also have resources for maintaining that alignment so that virtual machines that could be in a
+
+5
+00:00:16,215 --> 00:00:22,215
+specific folder do not get moved to other locations because from an operation standpoint, that's what I see
+
+6
+00:00:22,215 --> 00:00:29,215
+happening is someone inadvertently when they're selecting it and then drag it to another folder and lose it.
+
+7
+00:00:29,215 --> 00:00:37,215
+Yeah. That's a good. Josh wants to know if the location in your vSphere inventory, if that is or can be controlled
+
+8
+00:00:37,215 --> 00:00:48,215
+by DSC and yes it can, of course. If we look at one of the earlier slides, let me pull it up again.
+
+9
+00:00:48,215 --> 00:00:54,215
+Okay, if you remember that slide from earlier on in the presentation, this part at the right, that is in fact
+
+10
+00:00:54,215 --> 00:01:00,215
+the location that you want to look at and what you are asking, if I understand the question correctly,
+
+11
+00:01:00,215 --> 00:01:08,215
+if somebody would move your VM from Folder2 to Folder3, for example, now with the VM in the configuration
+
+12
+00:01:08,215 --> 00:01:12,215
+definition, in the configuration file for the VM, we will have this path.
+
+13
+00:01:12,215 --> 00:01:17,215
+Path will always be there. That's why I'm stressing that obtaining this path is quite important in this
+
+14
+00:01:17,215 --> 00:01:26,215
+complete DSC setup. If DSC LCM agent sees that your path is not correct anymore, you will automatically get
+
+15
+00:01:26,215 --> 00:01:31,215
+the set call and that should correct it. So what we will have in that case, if it fails on the test of the
+
+16
+00:01:31,215 --> 00:01:39,215
+path, you will generate a move to that folder. Same goes not only for folders, but also for datastores,
+
+17
+00:01:39,215 --> 00:01:42,215
+for example, or even clusters for your VM.
+
+18
+00:01:42,215 --> 00:01:52,215
+So ultimately, your DSC LCM could be even, in fact, vMotioning, SVMotioning machines to comply with the
+
+19
+00:01:52,215 --> 00:01:59,215
+configuration that you defined in your configuration files. So it can go very far in the end.
+
+20
+00:01:59,215 --> 00:02:05,215
+There are some tricks, there are some things that I need to resolve because you have to take into account
+
+21
+00:02:05,215 --> 00:02:12,215
+high availability, for example. You're not going to specify that a VM should run on a specific ESXi node.
+
+22
+00:02:12,215 --> 00:02:17,215
+There are some cases where you perhaps would be inclined to do that.
+
+23
+00:02:17,215 --> 00:02:22,215
+I'm thinking of those VMs and I, at least, have them in my environment.
+
+24
+00:02:22,215 --> 00:02:27,215
+Some of you probably where people have applications that still require a dongle or something like that.
+
+25
+00:02:27,215 --> 00:02:28,215
+(Audience comment)
+
+26
+00:02:28,215 --> 00:02:33,215
+Or yeah, something like that. You need to fix it on a specific VM ESXi node.
+
+27
+00:02:33,215 --> 00:02:40,215
+There you would need to override what HHA is trying to do with your environment, so it's a bit complex on that level.
+
+28
+00:02:40,215 --> 00:02:41,215
+Yeah.
+
+29
+00:02:41,215 --> 00:02:47,215
+Would it make more sense to just create DSC resources to manage the DRS rules and make sure those DR rules
+
+30
+00:02:47,215 --> 00:02:53,215
+are in place, so if someone changes a DR rule, it adds a rule back.
+
+31
+00:02:53,215 --> 00:03:01,215
+Yeah, so DRS, the cluster configuration in vSphere has an option DRS and in DRS you can specify rules where
+
+32
+00:03:01,215 --> 00:03:06,215
+you can create affinities those VMs should be running on those ESXi nodes.
+
+33
+00:03:06,215 --> 00:03:12,215
+Yes, I fully agree, but that is more on the level of vSphere management.
+
+34
+00:03:12,215 --> 00:03:19,215
+You should be managing that in any case, but rules. Now those rules in itself, you can configure with your DSC configuration.
+
+35
+00:03:19,215 --> 00:03:26,215
+That is something that I will add on the cluster resource. We shouldn't rely on only the DSC configuration
+
+36
+00:03:26,215 --> 00:03:30,215
+to define the configuration. I fully agree that it should be in the rules.
+
+37
+00:03:30,215 --> 00:03:32,215
+Correct. Thanks. Good question.
+
+38
+00:03:32,215 --> 00:03:42,215
+Honestly, I think that is an extremely valuable use case because we still see a lot of people who are running
+
+39
+00:03:42,215 --> 00:03:48,215
+applications like Oracle or even SQL Server where you're paying like per socket or things like that.
+
+40
+00:03:48,215 --> 00:03:55,215
+Being able to not only say that, I've set up affinity, but I'm also ensuring that then be can't be broken provides
+
+41
+00:03:55,215 --> 00:03:59,215
+a lot of confidence if anyone were to try and come and audit you on that.
+
+42
+00:03:59,215 --> 00:04:03,215
+So how will you know that it's not going to be implied? Well I have affinity.
+
+43
+00:04:03,215 --> 00:04:08,215
+My score is just configured in a certain way so that it doesn't crossover and I'm using DSC to ensure that
+
+44
+00:04:08,215 --> 00:04:15,215
+if anyone accidently makes a change to that affinity, it autocorrects so that we don't get into a situation
+
+45
+00:04:15,215 --> 00:04:17,215
+where we're no longer compliant.
+
+46
+00:04:17,215 --> 00:04:25,215
+I agree, but on the other hand, I would be more inclined like we heard that to do this with rules and DRS
+
+47
+00:04:25,215 --> 00:04:28,215
+will also discover that its numbers were sitting on the right machine.
+
+48
+00:04:28,215 --> 00:04:37,215
+Perhaps the DRS cycle is not as frequent as the LCM agent cycle, but I consider this more on management of
+
+49
+00:04:37,215 --> 00:04:43,215
+your vSphere environment. LCM is another layer, another level. Getting those rules in the cluster, that I would
+
+50
+00:04:43,215 --> 00:04:49,215
+leave to DSC LCM. But applying the rule, I would leave that to vSphere in this case.
+
+51
+00:04:49,215 --> 00:04:55,215
+But you're right, you could envision doing it that way as well, but then you would be recreating the same
+
+52
+00:04:55,215 --> 00:04:58,215
+functionality that is already there in vSphere.
+
+53
+00:04:58,215 --> 00:05:09,215
+I'm simply implying that those affinity rules be set and managed so that they can't be staying with DSC.
+
+54
+00:05:09,215 --> 00:05:10,215
+Yep.
+
+55
+00:05:10,215 --> 00:05:17,215
+So vSphere is still doing its thing, it's still responsible for ensuring and guaranteeing that the workload
+
+56
+00:05:17,215 --> 00:05:24,215
+doesn't move, it's just that you're simply saying that DSC is keeping an eye on DRS affinity to make sure
+
+57
+00:05:24,215 --> 00:05:30,215
+that those rules don't change because someone could change one of those rules in DRS and virtual center server,
+
+58
+00:05:30,215 --> 00:05:36,215
+which could cause a problem that would make you noncompliant, but if DSC is just keeping an eye on that,
+
+59
+00:05:36,215 --> 00:05:41,215
+then that's less likely to happen. But yet you still let DRS do its thing, not have LCM do it.
+
+60
+00:05:41,215 --> 00:05:46,215
+Yeah. Fully agree with that one. Yeah, good idea. Anymore questions?
+
+61
+00:05:46,215 --> 00:05:47,215
+Yeah.
+
+62
+00:05:47,215 --> 00:05:52,215
+Do you need a vEngine for…?
+
+63
+00:05:52,215 --> 00:05:58,215
+No. No, that's the reason why, okay, I'm not going to pull it up again, you remember.
+
+64
+00:05:58,215 --> 00:06:07,215
+With the vEngine, you can use multiple sessions in there. So each session could be connecting to another
+
+65
+00:06:07,215 --> 00:06:15,215
+vSphere server be it multiple vCenters, be it multiple ESXi nodes or a mix of those two, no.
+
+66
+00:06:15,215 --> 00:06:23,215
+Because in the resource, I'm going to pull it up in any case because this is quite important.
+
+67
+00:06:23,215 --> 00:06:33,215
+That was on session one, but I can pull it up if I, okay, let me check if I know.
+
+68
+00:06:33,215 --> 00:06:39,215
+I can't find it immediately, but I can show you after the session that I am doing is in fact in each resource
+
+69
+00:06:39,215 --> 00:06:47,215
+entry in your configuration file, I had two properties, which is a vServer, which is the indication to which
+
+70
+00:06:47,215 --> 00:06:55,215
+vCenter or ESXi you are connecting and vCredential, which is a credential you should use for that connection.
+
+71
+00:06:55,215 --> 00:07:01,215
+So per resource you can define where it is located, so in the case of multiple ones, you go to the correct
+
+72
+00:07:01,215 --> 00:07:06,215
+one in that case. Does that answer your?
+
+73
+00:07:06,215 --> 00:07:07,215
+Yes.
+
+74
+00:07:07,215 --> 00:07:18,215
+Thank you. Any more questions? Just what I also mentioned in the first session on Monday, these DSC resources
+
+75
+00:07:18,215 --> 00:07:25,215
+are a work in progress. I have a number of them. When I'm back home, I will start publishing them.
+
+76
+00:07:25,215 --> 00:07:28,215
+They are now in a private repository that I'm using to develop them.
+
+77
+00:07:28,215 --> 00:07:35,215
+I will put them on public GitHub because this thing, its environment is so complex no one person will be able
+
+78
+00:07:35,215 --> 00:07:43,215
+to do all that stuff, so I'm counting a bit on community contribution there in the coming months.
+
+79
+00:07:43,215 --> 00:07:51,215
+I don't know what. Also, on the priorities because like I said this stuff is quite complex, I could imagine
+
+80
+00:07:51,215 --> 00:07:59,215
+that I would now if I put priorities on my to-do list so that I would first be looking at distributed switches part.
+
+81
+00:07:59,215 --> 00:08:09,215
+Perhaps the majority of the users say I would rather first see a fully working cluster resource, so it's in
+
+82
+00:08:09,215 --> 00:08:17,215
+fact up to you guys to tell me or do the work yourself or tell me which one should be the next on my list.
+
+83
+00:08:17,215 --> 00:08:23,215
+Yeah, we already reached that one of course since we are discussing your questions.
+
+84
+00:08:23,215 --> 00:08:33,215
+No. Anymore? Okay, then I thank you for attending this code heavy session.
+
+85
+00:08:33,215 --> 00:59:59,999
+I hope I didn't bother you. Thanks!
+

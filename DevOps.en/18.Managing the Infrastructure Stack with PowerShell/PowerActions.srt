@@ -1,0 +1,108 @@
+1
+00:00:00,0 --> 00:00:04,992
+I don't want to teach you guys cmdlets, alright. Like you guys know cmdlets, you know how to use Get-Help right.
+
+2
+00:00:04,992 --> 00:00:08,992
+So the next thing that I want to make sure that you're familiar with and introduce and I thought I had a picture
+
+3
+00:00:08,992 --> 00:00:14,992
+on this, but apparently I don't. So I upload up a vin, I'll get connected, and show you how PowerActions work.
+
+4
+00:00:14,992 --> 00:00:18,992
+So PowerActions is a VMware fling and
+
+5
+00:00:18,992 --> 00:00:24,992
+if you go to labs.vmware.com/flings, search for PowerActions, what PowerActions allows you to do is you
+
+6
+00:00:24,992 --> 00:00:34,992
+install it in your vSphere WebClient, and once installed, it provides a PowerShell console in the vSphere WebClient.
+
+7
+00:00:34,992 --> 00:00:41,992
+Now it's powered and backed by a server, a Windows Server that's running PowerShell, but what it does is it
+
+8
+00:00:41,992 --> 00:00:48,992
+enables you to execute PowerShell directly through the VStore WebClient and the screenshot that I thought was
+
+9
+00:00:48,992 --> 00:00:52,992
+here was a beautiful representation of this, so we'll get that in a minute.
+
+10
+00:00:52,992 --> 00:00:57,992
+But the other thing it allows you to do is it allows you to create scripts and files, right, that you can
+
+11
+00:00:57,992 --> 00:01:04,992
+share, your create functions that you can share within the VStore WebClient that will allow you to be able
+
+12
+00:01:04,992 --> 00:01:13,992
+to execute against something. Use case for this would be, I don't know about you guys, but when I go into a
+
+13
+00:01:13,992 --> 00:01:24,992
+VStore environment and I see all the storage and there's Datastore, Datastore (1), Datastore (2), Datastore (3),
+
+14
+00:01:24,992 --> 00:01:31,992
+Datastore (4), Datastore (5) because every time you install ESXi, it just calls the local disk Datastore.
+
+15
+00:01:31,992 --> 00:01:38,992
+I'm a little OCD. This bothers me. Right. So there's a PowerAction I've created and put out where you
+
+16
+00:01:38,992 --> 00:01:46,992
+right-click on the Datastore and you say set the local name, and it goes out, it pulls ESXi hostname,
+
+17
+00:01:46,992 --> 00:01:53,992
+and renames the Datastore to that name-local. Alright, so now you have logical information.
+
+18
+00:01:53,992 --> 00:01:59,992
+Now that's just an example. You can also do things such as being able to select a network or select a
+
+19
+00:01:59,992 --> 00:02:06,992
+Datastore and be able to query and say what MTU is set up and down the stack, right.
+
+20
+00:02:06,992 --> 00:02:13,992
+It'll check the switch, it'll check the port, it'll check like Cisco UCS and the networking there and you
+
+21
+00:02:13,992 --> 00:02:18,992
+can have that send a report. So if you were in that troubleshooting situation and you remember we had that
+
+22
+00:02:18,992 --> 00:02:21,992
+full layer, that stack that we had to deal with, this gives you
+
+23
+00:02:21,992 --> 00:02:28,992
+an opportunity to go in and take care of that and get that information and have it embedded directly in the
+
+24
+00:02:28,992 --> 00:02:32,992
+VStore WebClient, which is a tool that most of us are already using anyway.
+
+25
+00:02:32,992 --> 00:02:35,992
+Alright, so you're not have to jump around.
+
+26
+00:02:35,992 --> 00:02:39,992
+Everybody going to go check that out? It's not supported, so be mindful where you put it.
+
+27
+00:02:39,992 --> 00:59:59,999
+It's not officially supported, but it's pretty cool.
+

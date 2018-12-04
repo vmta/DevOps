@@ -1,0 +1,240 @@
+1
+00:00:00,0 --> 00:00:06,884
+So let's talk about ISE preview priorities if I can get back to where my presentation was.
+
+2
+00:00:06,884 --> 00:00:13,884
+There we are. So one of the first things I want to do as you may have seen is
+
+3
+00:00:13,884 --> 00:00:20,884
+address as much high value UserVoice feedback as I can. I've started this work, but there's still a lot more
+
+4
+00:00:20,884 --> 00:00:22,884
+work to be done. I mean there's a lot of
+
+5
+00:00:22,884 --> 00:00:28,884
+issues that have been voted up on UserVoice and some of them are definitely possible, others not as possible.
+
+6
+00:00:28,884 --> 00:00:33,884
+I mean there's probably not going to be the likelihood that we're going to change sort of the UI model of the
+
+7
+00:00:33,884 --> 00:00:38,884
+ISE where you can sort of have Docking tabs and stuff just because it's a lot of extra work.
+
+8
+00:00:38,884 --> 00:00:48,884
+I think that ISE Steroids may solve that problem already. But just anything we can do that will be a general
+
+9
+00:00:48,884 --> 00:00:53,884
+productivity improvement or something that the ISE is lacking that other editors just sort of have by default,
+
+10
+00:00:53,884 --> 00:00:59,884
+definitely file feedback for that. What about little things like maybe let's say like where you draw your
+
+11
+00:00:59,884 --> 00:01:01,884
+bracket or whatever and you can't enter it. You know what I mean?
+
+12
+00:01:01,884 --> 00:01:06,884
+It goes like double does the line indents for you. Is it going to be like that stuff?
+
+13
+00:01:06,884 --> 00:01:12,884
+We can definitely look into it. I don't really know how much effort it would take, but definitely worth looking into.
+
+14
+00:01:12,884 --> 00:01:18,884
+So I don't know if there's already a UserVoice item for that, but if someone files it, we'll definitely look into it.
+
+15
+00:01:18,884 --> 00:01:25,884
+(Audience comment) Yeah, definitely that. (Audience comment) Yeah, pretty much every editor has the sort
+
+16
+00:01:25,884 --> 00:01:30,884
+of automatic indentation functionality, so this is something that is a little annoying whenever you go into
+
+17
+00:01:30,884 --> 00:01:37,884
+the ISE and it just doesn't have things like this. So basically, my plan is to work on the highest value
+
+18
+00:01:37,884 --> 00:01:44,884
+improvements that will address long-term pain points and the goal really isn't to make the ISE at the same
+
+19
+00:01:44,884 --> 00:01:48,884
+level as other editors that exist because you can just use the other editors instead, but it's just we want
+
+20
+00:01:48,884 --> 00:01:55,884
+to make this like really solid core editor with a really good extensibility so that the community can come
+
+21
+00:01:55,884 --> 00:02:01,884
+and add more features as necessary. So also, for new
+
+22
+00:02:01,884 --> 00:02:07,884
+feature development in the ISE preview and the full ISE, I'd like to focus on what we can add through the
+
+23
+00:02:07,884 --> 00:02:11,884
+ISE's add-on model to enable new features
+
+24
+00:02:11,884 --> 00:02:18,884
+to be added using our add-on APIs rather than being added into the ISE code base.
+
+25
+00:02:18,884 --> 00:02:24,884
+This may involve just some tadpole improvements here and there to our existing extensibility points,
+
+26
+00:02:24,884 --> 00:02:31,884
+but the goal would be just sort of enable new things that people can do to extend the life of the ISE by
+
+27
+00:02:31,884 --> 00:02:36,884
+adding new functionality. This is in the area that I'd really appreciate getting some feedback on UserVoice
+
+28
+00:02:36,884 --> 00:02:42,884
+about what new extensibility points would be helpful. I'm looking for a high value, low cost improvements
+
+29
+00:02:42,884 --> 00:02:48,884
+that will enable new types of extensibility in the ISE. There's also a new extensibility model that's coming,
+
+30
+00:02:48,884 --> 00:02:54,884
+which is complimentary to the ISE's add-on model, but I'll discuss that a little bit later.
+
+31
+00:02:54,884 --> 00:03:00,884
+So the biggest priority for the ISE is a gradual overhaul that brings in PowerShell Editor Services as their
+
+32
+00:03:00,884 --> 00:03:04,884
+core implementation for all this editor features.
+
+33
+00:03:04,884 --> 00:03:08,884
+This integration will be rolled out over time in a way that should minimize disruption to existing scenarios
+
+34
+00:03:08,884 --> 00:03:13,884
+while allowing everyone to try out the new features and provide feedback.
+
+35
+00:03:13,884 --> 00:03:20,884
+So generally speaking, what this means is that ISE, sorry, PowerShell Editor Services will basically provide
+
+36
+00:03:20,884 --> 00:03:28,884
+the host environment for PowerShell so that all the things like IntelliSense and code navigations, etc,
+
+37
+00:03:28,884 --> 00:03:33,884
+will be coming from there, rather than from the existing code base in the ISE and this will help in some ways
+
+38
+00:03:33,884 --> 00:03:38,884
+because currently we've got some sort of problems with the ISE code base where you might see things like
+
+39
+00:03:38,884 --> 00:03:46,884
+when it crashes or hangs and stuff like that really shouldn't be happening and it's due to sort of a bad
+
+40
+00:03:46,884 --> 00:03:51,884
+throating design, etc, but we can get away from a lot of those problems by shifting to a different core and
+
+41
+00:03:51,884 --> 00:03:57,884
+sort of refactoring the code that's already there. So as I mentioned earlier, the ISE preview release
+
+42
+00:03:57,884 --> 00:04:04,884
+contains an experimental PowerShell tab, which will be the basis for this conversion and this new tab we use
+
+43
+00:04:04,884 --> 00:04:11,884
+editor services to basically provide all these features. And since editor services currently doesn't support
+
+44
+00:04:11,884 --> 00:04:16,884
+as many features as the PowerShell ISE does, we'll have to continue to improve that support over time before
+
+45
+00:04:16,884 --> 00:04:21,884
+we actually make the Experimental tab the default. So remote session is just one thing.
+
+46
+00:04:21,884 --> 00:04:25,884
+We don't really support remote sessions yet. There may be some other little things here and there that I
+
+47
+00:04:25,884 --> 00:04:30,884
+haven't thought about, so we'll have to figure those things out sort of as the migration happens.
+
+48
+00:04:30,884 --> 00:04:39,884
+But once we make the Experimental tab actually the default tab, then we'll keep the old tab, the legacy tab
+
+49
+00:04:39,884 --> 00:04:44,884
+around just to have it there in case anyone hits an edge case in the behavior of the new implementation
+
+50
+00:04:44,884 --> 00:04:53,884
+so that it can use the old style tab for whatever it is they need to do.
+
+51
+00:04:53,884 --> 00:04:54,884
+And ultimately,
+
+52
+00:04:54,884 --> 00:04:59,884
+these improvements should be integrated back into the build of the ISE that we ship with Windows, but we still
+
+53
+00:04:59,884 --> 00:05:01,884
+haven't decided when and how we want to
+
+54
+00:05:01,884 --> 00:05:06,884
+accomplish this since shipping in box of Windows requires some extra work around quality, localization,
+
+55
+00:05:06,884 --> 00:05:13,884
+and other types of work. But the current plan is to try integrating new stable features from the preview
+
+56
+00:05:13,884 --> 00:05:19,884
+back into the built-in ISE sometime after the next Windows Server and client versions have been released,
+
+57
+00:05:19,884 --> 00:05:25,884
+so probably later this year sometime, way later this year. We want to make sure that whatever we end up
+
+58
+00:05:25,884 --> 00:05:30,884
+shipping is of high quality and has been put through as paces by the community just to make sure that it's
+
+59
+00:05:30,884 --> 00:05:34,884
+not going to be a problem when it's actually in box and it needs to be shipped, I mean sorry, it needs to be
+
+60
+00:05:34,884 --> 00:59:59,999
+supported for years and years.
+

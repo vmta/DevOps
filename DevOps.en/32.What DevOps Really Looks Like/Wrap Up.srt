@@ -1,0 +1,36 @@
+1
+00:00:00,0 --> 00:00:05,892
+Okay, a little bit of reading list here. There's a book called Continuous Delivery: Reliable Software
+
+2
+00:00:05,892 --> 00:00:10,892
+Releases through Build, Test, and Deployment Automation. The Visible Ops Handbook and then
+
+3
+00:00:10,892 --> 00:00:13,892
+The Phoenix Project, which is actually a really good read. Mark, you have a?
+
+4
+00:00:13,892 --> 00:00:21,892
+No, I don't, but done it. Are there cases where somebody's actually written a 5, 10, 15-page web services?
+
+5
+00:00:21,892 --> 00:00:26,892
+Here's a real example. These are the examples, these are the products, these are the scripts.
+
+6
+00:00:26,892 --> 00:00:28,892
+Like you said, start with something small.
+
+7
+00:00:28,892 --> 00:00:33,892
+Right. Yeah, so is there an example of somebody who's written something concise and small about this?
+
+8
+00:00:33,892 --> 00:00:41,892
+Spotify. Go punch in Spotify DevOps and they have reorganized their entire company along these lines.
+
+9
+00:00:41,892 --> 00:59:59,999
+So thanks guys. I'll see you around.
+

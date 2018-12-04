@@ -1,0 +1,216 @@
+1
+00:00:01,424 --> 00:00:09,424
+Yeah, now that we've experimented with hidden, I'm going to get into another example.
+
+2
+00:00:09,424 --> 00:00:21,424
+Let's create a VideoGameConsole. So a VideoGameConsole has what, a company that makes it, another string,
+
+3
+00:00:21,424 --> 00:00:32,424
+and a string that makes it and a name to it how about. So now we can actually go off and we can create
+
+4
+00:00:32,424 --> 00:00:47,424
+VideoGameConsole. Simple enough right? Let's create a constructor that does that, so Company and Name,
+
+5
+00:00:47,424 --> 00:00:58,424
+and then this.Company = Company and this.Name = Name. Alright, so now I can't create it without those two things.
+
+6
+00:00:58,424 --> 00:01:05,424
+But let's say we wanted to actually create a I guess more specific version of a VideoGameConsole, so just like
+
+7
+00:01:05,424 --> 00:01:14,424
+you can create a video game, let's extend from VideoGameConsole, which is our base class now.
+
+8
+00:01:14,424 --> 00:01:22,424
+So in this case, if I wanted to create an Xbox, what I can actually do is I can say VideoGameConsole and this
+
+9
+00:01:22,424 --> 00:01:29,424
+is the syntax that you use to actually extend from another class, so in this case, Xbox is a more specific
+
+10
+00:01:29,424 --> 00:01:34,424
+version of a VideoGameConsole. It's still a VideoGameConsole, but it has its own properties to it.
+
+11
+00:01:34,424 --> 00:01:40,424
+And you can see what's happening here is the base class VideoGameConsole does not contain the parameter of this constructor.
+
+12
+00:01:40,424 --> 00:01:47,424
+Just like we had an issue when we were calling new before, in this case, it can actually even define this new
+
+13
+00:01:47,424 --> 00:01:54,424
+class because it needs to call the correct constructor and since video or Xbox has a parameter
+
+14
+00:01:54,424 --> 00:02:03,424
+list constructor, it causes this error. So what we need to do is actually call the correct constructor for
+
+15
+00:02:03,424 --> 00:02:13,424
+the base class. So this is the syntax for that. So I say Microsoft Xbox and what this actually does,
+
+16
+00:02:13,424 --> 00:02:26,424
+Xbox, I think that's here. (Audience Comment) Parentheses after Xbox.
+
+17
+00:02:26,424 --> 00:02:35,424
+(Audience Comment) Oh, yeah duh. Thank you. Yeah. Alright, so you can't create a VideoGameConsole.
+
+18
+00:02:35,424 --> 00:02:39,424
+It still gives an error, but now I can create an Xbox because the Xbox because the Xbox actually passes in
+
+19
+00:02:39,424 --> 00:02:41,424
+the values to the
+
+20
+00:02:41,424 --> 00:02:46,424
+base classes constructor. It sets the values and then when it's written out to the screen, we can actually,
+
+21
+00:02:46,424 --> 00:02:48,424
+we have an Xbox.
+
+22
+00:02:48,424 --> 00:02:54,424
+And the thing about this is you can say, well is this a VideoGameConsole?
+
+23
+00:02:54,424 --> 00:02:59,424
+Of course it is. It comes from VideoGameConsole. But is this an Xbox?
+
+24
+00:02:59,424 --> 00:03:06,424
+Of course it is an Xbox because it's a more specific version of a VideoGameConsole.
+
+25
+00:03:06,424 --> 00:03:11,424
+So on the same vein, what we can do is you can actually create a new VideoGameConsole.
+
+26
+00:03:11,424 --> 00:03:27,424
+So if I wanted to create a Playstation, what I could do is replace all the important pieces and now I have Playstation.
+
+27
+00:03:27,424 --> 00:03:34,424
+So is a Playstation Xbox? No. But is a Playstation a VideoGameConsole?
+
+28
+00:03:34,424 --> 00:03:43,424
+Yes because they both inherit from the same base class. So one thing that VideoGameConsoles can do is they
+
+29
+00:03:43,424 --> 00:03:49,424
+can actually let's say draw their logo. So to draw a logo, what do we do?
+
+30
+00:03:49,424 --> 00:04:00,424
+We need to maybe find some ASCII drawing program on the internet that can convert logos into ASCII in PowerShell
+
+31
+00:04:00,424 --> 00:04:14,424
+and then maybe I have that snippet here. (Audience Comment) Alright, so the contents of a draw logo look like this.
+
+32
+00:04:14,424 --> 00:04:22,424
+They take in that ascii.ps1 file, they grab some Xbox.gif that I had sitting around, and then they call
+
+33
+00:04:22,424 --> 00:04:34,424
+that to actually draw this. So let's actually switch out here. Save this because one thing you'll notice is
+
+34
+00:04:34,424 --> 00:04:41,424
+I am using PSScriptRoot in this particular method and that's actually global scope variable for this
+
+35
+00:04:41,424 --> 00:04:50,424
+particular script, so that's why I had to save it. So now if I do, if I want to call that what I can use
+
+36
+00:04:50,424 --> 00:05:00,424
+down here is change this back to Xbox since that's where it's defined and DrawLogo, which is neat.
+
+37
+00:05:00,424 --> 00:05:14,424
+So save that and, oops don't, save that powershell MyDemo and that didn't work the same way that it worked last time.
+
+38
+00:05:14,424 --> 00:05:27,424
+(Audience comment) I would if it would draw in the ISE. Aw, that looks horrible.
+
+39
+00:05:27,424 --> 00:05:32,424
+But you can see it took the actual Xbox logo and it drew it in ASCII inside PowerShell.
+
+40
+00:05:32,424 --> 00:05:39,424
+Okay, kind of neat trick, but now let's say we want to go out and do the same thing in the Playstation class.
+
+41
+00:05:39,424 --> 00:05:44,424
+So like any good developer, what do we do? Copy and paste the code, put it in the Playstation class.
+
+42
+00:05:44,424 --> 00:05:53,424
+All we need to do, right, is change the Playstation logo. So let's say we have Playstation.png, change that,
+
+43
+00:05:53,424 --> 00:06:02,424
+let's change this to a Playstation, save it. We're on our little gimmick again and you can see it drew the
+
+44
+00:06:02,424 --> 00:06:06,424
+Playstation logo rather than the Xbox logo because it's a different class implements that.
+
+45
+00:06:06,424 --> 00:06:11,424
+Could you put that like in the base class and move that down so you can…
+
+46
+00:06:11,424 --> 00:06:21,424
+And for my next trick. So what we're going to do so that we don't need to do that is do exactly what you
+
+47
+00:06:21,424 --> 00:06:27,424
+just said is take that, put it the base class because we don't want to reimplement all that logic again, alright,
+
+48
+00:06:27,424 --> 00:06:37,424
+so that's why we do that. What we can do is actually make that hidden and then let's just have a file path here,
+
+49
+00:06:37,424 --> 00:06:42,424
+rather than having to pass in or have to reimplement all this logic over and over again.
+
+50
+00:06:42,424 --> 00:06:51,424
+What we can do is we can actually just call this. So get rid of all this and we can say this.DrawLogo,
+
+51
+00:06:51,424 --> 00:07:02,424
+pass in Xbox.gif, grab that, put that in Playstation as well, and now we don't have to worry about
+
+52
+00:07:02,424 --> 00:07:08,424
+reimplementing all that logic because twice as much code, twice as many bugs and you change that for whatever
+
+53
+00:07:08,424 --> 00:07:14,424
+reason you have to redo it over again. So you can see now it still works the exact same way, but all the
+
+54
+00:07:14,424 --> 00:59:59,999
+implementation details are up in the actual DrawLogo implementation inside VideoGameConsole.
+

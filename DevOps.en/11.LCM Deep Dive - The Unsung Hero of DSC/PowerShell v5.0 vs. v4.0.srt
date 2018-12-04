@@ -1,0 +1,200 @@
+1
+00:00:00,0 --> 00:00:05,259
+So after what you can do with the LCM, I want to talk a little bit about
+
+2
+00:00:05,259 --> 00:00:07,759
+how it works and we're going to take a little bit of
+
+3
+00:00:07,759 --> 00:00:13,759
+close look at things like this. Incoming communications to the LCM.
+
+4
+00:00:13,759 --> 00:00:17,759
+What are the requirements? What do you need to make sure you have in place so that this whole thing works?
+
+5
+00:00:17,759 --> 00:00:22,759
+All that the LCM requires is the WinRM Listeners. There's a myth that goes around a
+
+6
+00:00:22,759 --> 00:00:28,759
+lot and it makes sense because they're very closely connected, but a lot of people think you need full
+
+7
+00:00:28,759 --> 00:00:32,759
+PowerShell remoting in order to do Desired State Configuration and that is not true.
+
+8
+00:00:32,759 --> 00:00:38,759
+All you need is the WinRM Listeners. In fact, I had a few cases, actually on the plane coming to the conference
+
+9
+00:00:38,759 --> 00:00:45,759
+I had to restore one of my nodes to a snapshot, and I'm on a plane, I have no internet access, the system time
+
+10
+00:00:45,759 --> 00:00:51,759
+is out of whack, Kerberos authentication starts failing when I try and use PowerShell remoting, but I can
+
+11
+00:00:51,759 --> 00:00:58,759
+still push DSC to it. So it's definitely a myth. All you need are those WinRM Listeners.
+
+12
+00:00:58,759 --> 00:00:59,759
+The ports that
+
+13
+00:00:59,759 --> 00:01:07,759
+the LCM is going to communicate on, the WinRM ports, you have 5985 to HTTP, 5986 for HTTPS.
+
+14
+00:01:07,759 --> 00:01:11,759
+Now the protocols and the connectivity of it all is using
+
+15
+00:01:11,759 --> 00:01:21,759
+this CIM protocol through HTTP or HTTPS. CIM is really cool and it's something that we were starting to hear
+
+16
+00:01:21,759 --> 00:01:25,759
+a lot more about and I know Richard Siddoway did a whole session on it yesterday that unfortunately I wasn't
+
+17
+00:01:25,759 --> 00:01:34,759
+here for, but CIM stands for the Common Information Model. So this is an object-oriented data model for
+
+18
+00:01:34,759 --> 00:01:38,759
+describing various components of the enterprise. It's not limited to just computer stuff, even though that's
+
+19
+00:01:38,759 --> 00:01:45,759
+what we're using it for. This standard was created by the desktop management task force in the late 90s and
+
+20
+00:01:45,759 --> 00:01:51,759
+it's actually been in use ever since. Another three-letter acronym that we're hearing a lot with Desired
+
+21
+00:01:51,759 --> 00:01:56,759
+State Configuration is MOF and that stands for Managed Object Format.
+
+22
+00:01:56,759 --> 00:02:03,759
+This, the syntax that is use to represent CIM communications in DSC.
+
+23
+00:02:03,759 --> 00:02:09,759
+So when you're compiling your configurations and you're getting those MOF files, it's basically a packaged up
+
+24
+00:02:09,759 --> 00:02:17,759
+translated version of your commands that are ready to be sent over the wire to another node.
+
+25
+00:02:17,759 --> 00:02:22,759
+Now as unfamiliar as many people may be with these two acronyms is another three-letter acronym that I bet
+
+26
+00:02:22,759 --> 00:02:30,759
+everybody's familiar with. What's really interesting is that WMI is an implementation of CIM.
+
+27
+00:02:30,759 --> 00:02:32,759
+Now there's more to it and I don't know
+
+28
+00:02:32,759 --> 00:02:38,759
+all the details on this one, but I know that WMI rides on top of CIM traditionally with some extra stuff added
+
+29
+00:02:38,759 --> 00:02:39,759
+and here's kind of the way
+
+30
+00:02:39,759 --> 00:02:43,759
+that I like to think of it. CIM and MOF are kind of like abstract concepts.
+
+31
+00:02:43,759 --> 00:02:50,759
+They're standards that were developed and they're maintained by a body and WMI is a concrete implementation
+
+32
+00:02:50,759 --> 00:02:56,759
+that makes use of those things. Richard Siddoway is giving me a face.
+
+33
+00:02:56,759 --> 00:03:17,759
+Have I gotten it wrong? Close. Close. (Audience comment)
+
+34
+00:03:17,759 --> 00:03:24,759
+So let me see if I'm understanding you correctly. WMI is Microsoft's implementation of CIM and the new CIM
+
+35
+00:03:24,759 --> 00:03:30,759
+cmdlets that were introduced in PowerShell 3 are also CIM, but they're a separate CIM implementation?
+
+36
+00:03:30,759 --> 00:03:36,759
+Yeah. Okay. Well, you heard it here. (Audience comment) More standards in here?
+
+37
+00:03:36,759 --> 00:03:45,759
+Yeah. Okay. (Audience comment) Okay, see and this is why I'm sad that I missed a class yesterday because
+
+38
+00:03:45,759 --> 00:03:50,759
+I would have been able to fix my slides. (Audience comment) That's true.
+
+39
+00:03:50,759 --> 00:03:57,759
+So the analogy that I kind of use for myself trying to understand this because I look at things like HTTP and HTML.
+
+40
+00:03:57,759 --> 00:04:04,759
+They're abstract concepts. They are a standard, a protocol, and a language defined by, maintained by a body,
+
+41
+00:04:04,759 --> 00:04:08,759
+and then you have a product like IIS, which is Microsoft's implementation
+
+42
+00:04:08,759 --> 00:04:13,759
+of a product that uses these concepts. And another way that this analogy is helpful is that
+
+43
+00:04:13,759 --> 00:04:20,759
+IIS isn't the only web server out there. In the same way, WMI isn't the only CIM server that's out there.
+
+44
+00:04:20,759 --> 00:04:28,759
+OMI is the Open Management Infrastructure. This is an implementation of CIM open source and it runs on Linux.
+
+45
+00:04:28,759 --> 00:04:34,759
+That is how we can send configurations to an LCM running on a Linux machine and it's probably going to be the
+
+46
+00:04:34,759 --> 00:04:41,759
+same technology that we used to send configurations to the toaster as soon as we get that worked out.
+
+47
+00:04:41,759 --> 00:04:48,759
+As far as outgoing communications go, we know that the LCM will reach out for three different purposes in general.
+
+48
+00:04:48,759 --> 00:04:53,759
+It's going to go to a configuration repo, the resource repo, or a report server.
+
+49
+00:04:53,759 --> 00:04:59,259
+I'm not going to cover setting those up. Again, Jason Helmick's talk from earlier today, he did a great job of covering that.
+
+50
+00:04:59,259 --> 00:59:59,999
+Unfortunately, it's already passed, but check out his GitHub code and keep an eye out for a video on that.
+

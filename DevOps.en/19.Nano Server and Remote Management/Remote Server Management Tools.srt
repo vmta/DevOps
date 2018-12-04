@@ -1,0 +1,364 @@
+1
+00:00:00,0 --> 00:00:04,739
+So RSMT is one of the management options that I mentioned. So how many people have taken a look at RSMT?
+
+2
+00:00:04,739 --> 00:00:11,739
+Show of hands. Alright. How many people know what RSMT is, have heard of it?
+
+3
+00:00:11,739 --> 00:00:21,739
+Okay, so many more people. Great. So RSMT is a web-based portal to manage and it kind of includes
+
+4
+00:00:21,739 --> 00:00:26,739
+replacements for all of those local-only tools that you've either had to already PN or set up a remote
+
+5
+00:00:26,739 --> 00:00:33,739
+session to, so task manager, event viewer, device manager, control panel, even PowerShell, disk management,
+
+6
+00:00:33,739 --> 00:00:39,739
+File Explorer, all that stuff is there, and the team is continuing to greenlight more and more functionality.
+
+7
+00:00:39,739 --> 00:00:54,739
+So with that, I have a little video put together here that I'll walk us through of RSMT.
+
+8
+00:00:54,739 --> 00:01:01,739
+Alright. So this video is publicly available and there's a link to it at the end, but I just kind of wanted
+
+9
+00:01:01,739 --> 00:01:07,739
+to walk you guys through this. So RSMT as you can see in the nicely piece of portal that we've grown
+
+10
+00:01:07,739 --> 00:01:15,739
+accustomed to on Azure takes the server properties and then what you'll see here is a blade that shows you
+
+11
+00:01:15,739 --> 00:01:22,739
+all the details about that server. So you have the typical resource plan and IP info, you have blades for,
+
+12
+00:01:22,739 --> 00:01:27,739
+or you have all the performance information listed, and all the tools.
+
+13
+00:01:27,739 --> 00:01:35,739
+So here we'll step through kind of one by one to show you guys what you can see by RSMT, so OS info,
+
+14
+00:01:35,739 --> 00:01:41,739
+computer id info, so computer name, whether it's part of a workgroup or domain, you can change those settings
+
+15
+00:01:41,739 --> 00:01:46,739
+there as well without having to remote into the box or use any sort of remoting.
+
+16
+00:01:46,739 --> 00:01:55,739
+You can work with users by adding users there, network information is there, adapter info.
+
+17
+00:01:55,739 --> 00:01:59,739
+And then so if you look at each of these individual performance, you're actually getting a lot more
+
+18
+00:01:59,739 --> 00:02:02,739
+functionality than anywhere else we've been able to provide this stuff remotely,
+
+19
+00:02:02,739 --> 00:02:10,739
+so CPU information, network load info, memory use utility, usage, sorry, and disk metrics.
+
+20
+00:02:10,739 --> 00:02:15,739
+Disk metrics are turned off by default for performance, but you can enable those and start getting disk
+
+21
+00:02:15,739 --> 00:02:22,739
+metrics pulled in and there you go, so that's pulling off of the VM there.
+
+22
+00:02:22,739 --> 00:02:24,739
+And then for the tools, these are some of the tools I mentioned.
+
+23
+00:02:24,739 --> 00:02:31,739
+You can look at processes, you can search for processes, create process dumps and processes via this web UI.
+
+24
+00:02:31,739 --> 00:02:40,739
+You can also run new processes, so if you hit that Run Process button, type in the process you want to run,
+
+25
+00:02:40,739 --> 00:02:47,739
+hit OK, and it'll show back up there. You can add some more detail that isn't there by default, by using the
+
+26
+00:02:47,739 --> 00:02:53,739
+call and selector similar to how you would in Task Manager. And similarly with services, you have the
+
+27
+00:02:53,739 --> 00:03:01,739
+ability to start/stop/pause services, you can search for services, a really cool way to edit the registry,
+
+28
+00:03:01,739 --> 00:03:04,739
+so no more having to remote in or start a remote registry session.
+
+29
+00:03:04,739 --> 00:03:09,739
+You can go through here, search for whatever you need to change, whatever you need to add, gives you a nice
+
+30
+00:03:09,739 --> 00:03:16,739
+UI to do that stuff in. Adding roles and features is coming. For now, this just displays what's currently
+
+31
+00:03:16,739 --> 00:03:29,739
+enabled in remote PowerShell. So from a browser on whatever device you choose, you can remote PowerShell
+
+32
+00:03:29,739 --> 00:03:36,739
+into whatever box, in this case, this VM that we've got setup here and everything that you would expect about
+
+33
+00:03:36,739 --> 00:03:45,739
+discovery will also work. And you can see that it's following that same abuse of blade concept,
+
+34
+00:03:45,739 --> 00:03:50,739
+like the team has worked really hard to make this UIP as discoverable as possible.
+
+35
+00:03:50,739 --> 00:03:56,739
+Device Manager functionality works great. You can see devices. This is really good for debugging
+
+36
+00:03:56,739 --> 00:04:01,739
+environments or somewhere where you're trying to troubleshoot what's going on with the system.
+
+37
+00:04:01,739 --> 00:04:06,739
+Same principles that apply to maintaining systems in the cloud, kind of apply in the hybrid environment now.
+
+38
+00:04:06,739 --> 00:04:17,739
+And lastly, event viewer, so you can navigate through the event logs, can manipulate the query.
+
+39
+00:04:17,739 --> 00:04:20,739
+You mentioned File Explorer. Will that be available soon? Yeah, yeah.
+
+40
+00:04:20,739 --> 00:04:24,739
+So for the time being, since we're all PowerShell folks, you can do that stuff from the PowerShell prompt,
+
+41
+00:04:24,739 --> 00:04:29,739
+but there's two or three more tiles that are going to show up in the very near future.
+
+42
+00:04:29,739 --> 00:04:35,739
+Is there anything that they can't do in PowerShell that the basic UI will allow you to, like when you enable
+
+43
+00:04:35,739 --> 00:04:40,739
+disk metrics, can I turn that on via PowerShell? No. That has to be done through the UI because what it's
+
+44
+00:04:40,739 --> 00:04:44,739
+actually doing is reaching out to the agent on that
+
+45
+00:04:44,739 --> 00:04:51,739
+server. Firewall port that this used. Is this the standard PowerShell warning in our end?
+
+46
+00:04:51,739 --> 00:04:57,739
+So it's actually using an agent that you installed that configures that stuff for you and then you have the
+
+47
+00:04:57,739 --> 00:05:00,739
+ability to customize however you want it to connect, what port you want it to connect.
+
+48
+00:05:00,739 --> 00:05:04,739
+Yeah, yeah. You can definitely lock it down. (Audience question)
+
+49
+00:05:04,739 --> 00:05:08,739
+Sorry. Can you repeat questions? Can I repeat questions? Sure, sure, absolutely.
+
+50
+00:05:08,739 --> 00:05:11,739
+Are you going to interact with that agent that installed via PowerShell?
+
+51
+00:05:11,739 --> 00:05:14,739
+The question is are you able to interact with the agent via PowerShell.
+
+52
+00:05:14,739 --> 00:05:17,739
+So no. There isn't much interactivity for the agent. It's a base.
+
+53
+00:05:17,739 --> 00:05:22,739
+Is that planned? Yes, it is planned. Yeah. And when I say something is planned, I will caveat that it's
+
+54
+00:05:22,739 --> 00:05:26,739
+saying it's coming in an upcoming release of Nano Server, alright.
+
+55
+00:05:26,739 --> 00:05:32,739
+Is there an API exposed for this? Not currently, not currently.
+
+56
+00:05:32,739 --> 00:05:37,739
+Yep. Will this be available for Core as well or just Nano? Will this be available for Server Core?
+
+57
+00:05:37,739 --> 00:05:42,739
+It will be available for all flavors of Windows Server. Yep. The solution that you're trying in Azure,
+
+58
+00:05:42,739 --> 00:05:50,739
+so is this interface available for on-prem Nano or just Azure…? So you can actually connect it to whatever
+
+59
+00:05:50,739 --> 00:05:54,739
+you want in your hybrid environment locally, but it does run in Azure.
+
+60
+00:05:54,739 --> 00:05:59,739
+So you'd go into Azure, connect your computer to it, and then you can manipulate, or you could connect to it
+
+61
+00:05:59,739 --> 00:06:04,739
+even if it's a local machine. If it's off the internet right now, there is no way, but there is plans to try
+
+62
+00:06:04,739 --> 00:06:10,739
+and get this gateway service to run locally. How can you connect with a small IPM?
+
+63
+00:06:10,739 --> 00:06:15,739
+With IP address you can just define the same way we define that computer with the network it was in, you can just
+
+64
+00:06:15,739 --> 00:06:20,739
+define over the internet. (Audience question) Sorry? What ports are you using?
+
+65
+00:06:20,739 --> 00:06:25,739
+So I believe the RSMT team uses the default WINRM ports in addition to a couple of other.
+
+66
+00:06:25,739 --> 00:06:30,739
+I can get those details for you after. So is this available only if you have Azure?
+
+67
+00:06:30,739 --> 00:06:34,739
+It is only available with an Azure, yeah, with an Azure account right now.
+
+68
+00:06:34,739 --> 00:06:39,739
+Yep. Will the IOP web base in the interface follow this at some point?
+
+69
+00:06:39,739 --> 00:06:47,739
+Sorry, can you repeat the question? Will the IOT, the I-O-T management interface, will that follow along with this?
+
+70
+00:06:47,739 --> 00:06:53,739
+Or the two submerge? Yeah, the question is whether the IOT management interface will look like this.
+
+71
+00:06:53,739 --> 00:06:58,739
+I can't answer that question because I'm not part of the IOT team, but I can definitely get those details
+
+72
+00:06:58,739 --> 00:07:02,739
+for you if you want to sync up with me after this session. Okay.
+
+73
+00:07:02,739 --> 00:07:13,739
+Yes. Are there plans to manage any down rev operating systems? I can definitely reach out to the RSMT team
+
+74
+00:07:13,739 --> 00:07:16,739
+for you and get you the latest details on that if you want to sync up with me after.
+
+75
+00:07:16,739 --> 00:07:23,739
+Sure. Okay. Any other questions about RSMT? Yeah. I don't know if it's along the same lines, but do you
+
+76
+00:07:23,739 --> 00:07:30,739
+see does this support the server manager going to replace with short one larger?
+
+77
+00:07:30,739 --> 00:07:39,739
+The question is does this replace server manager? This is currently in addition to the management portfolio, right.
+
+78
+00:07:39,739 --> 00:07:45,739
+To answer your question, server manager is still there in the most recent server installs.
+
+79
+00:07:45,739 --> 00:07:55,739
+Yeah. Any other questions? Yeah. Are the clients just like RBAC just for the different toolsets?
+
+80
+00:07:55,739 --> 00:08:02,739
+Sorry, one more time? Is there an RBAC, like the role-based access control for the different rules that will be available?
+
+81
+00:08:02,739 --> 00:08:07,739
+You're talking about as to what you see here, like can you gray out certain functionality for a certain user?
+
+82
+00:08:07,739 --> 00:08:18,739
+Correct. There are plans to put segregated controls over certain functionality into the RSMT portal,
+
+83
+00:08:18,739 --> 00:08:22,739
+but I can't speak to when those will be in. Again, if you want to sync with me after, I can definitely give
+
+84
+00:08:22,739 --> 00:08:29,739
+you more details. Yes. So access control, does it have, can I, for example, have my own servers and my own
+
+85
+00:08:29,739 --> 00:08:37,739
+group, maybe someone outside of my organization access to manage a single server or do you do details on a single server?
+
+86
+00:08:37,739 --> 00:08:43,739
+Yeah. It would depend on. Sorry, the question is if you can have some sort of access where within a group
+
+87
+00:08:43,739 --> 00:08:48,739
+of servers you would have, give someone delegated access to one specific node, and yes, you could do that.
+
+88
+00:08:48,739 --> 00:08:56,739
+It'd be dependent on your infrastructure and how you're visible to the internet, but there's actually one or two
+
+89
+00:08:56,739 --> 00:09:01,739
+examples of that being done and if you want to sync with me after, I can share those with you as well.
+
+90
+00:09:01,739 --> 00:09:08,739
+Yeah. Any other questions about RSMT or anything we've covered so far?
+
+91
+00:09:08,739 --> 00:59:59,999
+Okay. Let's keep going.
+

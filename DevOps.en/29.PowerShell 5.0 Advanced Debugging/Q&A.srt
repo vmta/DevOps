@@ -1,0 +1,228 @@
+1
+00:00:00,0 --> 00:00:06,146
+So yeah, so any questions? Feel free to interject. There's time at the end also for questions.
+
+2
+00:00:06,146 --> 00:00:12,146
+What runspace are these in? Are these under a user runspace or a system runspace?
+
+3
+00:00:12,146 --> 00:00:17,146
+The question is what runspace they're in, the user runspace or a system runspace.
+
+4
+00:00:17,146 --> 00:00:24,146
+Are you talking about the credential context of which they are running?
+
+5
+00:00:24,146 --> 00:00:30,146
+So I send the same context that the host process was created, so it's running in that context.
+
+6
+00:00:30,146 --> 00:00:35,146
+So if it was created with admin credentials, it's that, or any other user credentials, it's that.
+
+7
+00:00:35,146 --> 00:00:40,146
+So as you, the way it actually works is when you create, you saw the runspaces and then you execute script
+
+8
+00:00:40,146 --> 00:00:49,146
+in that runspace, PowerShell spins up a thread and is the thread based on the process context.
+
+9
+00:00:49,146 --> 00:00:51,146
+Any other questions? Ah, yes.
+
+10
+00:00:51,146 --> 00:01:00,146
+If the runspace that you were attaching to was multithreaded using the .NET classes to create a multithread
+
+11
+00:01:00,146 --> 00:01:06,146
+call, will you be able to attach to the separate threads?
+
+12
+00:01:06,146 --> 00:01:13,146
+The question is if the runspace that you created was multithreaded, could you attach to each of the threads.
+
+13
+00:01:13,146 --> 00:01:21,146
+And the answer is that each runspace can only run in a single thread, so you can't have multiple threads.
+
+14
+00:01:21,146 --> 00:01:27,146
+And so the way that PowerShell does concurrency is per runspace.
+
+15
+00:01:27,146 --> 00:01:37,146
+So multiple threads in script is really not supported. It's just a single thread.
+
+16
+00:01:37,146 --> 00:01:42,146
+Are you talking about just creating a runspace tool rather than just using Visual runspace?
+
+17
+00:01:42,146 --> 00:01:51,146
+So currently one of the pieces of middleware that I have running uses the .NET class to create a thread pool
+
+18
+00:01:51,146 --> 00:01:52,146
+and then
+
+19
+00:01:52,146 --> 00:01:58,146
+the value is group memberships in parallel for each one in the thread pool.
+
+20
+00:01:58,146 --> 00:02:04,146
+Gotcha, gotcha. I understand. So yeah, so what you're saying is that inside your thread using .NET API to
+
+21
+00:02:04,146 --> 00:02:12,146
+create multiple threads and then execute matters code on each of those threads, and in order to, so now you're
+
+22
+00:02:12,146 --> 00:02:17,146
+outside of this script debugging. So in order to debug that, then you have to use a native or manage debugger
+
+23
+00:02:17,146 --> 00:02:29,146
+to debug those threads. PowerShell script debug is only for debugging script execution.
+
+24
+00:02:29,146 --> 00:02:30,146
+Any other questions? Oh.
+
+25
+00:02:30,146 --> 00:02:35,146
+But in that case, if you have a runspace pool, you would see all the runspaces in the pool and theoretically
+
+26
+00:02:35,146 --> 00:02:37,146
+be able to debug those?
+
+27
+00:02:37,146 --> 00:02:44,146
+That's a good question. The question is if you had a runspace pool, which is a construct that collects and
+
+28
+00:02:44,146 --> 00:02:51,146
+manages multiple runspaces that you would be able to see all of those runspaces and debug script in each one
+
+29
+00:02:51,146 --> 00:02:56,146
+of those and the answer is yes. When you do a get-runspace, all runspaces are created whether it's within a
+
+30
+00:02:56,146 --> 00:03:07,146
+pool or separately is shown and it's shown in the list until all those runspaces, those objects are disposed.
+
+31
+00:03:07,146 --> 00:03:15,146
+And as well, on jobs because jobs usually have a child job that's actually doing the work, so you have a double
+
+32
+00:03:15,146 --> 00:03:17,146
+set into those runspaces?
+
+33
+00:03:17,146 --> 00:03:27,146
+So the question is, how would you debug jobs. And I think the assumption is that jobs are running in multiple runspaces.
+
+34
+00:03:27,146 --> 00:03:36,146
+Actually, PowerShell jobs run in child processes and inside those child processes are created runspaces,
+
+35
+00:03:36,146 --> 00:03:45,146
+so it's done that for extra isolation, it's fairly heavyweight. And so, in order to debug, there's actually two ways.
+
+36
+00:03:45,146 --> 00:03:49,146
+In order to debug a job like that is that you could actually attach to that process and then find the
+
+37
+00:03:49,146 --> 00:03:58,146
+runspace and debug it, but there's also a way from the original client console to do a debug job.
+
+38
+00:03:58,146 --> 00:04:01,146
+So when you get a job object back, there's actually Debug-Job cmdlet.
+
+39
+00:04:01,146 --> 00:04:08,146
+I'm not talking about it in this talk, but you can debug the jobs through that way as well and it actually
+
+40
+00:04:08,146 --> 00:04:14,146
+goes through the PowerShell remoting and then talks to the child process.
+
+41
+00:04:14,146 --> 00:04:19,146
+Interestingly, actually I've created and I think other people have created thread jobs and what they are
+
+42
+00:04:19,146 --> 00:04:26,146
+lighter weight PowerShell jobs that don't run in a separate process, but run in a separate runspace and if you
+
+43
+00:04:26,146 --> 00:04:34,146
+use my thread jobs, then yes, when you run those scripts what it does is it creates new runspaces in which to
+
+44
+00:04:34,146 --> 00:04:39,146
+run those scripts and you will be able to see those and you can debug them using this technique.
+
+45
+00:04:39,146 --> 00:04:45,146
+Paul, is that available in your thread jobs? Is that in the gallery?
+
+46
+00:04:45,146 --> 00:04:51,146
+The question is that thread job available. I've been meaning to put it up on the gallery and I can't even
+
+47
+00:04:51,146 --> 00:04:57,146
+remember if I did or not. I think I did a few months ago, but if not, I will do it.
+
+48
+00:04:57,146 --> 00:05:02,146
+There are other people have done, I mean it's a common idea, other people have done the same thing.
+
+49
+00:05:02,146 --> 00:05:08,146
+What I did was make them as similar to other jobs, the only difference is that instead of running it in a child
+
+50
+00:05:08,146 --> 00:05:14,146
+process, it runs in a thread. The nice thing about that too is that the objects that you're dealing with are
+
+51
+00:05:14,146 --> 00:05:19,146
+live to that process. You don't have that serialization layer going from one process to another, and so the
+
+52
+00:05:19,146 --> 00:05:25,146
+objects are live and plus it's much faster too. You don't have that overhead of creating the child process.
+
+53
+00:05:25,146 --> 00:05:28,146
+So if that's in the gallery, is it called thread jobs?
+
+54
+00:05:28,146 --> 00:05:33,146
+I think it's called thread jobs, yeah. Look it up in the gallery.
+
+55
+00:05:33,146 --> 00:05:37,146
+I just can't remember. It's something I've been meaning to do and then you forget about it and then a month
+
+56
+00:05:37,146 --> 00:05:42,342
+or two later, it's like oh I should do that, and then I forget about it, but I think I did, but I'll make a
+
+57
+00:05:42,342 --> 00:59:59,999
+mental note to check that. Okay.
+

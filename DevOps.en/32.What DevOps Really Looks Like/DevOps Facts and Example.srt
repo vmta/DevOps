@@ -1,0 +1,268 @@
+1
+00:00:00,0 --> 00:00:04,927
+You are going to need tools though. You will either have to buy tools or build tools.
+
+2
+00:00:04,927 --> 00:00:10,927
+This is where the concrete implementation starts to come in because PowerShell it turns out is a great way to
+
+3
+00:00:10,927 --> 00:00:16,927
+build tools to help you achieve some of these goals and we'll talk about that.
+
+4
+00:00:16,927 --> 00:00:23,927
+Some DevOps facts. Puppet labs today a state of the DevOps report in 2015 and talked to a bunch of different
+
+5
+00:00:23,927 --> 00:00:31,927
+companies who are really, really all in with this approach, 60 times fewer failures, 60.
+
+6
+00:00:31,927 --> 00:00:37,927
+I want you to think of all the software deployment fails that you have had over the past year and if you're
+
+7
+00:00:37,927 --> 00:00:43,927
+thinking, yeah, it was about 60, well they just took it to 0. Sixty times fewer failures.
+
+8
+00:00:43,927 --> 00:00:47,927
+A hundred and sixty-eight times faster recovery when there is a failure.
+
+9
+00:00:47,927 --> 00:00:48,927
+Do that math.
+
+10
+00:00:48,927 --> 00:00:56,927
+If you had a failure that took 168 days to recover from, they just took it down to one day.
+
+11
+00:00:56,927 --> 00:01:04,927
+That's a hugely important fact because part of DevOps is accepting the fact that you will have failures.
+
+12
+00:01:04,927 --> 00:01:08,927
+You are going to screw something up just like you have always screwed things up.
+
+13
+00:01:08,927 --> 00:01:16,927
+This is just acknowledging it and getting to a point where you can recover fast enough that it's not so painful
+
+14
+00:01:16,927 --> 00:01:22,927
+when you fail. It's called fail with style. Okay.
+
+15
+00:01:22,927 --> 00:01:29,927
+They got 30 times more deployments in the field, 30 times. That means instead of deploying something once
+
+16
+00:01:29,927 --> 00:01:36,927
+per year, you deployed it once every couple of weeks, which means you're now moving features,
+
+17
+00:01:36,927 --> 00:01:42,927
+you're removing bugs, you're getting code out to where it needs to be, you've massively improved the agility
+
+18
+00:01:42,927 --> 00:01:48,927
+of the business and the businesses ability to respond to changing conditions because you can react much faster.
+
+19
+00:01:48,927 --> 00:01:52,927
+Two hundred times shorter lead for deploying.
+
+20
+00:01:52,927 --> 00:01:59,927
+If it used to take you 200 days to get completed code out into the field, now it takes you 1 day.
+
+21
+00:01:59,927 --> 00:02:04,927
+If it used to take you 200 hours, now it takes you 1 hour. These are a big, big deal.
+
+22
+00:02:04,927 --> 00:02:09,927
+I mean, this is a massive change and there's a lot of benefits, but you have to acknowledge a few things,
+
+23
+00:02:09,927 --> 00:02:16,927
+so let's run through a quick example. How many of you are familiar with Amazon Web Services Elastic Beanstalk?
+
+24
+00:02:16,927 --> 00:02:21,927
+Okay, just a few folks. Go read up on it. Now if your, oh my company will never, I don't care.
+
+25
+00:02:21,927 --> 00:02:29,927
+I'm not telling you to buy it. I'm telling you to go read up on it because this is the ideal text book definition
+
+26
+00:02:29,927 --> 00:02:36,927
+of what DevOps actually should look like. Amazon themselves has taken on the role of ops, they are the IT
+
+27
+00:02:36,927 --> 00:02:42,927
+operations department, and they have managed to remove almost all human interaction from the software
+
+28
+00:02:42,927 --> 00:02:48,927
+deployment process while still making it safe, fast, reliable, and predictable.
+
+29
+00:02:48,927 --> 00:02:50,927
+Here's how it works.
+
+30
+00:02:50,927 --> 00:02:54,927
+I'm a dev, okay. I'm writing my little web app that's going to get run in Amazon.
+
+31
+00:02:54,927 --> 00:03:00,927
+Let's say it's in a PHP or whatever goofy crap kids use these days.
+
+32
+00:03:00,927 --> 00:03:03,927
+As part of that,
+
+33
+00:03:03,927 --> 00:03:11,927
+in a little folder, I have a text file and the text file describes the type of environment that I want my app
+
+34
+00:03:11,927 --> 00:03:18,927
+to run in. Whatever packages I need, whatever add ins, whatever DLLs, or blah, blah, blah, blah, blah,
+
+35
+00:03:18,927 --> 00:03:25,927
+right, I need this much RAM, I need this type of processor, I need this type of OS, I need these things in it.
+
+36
+00:03:25,927 --> 00:03:30,927
+One of the biggest places where we fall down in deploying software, is that the damn developers never tell us
+
+37
+00:03:30,927 --> 00:03:33,927
+what's supposed to be running when we put it in production, right.
+
+38
+00:03:33,927 --> 00:03:39,927
+They sit in their little ivory tower world and are like oh wow my code didn't compile, oh I was missing this package,
+
+39
+00:03:39,927 --> 00:03:43,927
+I'll just install it. Look, it compiled and they don't ever clue us in the fact that package has to be there
+
+40
+00:03:43,927 --> 00:03:46,927
+for the code to work, right. And that's when we run into failure.
+
+41
+00:03:46,927 --> 00:03:51,927
+We push that sucker out live and it blows up into a million pieces because nobody actually wrote down what it
+
+42
+00:03:51,927 --> 00:03:57,927
+was we were supposed to deploying and when they do write it down, what's that deployment document look like?
+
+43
+00:03:57,927 --> 00:04:02,927
+You get like a Word doc, right, yeah it needs this and this and this or maybe it's a ticket.
+
+44
+00:04:02,927 --> 00:04:07,927
+It's not something we can consume easy. It's too easy for us to screw that up.
+
+45
+00:04:07,927 --> 00:04:15,927
+So in this model, the devs put a text document as part of their project and it's a text document I could read
+
+46
+00:04:15,927 --> 00:04:24,927
+and it's a text document that the computer can read. In Microsoft terms, we might call this a MOF, right.
+
+47
+00:04:24,927 --> 00:04:26,927
+So what happens is,
+
+48
+00:04:26,927 --> 00:04:31,927
+somebody says okay, let's deploy the app maybe to a test environment.
+
+49
+00:04:31,927 --> 00:04:40,927
+Maybe that's what we're going to do first. Amazon sucks in all the project code including that file,
+
+50
+00:04:40,927 --> 00:04:47,927
+it sets up the environment, it compiles the application, it injects the code into the virtual machine,
+
+51
+00:04:47,927 --> 00:04:50,927
+and then it starts running whatever automated tests you've set up.
+
+52
+00:04:50,927 --> 00:04:59,927
+This is key because the code only runs in an environment that was set up by the automation engine.
+
+53
+00:04:59,927 --> 00:05:05,927
+So if the developer forgot to specify something, his tests are going to fail and he can't just run in here
+
+54
+00:05:05,927 --> 00:05:10,927
+and oh yeah right, I forgot such and such a package. He's got to go back,
+
+55
+00:05:10,927 --> 00:05:15,927
+he's got to modify his configuration document to indicate what package was missing, he's got to
+
+56
+00:05:15,927 --> 00:05:19,927
+push the button again, the deployment engine will spin down the old environment and spin up a new
+
+57
+00:05:19,927 --> 00:05:27,927
+one that meets the new criteria, so by the time he gets it working, we know we've got this nailed.
+
+58
+00:05:27,927 --> 00:05:33,927
+So what Amazon literally does is you can ping their REST API or you can go into their dashboard and you can
+
+59
+00:05:33,927 --> 00:05:41,927
+say update app. It spins up however many virtual machines, sucks the source code into them,
+
+60
+00:05:41,927 --> 00:05:46,927
+configures those virtual machines, sets their memory, sets the processor class, installs whatever packages
+
+61
+00:05:46,927 --> 00:05:52,927
+you need, sets environment variables, registers those with the load balancer, deregisters the old ones,
+
+62
+00:05:52,927 --> 00:06:02,927
+and then destroys the old ones. Everything that we're used to doing manually, they just got as a bunch of Python scripts.
+
+63
+00:06:02,927 --> 00:06:08,927
+We might do that with a MOF.
+
+64
+00:06:08,927 --> 00:06:13,927
+Maybe we just tell the developer look I'm going to teach you how to write DSC configuration scripts and you're
+
+65
+00:06:13,927 --> 00:06:19,927
+going to draw up a DSC configuration script in as part of your project.
+
+66
+00:06:19,927 --> 00:06:26,927
+And we go to deploy your project, I'm going to take that and I'm going to use it to create a MOF and that's
+
+67
+00:06:26,927 --> 00:59:59,999
+how I'm going to configure the environment.
+

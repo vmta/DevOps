@@ -1,0 +1,316 @@
+1
+00:00:00,0 --> 00:00:15,044
+Alright, so let's come here and look at my accelerator tools. F8.
+
+2
+00:00:15,044 --> 00:00:26,044
+Oop, get the right line. So the first script I have here is a function called Get-CommandMetadata.
+
+3
+00:00:26,044 --> 00:00:32,044
+It kind of automates a lot of the steps that I just walked through.
+
+4
+00:00:32,044 --> 00:00:34,044
+I actually have two commands we're going to look at. This is the first one.
+
+5
+00:00:34,044 --> 00:00:41,044
+The second one takes this to a next level, but I want to show you this just so because this may be all you need
+
+6
+00:00:41,044 --> 00:00:51,044
+for some of your needs. So what this is going to do, and we'll just skip the help here, you have to specify
+
+7
+00:00:51,044 --> 00:01:02,044
+the name of a PowerShell command, you can specify the name of your new command if you want, and you can also
+
+8
+00:01:02,044 --> 00:01:09,044
+specify if you want to include dynamic parameters. Alright, so one thing I didn't talk about in my previous
+
+9
+00:01:09,044 --> 00:01:10,044
+examples,
+
+10
+00:01:10,044 --> 00:01:18,044
+a number of cmdlets have what are called dynamic parameters, which means you don't necessarily see them
+
+11
+00:01:18,044 --> 00:01:26,044
+unless some certain condition is met. It can make it tricky to try to identify those things when you're building
+
+12
+00:01:26,044 --> 00:01:32,044
+a proxy command or doing it in my copying command process I'm going to show you.
+
+13
+00:01:32,044 --> 00:01:39,044
+So I have a switch there that will say if there happened to be dynamic parameters, go ahead and include them as well.
+
+14
+00:01:39,044 --> 00:01:45,044
+I almost always when I run this include that because I don't know for a fact which command might have a
+
+15
+00:01:45,044 --> 00:01:53,044
+dynamic parameter or not. Now I do know through painful trial and error that a lot of the Active Directory
+
+16
+00:01:53,044 --> 00:02:03,044
+cmdlets or pretty much all of the parameters are dynamic for whatever reason that escapes me, the developers on
+
+17
+00:02:03,044 --> 00:02:07,044
+the AD team decided everything will be dynamic parameter.
+
+18
+00:02:07,044 --> 00:02:13,044
+So when I was building some proxy commands for some Active Directory tools, that's how I realized, oh I have to
+
+19
+00:02:13,044 --> 00:02:18,044
+include coverage for dynamic parameters and I'll show you how that works.
+
+20
+00:02:18,044 --> 00:02:28,044
+Alright, so I'm kind of stepping through. If I do include an alias for the command, then I just
+
+21
+00:02:28,044 --> 00:02:33,044
+resolve that command name because I need the actual underlying command in order to get all the command
+
+22
+00:02:33,044 --> 00:02:40,044
+information, not the alias. And you'll notice here for example, talking about my write-verbose, and when I
+
+23
+00:02:40,044 --> 00:02:45,044
+run this, I'll run it with verbose, so you can see I have a lot of verbose messages, so you can see if you
+
+24
+00:02:45,044 --> 00:02:51,044
+were running this what every step is doing. The other advantage, kind of a sidebar here, with the verbose
+
+25
+00:02:51,044 --> 00:02:54,044
+messages, documentation, right.
+
+26
+00:02:54,044 --> 00:03:01,044
+The message, as you're reading through the script you can see oh that's what this next section is going to do.
+
+27
+00:03:01,044 --> 00:03:08,044
+So if you build this all in as you're writing your script, when you're done, you've got your script documented
+
+28
+00:03:08,044 --> 00:03:15,044
+and you have useful feedback information for debugging and troubleshooting.
+
+29
+00:03:15,044 --> 00:03:28,044
+Alright, so we here on Line 65, we get that command Metadata. We saw that command before.
+
+30
+00:03:28,044 --> 00:03:41,044
+I then create the NewName. If you specify NewName, I'll do that, otherwise I'll just use the existing name.
+
+31
+00:03:41,044 --> 00:03:49,044
+Now this is kind of a tricky part. I had to add this from the Active Directory stuff.
+
+32
+00:03:49,044 --> 00:03:55,044
+It's very possible to have a command that when you get the command Metadata, there are no parameters.
+
+33
+00:03:55,044 --> 00:03:56,044
+That's what
+
+34
+00:03:56,044 --> 00:04:00,044
+happens with the Active Directory cmdlets. But there are parameters there, right?
+
+35
+00:04:00,044 --> 00:04:08,044
+But they're all dynamic. So I have some logic here that says if you do GetParamBlock and you find no parameters,
+
+36
+00:04:08,044 --> 00:04:13,044
+let's assume that there probably are some and let's automatically, even though you didn't specify it,
+
+37
+00:04:13,044 --> 00:04:17,044
+let's go ahead and get dynamic parameters. So I kind of
+
+38
+00:04:17,044 --> 00:04:23,044
+take advantage and so you don't have to remember to do it, I force you to do it.
+
+39
+00:04:23,044 --> 00:04:32,044
+Otherwise, you wouldn't see anything for it, at least the AD cmdlets.
+
+40
+00:04:32,044 --> 00:04:43,044
+So if you, once you do that, if you get those parameters, even though nothing shows, you can use the
+
+41
+00:04:43,044 --> 00:04:52,044
+Get-Enumerator and there is a property that you can eventually see of, it's a Boolean, of IsDynamic.
+
+42
+00:04:52,044 --> 00:04:59,044
+So if enumerate the properties, or I'm sorry, enumerate the parameters and I detect that some are dynamic,
+
+43
+00:04:59,044 --> 00:05:08,044
+I just add them to the hash table of my parameters property.
+
+44
+00:05:08,044 --> 00:05:15,044
+So it's my kind of work-a-round to look at what's dynamic and then manually, unless I kind of copy them,
+
+45
+00:05:15,044 --> 00:05:20,044
+up to the parent parameters hash table.
+
+46
+00:05:20,044 --> 00:05:30,044
+That way I can get all of the parameters. I get the command help.
+
+47
+00:05:30,044 --> 00:05:38,044
+Now I do this for you, no charge. Know the command help if I'm copying say Get-Service, all the examples will
+
+48
+00:05:38,044 --> 00:05:39,044
+all say Get-Service.
+
+49
+00:05:39,044 --> 00:05:45,044
+Well my command is going to be called Get-Myservice and I may want to use some of those same examples or some
+
+50
+00:05:45,044 --> 00:05:53,044
+of the other text in the description. So I use a the replace operator and just replace Get-Service with my NewName.
+
+51
+00:05:53,044 --> 00:06:03,044
+That seems pretty simple. Remember I'm lazy. I don't want to have to do a lot of hunting and replacing.
+
+52
+00:06:03,044 --> 00:06:18,044
+So let's do that. I also set the HelpUri to null. I then create the command metadata.
+
+53
+00:06:18,044 --> 00:06:27,044
+In this section here, okay hold on, it's regular expressions. Don't freak out.
+
+54
+00:06:27,044 --> 00:06:33,044
+I'm not going to try to teach you that pattern, just know that it works.
+
+55
+00:06:33,044 --> 00:06:39,044
+Huh? Yeah, I'm basically replacing the curly braces. I wrote this number years ago.
+
+56
+00:06:39,044 --> 00:06:45,044
+I might be able to refine that regex, but it works, so I'm just going to let it be.
+
+57
+00:06:45,044 --> 00:06:54,044
+So yeah, so I'm cleaning up because I also want the name to move up because I like having the string and then
+
+58
+00:06:54,044 --> 00:07:06,044
+the name of the variable or the name of the parameter. So that's my little magic to make that happen.
+
+59
+00:07:06,044 --> 00:07:18,044
+I also use a regex to find where that forwarded help, those forwarded help links are because I don't want them,
+
+60
+00:07:18,044 --> 00:07:29,044
+because I'm going to copy and paste the actual help. So I use regex to get rid of that and replace that.
+
+61
+00:07:29,044 --> 00:07:37,044
+Basically, wherever it finds the forwarded links, it just replaces it with null, basically deletes it.
+
+62
+00:07:37,044 --> 00:07:50,044
+And then, at this part here, building a here string, this is the new command and all I'm doing with the here
+
+63
+00:07:50,044 --> 00:07:57,044
+string is putting in all the information that I pulled from the proxy command and the parameters and just plugging
+
+64
+00:07:57,044 --> 00:08:05,044
+it in and that is saved to a variable. If you happen to run this in the PowerShell ISE, which I always do,
+
+65
+00:08:05,044 --> 00:08:15,044
+then I create a new tab and it inserts the text, otherwise, it just writes it to the pipeline and even create
+
+66
+00:08:15,044 --> 00:08:39,044
+an alias for my command. So let's not source that and I'm going to make a copy
+
+67
+00:08:39,044 --> 00:08:46,044
+of the, because I run Hyper-V, so I'm going to make a copy of the Get-VM cmdlet.
+
+68
+00:08:46,044 --> 00:08:51,044
+And I don't think it has any dynamic parameters, so I'm going to go ahead and do
+
+69
+00:08:51,044 --> 00:09:09,044
+dynamic, oh and let's, I said I was going to do this, let's turn on the -verbose and hopefully this will all work.
+
+70
+00:09:09,044 --> 00:09:13,044
+Alright, so there's all the verbose output so I can see if something had failed somewhere along the way I
+
+71
+00:09:13,044 --> 00:09:18,044
+would know at what point I had to go back and look. That's pretty simple.
+
+72
+00:09:18,044 --> 00:09:27,044
+So here is the final command. I'm going to, notice, see I called it Get-VM, notice in the help,
+
+73
+00:09:27,044 --> 00:09:34,044
+I changed all the help. I'm just going to hide the help for now.
+
+74
+00:09:34,044 --> 00:09:36,044
+Oh, I take that back. My little magic isn't
+
+75
+00:09:36,044 --> 00:09:44,044
+perfect. It does get rid of the curly braces, but it doesn't move it up.
+
+76
+00:09:44,044 --> 00:09:51,044
+So, that's not that bad. I just have to come here, hit Delete a couple times, clean this up the way I want
+
+77
+00:09:51,044 --> 00:10:01,044
+it to be. Those are all the parameters. And then I have the commands, the proxy command.
+
+78
+00:10:01,044 --> 00:10:02,044
+And so I've got the help,
+
+79
+00:10:02,044 --> 00:59:59,999
+it's all cleaned up, it has my names, all I have to do is again whittle away what I don't want and add what I do want.
+

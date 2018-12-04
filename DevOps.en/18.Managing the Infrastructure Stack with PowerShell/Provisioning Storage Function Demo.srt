@@ -1,0 +1,108 @@
+1
+00:00:00,0 --> 00:00:11,868
+There we go. Alright. So this function is designed to go through and basically it will when I work with
+
+2
+00:00:11,868 --> 00:00:16,868
+customers, a lot of them have used NFS or Fibre Channel and they're looking at size SCSI and they're like ugh,
+
+3
+00:00:16,868 --> 00:00:21,868
+I've got to provision all of this storage into my environment. I'm like ah, it's a piece of cake.
+
+4
+00:00:21,868 --> 00:00:28,868
+Here's a PowerShell function. That'll do it. But what I did here is I didn't want to just
+
+5
+00:00:28,868 --> 00:00:33,868
+create a bunch of volumes and then tell the VMware administrator that they existed.
+
+6
+00:00:33,868 --> 00:00:38,868
+So I wanted to do some things that were dynamic and I think it actually
+
+7
+00:00:38,868 --> 00:00:47,868
+ran, so but so what we're doing is we go in and when you run the function, you identify that this is the cluster
+
+8
+00:00:47,868 --> 00:00:54,868
+and give it a cluster name, how many volumes you want, the performance characteristics of it, is this for an
+
+9
+00:00:54,868 --> 00:01:00,868
+existing tenant like an existing account, is this a net new account, and then how do you want those organized
+
+10
+00:01:00,868 --> 00:01:05,868
+on the storage system. And then provisioning it all to the VStore cluster.
+
+11
+00:01:05,868 --> 00:01:15,868
+And so, let me make sure I'm logged into VStore environment. I'm not used to everybody watching me type.
+
+12
+00:01:15,868 --> 00:01:23,868
+Alright, and so what it does is when we go to set up, right, I'm collecting information as we go.
+
+13
+00:01:23,868 --> 00:01:32,868
+I'm collecting cluster information, I'm collecting host information, I'm creating targets, I collect the IQNs
+
+14
+00:01:32,868 --> 00:01:38,868
+from the storage system and I present them over to the VMware environment, alright, so there we go.
+
+15
+00:01:38,868 --> 00:01:47,868
+I need to add the IQNs from the ESXi host to the SolidFire storage system so that it goes and trusts that it
+
+16
+00:01:47,868 --> 00:01:53,868
+can connect to that and I'm leveraging multiple levels. So now I'm working on also doing some stuff with
+
+17
+00:01:53,868 --> 00:01:59,868
+Cisco UCS where you can kind of configure like if they want a specific VLAN to connect to all the stores,
+
+18
+00:01:59,868 --> 00:02:04,868
+things like that, and then go through and rescans and it connects.
+
+19
+00:02:04,868 --> 00:02:11,868
+So here you're adding the Datastores, you do a scan, identify the Datastores exist.
+
+20
+00:02:11,868 --> 00:02:20,868
+We're going to pull the volume name from the storage system, so we can make the Datastore match the volume
+
+21
+00:02:20,868 --> 00:02:23,868
+name that is on the storage system so that
+
+22
+00:02:23,868 --> 00:02:29,868
+it's easier for you to talk with your storage administrator about which system that you might need to change.
+
+23
+00:02:29,868 --> 00:02:33,868
+And then it just adds the Datastore. You create a new Datastore.
+
+24
+00:02:33,868 --> 00:02:41,868
+So you're dealing with multiple layers of the stack there and the bulk of the work in this is really
+
+25
+00:02:41,868 --> 00:02:47,868
+identifying those relationships. Like when something breaks, it's because I didn't map something correctly,
+
+26
+00:02:47,868 --> 00:03:01,868
+which is kind of what got me down this path. Let's see. Alright, and so now yeah, it's all disconnected.
+
+27
+00:03:01,868 --> 00:59:59,999
+That's sad.
+

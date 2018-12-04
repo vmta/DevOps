@@ -1,0 +1,156 @@
+1
+00:00:01,1 --> 00:00:04,778
+A few more quick things. So I already talked about try/catch and why they're important.
+
+2
+00:00:04,778 --> 00:00:12,778
+I'll skip over that. This is interesting. If you're working with arrays, this one bites people all the time.
+
+3
+00:00:12,778 --> 00:00:17,778
+If you're working with arrays and you're doing comparisons, make sure the thing you're comparing the array
+
+4
+00:00:17,778 --> 00:00:25,778
+with is on the left-hand side unless you explicitly want to be comparing the items in the array with or any
+
+5
+00:00:25,778 --> 00:00:36,778
+collection for that matter. So for example, looking at this code, I create an array and it's empty, so I'll do that.
+
+6
+00:00:36,778 --> 00:00:41,778
+And now I'm going to say $X = null to see if my array is null and I get back nothing.
+
+7
+00:00:41,778 --> 00:00:48,778
+I don't get back true and I don't get back false, I get back nothing because PowerShell reads this and says okay,
+
+8
+00:00:48,778 --> 00:00:53,778
+I'm going to take every item that is in the collection called X and I'm going to compare it with null,
+
+9
+00:00:53,778 --> 00:00:58,778
+and if it matches, I'll give it to you. But there was nothing there, so I get nothing.
+
+10
+00:00:58,778 --> 00:01:06,778
+So these kind of things that seem like they should work, don't, and it's a common source of problems in scripts.
+
+11
+00:01:06,778 --> 00:01:14,778
+But if I do it the other way, $Null = X, then it actually tells me if the X variable is null or not.
+
+12
+00:01:14,778 --> 00:01:17,778
+So understanding that difference with collections is key because you need to think about are you comparing
+
+13
+00:01:17,778 --> 00:01:22,778
+the content of the collection, or the collection itself, and what you want to do with it.
+
+14
+00:01:22,778 --> 00:01:27,778
+There are a few more examples of that right here that you can run through, more of the same thing, just showing
+
+15
+00:01:27,778 --> 00:01:36,778
+how that works. And I talked about if something returns more than one value and you're trying to---oh yeah,
+
+16
+00:01:36,778 --> 00:01:39,778
+so actually I talked about what particularly figuring out where stuff comes from and I'll show you this
+
+17
+00:01:39,778 --> 00:01:46,778
+example as well. When you run commands in PowerShell, this is especially true in PowerShell V3 and 4 because
+
+18
+00:01:46,778 --> 00:01:50,778
+5 does some stuff that makes this not so much an issue, but it still is there.
+
+19
+00:01:50,778 --> 00:01:57,778
+If I run a command that I want to have the results stored in an array, I will always, always, always wrap that
+
+20
+00:01:57,778 --> 00:02:02,778
+in array enclosures 100% of the time because it's the only way you're guaranteed it's always going to be an array.
+
+21
+00:02:02,778 --> 00:02:09,778
+If I call Get-VM and there's only one VM, the results come back, I have a single object not in array.
+
+22
+00:02:09,778 --> 00:02:15,778
+In PowerShell V5, I could do .Count and it'll work because they put stuff in to handle that, but not in 3 and
+
+23
+00:02:15,778 --> 00:02:20,778
+I don't think it's in 4. I don't remember when they added that, but just it's worth making sure if you want
+
+24
+00:02:20,778 --> 00:02:27,778
+an array, explicitly wrap in array. It doesn't cost anything. You just wrap it with, so I just do array
+
+25
+00:02:27,778 --> 00:02:33,778
+enclosures and that tells me that I'm getting something and if it's one, if it's many, I want an array.
+
+26
+00:02:33,778 --> 00:02:42,778
+So it's good to know that tip. And some of these are comments that you guys can read over here on your own
+
+27
+00:02:42,778 --> 00:02:50,778
+since I'm running out of time. The only other thing I'll talk about here, yeah so preference variables,
+
+28
+00:02:50,778 --> 00:02:57,778
+so Get-Variable-Name* Preference. Being aware of these is really important when you're debugging to figure
+
+29
+00:02:57,778 --> 00:03:04,778
+out how things, to control the flow of what's going on. ErrorActionPreference, in particular, can be really useful.
+
+30
+00:03:04,778 --> 00:03:09,778
+But with ErrorActionPreference, this is okay, ErrorActionPreference = Stop.
+
+31
+00:03:09,778 --> 00:03:16,778
+That's basically saying in my command, treat any error as a terminating error and stop running immediately or
+
+32
+00:03:16,778 --> 00:03:22,778
+this using PSDefaultParameterValues to do the same thing, but don't do this.
+
+33
+00:03:22,778 --> 00:03:27,778
+People will do this in commands and it's not the right thing to do, ErrorActionPreference = Continue because
+
+34
+00:03:27,778 --> 00:03:31,778
+you're telling PowerShell, I don't care what the error is even though this weird error is happening that I
+
+35
+00:03:31,778 --> 00:03:37,778
+know is okay, so that's why I'm doing this. Any other error out of the sun that comes up is going to go by,
+
+36
+00:03:37,778 --> 00:03:43,778
+unless it's an actual terminating error because of being wrapped inside a try/catch and it'll just continue execution.
+
+37
+00:03:43,778 --> 00:03:48,778
+So don't do that in your scripts. Make sure you're controlling it, either turning it, this is okay,
+
+38
+00:03:48,778 --> 00:03:56,778
+turning errors on a more strict scenario, not the opposite, or use -ErrorAction line by line for the
+
+39
+00:03:56,778 --> 00:59:59,999
+commands that you run.
+

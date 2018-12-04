@@ -1,0 +1,328 @@
+1
+00:00:00,0 --> 00:00:13,384
+and let's look at some magic here. Now even though I'm running PowerShell 5 on Windows 10,
+
+2
+00:00:13,384 --> 00:00:18,384
+everything I'm doing should run on Windows or PowerShell 3 even or later.
+
+3
+00:00:18,384 --> 00:00:24,384
+I tend to put a requirement of at least version 4 because I think everyone should be at least at version 4
+
+4
+00:00:24,384 --> 00:00:33,384
+at this point for anything running on your desktop. Yeah, there's nothing that I'm doing that is version 5 specific.
+
+5
+00:00:33,384 --> 00:00:38,384
+So if you're not at v5 yet, you don't have to worry about anything.
+
+6
+00:00:38,384 --> 00:00:51,384
+So let's kind of walk through all of this process. And let's just run Get-Command.
+
+7
+00:00:51,384 --> 00:00:57,384
+It's alright. So you all know Get-Command retrieves a command info object
+
+8
+00:00:57,384 --> 00:01:04,384
+about whatever command you specify. It can be either a cmdlet name or an alias or a function, in this case,
+
+9
+00:01:04,384 --> 00:01:05,384
+I just
+
+10
+00:01:05,384 --> 00:01:14,384
+am going to use the full cmdlet name. So we're going to start off by kind of looking at this proxy approach.
+
+11
+00:01:14,384 --> 00:01:28,384
+So I'm going to get the command Metadata for $C and that $cmd, that object now, is pretty rich.
+
+12
+00:01:28,384 --> 00:01:33,384
+There's a lot of actual useful stuff here that I think a lot of people skip.
+
+13
+00:01:33,384 --> 00:01:40,384
+Now I'm going to go through manually through a lot of these steps and then I'll show you my cheat,
+
+14
+00:01:40,384 --> 00:01:42,384
+my automation tool, which will
+
+15
+00:01:42,384 --> 00:01:51,384
+speed up the entire process. How different is the output from the command's metadata than just what you do
+
+16
+00:01:51,384 --> 00:01:58,384
+when you've looked at all the properties up in the service? Oh, back up at the command default.
+
+17
+00:01:58,384 --> 00:02:02,384
+It's the same information, but this object,
+
+18
+00:02:02,384 --> 00:02:08,384
+this automation command metadata, has some additional methods. Thank you.
+
+19
+00:02:08,384 --> 00:02:14,384
+Which we're going to take advantage of here. Right, so it's more than just the properties.
+
+20
+00:02:14,384 --> 00:02:22,384
+There are some methods to this object that we will invoke to make the magic happen.
+
+21
+00:02:22,384 --> 00:02:30,384
+So like any object, of course, you can drill down, so you can look at the parameters to get a hash table.
+
+22
+00:02:30,384 --> 00:02:35,384
+This will be the same type. You can get the same type of information by doing Get-Command and looking up the parameters.
+
+23
+00:02:35,384 --> 00:02:40,384
+It's still there. We're just looking at it at a different way.
+
+24
+00:02:40,384 --> 00:02:46,384
+And I'm showing you all of this so that you can understand where, when I get to copying and pasting,
+
+25
+00:02:46,384 --> 00:02:49,384
+where the data is coming from. Okay, so it's coming from objects
+
+26
+00:02:49,384 --> 00:02:56,384
+like this. And the, no actually, I'm going to take that back. I may have misspoken.
+
+27
+00:02:56,384 --> 00:03:17,384
+Let's pipe $cmd, Get-Member -Force. So actually the methods we're going to use are for a different class.
+
+28
+00:03:17,384 --> 00:03:28,384
+I misspoke. I'm an IT pro veteran. Not a developer veteran. So we're going to take advantage of the
+
+29
+00:03:28,384 --> 00:03:37,384
+System.Management.Automation.Proxy class and that has a static method called GetParamBlock and the parameter
+
+30
+00:03:37,384 --> 00:03:40,384
+we're going to specify is our command metadata.
+
+31
+00:03:40,384 --> 00:03:48,384
+So this is going to be another way of parsing that hash table of parameter information.
+
+32
+00:03:48,384 --> 00:03:50,384
+Let's see what that looks like.
+
+33
+00:03:50,384 --> 00:03:54,384
+Yet, you know, and if you have a laptop, you can follow along with some of this.
+
+34
+00:03:54,384 --> 00:03:59,384
+I'm not going to go really fast. So now we can see. Question.
+
+35
+00:03:59,384 --> 00:04:04,384
+Is this all going to work for homemade of cmdlets and modules, and well if I hook one up, to get that same
+
+36
+00:04:04,384 --> 00:04:10,384
+sort of result? Yeah. It should. If you have. I assumed it did, but I wanted to make sure.
+
+37
+00:04:10,384 --> 00:04:16,384
+I think the only thing I would make sure of, if you wanted to copy one of your functions, is I would make sure
+
+38
+00:04:16,384 --> 00:04:21,384
+that you are using a cmdlet binding attribute. All the advanced functions.
+
+39
+00:04:21,384 --> 00:04:26,384
+Right. Yeah, so but if you have an advanced function, but if the Get-Command doesn't really care,
+
+40
+00:04:26,384 --> 00:04:33,384
+it's going to still find the same information. Yeah and Get-Command works on simple functions also.
+
+41
+00:04:33,384 --> 00:04:38,384
+Right. I don't know, but the command metadata will work unless you're using that cmdlet.
+
+42
+00:04:38,384 --> 00:04:42,384
+I always use cmdlet binding attribute in my functions.
+
+43
+00:04:42,384 --> 00:04:48,384
+Anyway. So there is the parameter information. That's the parameter block.
+
+44
+00:04:48,384 --> 00:04:55,384
+Now there are some things there, we're going to copy this later and eventually you'll see how I fix this,
+
+45
+00:04:55,384 --> 00:05:01,384
+I'm not a big fan, for example, of the way that they layout the parameter names.
+
+46
+00:05:01,384 --> 00:05:07,384
+So instead of being $name, it's $ and then in curly braces and then name.
+
+47
+00:05:07,384 --> 00:05:08,384
+It works fine and I'm sure there's
+
+48
+00:05:08,384 --> 00:05:17,384
+a legitimate .NET reason for them to do that. I know one reason is if you have a parameter name with a space
+
+49
+00:05:17,384 --> 00:05:21,384
+you have to do that, but you don't build parameter names with spaces, right?
+
+50
+00:05:21,384 --> 00:05:28,384
+If you do. Then you get exactly what you deserve. Yeah, yeah.
+
+51
+00:05:28,384 --> 00:05:37,384
+But you can see I have all of the parameter attributes and the aliases, that's the type, so all the
+
+52
+00:05:37,384 --> 00:05:48,384
+information is right there. We can also use this class, and again, looking at the command, to get the
+
+53
+00:05:48,384 --> 00:05:56,384
+different blocks of the command. Now every cmdlet and advanced function is going to have three blocks,
+
+54
+00:05:56,384 --> 00:06:03,384
+right, your begin process and end ScriptBlock. So I can use this magic here and say what's in the begin ScriptBlock?
+
+55
+00:06:03,384 --> 00:06:08,384
+Remember, what we're looking at here is what is then going to end up in a proxy function.
+
+56
+00:06:08,384 --> 00:06:13,384
+Once we get to this in an ISE tab, I'll go through it in a bit more detail.
+
+57
+00:06:13,384 --> 00:06:27,384
+But there is the begin block. We then have the process block, which is really just running the command.
+
+58
+00:06:27,384 --> 00:06:37,384
+We'll come back to this in a moment. And of course, the end block.
+
+59
+00:06:37,384 --> 00:06:47,384
+We're just ending the pipeline. What's also nice is that we can get the help for the command.
+
+60
+00:06:47,384 --> 00:06:54,384
+We're going to again use this proxy command object, this class, and there was a method called GetHelpComments
+
+61
+00:06:54,384 --> 00:07:03,384
+and the parameter has to be the help content. So I'm just having kind of nested Get-Help command for Get-Service
+
+62
+00:07:03,384 --> 00:07:11,384
+and you could certainly use variables and when you see my acceleration tool that's what I'm doing.
+
+63
+00:07:11,384 --> 00:07:26,384
+What this will do is, well let's select that, run that, this gives you all of the help, basically, in a text format.
+
+64
+00:07:26,384 --> 00:07:31,384
+You see where this is going because I can now start getting the pieces I want and in essence copying and
+
+65
+00:07:31,384 --> 00:07:41,384
+pasting them into a new command. So if I'm. Yeah. Does this work with the commands with .NET?
+
+66
+00:07:41,384 --> 00:07:52,384
+No. No, this is only going to work for a cmdlet or a function. This won't work with any native .NET class like
+
+67
+00:07:52,384 --> 00:08:02,384
+the math class, for example. For something like that, you could look to classes in v5 and build something
+
+68
+00:08:02,384 --> 00:08:09,384
+new around that. If we have time, I have something that we can at least get a peek at to give you an idea
+
+69
+00:08:09,384 --> 00:08:14,384
+of what that might look like, but that's kind of we'll see how quickly we get through this.
+
+70
+00:08:14,384 --> 00:08:20,384
+Yeah, everything I'm showing you assumes that the command you are copying is just that, it's a command.
+
+71
+00:08:20,384 --> 00:08:29,384
+It's not a .NET class. So then if we wanted to, we could go ahead and create the actual proxy command.
+
+72
+00:08:29,384 --> 00:08:36,384
+This is the second line that I had in my slide and I'm just, I'm actually, I should change that because
+
+73
+00:08:36,384 --> 00:08:45,384
+actually I am using v5. I have some clipboard cmdlets now. (Audience Comment)
+
+74
+00:08:45,384 --> 00:08:52,384
+Yeah or you could just pipe it to clip, number of ways you could do it.
+
+75
+00:08:52,384 --> 00:09:06,384
+So now, if I come here do New, paste it in. So there's the proxy command that basically took, I wanted you to
+
+76
+00:09:06,384 --> 00:09:11,384
+see the different little pieces because eventually I'm going to break those out.
+
+77
+00:09:11,384 --> 00:09:16,384
+But if you just create the whole proxy command like I did there, then you get all of that.
+
+78
+00:09:16,384 --> 00:09:22,384
+So now all you have to do is just start whittling away or adding in what you need.
+
+79
+00:09:22,384 --> 00:09:31,384
+Okay. You okay June? Well I, so I've been writing proxy functions for years and I did not know this and
+
+80
+00:09:31,384 --> 00:09:37,384
+I've just been copying all this stuff. Yeah, thank you. Wow. Okay, okay.
+
+81
+00:09:37,384 --> 00:09:46,384
+It's the only way I know to create a proxy function. Now granted though, it's not necessarily documented very well.
+
+82
+00:09:46,384 --> 00:59:59,999
+Well not a lot of people know about it.
+

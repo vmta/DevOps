@@ -1,0 +1,368 @@
+1
+00:00:00,75 --> 00:00:09,509
+So then in my calling script over here, what I did was I took these files and I copied them from
+
+2
+00:00:09,509 --> 00:00:14,509
+there and I just put them out in my own GoateePFE AzureRM GitHub.
+
+3
+00:00:14,509 --> 00:00:19,509
+This is public and it's out there for you guys to use. So all these files that I'm showing you right now are
+
+4
+00:00:19,509 --> 00:00:26,509
+right here on the screen. So if you go out to github.com/GoateePFE/AzureRM,
+
+5
+00:00:26,509 --> 00:00:30,509
+you'll find these files and you can use them and tweak them up for your own purposes.
+
+6
+00:00:30,509 --> 00:00:37,509
+You can create a copy in your own GitHub and modify the configuration however you want and tweak a few things
+
+7
+00:00:37,509 --> 00:00:42,509
+and you can start spinning up your own domain controllers all day long, or if you're kind of lazy like me,
+
+8
+00:00:42,509 --> 00:00:46,509
+just run this one and just change the domain name. It doesn't have to be Alpine Ski House.
+
+9
+00:00:46,509 --> 00:00:52,509
+You can call it whatever you want and you can go in and edit things however you like and just make your own.
+
+10
+00:00:52,509 --> 00:00:59,509
+So you've got here the data file and then inside that zip, you're going to have the actual script file,
+
+11
+00:00:59,509 --> 00:01:08,509
+the ps1 configuration file and the resources in there. Alright so, basically all I'm doing then is I'm
+
+12
+00:01:08,509 --> 00:01:11,509
+taking that data, I threw it up on GitHub.
+
+13
+00:01:11,509 --> 00:01:16,509
+Now really and truly, you should put it in an Azure storage account where it's really secure and you're the
+
+14
+00:01:16,509 --> 00:01:21,509
+only person that can see it if you're going to use this in any kind of production capacity.
+
+15
+00:01:21,509 --> 00:01:29,509
+But all I did was I had to say Install-Module using the PowerShell get to pull down the Azure resource module,
+
+16
+00:01:29,509 --> 00:01:37,509
+install that, install AzureRM, and it goes out and it installs like 28 modules for you in AzureRM and this
+
+17
+00:01:37,509 --> 00:01:45,509
+all documented out there already. Install-Module Azure, Import-Modules are optional commands and then I just
+
+18
+00:01:45,509 --> 00:01:50,509
+log in, so really this is where it starts. I log into my AzureRM account.
+
+19
+00:01:50,509 --> 00:01:57,509
+So this is where---how many of you have an Azure account. Alright, you got a MSDN, your enterprise agreement
+
+20
+00:01:57,509 --> 00:02:03,509
+from Microsoft has Azure benefits, you can go get a trial. So as long as you've got some kind of account,
+
+21
+00:02:03,509 --> 00:02:07,509
+you just log in here, that's it. You put in your name and password.
+
+22
+00:02:07,509 --> 00:02:13,509
+In the past, you had to do all the subscription IDs and this jazz to try to run PowerShell commands against Azure.
+
+23
+00:02:13,509 --> 00:02:20,509
+Now this is all it takes. Log into my account, it knows all my stuff. I don't have to mess with all those extra parameters.
+
+24
+00:02:20,509 --> 00:02:30,509
+And so now, what I do is I give it the URL to my GitHub account and that azuredeploy.json file that I snagged
+
+25
+00:02:30,509 --> 00:02:39,509
+and edited out of that template library. And then I just---you can change these up.
+
+26
+00:02:39,509 --> 00:02:48,509
+I called mine GoateePSH and then RG for Resource Group, SA for Storage Account, and then AD for the DNS name.
+
+27
+00:02:48,509 --> 00:02:51,509
+So you can just tweak up those names right there, whatever you want to call those.
+
+28
+00:02:51,509 --> 00:02:57,509
+They do have to be lowercase and then you test their availability and make sure there's no DNS conflict there
+
+29
+00:02:57,509 --> 00:03:03,509
+in Azure and then you just create the resource group. So really what we're talking about to get this all
+
+30
+00:03:03,509 --> 00:03:09,509
+done is three commands, log in, create a resource group, and then you've got your parameters here pretty well
+
+31
+00:03:09,509 --> 00:03:13,509
+already populated, and then you just do the resource group deployment.
+
+32
+00:03:13,509 --> 00:03:21,509
+So three commands and in less than 30 minutes later, you've got a full-blown domain controller ready to bang on,
+
+33
+00:03:21,509 --> 00:03:27,509
+so those three commands. Now let's see, is it done? Let's take a look here.
+
+34
+00:03:27,509 --> 00:03:36,509
+It is. So let's take a look at the verbose output here. So here's the play by play on building it out.
+
+35
+00:03:36,509 --> 00:03:43,509
+We started at 3:05 PM and we scroll down. We saw it's deployed all these pieces.
+
+36
+00:03:43,509 --> 00:03:52,509
+It ends at 3:33 PM. I've noticed it takes 27-28 minutes on average for me and then it shows me at the very end,
+
+37
+00:03:52,509 --> 00:03:58,509
+here's my Azure resource group name and here are all the parameters that we passed in, here's the VNETs,
+
+38
+00:03:58,509 --> 00:04:09,509
+all that stuff, so it's done. It's baked. I've got a standard D1 Azure VM out there called adDC.
+
+39
+00:04:09,509 --> 00:04:18,509
+Now how do I get to it? Well, what I'm going to do is I'm going to use this GetAzureRM public IP address
+
+40
+00:04:18,509 --> 00:04:24,509
+cmdlet and I just give it the resource group name, grab the first VM that comes back from that here,
+
+41
+00:04:24,509 --> 00:04:30,509
+and so I'm going to grab the IP and the FQDN of that domain controller that I just spun up in Azure.
+
+42
+00:04:30,509 --> 00:04:36,509
+Now, the other Azure cmdlets have this command called Get-AzureRemoteDesktopFile.
+
+43
+00:04:36,509 --> 00:04:44,509
+I haven't found the equivalent of that for the RM set of cmdlets, so I'll I did was just do a Start-Process
+
+44
+00:04:44,509 --> 00:04:50,509
+on the RDP client and pass it in either the FQDN or the IP, either one.
+
+45
+00:04:50,509 --> 00:04:54,509
+It doesn't care that I pulled out of that other information there.
+
+46
+00:04:54,509 --> 00:05:06,509
+So now, I'm going to log in here as alpineskihouse/adadministrator.
+
+47
+00:05:06,509 --> 00:05:13,509
+In Azure, you can't use administrator for your AD name for your administrator account, so in this case,
+
+48
+00:05:13,509 --> 00:05:17,509
+the template said let's call it AD administrator and I'm fine with that.
+
+49
+00:05:17,509 --> 00:05:24,509
+And I'll put in my super-secret password here, make sure I type that exactly right.
+
+50
+00:05:24,509 --> 00:05:30,509
+Now this might take a minute connecting in for the first time. It's a brand new virgin VM out there in Azure.
+
+51
+00:05:30,509 --> 00:05:34,509
+It might just take a minute before it knocks the cobwebs out of its head
+
+52
+00:05:34,509 --> 00:05:37,509
+and it gets ready to roll. Here we go. It's spinning up.
+
+53
+00:05:37,509 --> 00:05:44,509
+So what you're watching on the screen right now is a brand new pristine Azure domain controller spinning up
+
+54
+00:05:44,509 --> 00:05:49,509
+for the very first time with an RDP session to it.
+
+55
+00:05:49,509 --> 00:06:01,509
+And here it goes. Let's take a look here. AlpineSkiHouse logging in and now I've been talking this whole
+
+56
+00:06:01,509 --> 00:06:07,509
+time for 37 minutes, but really when we started this whole thing, I just ran three commands.
+
+57
+00:06:07,509 --> 00:06:13,509
+And now, less than 30 minutes later, I've got a fully populated Active Directory domain controller ready for
+
+58
+00:06:13,509 --> 00:06:18,509
+me to script and do whatever I want to do to test, so I'm not doing those things in production, right,
+
+59
+00:06:18,509 --> 00:06:24,509
+so I can test now out here on a clean VM. So it's spinning up
+
+60
+00:06:24,509 --> 00:06:29,509
+and as usual, it's taking a minute just the first time for the server to wake up.
+
+61
+00:06:29,509 --> 00:06:34,509
+So what are the things we're looking for now? We want to go see,
+
+62
+00:06:34,509 --> 00:06:39,509
+first off, is it a domain controller, did it really work, did it promote my domain controller, is the data
+
+63
+00:06:39,509 --> 00:06:45,509
+there, do I have the OUs, the users, and groups, is the recycle bin enabled?
+
+64
+00:06:45,509 --> 00:06:49,509
+Alright, I want to see if this thing is actually configured the way we defined it in the configuration.
+
+65
+00:06:49,509 --> 00:06:55,509
+So I'm going to go over here to tools. First thing you'll notice right here, remember the Active Directory RSAT
+
+66
+00:06:55,509 --> 00:07:03,509
+we installed in the configuration. The RSATs there. So now I'm going to go over here to Active Directory,
+
+67
+00:07:03,509 --> 00:07:12,509
+let's see, Administrative Center. There we go. And the Administrative Center comes up, I click on my Tree view
+
+68
+00:07:12,509 --> 00:07:17,509
+over here because that's my favorite view, I click on the domain and over here on the right, first thing you'll
+
+69
+00:07:17,509 --> 00:07:23,509
+notice is it's grayed out where it says Enable AD Recycle Bin, it's already done because the configuration told
+
+70
+00:07:23,509 --> 00:07:29,509
+it to enable the recycle bin. Now right here in the front list, you can see there's an Accounting OU,
+
+71
+00:07:29,509 --> 00:07:35,509
+there's an IT OU, a marketing OU, an Operations OU. Let's drill into one of those and there we go,
+
+72
+00:07:35,509 --> 00:07:44,509
+Computers, Groups, and Users exist. Now my Users OU, there's Debbie and Harriet, and if I look in the groups
+
+73
+00:07:44,509 --> 00:07:50,509
+there's G_Operations, which matches the department name in the OU there.
+
+74
+00:07:50,509 --> 00:07:58,509
+I open that group and I look at the members in that group and there's Debbie and Harriet.
+
+75
+00:07:58,509 --> 00:08:07,509
+So I've got an OU that has a group that has users, users in the group all with DSC out-of-the-box.
+
+76
+00:08:07,509 --> 00:08:12,509
+Alright, now let's go down and take a look at the users default container.
+
+77
+00:08:12,509 --> 00:08:23,509
+Down here, I have TestUser1, TestUser2, TestUser3, 4, 5, TestGroup1, 2, 3, 4, 5, and if I look in TestGroup1,
+
+78
+00:08:23,509 --> 00:08:27,509
+there's a member TestUser1.
+
+79
+00:08:27,509 --> 00:08:34,509
+What do you think? (Applause) Does that look handy for you? Yep.
+
+80
+00:08:34,509 --> 00:08:41,509
+Alright. So we've now in three PowerShell commands, you run those commands before you go to your morning
+
+81
+00:08:41,509 --> 00:08:45,509
+status meeting, you come back from your status meeting, you've got a domain controller ready to bang on.
+
+82
+00:08:45,509 --> 00:08:48,509
+Alright, just like that.
+
+83
+00:08:48,509 --> 00:08:52,509
+And then when we're all done at the end of the day, we've got a couple things here that we can do.
+
+84
+00:08:52,509 --> 00:08:57,509
+Number one, if you've been in Azure very long, you've already learned this lesson the hard way.
+
+85
+00:08:57,509 --> 00:09:05,509
+Shut down your VMs at the end of every day, right. So you want to run this command, Get-AzureRmVM.
+
+86
+00:09:05,509 --> 00:09:12,509
+This makes it so easy using the new resource manager cmdlets. Give me all the VMs in my resource group and stop them.
+
+87
+00:09:12,509 --> 00:09:20,509
+Done. They're stopped for the day or I can literally just run this one command, Remove-AzureRmResourceGroup,
+
+88
+00:09:20,509 --> 00:09:29,509
+I want to run that. Bada bing, bada boom. And if I come over here to my Azure view, all my resources,
+
+89
+00:09:29,509 --> 00:09:34,509
+you can see I've got two of these out there. I've got the PSH one and the AD one.
+
+90
+00:09:34,509 --> 00:09:40,509
+I built one just as a fall back last night. But if I keep refreshing this view, you'll watch these resources
+
+91
+00:09:40,509 --> 00:09:50,509
+start to drop off as it deletes them when I'm removing the resource group, and so it's performing that target right then.
+
+92
+00:09:50,509 --> 00:59:59,999
+It's going to remove it and then we'll be all done.
+

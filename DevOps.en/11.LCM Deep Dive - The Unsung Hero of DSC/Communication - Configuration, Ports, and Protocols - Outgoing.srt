@@ -1,0 +1,828 @@
+1
+00:00:00,0 --> 00:00:01,783
+The ports on these are interesting.
+
+2
+00:00:01,783 --> 00:00:06,783
+So this is a port on a remote server that your node is going to contact, and generally, you're going to be
+
+3
+00:00:06,783 --> 00:00:12,783
+looking at port 8080 for your HTTP or your HTTPS and port 445,
+
+4
+00:00:12,783 --> 00:00:20,783
+139, whatever SMB is set up to use in your environment. Now 8080 is completely configurable, but it's the
+
+5
+00:00:20,783 --> 00:00:21,783
+only port I've ever
+
+6
+00:00:21,783 --> 00:00:27,783
+seen used in any of the examples, so it's the one that I continue to use, but obviously you can pick whichever
+
+7
+00:00:27,783 --> 00:00:30,783
+port you'd like. Now the protocols
+
+8
+00:00:30,783 --> 00:00:39,783
+that the remote servers, the server-side components that DSC use, is XML or JSON over the HTTP or HTTPS protocol
+
+9
+00:00:39,783 --> 00:00:43,783
+and I say or JSON because in working with the report server,
+
+10
+00:00:43,783 --> 00:00:50,783
+you can specify in your request headers that you'd like your output back in JSON format, but the default is XML.
+
+11
+00:00:50,783 --> 00:00:57,783
+Now I tried using Fiddler to capture some of the packets that were being sent to the configuration repository,
+
+12
+00:00:57,783 --> 00:01:06,783
+but I am not good enough at configuring certificates and getting you'd have to get WMI in secured with SSL
+
+13
+00:01:06,783 --> 00:01:09,783
+in order to be able to run through a local, oh it was a nightmare.
+
+14
+00:01:09,783 --> 00:01:13,783
+Like I said, I'm a software engineer. I'm not very good at that end of things.
+
+15
+00:01:13,783 --> 00:01:20,783
+If somebody would like to help me with that, I'd be happy to lend my coding skills and capture some of these packets.
+
+16
+00:01:20,783 --> 00:01:32,783
+(Audience comment) Oh okay. (Audience comment) I own the whole domain.
+
+17
+00:01:32,783 --> 00:01:37,783
+I'll give it a shot later on. We'll see if we can get it to work.
+
+18
+00:01:37,783 --> 00:01:42,783
+So actually what I want to take a look at now, I want to take a closer look the CIM objects.
+
+19
+00:01:42,783 --> 00:01:50,783
+So you can use the Get-CimClass cmdlet to get the actual CIM class that is used to represent the LCM and it's
+
+20
+00:01:50,783 --> 00:01:55,783
+full of these methods like SendConfigurationApply, Test-Configuration, ApplyConfiguration, which sound a
+
+21
+00:01:55,783 --> 00:02:02,783
+heck of a lot like the things that we make the LCM do every day and it's actually very true because if you
+
+22
+00:02:02,783 --> 00:02:09,783
+look at the cmdlets and their verbose output, we have the Start-DscConfiguration cmdlet, it's actually just
+
+23
+00:02:09,783 --> 00:02:15,783
+invoking SendConfigurationApply. It's invoking the CIM method and passing it all the parameters and the
+
+24
+00:02:15,783 --> 00:02:18,783
+payload that it needs to apply this configuration. Now
+
+25
+00:02:18,783 --> 00:02:23,783
+this is actually a reason I was trying to track it in Fiddler. I was able to call some of the CIM methods
+
+26
+00:02:23,783 --> 00:02:29,783
+directly by using the Invoke-CimMethod cmdlet, but I wanted to try SendConfigurationApply and I could not
+
+27
+00:02:29,783 --> 00:02:34,783
+figure out for the life of me how to encode the payload, the actual MOF file.
+
+28
+00:02:34,783 --> 00:02:39,783
+I can get content on it all day long, but I was just getting errors left and right.
+
+29
+00:02:39,783 --> 00:02:42,783
+Maybe someday I'll be able to figure that out. I thought that would have been a nice little thing to be able
+
+30
+00:02:42,783 --> 00:02:50,783
+to show, but oh well. So my other example, Set-DscLocalConfigurationManager.
+
+31
+00:02:50,783 --> 00:02:59,783
+That's the cmdlet you use to update the LCM settings. It's just calling another CIM method on the LCM CIM class.
+
+32
+00:02:59,783 --> 00:03:04,783
+A couple of things that's important to remember about the communication of the LCM, obviously you have to get
+
+33
+00:03:04,783 --> 00:03:10,783
+all of your ports and your listeners configured correctly or nothing's going to work.
+
+34
+00:03:10,783 --> 00:03:15,783
+Every aspect of the communication for LCM, especially if you just came from Lee Holmes' talk where we're
+
+35
+00:03:15,783 --> 00:03:21,783
+talking about security, this will be on your mind. You can encrypt and use SSL on all of this stuff.
+
+36
+00:03:21,783 --> 00:03:27,783
+It's just really annoying to set up like most things with certificate, at least from my perspective.
+
+37
+00:03:27,783 --> 00:03:32,783
+And lastly, it's great to know what's going on behind the scenes, it's great to understand that CIM is what's
+
+38
+00:03:32,783 --> 00:03:39,783
+driving all of this, but in general, try to stick to the cmdlets, that's why they're there.
+
+39
+00:03:39,783 --> 00:03:44,783
+Next, I want to talk a little bit about logging. The LCM does do some logging, quite a bit of logging actually,
+
+40
+00:03:44,783 --> 00:03:50,783
+and if you're using the event viewer, this is kind of the folder path you can use to find where the DSC logs
+
+41
+00:03:50,783 --> 00:03:55,783
+are kept, but this is PowerShell summit, so we're not going to use the event viewer.
+
+42
+00:03:55,783 --> 00:04:00,783
+We're going to use Get-WinEvent obviously, which is very similar, although you'll notice the actual log name
+
+43
+00:04:00,783 --> 00:04:04,783
+is a bit different. And so what I did is
+
+44
+00:04:04,783 --> 00:04:11,783
+I took a snippet of log entries. So we're going to buy time and I used the timestamps to kind of like grab a
+
+45
+00:04:11,783 --> 00:04:17,783
+batch out of what the LCM was doing and I want to run through real quick what it did.
+
+46
+00:04:17,783 --> 00:04:23,783
+So we can see DSC timer is running some method. So one of the timers fired and it's calling this
+
+47
+00:04:23,783 --> 00:04:30,783
+PerformRequiredConfigurationChecks with the flag of 1. Cool. It's woken up the LCM.
+
+48
+00:04:30,783 --> 00:04:37,783
+Now we've got this job GUID, which is cool and we'll see this GUID a lot because it's on every entry
+
+49
+00:04:37,783 --> 00:04:40,783
+associated with this job. So we're doing a consistency check
+
+50
+00:04:40,783 --> 00:04:48,783
+or a pull started by computer null, which makes sense because it's fired by the timer, not an actual user.
+
+51
+00:04:48,783 --> 00:04:52,783
+We're running a consistency engine. We're checking our resources and you can actually see I was testing my
+
+52
+00:04:52,783 --> 00:04:58,783
+partial configurations here. Ran successfully. Awesome. You have a question?
+
+53
+00:04:58,783 --> 00:05:05,783
+Yeah. That timer is not a scheduled job, is it? I don't believe it is, but I don't know for sure.
+
+54
+00:05:05,783 --> 00:05:08,783
+I think it started that way, but somebody told me that it changed.
+
+55
+00:05:08,783 --> 00:05:10,783
+Actually, yeah, I think you're right. I remember hearing that as well.
+
+56
+00:05:10,783 --> 00:05:17,783
+Again, I don't know for a 100%, but I believe you're correct. (Audience comment)
+
+57
+00:05:17,783 --> 00:05:24,783
+Because that was one of the original problems I ran into trying to do a presentation last year where because
+
+58
+00:05:24,783 --> 00:05:32,783
+they were scheduled jobs, after a reboot, things would just kind of hang for a bit, so I had to alter my demo.
+
+59
+00:05:32,783 --> 00:05:40,783
+But so now, in V5 they are not scheduled jobs anymore. So now we've run our job and we get a nice summary
+
+60
+00:05:40,783 --> 00:05:44,783
+of everything, so we can see configuration mode was apply and monitor.
+
+61
+00:05:44,783 --> 00:05:49,783
+That's the check we just ran. We're monitoring. We can see what's set forth, that it's set for push,
+
+62
+00:05:49,783 --> 00:05:53,783
+a lot of information available to us. But now, as we kind of
+
+63
+00:05:53,783 --> 00:05:59,783
+climb back up that call stack, DscTimer successfully finished and now it's making another call.
+
+64
+00:05:59,783 --> 00:06:06,783
+We're calling PerformRequiredConfigurationChecks again, this time with the flag set to 5.
+
+65
+00:06:06,783 --> 00:06:11,783
+Down the call stack, we start something, we finish something, and then the LCM shuts down.
+
+66
+00:06:11,783 --> 00:06:16,783
+So what the heck was that? PerformRequiredConfigurationChecks was a method it called both times.
+
+67
+00:06:16,783 --> 00:06:23,783
+So I pulled it up on the MSDN documentation and I didn't get much farther.
+
+68
+00:06:23,783 --> 00:06:26,783
+But and I checked that this morning.
+
+69
+00:06:26,783 --> 00:06:29,783
+The page still looks like that and I'm not trying to call anybody out.
+
+70
+00:06:29,783 --> 00:06:36,783
+I'm not trying to be mean. But, (Audience comment) I looked for the Contribute button because throughout the
+
+71
+00:06:36,783 --> 00:06:41,783
+process of building this talk, I actually fixed a couple of typos in the DSC documentation since it's all on
+
+72
+00:06:41,783 --> 00:06:47,783
+GitHub, but this, unfortunately is not available on GitHub or I would suggest some updates to it.
+
+73
+00:06:47,783 --> 00:06:53,783
+But through all the experimentation that I've done and all of the verbose output that has scrolled passed my eyes,
+
+74
+00:06:53,783 --> 00:06:57,783
+I know that the parameter, the flags parameter set to one is the
+
+75
+00:06:57,783 --> 00:07:04,783
+configuration mode action. So that first longer set of log entries was when the configuration mode timer
+
+76
+00:07:04,783 --> 00:07:09,783
+fired and we performed out configuration mode action of apply and monitor.
+
+77
+00:07:09,783 --> 00:07:15,783
+The parameter five, which is what was used for the second one, is what is for the refresh mode action.
+
+78
+00:07:15,783 --> 00:07:21,783
+Now we saw in our log output that the refresh mode was set to push, which means the refresh mode action
+
+79
+00:07:21,783 --> 00:07:28,783
+doesn't really do anything. So actually that log is just showing us that both timers both happen to fire off
+
+80
+00:07:28,783 --> 00:07:32,783
+at the same time.
+
+81
+00:07:32,783 --> 00:07:37,783
+Now there are two other event logs related to DSC that can be useful if you need them.
+
+82
+00:07:37,783 --> 00:07:42,783
+There's the analytic log and the debug log. I went and I grabbed the similar snippet for this about the
+
+83
+00:07:42,783 --> 00:07:46,783
+same timestamps and the analytic log had two entries
+
+84
+00:07:46,783 --> 00:07:54,783
+and the debug log had quite a few more entries. So there is a ton of data available if you need it.
+
+85
+00:07:54,783 --> 00:07:58,783
+The important thing to remember about these two is that they're not enabled by default, so you can use these
+
+86
+00:07:58,783 --> 00:08:05,783
+commands to turn those logs on and start getting that output from then on.
+
+87
+00:08:05,783 --> 00:08:08,783
+To remember about logging, again, only the operation
+
+88
+00:08:08,783 --> 00:08:15,783
+log is enabled by default. That GUID that we saw applies to every unique job.
+
+89
+00:08:15,783 --> 00:08:21,783
+In Acme, I forgot to mention it, but the two separate PerformRequiredConfigurationChecks calls, they each got
+
+90
+00:08:21,783 --> 00:08:24,783
+their own separate GUID. So you can always use that GUID to
+
+91
+00:08:24,783 --> 00:08:30,783
+tie a job to itself. Moreover, that GUID is the same across all
+
+92
+00:08:30,783 --> 00:08:36,783
+three event logs. So if you wanted, you could have them all running, get all the WinEvents, put them all
+
+93
+00:08:36,783 --> 00:08:43,783
+together and sort them by time to get a really nice, full and complete overview of an individual job.
+
+94
+00:08:43,783 --> 00:08:46,783
+And lastly, and this was a suggestion from one of my coworkers,
+
+95
+00:08:46,783 --> 00:08:52,783
+don't forget to turn off the debug log when you're done because it is pretty verbose.
+
+96
+00:08:52,783 --> 00:08:59,783
+So let's see. I've got a little bit of time left. Do people have a lot questions?
+
+97
+00:08:59,783 --> 00:09:03,783
+Because if so, I can skip some of these differences and we can start doing some questions, but if you guys
+
+98
+00:09:03,783 --> 00:09:10,783
+are good, I'll go more into these differences. I have a question. So our session today goes on…
+
+99
+00:09:10,783 --> 00:09:16,783
+Well I don't want to keep everybody. I know we've got some drinking and relaxing and hanging out everybody to do.
+
+100
+00:09:16,783 --> 00:09:26,783
+I'll run through them. (Audience comment) Sure. So it's important to note, I'm not hitting all of these changes.
+
+101
+00:09:26,783 --> 00:09:31,783
+I just picked out some of the most significant ones, especially as it relates to affecting the LCM.
+
+102
+00:09:31,783 --> 00:09:37,783
+So some of the new or updated cmdlets, we have the Get-DscConfigurationStatus cmdlet.
+
+103
+00:09:37,783 --> 00:09:43,783
+This is a new cmdlet and it gives you access to the new status data that they'd made available on the LCM,
+
+104
+00:09:43,783 --> 00:09:48,783
+so this will tell you if it's idle, if it's in the middle of applying a configuration, if it's got a
+
+105
+00:09:48,783 --> 00:09:56,783
+pending configuration and what the results of previous configuration actions were.
+
+106
+00:09:56,783 --> 00:10:07,783
+Next, we have… Yeah. So I noticed that if I do an update configuration that I can't go and test the configuration
+
+107
+00:10:07,783 --> 00:10:13,783
+until that completes. Does this command run if that's the process?
+
+108
+00:10:13,783 --> 00:10:24,783
+No. No. No. Yeah, I believe it will come back and tell you the LCM is busy and you'll get an error.
+
+109
+00:10:24,783 --> 00:10:32,783
+(Audience comment) Right, because you have to wait for it to resolve.
+
+110
+00:10:32,783 --> 00:10:47,783
+(Audience comment) Nope. That's all you get unfortunately.
+
+111
+00:10:47,783 --> 00:10:53,783
+The Publish-DscConfiguration cmdlet that we saw using partial configurations, that is a brand new cmdlet,
+
+112
+00:10:53,783 --> 00:10:59,783
+that didn't use to exist before and I think that's a really cool way of perhaps staggering some updates.
+
+113
+00:10:59,783 --> 00:11:04,783
+If you've got multiple nodes and they're all in push mode, you don't have to send and immediately
+
+114
+00:11:04,783 --> 00:11:09,783
+ApplyConfiguration, you can publish that configuration to all the nodes and wait for the timers to fire
+
+115
+00:11:09,783 --> 00:11:16,783
+because they'll probably fire at different times, so you can kind of save yourself a bit of an update storm.
+
+116
+00:11:16,783 --> 00:11:22,783
+Next, we have the Update-DscConfiguration cmdlet. This is another brand new one and this is one that I wish
+
+117
+00:11:22,783 --> 00:11:28,783
+I had last year when I was preparing for a DSC talk because I had to figure out how to manually trigger some
+
+118
+00:11:28,783 --> 00:11:34,783
+of these updates. You can use the Update-DscConfiguration cmdlet to force an update if you, like let's say
+
+119
+00:11:34,783 --> 00:11:40,783
+you just push a Meta Config to your LCM to put it in pull mode. That's all well and good, but it doesn't do
+
+120
+00:11:40,783 --> 00:11:44,783
+anything after that. It just says okay I'm in pull mode now and then it waits for the timers to fire.
+
+121
+00:11:44,783 --> 00:11:50,783
+But you can use Update-DscConfiguration to tell it no, update now and it will go ahead and run the
+
+122
+00:11:50,783 --> 00:11:57,783
+appropriate CIM actions and get you your pull configurations. The next cmdlet is an updated cmdlet.
+
+123
+00:11:57,783 --> 00:12:05,783
+Test-DscConfiguration used to exist, but it used to be that all you could use it for was testing the LCM's current configuration.
+
+124
+00:12:05,783 --> 00:12:12,783
+Now what they've added is the ability to give it a configuration to use for testing and this is really cool
+
+125
+00:12:12,783 --> 00:12:19,783
+because it allows you to inspect the state of a node without going anywhere near touching its state or
+
+126
+00:12:19,783 --> 00:12:26,783
+updating it at all. So whatever configuration you give to Test-DscConfiguration, it'll reach out to the node
+
+127
+00:12:26,783 --> 00:12:31,783
+and it will basically perform a consistency check and check all the resources in your configuration for
+
+128
+00:12:31,783 --> 00:12:37,783
+compliance and give you a report back on it and that's it. So you could actually build multiple health check
+
+129
+00:12:37,783 --> 00:12:42,783
+configurations to use in your environment and just pull them up as you need and say even hey this machine
+
+130
+00:12:42,783 --> 00:12:48,783
+is not responding correctly. Let's say I've got a XenApp form. We do a lot of Citrix at my company.
+
+131
+00:12:48,783 --> 00:12:51,783
+I want to make sure all the appropriate Citrix services are running.
+
+132
+00:12:51,783 --> 00:12:56,783
+I could build a configuration that says this and this and this service should all be running and boom,
+
+133
+00:12:56,783 --> 00:13:00,783
+test configuration out to that machine and see what's going on. I don't have to do anything more.
+
+134
+00:13:00,783 --> 00:13:04,783
+I don't have to remote into it, I don't have to REP to it, I can get some quick data, and I know I'm not
+
+135
+00:13:04,783 --> 00:13:10,783
+affecting the state. How is that parameterized? How do you get it that information?
+
+136
+00:13:10,783 --> 00:13:16,783
+Trying to think. I think there were two ways to do it. You could give it the name of a compile configuration.
+
+137
+00:13:16,783 --> 00:13:22,783
+So you could, just like you were going to apply it, have a configuration run it into memory, call it with the
+
+138
+00:13:22,783 --> 00:13:28,783
+machine name and then pass that in, pass the MOF file in. And I think there was a second way to do it,
+
+139
+00:13:28,783 --> 00:13:32,783
+but I can't remember off the top of my head how that one worked.
+
+140
+00:13:32,783 --> 00:13:41,783
+Another new cmdlet is Invoke-DscResource. This cmdlet gives you direct access to ADSC resource in a configuration.
+
+141
+00:13:41,783 --> 00:13:46,783
+So let's say you don't want to look at the whole configuration. You know that there is one register resource
+
+142
+00:13:46,783 --> 00:13:52,783
+in there that you're concerned with. You can directly access the Get, Set, and Test methods of that resource
+
+143
+00:13:52,783 --> 00:13:59,783
+using this cmdlet. This is way more fine-grain access than we ever used to have to DSC.
+
+144
+00:13:59,783 --> 00:14:04,783
+And the last one, this is another cmdlet that already existed, but has gotten a nice update.
+
+145
+00:14:04,783 --> 00:14:10,783
+Like we were saying before, the Get-DscConfigurationStatus cmdlet, if it's going to tell you nope, the LCM is
+
+146
+00:14:10,783 --> 00:14:15,783
+busy, you've got to wait, Set-DscLocalConfigurationManager will do much the same thing.
+
+147
+00:14:15,783 --> 00:14:20,783
+So if I'm trying to take my node and make it a pull mode and change the configuration it's got, but it's in
+
+148
+00:14:20,783 --> 00:14:24,783
+the middle of applying another configuration, well I'm about to change the configuration.
+
+149
+00:14:24,783 --> 00:14:31,783
+I don't care what it's doing. I want to force it to stop what it's doing and change its settings now.
+
+150
+00:14:31,783 --> 00:14:38,783
+Guess what parameter they added? Force. So you can now use the force parameter to cancel any
+
+151
+00:14:38,783 --> 00:14:43,783
+action that the LCM is in the middle of and immediately apply your new settings.
+
+152
+00:14:43,783 --> 00:14:49,783
+There are also some new or updated properties on the LCM itself. The first is the AgentId.
+
+153
+00:14:49,783 --> 00:14:53,783
+This is going to come into play a lot when we're using reporting servers.
+
+154
+00:14:53,783 --> 00:14:59,783
+The AgentId is a GUID, it's automatically generated, and you can use it to uniquely identify your node.
+
+155
+00:14:59,783 --> 00:15:00,783
+In the past,
+
+156
+00:15:00,783 --> 00:15:06,783
+pull server configurations used to be identified by GUID and you would use that configuration id on your LCM
+
+157
+00:15:06,783 --> 00:15:12,783
+configuration to tell it what configuration to get. When that node reported to the report server,
+
+158
+00:15:12,783 --> 00:15:18,783
+it would report based on the configuration id, meaning that if you wanted to get distinct reports for every
+
+159
+00:15:18,783 --> 00:15:24,783
+node, you had to create a separate configuration with a separate configuration id for every node.
+
+160
+00:15:24,783 --> 00:15:29,783
+They've done a lot of work on updating that. Now you have the AgentId and you can uniquely identify all your
+
+161
+00:15:29,783 --> 00:15:35,783
+nodes and report on each of them. The LCM state properties, which were added, offer
+
+162
+00:15:35,783 --> 00:15:42,783
+basically a view of the most recent Get-DscConfigurationStatus, so they'll tell you what it was up to and
+
+163
+00:15:42,783 --> 00:15:47,783
+what the result was. The RefreshMode value of Disabled is actually new.
+
+164
+00:15:47,783 --> 00:15:55,783
+It didn't use to exist. It used to just be push and pull. And if you can believe it, the timers used to be
+
+165
+00:15:55,783 --> 00:16:00,783
+required to be multiples of each other, so you'd have to have 15 and 30, 20 and 40, and I don't know the
+
+166
+00:16:00,783 --> 00:16:05,783
+reasoning behind it, but they have adjusted that, so now that's no longer a requirement.
+
+167
+00:16:05,783 --> 00:16:10,783
+Another difference between 4 and 5 is the way you build your Meta Configurations.
+
+168
+00:16:10,783 --> 00:16:16,783
+I was saying before about when you use the DscLocalConfigurationManager attribute, PowerShell won't let you
+
+169
+00:16:16,783 --> 00:16:24,783
+use regular resources. In v4, you could, you didn't have to, but you could mix and match those resources and
+
+170
+00:16:24,783 --> 00:16:31,783
+have a regular configuration that when you compiled it, or when you invoked it with your machine name and all
+
+171
+00:16:31,783 --> 00:16:37,783
+your other parameters, it would create 2 MOF files. It would create the regular MOF file and a MetaMOF file
+
+172
+00:16:37,783 --> 00:16:43,783
+because you had used the LCM settings resources in there. They've really split that out.
+
+173
+00:16:43,783 --> 00:16:49,783
+And they also added the other resources that allow you to specify your repositories and your report servers,
+
+174
+00:16:49,783 --> 00:16:54,783
+which is much cleaner and more modular and allows you to specify multiples, which I think a lot of people are
+
+175
+00:16:54,783 --> 00:16:58,783
+going to find themselves doing, so it's great that they built it this way.
+
+176
+00:16:58,783 --> 00:17:03,783
+And as I was saying, it gives you a better distinction from your standard configurations, so there's a little
+
+177
+00:17:03,783 --> 00:17:06,783
+bit less confusion there.
+
+178
+00:17:06,783 --> 00:17:12,783
+I touched on this a little bit talking about the AgentId. So in the past, DSC configurations used to require
+
+179
+00:17:12,783 --> 00:17:20,783
+you to use a GUID for the name or pull configurations. But now, you can just use the friendly name because
+
+180
+00:17:20,783 --> 00:17:27,783
+the AgentId has taken that place of a GUID in a sense and the LCM will just reference the friendly name and
+
+181
+00:17:27,783 --> 00:17:32,783
+use that to figure out where the configuration is. Because moving from a GUID to a friendly name makes
+
+182
+00:17:32,783 --> 00:17:37,783
+things a little more transparent. They also introduce the concept of the RegistrationKey.
+
+183
+00:17:37,783 --> 00:17:43,783
+RegistrationKey is something that you set up on your pull server and it is a secure string, generally,
+
+184
+00:17:43,783 --> 00:17:50,783
+out of the examples I've seen people are using a GUID, that you're nodes must specify when they try to
+
+185
+00:17:50,783 --> 00:17:56,783
+register with a pull server. So it's basically saying hey I want to go to this configuration repository and
+
+186
+00:17:56,783 --> 00:18:02,783
+I want to get configuration blah. The pull server is not going to let me set up into pull mode unless I give
+
+187
+00:18:02,783 --> 00:18:07,783
+it the right RegistrationKey. This is just to provide a little bit of extra security so that people can't
+
+188
+00:18:07,783 --> 00:18:12,783
+very easily go snooping around your pull service to see what configurations you have and start to decipher
+
+189
+00:18:12,783 --> 00:18:15,783
+how you configure and implement your architecture on your network.
+
+190
+00:18:15,783 --> 00:18:22,783
+So does that only happen is when you set it up, it actually goes and connects to it right there.
+
+191
+00:18:22,783 --> 00:18:25,783
+Yes. Which is different, right, which is kind of cool because you get to see wow it's connected.
+
+192
+00:18:25,783 --> 00:18:29,783
+Now I know it's actually connected to my pull server. And you'll see it in the verbose output too.
+
+193
+00:18:29,783 --> 00:18:34,783
+It'll say successfully registered with pull server. Yeah, that's what I'm saying, so my question is,
+
+194
+00:18:34,783 --> 00:18:40,783
+is that the only time it does that because is there now like a certificate handshake between those two that
+
+195
+00:18:40,783 --> 00:18:46,783
+they use after that? The RegistrationKey is only used that once and if you look at the LCM configuration,
+
+196
+00:18:46,783 --> 00:18:52,783
+it actually gets blanked out after that, so I don't know the details, but there is some sort of an established
+
+197
+00:18:52,783 --> 00:18:58,783
+relationship from there. I think the node's AgentId gets registered internally on the pull server,
+
+198
+00:18:58,783 --> 00:19:02,783
+and so they're able to kind of bypass that pass phrase step in the future.
+
+199
+00:19:02,783 --> 00:19:06,783
+I didn't realize they have it blanked out. I never look at that before.
+
+200
+00:19:06,783 --> 00:19:10,783
+Yeah. That makes more sense because to me in my mind I was thinking well if it's still there,
+
+201
+00:19:10,783 --> 00:19:13,783
+then what difference does it really make? Right. It's there for every time.
+
+202
+00:19:13,783 --> 00:19:18,783
+Then anybody could go on and look at it and see that number. When the Jet database is used or
+
+203
+00:19:18,783 --> 00:19:24,783
+is that with the RegistrationKey in that Jet database. In the Jet database on the pull server-side?
+
+204
+00:19:24,783 --> 00:19:32,783
+Okay. Let's see. Partial configurations are also, those are brand new in version 5.
+
+205
+00:19:32,783 --> 00:19:36,783
+I don't have a ton to say about them. This is kind of a completely new concept.
+
+206
+00:19:36,783 --> 00:19:41,783
+But I think they're pretty cool, and again, they can help you with a lot of your large-scale work.
+
+207
+00:19:41,783 --> 00:59:59,999
+So to kind of wrap things up.
+

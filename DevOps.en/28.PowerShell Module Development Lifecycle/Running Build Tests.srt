@@ -1,0 +1,264 @@
+1
+00:00:00,0 --> 00:00:06,209
+Remember that we have a broken project right now, we have no tests that are running during the build.
+
+2
+00:00:06,209 --> 00:00:12,209
+So this would be a great opportunity to actually run some tests as part of our build to make sure that
+
+3
+00:00:12,209 --> 00:00:15,209
+whenever a developer checks something in, it's not broken.
+
+4
+00:00:15,209 --> 00:00:22,209
+So what we can do is update our yml file, so let me do that. We come back over here, you can see that I have
+
+5
+00:00:22,209 --> 00:00:28,209
+added a few more steps to our yml file. The first step is that we need to install Pester.
+
+6
+00:00:28,209 --> 00:00:36,209
+The AppVeyor image that's running, I think it was like 2012 R2 without Pester installed, but what's really
+
+7
+00:00:36,209 --> 00:00:39,209
+nice is it comes prepackaged with a bunch of other software including Chocolatey.
+
+8
+00:00:39,209 --> 00:00:45,209
+So since it has Chocolatey installed, we can actually just say send this to Pester, it'll go up to the Chocolatey
+
+9
+00:00:45,209 --> 00:00:52,209
+package repository, download Pester, install it, and it's available for us to run tests against.
+
+10
+00:00:52,209 --> 00:00:55,209
+And then the other section that I added was this test script section.
+
+11
+00:00:55,209 --> 00:01:01,209
+So test scripts run after the build steps, so if you go look at the AppVeyor documentation, there's all these
+
+12
+00:01:01,209 --> 00:01:06,209
+different steps that the build process actually takes and the last one that it'll take before deployment is a
+
+13
+00:01:06,209 --> 00:01:10,209
+test, I guess test up. So in this case,
+
+14
+00:01:10,209 --> 00:01:14,209
+we're specifying that we want to run a test script because by default what it's trying to do is it's trying
+
+15
+00:01:14,209 --> 00:01:21,209
+to find .NET assemblies that contain either NUnit or MS Tests in them and then it'll run those automatically.
+
+16
+00:01:21,209 --> 00:01:27,209
+Well in this case, we kind of have to do some special scripting to get this to work.
+
+17
+00:01:27,209 --> 00:01:37,209
+So the first line here is, actually stole this from Warren Cookie Monster to do this because it works really well.
+
+18
+00:01:37,209 --> 00:01:43,209
+And the first step here is to invoke Pester, so we just call Invoke-Pester on the current path and then we
+
+19
+00:01:43,209 --> 00:01:47,209
+want to output it as an NUnitXml file. So
+
+20
+00:01:47,209 --> 00:01:53,209
+NUnit, like I said, is a .NET-based unit testing project, but it has kind of like a standard format that lots
+
+21
+00:01:53,209 --> 00:01:58,209
+of systems integrate with including AppVeyor. So it's really nice that Pester has that because it can
+
+22
+00:01:58,209 --> 00:02:06,209
+integrate with things like AppVeyor and TFS and all that kind of stuff because they know how to consume that particular format.
+
+23
+00:02:06,209 --> 00:02:12,209
+I also want to pass it through into a variable so that I can check the actual status later in this script.
+
+24
+00:02:12,209 --> 00:02:17,209
+The next thing that I want to do is create a new WebClient and upload this file to AppVeyor
+
+25
+00:02:17,209 --> 00:02:25,209
+and they have a really nice like API, like a REST API that you can deal with for doing all kinds of stuff
+
+26
+00:02:25,209 --> 00:02:30,209
+like setting different things that appear in the build and uploading tests like this.
+
+27
+00:02:30,209 --> 00:02:35,209
+So this actually, you go out to the URL, it's /testresult/nunit and then use another one of those built-in
+
+28
+00:02:35,209 --> 00:02:39,209
+variables, environment variables for the job id. So then AppVeyor, yep go ahead.
+
+29
+00:02:39,209 --> 00:02:42,209
+I have a stupid question. Where is this stuff running from?
+
+30
+00:02:42,209 --> 00:02:45,209
+This is running, I think AppVeyor is hosted in Azure.
+
+31
+00:02:45,209 --> 00:02:50,209
+Alright, yeah so now we're going to find this test result file, upload it up to AppVeyor.
+
+32
+00:02:50,209 --> 00:02:55,209
+We use the JOB_ID to associate this file back to our job. So
+
+33
+00:02:55,209 --> 00:02:59,209
+once it's uploaded, then it actually will parse that XML file, discover all the tests listed in there,
+
+34
+00:02:59,209 --> 00:03:05,209
+and then you can kind of see a nice little GUI in AppVeyor for the tests.
+
+35
+00:03:05,209 --> 00:03:08,209
+The last line is we want to actually fail the build if the tests fail.
+
+36
+00:03:08,209 --> 00:03:13,209
+So in this case, we're checking to see what the fail count is and if it's greater than 0, we throw an exception
+
+37
+00:03:13,209 --> 00:03:20,209
+and that'll actually cause the AppVeyor build to fail and you'll get like a red build up in AppVeyor.
+
+38
+00:03:20,209 --> 00:03:30,209
+So if we save this, check this in, adding tests, commit that, sync that, and then okay you can see that this
+
+39
+00:03:30,209 --> 00:03:35,209
+was a previous build that I showed that doesn't do any tests and it succeeded, so we're green right now,
+
+40
+00:03:35,209 --> 00:03:42,209
+but like we said, it is a broken build. So now we added the tests to the yml file, and it's actually going
+
+41
+00:03:42,209 --> 00:03:51,209
+to run this build and run the tests. What's going to happen there is you're actually going to see something like
+
+42
+00:03:51,209 --> 00:03:58,209
+this where you get the output from Pester, and it's kind of cool because it actually formats it like exactly
+
+43
+00:03:58,209 --> 00:04:03,209
+like you'd see in the PowerShell console and you can see all the tests failed.
+
+44
+00:04:03,209 --> 00:04:08,209
+In this case, I must have taken this screenshot when I had three tests instead of two, but you can see that
+
+45
+00:04:08,209 --> 00:04:12,209
+up in the top left where it says broken that it's red. So you'll actually be able to look at the build,
+
+46
+00:04:12,209 --> 00:04:16,209
+see that it's red, if you had one of those little badges out on the front of your GitHub repository,
+
+47
+00:04:16,209 --> 00:04:21,209
+it would be red, so it's really obvious when it's broken sort of thing.
+
+48
+00:04:21,209 --> 00:04:28,209
+So these tests are going to run, they're going to fail, and then what we can do is we can actually go out and
+
+49
+00:04:28,209 --> 00:04:34,209
+figure out how it broke. So that's where you go back into source control, you can look at the commits,
+
+50
+00:04:34,209 --> 00:04:36,209
+you can say oh, this guy was fixing the module, what does that mean?
+
+51
+00:04:36,209 --> 00:04:47,209
+It's like oh. Adam! You're dumb! And then comment on it. And from there, what we can do is we can go and
+
+52
+00:04:47,209 --> 00:04:55,209
+fix out build again. So I'll go back to our module, bring that guy up, change it back to less than to fix
+
+53
+00:04:55,209 --> 00:05:08,209
+the tests and hopefully that would fixing the tests. And sync. Alright, so now that commits back up to master
+
+54
+00:05:08,209 --> 00:05:13,209
+and we go. So that's kind of how you can automate things during the build.
+
+55
+00:05:13,209 --> 00:05:17,209
+So there's lots of cool stuff that you could do here, not just running tests.
+
+56
+00:05:17,209 --> 00:05:21,209
+You could run things like script analyzer to have it validate particular things.
+
+57
+00:05:21,209 --> 00:05:25,209
+You could have it sign your script so that you don't have to worry about doing that locally.
+
+58
+00:05:25,209 --> 00:05:30,209
+Anything that you could think that you'd have to do to like publish your module before you publish your module,
+
+59
+00:05:30,209 --> 00:05:34,209
+so that's a great opportunity for the continuous integration system.
+
+60
+00:05:34,209 --> 00:05:39,209
+What's also really nice is, it's nice for you as a single developer, once you start working with a project
+
+61
+00:05:39,209 --> 00:05:44,209
+with a lot of developers, that's where it really, really starts to pay off because you have merges happening,
+
+62
+00:05:44,209 --> 00:05:49,209
+people don't always know exactly what everybody is working on. So when you merge it all together in a continuous
+
+63
+00:05:49,209 --> 00:05:51,209
+integration system, it's super nice.
+
+64
+00:05:51,209 --> 00:05:56,209
+The other thing you can do is set up different builds for different branches, have it run on schedules,
+
+65
+00:05:56,209 --> 00:06:00,209
+that kind of thing, so you can do more complex things maybe once a day or something like that where you run
+
+66
+00:06:00,209 --> 00:59:59,999
+integration tests and that kind of thing.
+

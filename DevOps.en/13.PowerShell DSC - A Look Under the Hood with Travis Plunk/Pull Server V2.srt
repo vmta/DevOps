@@ -1,0 +1,412 @@
+1
+00:00:00,0 --> 00:00:06,791
+you guys a choice here. So next I have a few things with the V2 pull server.
+
+2
+00:00:06,791 --> 00:00:11,791
+There are a bunch of sessions on the pull server including all day yesterday and thing like that that's going on,
+
+3
+00:00:11,791 --> 00:00:16,791
+so I can talk about this. There is one thing that I want to show, but if there are questions that you guys
+
+4
+00:00:16,791 --> 00:00:22,791
+have, that you guys want to ask and see how we can answer them, I'll do that.
+
+5
+00:00:22,791 --> 00:00:26,791
+Otherwise, I'll go into this and kind of talk about that one thing that I want to talk about.
+
+6
+00:00:26,791 --> 00:00:29,791
+Is there a question over here somewhere? Just one question. Yep.
+
+7
+00:00:29,791 --> 00:00:34,791
+You mentioned a DSC is going to encrypt on a target. Are there any plans to move that into pull server if we
+
+8
+00:00:34,791 --> 00:00:41,791
+don't want to use any DSC? Potentially, but no commitment right now.
+
+9
+00:00:41,791 --> 00:00:45,791
+(Audience comment) What's that? What about the data source, so we can do that?
+
+10
+00:00:45,791 --> 00:00:49,791
+There is a UserVoice for that already, so go plus one that if you want to.
+
+11
+00:00:49,791 --> 00:00:55,791
+Yeah. Will the DscConfigurationStatus do have something that's actually imported to a compliance server…
+
+12
+00:00:55,791 --> 00:01:05,791
+So in the version that comes with WMF5 and is with 2016, all of that data that Travis just showed you gets
+
+13
+00:01:05,791 --> 00:01:11,791
+sent up to the pull server, so that's one of the things that I'll show you here real quickly, but we don't do
+
+14
+00:01:11,791 --> 00:01:17,791
+a good or we don't do a great job of giving you access to that data.
+
+15
+00:01:17,791 --> 00:01:22,791
+It's all stored there. It's in the database. But we're not going to tell you how to get to it, but we kind
+
+16
+00:01:22,791 --> 00:01:29,791
+of tell you how to get to it. So I will actually jump down. There are a bunch of questions here that we've
+
+17
+00:01:29,791 --> 00:01:38,791
+heard from a bunch of different people, but I'm going to kind of because of time jump to my demo here real quickly.
+
+18
+00:01:38,791 --> 00:01:47,791
+So I'll touch on a couple things with a pull server real quickly just because they're here in my face.
+
+19
+00:01:47,791 --> 00:01:53,791
+So with the pull server, the best way to configure the pull server as JSON and others have said who's used
+
+20
+00:01:53,791 --> 00:01:59,791
+the resource, we have x resource out there. Use that to do the configuration and don't try to do it on your
+
+21
+00:01:59,791 --> 00:02:06,791
+own because it'll take forever. This resource makes it much easier and JSON's script actually makes it even
+
+22
+00:02:06,791 --> 00:02:12,791
+better and work better. So use the configurations that are out there to do the configurations of a pull server,
+
+23
+00:02:12,791 --> 00:02:19,791
+your life will be a lot better. The TargetNodes itself. That's on GitHub you're saying?
+
+24
+00:02:19,791 --> 00:02:24,791
+What's that? The ones that are on GitHub? Yeah, and the ones that are on gallery, so as part of the
+
+25
+00:02:24,791 --> 00:02:31,791
+xPsDesiredStateConfiguration, there's a x webservice, I think it's called, use that to do the configuration
+
+26
+00:02:31,791 --> 00:02:38,791
+of the pull server. So one of the other things to keep in mind if you're using the new functionality in the
+
+27
+00:02:38,791 --> 00:02:44,791
+pull server where you can say I don't want to use a configuration Id, I want you to say this is the name of the
+
+28
+00:02:44,791 --> 00:02:53,791
+configuration I want the TargetNode to get. The name is only used in this, yes, there's a MetaConfig.
+
+29
+00:02:53,791 --> 00:02:56,791
+So you can, in the MetaConfig, say this is the name that I want.
+
+30
+00:02:56,791 --> 00:02:58,791
+That is only used at registration time.
+
+31
+00:02:58,791 --> 00:03:05,791
+It's never used after that again. Whatever that node is registered with the server with, will be used to say
+
+32
+00:03:05,791 --> 00:03:10,791
+this is the configuration that the TargetNodes get. The idea there is that you should be able to go to the
+
+33
+00:03:10,791 --> 00:03:13,791
+pull server and say I want to change that and not have to touch the client.
+
+34
+00:03:13,791 --> 00:03:17,791
+The client should just get the new configuration and apply that.
+
+35
+00:03:17,791 --> 00:03:23,791
+So the RegistrationKey, there may be a bug with that, according to Travis, but the RegistrationKey,
+
+36
+00:03:23,791 --> 00:03:30,791
+once registration is done, gets deleted, and if you put it back, that's the trigger to the LCM to say hey I need to register again.
+
+37
+00:03:30,791 --> 00:03:34,791
+So with the current implementation that we have, the
+
+38
+00:03:34,791 --> 00:03:39,791
+way to actually change what's in the database on the pull server is to go to the node, put the RegistrationKey
+
+39
+00:03:39,791 --> 00:03:45,791
+back in and change what the configuration name is, and then that node will register to get a different configuration.
+
+40
+00:03:45,791 --> 00:03:52,791
+In Azure Automation, you don't need to do any of that. You don't need to have this configuration name at all.
+
+41
+00:03:52,791 --> 00:03:53,791
+You can just have the
+
+42
+00:03:53,791 --> 00:03:57,791
+RegistrationKey in here. It registers with Azure Automation DSC
+
+43
+00:03:57,791 --> 00:04:02,791
+and then in Azure Automation DSC you can say I want this system now to get this configuration or what have you
+
+44
+00:04:02,791 --> 00:04:07,791
+and it'll just get that configuration, so it makes that a bit easier.
+
+45
+00:04:07,791 --> 00:04:17,791
+And if I have my way, we'll make that easier with the on-prem pull server as well.
+
+46
+00:04:17,791 --> 00:04:18,791
+So
+
+47
+00:04:18,791 --> 00:04:26,791
+the next thing is these resources here define where to go get the configuration, so this one is where to get
+
+48
+00:04:26,791 --> 00:04:30,791
+the actual configuration. This one is where to get the resources.
+
+49
+00:04:30,791 --> 00:04:37,791
+This one is where we report the status, all that rich status data.
+
+50
+00:04:37,791 --> 00:04:43,791
+You don't need this one. If you don't define this, wherever it gets the configurations, it's going to go try
+
+51
+00:04:43,791 --> 00:04:49,791
+and get resources if it needs those. You do need, although you shouldn't, you do need this one to tell it
+
+52
+00:04:49,791 --> 00:04:51,791
+where to report. The idea with these is to give you the
+
+53
+00:04:51,791 --> 00:04:57,791
+flexibility to say I want to get configs from here, resources from here, and report over there, but right now
+
+54
+00:04:57,791 --> 00:05:05,791
+as it stands, the minimum that you need to configure pull is the configuration repository and the
+
+55
+00:05:05,791 --> 00:05:10,791
+web repository or report web repository. Can you expand on the required resource real quick?
+
+56
+00:05:10,791 --> 00:05:18,791
+Yep. They look identical. So each of the places where you go to get resources and configurations and pull,
+
+57
+00:05:18,791 --> 00:05:24,791
+you need to register if you're using the new registration or the new configuration name method.
+
+58
+00:05:24,791 --> 00:05:31,791
+And the thing that tells the LCM whether to use the configuration name or the configuration Id is the configuration Id.
+
+59
+00:05:31,791 --> 00:05:36,791
+If you have the configuration Id set in the settings, it's going to use the old way of doing it.
+
+60
+00:05:36,791 --> 00:05:40,791
+If you don't have it there, it's going to use the new way of doing it.
+
+61
+00:05:40,791 --> 00:05:45,791
+Clear as mud? Yes. Is that part of the reason that the configuration Id isn't wired when you're doing the
+
+62
+00:05:45,791 --> 00:05:49,791
+partial config in pull? No. That's a bug. That's a different thing?
+
+63
+00:05:49,791 --> 00:05:57,791
+Yes. And I'm angry about that bug. Alright, so the next thing that I want to show you is I told you that the
+
+64
+00:05:57,791 --> 00:06:04,791
+reporting is not exactly easy to get to, but we do provide a way of getting to the reporting data.
+
+65
+00:06:04,791 --> 00:06:10,791
+So I will cruise through here real quickly, but I basically what I have here is just the script that's going
+
+66
+00:06:10,791 --> 00:06:16,791
+to go through how to access the APIs that we provide that give you access to the reporting data.
+
+67
+00:06:16,791 --> 00:06:22,791
+It is not something that you're going to necessarily build tooling on top of, but it does give you the access
+
+68
+00:06:22,791 --> 00:06:27,791
+to the reporting data, and the reason I say that it's not going to be something you're going to build tooling
+
+69
+00:06:27,791 --> 00:06:38,791
+on top of is we have key in the APIs that we call that is the AgentId, which is essentially the Id that is
+
+70
+00:06:38,791 --> 00:06:42,791
+generated either the ConfigurationId if you're using that method or
+
+71
+00:06:42,791 --> 00:06:50,791
+the AgentId that's generated by the LCM itself. You have to pass that in to get the reporting data for that node.
+
+72
+00:06:50,791 --> 00:06:56,791
+So yeah, basically if you have a bunch of nodes, you have to iterate through each of those things with the known AgentId.
+
+73
+00:06:56,791 --> 00:07:02,791
+And the reason. Excuse me? Is this documented? It is documented, yes, and I will put these scripts and
+
+74
+00:07:02,791 --> 00:07:08,791
+stuff like that up on GitHub and we'll share them soon. So basically, what I'm doing here is I created a
+
+75
+00:07:08,791 --> 00:07:14,791
+couple of functions and those functions just basically allow me to parse the JSON that is returned.
+
+76
+00:07:14,791 --> 00:07:23,791
+So this pulls the generic JSON data out and this pulls the status data out of that included JSON.
+
+77
+00:07:23,791 --> 00:07:30,791
+So I will make sure that these things are in memory here and they're opening doors now.
+
+78
+00:07:30,791 --> 00:07:39,791
+Alright, so I will run that. Oops, I need to do that over here. So I will do that here.
+
+79
+00:07:39,791 --> 00:07:46,791
+I will F8 that, that'll run, and I will skip over these two. These two basically just pull up and show the
+
+80
+00:07:46,791 --> 00:07:47,791
+schema for the pull
+
+81
+00:07:47,791 --> 00:07:52,791
+server, so you can actually, if you know anything about code data, you can dig into that and figure out how to
+
+82
+00:07:52,791 --> 00:07:54,791
+actually do the queries and stuff.
+
+83
+00:07:54,791 --> 00:08:01,791
+I'll just do a couple of the queries. You can get the node information about the node that is configured on that system.
+
+84
+00:08:01,791 --> 00:08:09,791
+So it's just an Invoke-WebRequest and we have the pull server, we have a nodes location, you give it the AgentId,
+
+85
+00:08:09,791 --> 00:08:13,791
+and then you get Agent information and that'll pull the information about the agent.
+
+86
+00:08:13,791 --> 00:08:19,791
+We have the configuration names and then the primary one is the reports, so you can pull the reports down for that node.
+
+87
+00:08:19,791 --> 00:08:22,791
+So I'll actually jump to that, so you can at least see that.
+
+88
+00:08:22,791 --> 00:08:32,791
+So a couple things here. I'll run that guy, then you can see the reports that get generated from that,
+
+89
+00:08:32,791 --> 00:08:37,791
+so this basically just took the last one and people are lining up already.
+
+90
+00:08:37,791 --> 00:08:41,791
+So this will take the last one. Basically, by default, we return all
+
+91
+00:08:41,791 --> 00:08:47,791
+of the reporting data for a node when you use this query, so if you have a month's worth of data, we're going to
+
+92
+00:08:47,791 --> 00:08:53,791
+return it all when you call that. We give you a way through OData to filter that out, so you can say I only
+
+93
+00:08:53,791 --> 00:08:54,791
+want to get, in this particular
+
+94
+00:08:54,791 --> 00:09:00,791
+case, I only want to get this high level data without all of the bloat of all the reporting data, so I can dig
+
+95
+00:09:00,791 --> 00:09:10,791
+through that and say I care about this one job. So in this particular case, I have, I get the data and I'm
+
+96
+00:09:10,791 --> 00:09:18,791
+just getting these particular columns, so I'm not getting all of the big status data that
+
+97
+00:09:18,791 --> 00:09:21,791
+Travis was showing you. I can figure out, I care about this
+
+98
+00:09:21,791 --> 00:09:26,791
+particular job. You can get this JobId and then you can call back into the API with that and get the
+
+99
+00:09:26,791 --> 00:09:29,791
+original data from that. So we do give you the tools to do it.
+
+100
+00:09:29,791 --> 00:09:34,791
+It's a bit manual right now, but we do allow you to do that right now.
+
+101
+00:09:34,791 --> 00:09:44,791
+(Audience question) I don't know. That's a good question and I will look into it whether you can use the
+
+102
+00:09:44,791 --> 00:09:52,791
+OData tools to actually generated cmdlets for this. Is there any other questions?
+
+103
+00:09:52,791 --> 00:59:59,999
+We'll be up here for a few minutes, but thank you very much.
+

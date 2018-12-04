@@ -1,0 +1,560 @@
+1
+00:00:00,0 --> 00:00:22,22
+Hello. My name is Don Jones. Welcome to Stupid DSC Tricks. So this is not kind of a standard session that
+
+2
+00:00:22,22 --> 00:00:26,26
+you might have already gotten used to in your short time here at summit.
+
+3
+00:00:26,26 --> 00:00:31,31
+We're not going to look at a lot of code, and we're not going to do a lot of demo, and we're also not going to
+
+4
+00:00:31,31 --> 00:00:35,35
+do a lot of slides. We're hopefully, going to do a lot of talking and discussing.
+
+5
+00:00:35,35 --> 00:00:44,44
+As a, I've been working with DSC for a couple years it's been out now, right, v4, you spend a lot of time
+
+6
+00:00:44,44 --> 00:00:50,50
+talking to different people who kind of have the base idea of what DSC is supposed to do like from a business perspective.
+
+7
+00:00:50,50 --> 00:00:54,54
+Alright, for example, one of the things you can tell people is look DSC is at the end of the day very similar
+
+8
+00:00:54,54 --> 00:00:59,59
+to Group Policy, right? You're going to have this policy-based thing that tells your computers how to,
+
+9
+00:00:59,59 --> 00:01:03,63
+what to be, and you're going to ship it out through some magically method and the computer will just do that stuff.
+
+10
+00:01:03,63 --> 00:01:08,68
+So I mean super, super high-level, very similar. And so they start digging into it, well can I do this,
+
+11
+00:01:08,68 --> 00:01:16,76
+can I do this, well no, I mean not really how it's designed. You've got to rethink your philosophy.
+
+12
+00:01:16,76 --> 00:01:25,85
+So over the past month or so, Murawski, Dave Wyatt, and I have kind of been having this informal bounce back
+
+13
+00:01:25,85 --> 00:01:32,92
+and forth Exchange about some of the ways we could get DSC to do stuff that maybe it wasn't specifically
+
+14
+00:01:32,92 --> 00:01:37,97
+designed to do. Not that it's bad, but kind of hacking it. Like where could we really just like jam your
+
+15
+00:01:37,97 --> 00:01:43,103
+fist in its mouth and make it do what you wanted it to whether it wanted to or not and that kind of spilled out.
+
+16
+00:01:43,103 --> 00:01:47,107
+We have a private Slack channel for the folks that come to my DSC DevOps camp.
+
+17
+00:01:47,107 --> 00:01:53,113
+It's about 20 folks who were there last year, and so these are folks who have their brains connected to
+
+18
+00:01:53,113 --> 00:01:58,118
+PowerShell 24/7 and they're doing DSC and they're doing DevOps and they're running into the problems and
+
+19
+00:01:58,118 --> 00:02:04,124
+they're trying to get creative about solving the problems and everything else, and so we start going back and
+
+20
+00:02:04,124 --> 00:02:10,130
+we start kind of coming up with ideas of ways we can do different stuff that when you look at the DSC PowerPoint
+
+21
+00:02:10,130 --> 00:02:14,134
+slide, you're like no, it could never do that, but maybe it could.
+
+22
+00:02:14,134 --> 00:02:20,140
+So I thought this would kind of be a nice place because I know a lot of you---how many of you are using PowerShell?
+
+23
+00:02:20,140 --> 00:02:25,145
+Oh, that's reassuring. Good, that did not happen the last time I did this.
+
+24
+00:02:25,145 --> 00:02:28,148
+And how many of you are using DSC? Even just fussing with it in a pilot?
+
+25
+00:02:28,148 --> 00:02:34,154
+Okay, good. So I thought this would be a good crowd to bounce some ideas off of and maybe have folks say
+
+26
+00:02:34,154 --> 00:02:40,160
+well what about how could you do this and see if we can come up with some approaches, right.
+
+27
+00:02:40,160 --> 00:02:42,162
+So that's kind of what we're doing.
+
+28
+00:02:42,162 --> 00:02:50,170
+Oh, by the way, you guys have seen this slide before, right. Quick round of applause for all the folks who've…
+
+29
+00:02:50,170 --> 00:02:55,175
+I'm really proud of the fact that---I don't know if you know, it's a little bit rare on a lot of product
+
+30
+00:02:55,175 --> 00:03:00,180
+teams at Microsoft for people to stick around for a decade. Alright, it's an easy company to move around and
+
+31
+00:03:00,180 --> 00:03:05,185
+you want to move onto something exciting and new, so it's pretty cool that there are so many people who've been
+
+32
+00:03:05,185 --> 00:03:06,186
+around that long.
+
+33
+00:03:06,186 --> 00:03:10,190
+So this is really meant to be kind of a brainstorming session, a think-outside-the-box session.
+
+34
+00:03:10,190 --> 00:03:16,196
+Let's talk about some things that we'd love for DSC to be able to do for us as a business,
+
+35
+00:03:16,196 --> 00:03:20,200
+right, forget the technology. Anything should be possible if we have enough money.
+
+36
+00:03:20,200 --> 00:03:25,205
+So let's just think about what we want it to do and then get a little bit outside the envelope and think
+
+37
+00:03:25,205 --> 00:03:31,211
+about how we could force it to do it. So I'll kind of kick things off with an example, which is
+
+38
+00:03:31,211 --> 00:03:39,219
+this one, dynamic printer mapping. Now talk yourself through how DSC works, right.
+
+39
+00:03:39,219 --> 00:03:46,226
+You sit on your computer, you, the author, you sit on your computer, and you type out a PowerShell script,
+
+40
+00:03:46,226 --> 00:03:50,230
+a configuration script, right, and it can have lots of logic in it.
+
+41
+00:03:50,230 --> 00:03:58,238
+You can have if blocks and loops and all kinds of crazy stuff in there, yeah, and you push run, and what's it produce?
+
+42
+00:03:58,238 --> 00:04:03,243
+MOF. MOF. One or more MOFs, right, Management Object Format, MOF file.
+
+43
+00:04:03,243 --> 00:04:08,248
+A MOF file is just text file. It's not code. Now you can have little snippets in there if you do a certain
+
+44
+00:04:08,248 --> 00:04:12,252
+type of resource called the script resource, but generally speaking, a MOF is static.
+
+45
+00:04:12,252 --> 00:04:21,261
+This MOF is what I want that computer to look like and I created that description completely out of context.
+
+46
+00:04:21,261 --> 00:04:26,266
+I didn't run it on that computer. I'm running it at a totally different place in time.
+
+47
+00:04:26,266 --> 00:04:33,273
+I'm just giving it to that computer and that computer then runs that, but the computer doesn't think about it.
+
+48
+00:04:33,273 --> 00:04:38,278
+Right, the MOF says you need to be a domain controller. You need this IP address, you need to be running
+
+49
+00:04:38,278 --> 00:04:42,282
+these services, you need these files copied over, don't ask questions, don't make decisions, don't think about
+
+50
+00:04:42,282 --> 00:04:49,289
+it, I'm not interested in your opinion, just do it. Now what we tell people is in a server workload,
+
+51
+00:04:49,289 --> 00:04:54,294
+that's kind of okay, right, because servers we tend to set them up, we want them one way, and then we try
+
+52
+00:04:54,294 --> 00:04:59,299
+really hard to make them never change, right, that's why we have ITIL, right, stop all change.
+
+53
+00:04:59,299 --> 00:05:07,307
+That's what that means. And but it doesn't apply so well to client scenarios because clients are,
+
+54
+00:05:07,307 --> 00:05:14,314
+client computers, well who uses a client computer? Users, right, and they're squishy.
+
+55
+00:05:14,314 --> 00:05:20,320
+They're people. They move around, they get up, they change jobs, they install Elf bowling,
+
+56
+00:05:20,320 --> 00:05:29,329
+they uninstall this, there are changes. Well one of the neat things about Group Policy is you don't actually
+
+57
+00:05:29,329 --> 00:05:36,336
+set up all the policy decisions up front. Some of the decisions get made by the client as it downloads it,
+
+58
+00:05:36,336 --> 00:05:42,342
+right, what organizational unit are you in, what domain are you in, what site are you in, what user groups
+
+59
+00:05:42,342 --> 00:05:50,350
+are you in, what WMI filter type things are going on? So it can be very, very kind of dynamic and customized
+
+60
+00:05:50,350 --> 00:05:54,354
+and the Group Policy you get today might be slightly different from the one you get tomorrow.
+
+61
+00:05:54,354 --> 00:06:00,360
+Well that's not what DSC really does. DSC just says be this always.
+
+62
+00:06:00,360 --> 00:06:07,367
+Now obviously there's certain client's computer scenarios, you think kiosks or if you work at a bank and
+
+63
+00:06:07,367 --> 00:06:11,371
+you've got those floors full of phone slaves, you want all those computers to be exactly the same all the
+
+64
+00:06:11,371 --> 00:06:21,381
+time, sure, but most users are squishier than that. And so, one example is dynamic printer mapping.
+
+65
+00:06:21,381 --> 00:06:28,388
+Now if I'm writing a DSC configuration script, I can certainly have a printer resource that says install such
+
+66
+00:06:28,388 --> 00:06:36,396
+and such printer. Right, no problem. But if I tell you to install the printer for Building A and you run
+
+67
+00:06:36,396 --> 00:06:41,401
+over to Building B for a week, how do I get you a printer over there?
+
+68
+00:06:41,401 --> 00:06:47,407
+Right, it's not---there's no evaluation. The LCM, the Local Configuration Manager, as it's reading that MOF
+
+69
+00:06:47,407 --> 00:06:52,412
+doesn't have the ability to say alright we're going to do printer mapping now, so it says map into Printer A,
+
+70
+00:06:52,412 --> 00:06:56,416
+but gosh, I just know he's not over in that building right now, so I'm going to pick a different printer.
+
+71
+00:06:56,416 --> 00:07:01,421
+It doesn't do that. There's no logic in the LCM, it's just following a set of instructions and calling a
+
+72
+00:07:01,421 --> 00:07:06,426
+bunch of resources. So this is one of the first problems we started down because it's one of the first
+
+73
+00:07:06,426 --> 00:07:11,431
+things that comes up in a discussion when you're trying to explain to someone why DSC and Group Policy are
+
+74
+00:07:11,431 --> 00:07:17,437
+different, and we thought we could totally do this with DSC, completely.
+
+75
+00:07:17,437 --> 00:07:24,444
+How? All we have to do is write a resource that dynamically maps printers based on some criteria.
+
+76
+00:07:24,444 --> 00:07:35,455
+So in your configuration script, you say whatever the resource name is, map a printer, yes, map nearest printer,
+
+77
+00:07:35,455 --> 00:07:41,461
+yes, and that's all that goes into your MOF. Your MOF just knows that it's supposed to map a printer.
+
+78
+00:07:41,461 --> 00:07:46,466
+That's it. The MOF doesn't know where the printer is, doesn't know where it should map it to, it doesn't care
+
+79
+00:07:46,466 --> 00:07:54,474
+about any of that, so when you compile that MOF, you create that text file, you slam it out to all your nodes,
+
+80
+00:07:54,474 --> 00:08:03,483
+it runs a DSC resource, which is just PowerShell code, or can be, right, and that PowerShell code goes oh,
+
+81
+00:08:03,483 --> 00:08:07,487
+okay, I'm supposed to map a printer, great. What's my IP address right now?
+
+82
+00:08:07,487 --> 00:08:11,491
+Let me go see what Active Directory site I'm in. I can figure that out locally.
+
+83
+00:08:11,491 --> 00:08:14,494
+I can actually go see a list of published printers in Active Directory and find one that's near me and I'm
+
+84
+00:08:14,494 --> 00:08:21,501
+going to go ahead and map that. So the dynamism, in that case, lives on the client computer.
+
+85
+00:08:21,501 --> 00:08:27,507
+It's not in the LCM. The LCM is still relatively dumb, but the LCM is calling on a smarter friend who can
+
+86
+00:08:27,507 --> 00:08:33,513
+make that runtime decision. And we started thinking it was some of the ramifications of that, right,
+
+87
+00:08:33,513 --> 00:08:40,520
+because you have that idea and then you put your third drink down and you start to think is this a good idea,
+
+88
+00:08:40,520 --> 00:08:45,525
+and after three drinks, obviously it's a great idea. So the next morning we thought, alright, so what are
+
+89
+00:08:45,525 --> 00:08:52,532
+some of the ramifications of this. Well how often does the LCM run a consistency check, by default?
+
+90
+00:08:52,532 --> 00:08:58,538
+Fifteen minutes. Is it going to be bad for that thing to be constantly trying to remap a printer?
+
+91
+00:08:58,538 --> 00:09:05,545
+Well, if you have it go look at what printer it should map and then just check to see if that one's already
+
+92
+00:09:05,545 --> 00:09:11,551
+mapped, and if it is, well don't do anything, which is how resources are supposed to be written, right.
+
+93
+00:09:11,551 --> 00:09:17,557
+Don't do anything until you test first, right, run test. Only run set if you have to.
+
+94
+00:09:17,557 --> 00:09:22,562
+Well, maybe that wouldn't be too bad. And we actually---how many of you work for healthcare?
+
+95
+00:09:22,562 --> 00:09:27,567
+Yep, there's always a couple. We actually thought, you know what, this would actually solve a couple of really
+
+96
+00:09:27,567 --> 00:09:33,573
+cool scenarios because you get into a hospital situation and the doctor runs from room to room to room and he's
+
+97
+00:09:33,573 --> 00:09:37,577
+logging on different profiles, but he wants his profile to be mapped to the printer that's in that room right
+
+98
+00:09:37,577 --> 00:09:42,582
+then, so he's not printing out someone's personal information six rooms down, right, so we thought actually
+
+99
+00:09:42,582 --> 00:09:48,588
+this whole really frequent dynamic remapping thing in certain scenarios could be kind of cool.
+
+100
+00:09:48,588 --> 00:09:52,592
+But we stopped thinking about that because healthcare freaks us all out because blood, gross.
+
+101
+00:09:52,592 --> 00:10:01,601
+So what do you think? Comments? Have anybody ever thought of going after it that way?
+
+102
+00:10:01,601 --> 00:10:05,605
+One thing you're going to have to think about is unmapping a map for…
+
+103
+00:10:05,605 --> 00:10:13,613
+Oh, and when do I unmap it? Yeah. We thought about that too. Partially, we weren't sure if we cared or not
+
+104
+00:10:13,613 --> 00:10:21,621
+because I guess what it was is in that we figured if the test runs and you're mapped to the one you should be,
+
+105
+00:10:21,621 --> 00:10:28,628
+don't do anything, but if you're not, then just go unmap whatever was there and then map whatever you should
+
+106
+00:10:28,628 --> 00:10:32,632
+be right then. It kind of depends on the business situation, right.
+
+107
+00:10:32,632 --> 00:10:36,636
+If you've got some HR person who's got a local printer you don't want to unmap, you'd have to have some way
+
+108
+00:10:36,636 --> 00:10:41,641
+of accounting for that, yeah. Yeah, we kind of walked through that a little bit.
+
+109
+00:10:41,641 --> 00:10:45,645
+What else? What if you're not on the network? What if you're not on the network?
+
+110
+00:10:45,645 --> 00:10:49,649
+Well then you're not going to be printing, so it's not a problem.
+
+111
+00:10:49,649 --> 00:10:56,656
+(Audience comment) Well yeah, it might. That, again, all gets down to your test, right, or your set.
+
+112
+00:10:56,656 --> 00:11:01,661
+We had a little bit of argument about where we'd put those. I think we eventually decided maybe both.
+
+113
+00:11:01,661 --> 00:11:03,663
+But your set should certainly say look are we even on a network here?
+
+114
+00:11:03,663 --> 00:11:08,668
+I mean maybe we don't have the right printer, but is it even possible, and if not, forget it.
+
+115
+00:11:08,668 --> 00:11:14,674
+That's more doing exactly the right thing is what you're doing, is you're now, what are the failure scenarios
+
+116
+00:11:14,674 --> 00:11:18,678
+I might run into and let's account for those, so we're not just spewing errors into the log, but yeah,
+
+117
+00:11:18,678 --> 00:11:22,682
+you do have to walk through that. What else? You might be able to develop some tests, I mean, I'm not on
+
+118
+00:11:22,682 --> 00:11:26,686
+the network, I have no printer, I mean that's what the test would look at.
+
+119
+00:11:26,686 --> 00:11:31,691
+Yeah and that was actually my argument is in the test, first check to see if I can even possibly get to a
+
+120
+00:11:31,691 --> 00:11:35,695
+valid state, and if I'm not, just say true, so we don't even run the set.
+
+121
+00:11:35,695 --> 00:11:48,708
+(Audience question) Yeah, so how do you determine the locality to a printer?
+
+122
+00:11:48,708 --> 00:11:57,717
+That's your problem, right. And I say that with all love, but the fact is, we're all going to have a
+
+123
+00:11:57,717 --> 00:12:02,722
+different set of business rules for how we do that and what we're talking about here is you're going to have
+
+124
+00:12:02,722 --> 00:12:06,726
+to build a certain amount of infrastructure potentially to let you do that.
+
+125
+00:12:06,726 --> 00:12:11,731
+Some people might have databases. Some people might have something they put into Active Directory.
+
+126
+00:12:11,731 --> 00:12:14,734
+I've got plenty of customers who don't have all their client computers in Active Directory, and so they're
+
+127
+00:12:14,734 --> 00:12:19,739
+going to have to have some other place to look it up. Maybe there's a SQL Server.
+
+128
+00:12:19,739 --> 00:12:25,745
+Maybe you've got some back-end tool or something. So yeah, you're going to have to do all that, right,
+
+129
+00:12:25,745 --> 00:12:31,751
+those are things. I don't call them challenges, they're just part of what you would have to solve as part of it.
+
+130
+00:12:31,751 --> 00:12:37,757
+What if say your nearest printer is down. Now see but let me pause you real quick.
+
+131
+00:12:37,757 --> 00:12:43,763
+Before we go down the rabbit hole of making this a printer mapping session, I want to point out that what you
+
+132
+00:12:43,763 --> 00:12:49,769
+guys are thinking about are the right questions. We're not trying to solve the printer mapping module here today.
+
+133
+00:12:49,769 --> 00:12:56,776
+What we're trying to do is make DSC do stuff that it is initially not designed to do.
+
+134
+00:12:56,776 --> 00:13:02,782
+All of those questions are answerable. We could code an answer to all of those.
+
+135
+00:13:02,782 --> 00:13:07,787
+It might mean having to have a directory of printers and who's allowed to use one or whatever, which actually gives
+
+136
+00:13:07,787 --> 00:13:15,795
+you more control and flexibility than you probably have today. We can do those things, but the point is
+
+137
+00:13:15,795 --> 00:13:21,801
+getting DSC to a point where it can let us do those things. So yeah, we do have to have all those things.
+
+138
+00:13:21,801 --> 00:13:25,805
+What else we can get to is there like an alternative configuration or a second configuration?
+
+139
+00:13:25,805 --> 00:13:29,809
+There is no alternative configuration. In fact, let's talk about that.
+
+140
+00:13:29,809 --> 00:59:59,999
+ESPN, you and me, we had it yesterday too.
+

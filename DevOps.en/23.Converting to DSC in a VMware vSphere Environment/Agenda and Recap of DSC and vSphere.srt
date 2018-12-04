@@ -1,0 +1,204 @@
+1
+00:00:14,14 --> 00:00:15,5
+Good morning.
+
+2
+00:00:15,5 --> 00:00:22,22
+We're going to do a second session on DSC in a vSphere environment.
+
+3
+00:00:22,22 --> 00:00:30,30
+I'm not sure if some of you saw the session on Monday where I gave the high level view on what we're doing
+
+4
+00:00:30,30 --> 00:00:32,32
+with converting,
+
+5
+00:00:32,32 --> 00:00:38,38
+configuring your vSphere environment to a DSC-based configuration-based environment.
+
+6
+00:00:38,38 --> 00:00:47,47
+First of all, this slide we can't show it enough. These guys did tremendous work in the last couple of 10 years
+
+7
+00:00:47,47 --> 00:00:54,54
+and more even. Without them, this thing wouldn't be happening and what I'm going to talk about wouldn't be
+
+8
+00:00:54,54 --> 00:01:01,61
+happening, so thank you to all of those on the list. Much appreciated.
+
+9
+00:01:01,61 --> 00:01:08,68
+What are we going to talk about, while the one on Monday was kind of high-level overview where we looked at
+
+10
+00:01:08,68 --> 00:01:16,76
+the concepts that I'm trying to following to convert your vSphere configuration to a DSC-based one, I'm now going
+
+11
+00:01:16,76 --> 00:01:21,81
+to dive into some code. So for those of you who don't want to see a lot of lines of codes, you still have
+
+12
+00:01:21,81 --> 00:01:28,88
+time to leave if you want or get an extra coffee. I don't know what you prefer, but there will be some code
+
+13
+00:01:28,88 --> 00:01:30,90
+involved this time.
+
+14
+00:01:30,90 --> 00:01:38,98
+I will show you one of the things I'm looking at and developing. It's in a far, it's in a stage that it's
+
+15
+00:01:38,98 --> 00:01:46,106
+usable, but it's open for a lot of expansions as we will show later on.
+
+16
+00:01:46,106 --> 00:01:53,113
+We'll handle some points more in detail like we mentioned on Monday.
+
+17
+00:01:53,113 --> 00:01:59,119
+In your vSphere hierarchy, there is a tree structure with all kinds of different nodes in there.
+
+18
+00:01:59,119 --> 00:02:06,126
+You have folders, data centers, clusters, and so on, so determining where your new resource will be created
+
+19
+00:02:06,126 --> 00:02:11,131
+or defined is quite important that's why the location, location, location thing is in there.
+
+20
+00:02:11,131 --> 00:02:19,139
+So we need to make sure that we position ourselves on the right note and that inventory tree the moment we
+
+21
+00:02:19,139 --> 00:02:26,146
+try to create a new resource. There's a small example of reusing code like we always do.
+
+22
+00:02:26,146 --> 00:02:28,148
+I do at least.
+
+23
+00:02:28,148 --> 00:02:36,156
+I think it was during the last VM World that we made this famous claim, don't write the code, just steal it
+
+24
+00:02:36,156 --> 00:02:44,164
+if it's already out there. There's a lot of valuable blogs out there, tons of code, so don't reinvent the wheel.
+
+25
+00:02:44,164 --> 00:02:50,170
+But one thing you should keep in mind, if you copy something from the internet or even your best friend, test it.
+
+26
+00:02:50,170 --> 00:02:57,177
+Don't run it like that in production. We never do that, of course, but just as a warning on the side make
+
+27
+00:02:57,177 --> 00:03:01,181
+sure that you test what you copy from others.
+
+28
+00:03:01,181 --> 00:03:05,185
+And automation, as it should be case with everything we do in PowerShell is
+
+29
+00:03:05,185 --> 00:03:10,190
+our ultimate goal. Who am I? Okay, I'll keep this short since I already had in a previous one.
+
+30
+00:03:10,190 --> 00:03:16,196
+I'm Luc Dekens. I do a bit of talking at VM World in the last years.
+
+31
+00:03:16,196 --> 00:03:28,208
+We have a book. Second edition just came out. I will plug my book only once in contrast to some other people, right.
+
+32
+00:03:28,208 --> 00:03:35,215
+And if you want to reach me, there's a Twitter handle that you can use to contact me and there's a mail link
+
+33
+00:03:35,215 --> 00:03:43,223
+on my blog if you need more detailed questions than 140 characters in a question.
+
+34
+00:03:43,223 --> 00:03:50,230
+Okay, a quick overview for those who didn't attend a session or already forgot.
+
+35
+00:03:50,230 --> 00:03:55,235
+It has been two days of brain melt, at least it has been for me.
+
+36
+00:03:55,235 --> 00:04:03,243
+DSC is a very valuable resource array of configuring your environment.
+
+37
+00:04:03,243 --> 00:04:11,251
+Now unfortunately at the moment, VMware themselves, they don't provide any resources for that, but since we
+
+38
+00:04:11,251 --> 00:04:16,256
+have the option, we had the option in the past and we still have it to script DSC resources.
+
+39
+00:04:16,256 --> 00:04:25,265
+Now with WMF5, we have the option to do those class-based resources with even better, more optimal.
+
+40
+00:04:25,265 --> 00:04:33,273
+I'm trying to start something going where we have resources defined for your complete vSphere environment.
+
+41
+00:04:33,273 --> 00:04:40,280
+So like I showed last Monday, we already have quite a few, but it's still a lot need to be done,
+
+42
+00:04:40,280 --> 00:04:46,286
+especially in the finer details of the configurations. Another thing, an important thing, that we want to
+
+43
+00:04:46,286 --> 00:04:53,293
+obtain with the converting to DSC is that we want this famous separation of where and what.
+
+44
+00:04:53,293 --> 00:05:02,302
+I just made a small two screenshots at the bottom there. So if you look at that one, the right one, is the one
+
+45
+00:05:02,302 --> 00:05:08,308
+where we will actually do something. That is your actual folder name that you're going to create and the location
+
+46
+00:05:08,308 --> 00:05:13,313
+where you want to create that folder name. This is the part that you want to put under source control.
+
+47
+00:05:13,313 --> 00:05:18,318
+This is where the changes will be visible where you can make the drift with the previous situation.
+
+48
+00:05:18,318 --> 00:05:23,323
+On the left, that's the what you will be doing. That's only a small extract.
+
+49
+00:05:23,323 --> 00:05:32,332
+That is the one that creates a folder and it uses the data that we specified in the right side text that you
+
+50
+00:05:32,332 --> 00:05:39,339
+see there, which is part of your configuration file. So this is the important concepts in what we are trying
+
+51
+00:05:39,339 --> 00:59:59,999
+to do with DSC for a vSphere.
+

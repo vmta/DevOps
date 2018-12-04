@@ -1,0 +1,96 @@
+1
+00:00:00,0 --> 00:00:04,802
+So comparison, before DevOps, your recovery and response took a long time.
+
+2
+00:00:04,802 --> 00:00:12,802
+The reason most companies are so fearful of failure is because when something does fail, it fails for a long time.
+
+3
+00:00:12,802 --> 00:00:18,802
+Right. Most of us can handle a stubbed toe because it heals in five minutes or so.
+
+4
+00:00:18,802 --> 00:00:24,802
+It's the broken leg that's a real pain because then you're in the chair for 10 weeks.
+
+5
+00:00:24,802 --> 00:00:33,802
+After DevOps, the recovery and response can be really fast. Failure becomes less serious because it's less impactful.
+
+6
+00:00:33,802 --> 00:00:39,802
+Before DevOps, everything was mission critical. How many of you have been told that email is mission critical?
+
+7
+00:00:39,802 --> 00:00:41,802
+That's bull.
+
+8
+00:00:41,802 --> 00:00:48,802
+I know it's inconvenient when email isn't up, but no one died. Okay.
+
+9
+00:00:48,802 --> 00:00:54,802
+There are places where nearly every application is mission critical and those places are called hospitals
+
+10
+00:00:54,802 --> 00:01:00,802
+because people die when things break. If no one's going to die, then you can handle a failure for a few
+
+11
+00:01:00,802 --> 00:01:06,802
+minutes or an hour or whatever. I know it's inconvenient, but if you move over to a DevOps model, you can start
+
+12
+00:01:06,802 --> 00:01:12,802
+to realize that yeah not everything is so mission critical. We can afford to be down for a little while.
+
+13
+00:01:12,802 --> 00:01:17,802
+We can stomach a little inconvenience. What we couldn't stomach was yeah email is down, it's going to be down
+
+14
+00:01:17,802 --> 00:01:22,802
+for several hours and when it comes back up, everything's gone, right.
+
+15
+00:01:22,802 --> 00:01:27,802
+That's why everyone said oh it's mission critical. They didn't actually mean it is critical to our mission.
+
+16
+00:01:27,802 --> 00:01:33,802
+They meant I know when this fails, it's going to be biblical and we can't handle that.
+
+17
+00:01:33,802 --> 00:01:40,802
+Before DevOps, we know that change breaks things, so let's just not change, ever.
+
+18
+00:01:40,802 --> 00:01:46,802
+Let's implement a management framework that has an entire committee who sits down once a month to discuss how
+
+19
+00:01:46,802 --> 00:01:56,802
+they're not going to approve anything and we call that ITIL. After DevOps though, change is fine.
+
+20
+00:01:56,802 --> 00:01:58,802
+You can be more agile.
+
+21
+00:01:58,802 --> 00:02:03,802
+We have to change. We know we have to change. How many of you have organizations who from a business
+
+22
+00:02:03,802 --> 00:02:12,802
+perspective are just pressing IT to do it faster? Yeah. Maybe don't outsource your VM management to a
+
+23
+00:02:12,802 --> 00:02:19,802
+company that has a six-month spin up SLA, just as a suggestion. But they're pressing us because we need to
+
+24
+00:02:19,802 --> 00:59:59,999
+be more agile and we can because change becomes less scary because we have a recovery plan that's fast and that'll work.
+

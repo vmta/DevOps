@@ -1,0 +1,304 @@
+1
+00:00:00,299 --> 00:00:07,299
+So debugging PowerShell is an interesting thing because debugging PowerShell often starts, well always pretty
+
+2
+00:00:07,299 --> 00:00:12,299
+much starts with dealing with errors. And when dealing with errors,
+
+3
+00:00:12,299 --> 00:00:18,299
+it doesn't really matter who or what level of experience the people who are using PowerShell have.
+
+4
+00:00:18,299 --> 00:00:25,299
+Most people get really hung up on the notion of red error text where you'll find very seasoned people working
+
+5
+00:00:25,299 --> 00:00:29,299
+in the industry for a long time, maybe even have done scripting, they run a command that you gave them,
+
+6
+00:00:29,299 --> 00:00:35,299
+and they say it's red and that's all that they give you. They just it's errored, it's red, and in the error text,
+
+7
+00:00:35,299 --> 00:00:39,299
+if they look at it, the actual solution the text is right there in front of them it tells them specifically
+
+8
+00:00:39,299 --> 00:00:44,299
+what was wrong and so you walk over to the screen and you tell them how to decipher that error text as part
+
+9
+00:00:44,299 --> 00:00:50,299
+of the debugging steps and then you kind of start getting them beyond that, but some people like to actually
+
+10
+00:00:50,299 --> 00:00:57,299
+change the color by default through GPOs and what not, scripts, profile scripts just because it can make
+
+11
+00:00:57,299 --> 00:00:59,299
+things easier for people. So I'm just going to
+
+12
+00:00:59,299 --> 00:01:04,299
+load a helper function here first and you're going to see me flip back and forth a lot between this view and
+
+13
+00:01:04,299 --> 00:01:11,299
+the other one as I run stuff, so if you want me to jump back to something that you want me to explain or detail,
+
+14
+00:01:11,299 --> 00:01:18,299
+let me know. So here's just a simple example showing a typical error.
+
+15
+00:01:18,299 --> 00:01:24,299
+There's a lot of detail in here that's really useful, in particular, this is the kind of example where
+
+16
+00:01:24,299 --> 00:01:28,299
+somebody might just come to you with an error because it failed and says it can't find the path and you go
+
+17
+00:01:28,299 --> 00:01:33,299
+over to the machine and you say well it can't find the path because it says it can't find the path,
+
+18
+00:01:33,299 --> 00:01:38,299
+and so this is the kind of thing that you can run into even when working with seasoned pros.
+
+19
+00:01:38,299 --> 00:01:46,299
+So changing up the color is easy. If you're working in ISE, there's psISE.Options.ErrorForegroundColor,
+
+20
+00:01:46,299 --> 00:01:51,299
+so you can change the color to something that you like a little bit better and I mean that's blue on blue
+
+21
+00:01:51,299 --> 00:01:55,299
+so that's not a great example. Here's another one. You've got a wide variety with
+
+22
+00:01:55,299 --> 00:02:01,299
+System.Windows.Media.Colors to pick the color that you want makes it a lot easier, and actually just even
+
+23
+00:02:01,299 --> 00:02:06,299
+being experienced with PowerShell and reading through the texts through many, many years now,
+
+24
+00:02:06,299 --> 00:02:10,299
+switching the color makes a difference for me too. It's a small thing, it's seems silly, but it makes a
+
+25
+00:02:10,299 --> 00:02:14,299
+difference throwing this in your profile script and just using it for a little while, you might start
+
+26
+00:02:14,299 --> 00:02:19,299
+realizing that the text that's in the error message does pop out more and you start noticing more things that
+
+27
+00:02:19,299 --> 00:02:31,299
+are in it, so it's a cool technique to follow. Now something else you can do with error messages is so how
+
+28
+00:02:31,299 --> 00:02:36,299
+many people here are aware that there's more than one error category view or error view, I guess, one more way
+
+29
+00:02:36,299 --> 00:02:42,299
+that you can view error messages, only---I saw one person half raise their hand, so not many people.
+
+30
+00:02:42,299 --> 00:02:49,299
+So by default, when you look at error messages and you see text like this and the green down here, this is the
+
+31
+00:02:49,299 --> 00:02:55,299
+normal error view where you're going to see some detail text messages and some line and character positions
+
+32
+00:02:55,299 --> 00:03:00,299
+inside of the script that ran category information. You can also change the view to what's known as a
+
+33
+00:03:00,299 --> 00:03:08,299
+CategoryView, which is a much more terse view. So if I get that exact same error message in this CategoryView,
+
+34
+00:03:08,299 --> 00:03:13,299
+you can see here, all it's showing me is what's hidden inside of category info in the view above.
+
+35
+00:03:13,299 --> 00:03:21,299
+So if I select this text right here on this line, this is what it's showing me in the CategoryView and all
+
+36
+00:03:21,299 --> 00:03:28,299
+you do is you set this global variable to ErrorView = CategoryView and you get a more terse format, which is good
+
+37
+00:03:28,299 --> 00:03:32,299
+if you're experienced because it can get to the point more quickly sometimes and especially
+
+38
+00:03:32,299 --> 00:03:39,299
+if you're looking at the entire error variable a many, many errors one after another, this can just give you
+
+39
+00:03:39,299 --> 00:03:47,299
+a line by line, so you can scan it for things. So that's a good tip; however, the CategoryView and the
+
+40
+00:03:47,299 --> 00:03:51,299
+category information isn't always descriptive enough to tell you what's going on.
+
+41
+00:03:51,299 --> 00:03:56,299
+I mean, in this case, it's pretty simple because the error type is ItemNotFoundException.
+
+42
+00:03:56,299 --> 00:04:03,299
+You can see that the error message contains the path, so it really tells you, but there are cases where it's
+
+43
+00:04:03,299 --> 00:04:09,299
+more obtuse trying to figure out what's going on from the CategoryView, in which case, you can just flip it
+
+44
+00:04:09,299 --> 00:04:21,299
+back to ErrorView = NormalView, or technically, you can do ErrorView = Anything at all and anything at all,
+
+45
+00:04:21,299 --> 00:04:32,299
+it'll go back to the, let me run that command again, it goes back to the normal view for anything beyond CategoryView.
+
+46
+00:04:32,299 --> 00:04:39,299
+So inside of this logic that PowerShell uses, it's basically just searching for this string else NormalView,
+
+47
+00:04:39,299 --> 00:04:44,299
+so it doesn't really matter what you set it to. If you forget NormalView, just that it's something other
+
+48
+00:04:44,299 --> 00:04:51,299
+than CategoryView and you'll be good. If you're so inclined and you want to take a round with more error views,
+
+49
+00:04:51,299 --> 00:04:58,299
+there really should be more, I had written more. Small side story, I was installing software on my laptop
+
+50
+00:04:58,299 --> 00:05:02,299
+one day, running out of space quickly as I was installing Visual Studio.
+
+51
+00:05:02,299 --> 00:05:06,299
+Rather than cancelling the installation, which would have been the smarter thing to do and cleaning things
+
+52
+00:05:06,299 --> 00:05:10,299
+up and then installing the product afterwards, I decided I'll frantically go around and clean up some stuff
+
+53
+00:05:10,299 --> 00:05:17,299
+while it's installing. And so then I found myself holding down Shift+Delete on my keyboard while I was looking
+
+54
+00:05:17,299 --> 00:05:26,299
+at my Windows Explorer with my Modules folder selected. Ask myself, what do I do now?
+
+55
+00:05:26,299 --> 00:05:32,299
+And pressing Escape didn't dawn on me in that moment, and so I let it delete and tried using some delete recovery
+
+56
+00:05:32,299 --> 00:05:39,299
+tools to pull stuff back and I was able to get back 95% between that and things I'd emailed other people,
+
+57
+00:05:39,299 --> 00:05:46,299
+but I lost a little bit of content that way. So that's one argument for using version control.
+
+58
+00:05:46,299 --> 00:05:51,299
+But one of the things I lost was I had a module that allowed me to define some more error views and I had
+
+59
+00:05:51,299 --> 00:05:56,299
+some cool stuff and I haven't yet pulled that back in yet, but I intend to.
+
+60
+00:05:56,299 --> 00:06:01,299
+If you have things that you would like to see in error text by default that aren't there, let me know because
+
+61
+00:06:01,299 --> 00:06:07,299
+it's on my to do list to I don't know where I'll get to it, but it's in my short list of things I think about,
+
+62
+00:06:07,299 --> 00:06:11,299
+and so I think there really should be more views, so just please let me know.
+
+63
+00:06:11,299 --> 00:06:16,299
+My email address is right here. And by the way, all these scripts, I will share them so you don't have to
+
+64
+00:06:16,299 --> 00:06:20,299
+jot stuff down directly from here if you don't want to because you're going to get the content afterwards,
+
+65
+00:06:20,299 --> 00:06:27,299
+as well as the slides, as limited as they are. Beyond ErrorViews and the color, and this is going to sound
+
+66
+00:06:27,299 --> 00:06:33,299
+silly, but has anybody heard the expression talk to the bear? (Audience comment)
+
+67
+00:06:33,299 --> 00:06:39,299
+Yeah, same idea. So you've got a rubber duck, or your bear, or your Xamarin monkey, or whatever other stuffed
+
+68
+00:06:39,299 --> 00:06:44,299
+animal you keep hidden in your office put it on your desk when you have a problem and explain that problem
+
+69
+00:06:44,299 --> 00:06:50,299
+to it because a large percent of the time, you're going to find the solution to that problem by just
+
+70
+00:06:50,299 --> 00:06:56,299
+reiterating it yourself. So people who talk aloud, it actually does work.
+
+71
+00:06:56,299 --> 00:07:00,299
+So there's a reason why people talk to themselves and that's one.
+
+72
+00:07:00,299 --> 00:07:05,299
+And it's surprising. I mean how many people have had a question related to an issue and you go walk over to
+
+73
+00:07:05,299 --> 00:07:11,299
+a coworker an you're asking that question and as you're asking them, the light bulb comes on and you know the
+
+74
+00:07:11,299 --> 00:07:13,299
+answer to that question right? That's what the talking to the bear is.
+
+75
+00:07:13,299 --> 00:07:20,299
+So it's just about verbalizing what's in your mind already, so that you can release it and put it in front of
+
+76
+00:07:20,299 --> 00:59:59,999
+yourself by saying it and finding the solution.
+

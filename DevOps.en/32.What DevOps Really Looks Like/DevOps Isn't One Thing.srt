@@ -1,0 +1,212 @@
+1
+00:00:00,0 --> 00:00:05,5
+DevOps is not just one thing. It's going to look different in every single organization.
+
+2
+00:00:05,5 --> 00:00:12,359
+It's going to look different in nearly every single project, but let me just give you kind of a quick example
+
+3
+00:00:12,359 --> 00:00:18,359
+of how this probably will change your IT organization.
+
+4
+00:00:18,359 --> 00:00:25,359
+How many of you have separate dev and ops and maybe even like a network infrastructure team like fairly siloed IT?
+
+5
+00:00:25,359 --> 00:00:32,359
+That goes away. It has to. And this is where we have to look at whether our organization is willing to do this.
+
+6
+00:00:32,359 --> 00:00:38,359
+What it needs to be is not, how many users have walked into the office and said man, looking forward to
+
+7
+00:00:38,359 --> 00:00:46,359
+getting that IP address today? Never happens. We even fool ourselves.
+
+8
+00:00:46,359 --> 00:00:49,359
+Remember we went down this whole virtual desktop infrastructure?
+
+9
+00:00:49,359 --> 00:00:55,5
+How many users come in and say oh I love my desktop. Love it! They want their apps.
+
+10
+00:00:55,5 --> 00:01:01,359
+They want their services. And so, we have to reorganize IT. If we're going to do DevOps, we've got to be
+
+11
+00:01:01,359 --> 00:01:09,359
+organized around apps and services. So what it can look like, for example, is here's the corporate application team.
+
+12
+00:01:09,359 --> 00:01:19,359
+It's got 10 developers and 2 ops guys and a network infrastructure guy and they work together on that.
+
+13
+00:01:19,359 --> 00:01:26,359
+And incidentally, those same two ops guys are also on this other project team because their lending their ops
+
+14
+00:01:26,359 --> 00:01:33,359
+expertise to that team and telling the developers look in order for us to really smooth this out and we're
+
+15
+00:01:33,359 --> 00:01:38,359
+all on this boat together, so let us help each other make it happen.
+
+16
+00:01:38,359 --> 00:01:43,359
+If you could put these two things into your code, we're going to be able to make it much quicker and easier
+
+17
+00:01:43,359 --> 00:01:48,359
+for everybody else, so let's do that. And they have access to that in real time and those guys float to
+
+18
+00:01:48,359 --> 00:01:55,359
+whatever projects they're assigned to. And then all the ops guys and all the infrastructure guys and all the
+
+19
+00:01:55,359 --> 00:01:59,359
+developers have a guild and that doesn't have anything to do with the project.
+
+20
+00:01:59,359 --> 00:02:04,359
+That's just where the network infrastructure guys all get together for lunch every month or so and say so
+
+21
+00:02:04,359 --> 00:02:09,359
+how's it going on all the projects? And one of them go yeah, you know what we really found out that this one
+
+22
+00:02:09,359 --> 00:02:15,359
+brand of switch that we're trying out, rocks. It's a little easier to manage, so as you guys start moving
+
+23
+00:02:15,359 --> 00:02:17,359
+into other projects, you might look at that. That was really successful.
+
+24
+00:02:17,359 --> 00:02:23,359
+And somebody else can say yeah, you know what, we figured out that router over here blows up every Tuesday
+
+25
+00:02:23,359 --> 00:02:27,359
+and all of our problems have been stemming from this one place, and so they share their domain knowledge with
+
+26
+00:02:27,359 --> 00:02:34,359
+each other, but they're not organized that way. You don't just have a bunch of people who are disconnected
+
+27
+00:02:34,359 --> 00:02:43,359
+from reality managing IP addresses in an Excel spreadsheet. You organize around what is delivering to the business.
+
+28
+00:02:43,359 --> 00:02:49,359
+And if you're going to do DevOps, even for a small project, the team has to look like that.
+
+29
+00:02:49,359 --> 00:02:54,359
+Everybody who's contributing to it needs to be in the boat. It's the only way you can make it work because
+
+30
+00:02:54,359 --> 00:02:59,359
+otherwise what do you end up with? You get these walls, you get these communication walls, you get these
+
+31
+00:02:59,359 --> 00:03:05,359
+direct report-to hierarchy org chart walls. It's not healthy. It's not conducive to getting the job done.
+
+32
+00:03:05,359 --> 00:03:09,359
+One thing you'll probably start noticing too is that the projects that fail is run by the same --- project.
+
+33
+00:03:09,359 --> 00:03:10,359
+Can we start cutting the fat?
+
+34
+00:03:10,359 --> 00:03:18,359
+Projects that fail all the time that have a common human resource element, you can start to look at that.
+
+35
+00:03:18,359 --> 00:03:20,359
+(Audience comment)
+
+36
+00:03:20,359 --> 00:03:25,359
+You do have to change how you think about this.
+
+37
+00:03:25,359 --> 00:03:28,359
+So where do you begin? Small.
+
+38
+00:03:28,359 --> 00:03:34,359
+Do not go home and say hey you know that one giant project that actually makes the entire company run every
+
+39
+00:03:34,359 --> 00:03:38,359
+single day, let's DevOps that sucker. Go find something little.
+
+40
+00:03:38,359 --> 00:03:41,359
+Find something low stakes because there's going to be a learning process.
+
+41
+00:03:41,359 --> 00:03:45,359
+You're going to have to build some tooling. You're going to have to experiment, see what works for your organization.
+
+42
+00:03:45,359 --> 00:03:53,359
+Experiment somewhere lower impact, less mission critical. Start small and then grow from there.
+
+43
+00:03:53,359 --> 00:04:00,359
+And if you're, yeah I know, I work for a bank, we can't do, actually most of the companies that are really
+
+44
+00:04:00,359 --> 00:04:06,359
+leading DevOps right now are financial services companies because they're under such pressure to push out
+
+45
+00:04:06,359 --> 00:04:10,359
+websites and mobile apps and all this other stuff and this is the way they're actually getting it done,
+
+46
+00:04:10,359 --> 00:04:16,359
+so you can do it. How many of you are thinking yeah but my company is a little different?
+
+47
+00:04:16,359 --> 00:04:23,359
+No, you're not. All the companies are different. All of them. You're all equally weird in different ways
+
+48
+00:04:23,359 --> 00:04:27,359
+and that's why you're probably going to be building a lot of your own tools.
+
+49
+00:04:27,359 --> 00:04:32,359
+You might start with building components that somebody else that you buy, but you're going to glue everything
+
+50
+00:04:32,359 --> 00:04:37,359
+together on your own. You might go get a box of Legos, but you're going to put them together in your own way
+
+51
+00:04:37,359 --> 00:04:45,285
+and that's how you accommodate for your differences. That's why DevOps is not something that you can just
+
+52
+00:04:45,285 --> 00:04:52,292
+go buy at, do we have software stores anymore? Amazon, you can't buy DevOps at Amazon unless you're buying
+
+53
+00:04:52,292 --> 00:59:59,999
+it from Amazon Web Services who does it quite well.
+

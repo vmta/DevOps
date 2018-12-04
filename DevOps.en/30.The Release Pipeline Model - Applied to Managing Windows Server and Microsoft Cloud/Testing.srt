@@ -1,0 +1,328 @@
+1
+00:00:01,1 --> 00:00:06,5
+I was going to say I think I got a screenshot of that, yep, so if I go look at there's the history of my builds
+
+2
+00:00:06,5 --> 00:00:11,97
+and then we get the test, so everything that has happened in this environment, you can go back and see what it was.
+
+3
+00:00:11,97 --> 00:00:12,97
+So testing,
+
+4
+00:00:12,97 --> 00:00:20,97
+what do we do before? Create our VM, install the OS, probably installed an app or built a service of some kind,
+
+5
+00:00:20,97 --> 00:00:24,97
+we tried the change, it could be manually, it could be, yep sure.
+
+6
+00:00:24,97 --> 00:00:32,97
+Sorry, I've got a question on that last part. I kind of use AppVeyor a lot for my CI and one of my biggest issues
+
+7
+00:00:32,97 --> 00:00:40,97
+is trying to get AppVeyor to work, so I don't do any 48 builds just trying to get the AppVeyor configuration to work.
+
+8
+00:00:40,97 --> 00:00:41,97
+Yes.
+
+9
+00:00:41,97 --> 00:00:46,97
+Is there a way to in this product, I guess I want this product to just delete that build and be able to keep
+
+10
+00:00:46,97 --> 00:00:53,97
+rebuilding because I'm not really incrementing my code, I'm incrementing my test code just to get it to,
+
+11
+00:00:53,97 --> 00:00:57,97
+you know what I mean, there's really the environment building, you know what I mean all of a sudden like I
+
+12
+00:00:57,97 --> 00:01:01,97
+can't get modules to install from the gallery because they're NuGet versions and not up-to-date,
+
+13
+00:01:01,97 --> 00:01:06,97
+something like that, can I delete a build and just re-run the same version in this?
+
+14
+00:01:06,97 --> 00:01:11,97
+Most source control or most build-type environments have a way to expire out history because it's a database
+
+15
+00:01:11,97 --> 00:01:16,97
+somewhere and you may not care about it forever, in this case, I think I've got it set to like 10 days or
+
+16
+00:01:16,97 --> 00:01:20,97
+something because I noticed when I logged in last night that these builds from last week when I was playing
+
+17
+00:01:20,97 --> 00:01:25,97
+around, which I had like an embarrassing number of failed builds because I was just banging on it and banging
+
+18
+00:01:25,97 --> 00:01:29,97
+on it, but it does, you can do that or you can keep them forever.
+
+19
+00:01:29,97 --> 00:01:35,97
+It's configurable. But I do exactly what you just described, which is I think I got everything right and
+
+20
+00:01:35,97 --> 00:01:42,97
+then I have to figure out how to make everything work in this other environment that is generic.
+
+21
+00:01:42,97 --> 00:01:46,97
+But it actually leads to me having better quality in the end and solving more interesting problems,
+
+22
+00:01:46,97 --> 00:01:49,97
+but there's a lot of lessons learned as you go there.
+
+23
+00:01:49,97 --> 00:01:53,97
+Like with AppVeyor, like I don't have a way to get my hands into like their, you know what I mean,
+
+24
+00:01:53,97 --> 00:01:58,97
+their apps are spinning up, so I mean my last recent one was all of a sudden, yeah, I just couldn't install
+
+25
+00:01:58,97 --> 00:02:04,97
+modules from the gallery, so I was like yeah their NuGet whatever wasn't up-to-date and even though I spent
+
+26
+00:02:04,97 --> 00:02:08,97
+that much time trying to troubleshoot that, the only way to test that is to build.
+
+27
+00:02:08,97 --> 00:02:13,97
+There is a way, by the way, for AppVeyor that you can inject a stop and then remote desktop into their, yeah,
+
+28
+00:02:13,97 --> 00:02:15,97
+but we can talk about that.
+
+29
+00:02:15,97 --> 00:02:17,97
+We had another question coming up over here too.
+
+30
+00:02:17,97 --> 00:02:23,97
+So as part of build paths, one of the steps that we do before we do any deployments is to separate the artifact,
+
+31
+00:02:23,97 --> 00:02:31,97
+scan with a colon if you see any part where the applications that are open that are _____.
+
+32
+00:02:31,97 --> 00:02:38,97
+So we use some conference part, I would like to get some feedback on you guys any do this before any specific
+
+33
+00:02:38,97 --> 00:02:44,97
+tool feasible as part of the objective's plugin and would you do a ---validation?
+
+34
+00:02:44,97 --> 00:02:52,97
+So yeah, you can definitely inject all sorts of security testing into this pipeline.
+
+35
+00:02:52,97 --> 00:02:58,97
+This is just giving you different points as which you can inject various test phases, right.
+
+36
+00:02:58,97 --> 00:03:04,97
+So one of the things is with build we end up with an artifact and build is usually on like a per project basis,
+
+37
+00:03:04,97 --> 00:03:10,97
+so it might be how I manage my AB servers, it might a particular application, but at some point,
+
+38
+00:03:10,97 --> 00:03:15,97
+these things come together in like a test environment to where we can prove these things out and that's where
+
+39
+00:03:15,97 --> 00:03:20,97
+our configuration management in our applications kind of all land together and that's the environment that we
+
+40
+00:03:20,97 --> 00:03:28,97
+want to do a lot of that security testing in things. In the Chef ecosystem, we actually push that way
+
+41
+00:03:28,97 --> 00:03:37,97
+earlier with Chef compliance and inspect where you can do that security and compliance testing as part of the
+
+42
+00:03:37,97 --> 00:03:45,97
+whole dev process all the way up through the cycle, but where you get into a lot of the, we're going to test
+
+43
+00:03:45,97 --> 00:03:53,97
+how this looks deployed on a test server, maybe do some fuzzing of URLs and all that kind of fun stuff,
+
+44
+00:03:53,97 --> 00:04:00,97
+that's going to happen kind of after you get your artifact built and deployed into some kind of staging environment.
+
+45
+00:04:00,97 --> 00:04:04,97
+And so that's where we start coming into right after Michael gets through kind of just.
+
+46
+00:04:04,97 --> 00:04:06,97
+There you go. We should hit the accelerator
+
+47
+00:04:06,97 --> 00:04:07,97
+too.
+
+48
+00:04:07,97 --> 00:04:08,97
+Yeah, we're death five.
+
+49
+00:04:08,97 --> 00:04:15,97
+Yeah, let's not go there. That's not going to happen. So to shortcut this, your build is going to run all
+
+50
+00:04:15,97 --> 00:04:21,97
+the tests that you stored in source control. We're lucky that we're running PowerShell because script analyzer
+
+51
+00:04:21,97 --> 00:04:27,97
+is out there. It's a whole just volume of rules that you can get for free and it runs from the command-line
+
+52
+00:04:27,97 --> 00:04:34,97
+and you can automate it, so that works out really, really well and then you go all through Pester.
+
+53
+00:04:34,97 --> 00:04:37,97
+In the next, you're over there for the next time log.
+
+54
+00:04:37,97 --> 00:04:39,97
+Yeah, I think 2:00.
+
+55
+00:04:39,97 --> 00:04:45,97
+Okay, because he can show you what Kitchen looks like, so you can think about test Kitchen from Chef working
+
+56
+00:04:45,97 --> 00:04:51,97
+together in this environment with PowerShell, with Pester, but what if for this change you actually get to
+
+57
+00:04:51,97 --> 00:04:58,97
+test it against 2008 R2, 2012, and 2012 R2, not that anybody would have diversity of machines across their
+
+58
+00:04:58,97 --> 00:05:04,97
+environment and have to deal with something like that, but that would make doing that again back to just a
+
+59
+00:05:04,97 --> 00:05:09,97
+property value, what platforms, these three, okay cool. And then it's just going to go run those tests,
+
+60
+00:05:09,97 --> 00:05:15,97
+spin up a VM on whatever you want to spin up a VM on, run these tests, save the results, go to the next thing.
+
+61
+00:05:15,97 --> 00:05:21,97
+So all of these tools are all about making complicated things simple.
+
+62
+00:05:21,97 --> 00:05:25,97
+And then definitely go look at OVF, Operational Validation, it's under
+
+63
+00:05:25,97 --> 00:05:32,97
+github.com/powershell/operationalvalidationframework, I think, github.com/powershell and you'll find it.
+
+64
+00:05:32,97 --> 00:05:39,97
+But it's a project that's being spun up around how do you know that after you've deployed the change that
+
+65
+00:05:39,97 --> 00:05:41,97
+everything still works. Go ahead.
+
+66
+00:05:41,97 --> 00:05:46,97
+I was just going to say, and unfortunately this is kind of what, we're getting down to the wire timewise,
+
+67
+00:05:46,97 --> 00:05:54,97
+but this test phase, source control and this test phase when they did the statistical analysis of all the parts
+
+68
+00:05:54,97 --> 00:06:03,97
+of continuous delivery and what adds the most value, it's source control and the integrated testing and automated testing.
+
+69
+00:06:03,97 --> 00:06:10,97
+So the more effort you put into focusing on source control and all of the automated testing capabilities,
+
+70
+00:06:10,97 --> 00:06:18,97
+those are going to deliver your biggest bang for your buck as you start to adopt more continuous delivery-type practices.
+
+71
+00:06:18,97 --> 00:06:22,97
+And that's been proven out. That's definitely been a thing in the Chef ecosystem.
+
+72
+00:06:22,97 --> 00:06:28,97
+We are super heavy on the testing side of things because it delivers such great value, so definitely spend the
+
+73
+00:06:28,97 --> 00:06:31,97
+time looking at all the different test tools.
+
+74
+00:06:31,97 --> 00:06:36,97
+Yeah, I always tell people if there's one skill in 2016 that I would go learn, it's Pester because you're going
+
+75
+00:06:36,97 --> 00:06:42,97
+to be equipped for everything that comes at you after that. So if you only have time to go learn one new thing,
+
+76
+00:06:42,97 --> 00:06:45,97
+Pester is just hugely valuable.
+
+77
+00:06:45,97 --> 00:06:51,97
+TFS is nice because it goes and picks up those results. It works because Pester can output into an XML format
+
+78
+00:06:51,97 --> 00:06:56,97
+that's an industry standard for NUnit. So it just picks up those and brings them in.
+
+79
+00:06:56,97 --> 00:07:00,97
+I didn't have to do anything to make this reporting work, so it can say yep, for each of those builds,
+
+80
+00:07:00,97 --> 00:07:02,97
+here's your test history. It all
+
+81
+00:07:02,97 --> 00:07:07,97
+worked. You can obviously see if I had 1,000 test instead of 4 that this would be really of value.
+
+82
+00:07:07,97 --> 00:59:59,999
+There's lots of charts down that side--- I can drill in.
+

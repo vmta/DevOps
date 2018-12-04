@@ -1,0 +1,104 @@
+1
+00:00:05,5 --> 00:00:07,7
+Hi everyone, my name is Don Jones,
+
+2
+00:00:07,7 --> 00:00:08,8
+and I'd like to introduce you
+
+3
+00:00:08,8 --> 00:00:12,12
+to PowerShell and DevOps Global Summit 2016.
+
+4
+00:00:12,12 --> 00:00:14,14
+Summit is a unique annual event
+
+5
+00:00:14,14 --> 00:00:16,16
+for the global PowerShell and DevOps community
+
+6
+00:00:16,16 --> 00:00:19,19
+and for 2016 we were fortunate to have Pluralsight
+
+7
+00:00:19,19 --> 00:00:24,24
+help us capture some of the amazing presentations.
+
+8
+00:00:24,24 --> 00:00:26,26
+You'll find more than 30 breakout sessions
+
+9
+00:00:26,26 --> 00:00:28,28
+and general presentations
+
+10
+00:00:28,28 --> 00:00:31,31
+representing some of the best to what summit has to offer,
+
+11
+00:00:31,31 --> 00:00:33,33
+you will hear from PowerShell MVP's,
+
+12
+00:00:33,33 --> 00:00:35,35
+product team members and community enthusiasts
+
+13
+00:00:35,35 --> 00:00:39,39
+and more importantly, you'll explore incredibly deep topics
+
+14
+00:00:39,39 --> 00:00:44,44
+that simply don't exist anywhere else.
+
+15
+00:00:44,44 --> 00:00:45,45
+Want to peak under the hood
+
+16
+00:00:45,45 --> 00:00:48,48
+of how Desired State Configuration works?
+
+17
+00:00:48,48 --> 00:00:49,49
+Want to learn about advanced
+
+18
+00:00:49,49 --> 00:00:52,52
+debugging techniques in PowerShell 5?
+
+19
+00:00:52,52 --> 00:00:54,54
+Want to learn what DevOps really looks like
+
+20
+00:00:54,54 --> 00:00:56,56
+in a real organization?
+
+21
+00:00:56,56 --> 00:00:58,58
+Want to see the latest about
+
+22
+00:00:58,58 --> 00:01:01,61
+domain-specific languages in PowerShell?
+
+23
+00:01:01,61 --> 00:01:02,62
+All of those and more were covered
+
+24
+00:01:02,62 --> 00:01:05,65
+at PowerShell and DevOps Global Summit 2016
+
+25
+00:01:05,65 --> 00:01:07,67
+and thanks to Pluralsight,
+
+26
+00:01:07,67 --> 00:59:59,999
+you can watch them at your leisure.
+

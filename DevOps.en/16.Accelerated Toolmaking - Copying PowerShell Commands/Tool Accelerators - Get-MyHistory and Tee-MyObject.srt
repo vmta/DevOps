@@ -1,0 +1,196 @@
+1
+00:00:00,0 --> 00:00:14,618
+I wrote a, I copied Get-History and came up with a new version I call Get-MyHistory
+
+2
+00:00:14,618 --> 00:00:31,618
+and what I have done is added parameters to specify a regex or unique because by default, Get-History will
+
+3
+00:00:31,618 --> 00:00:32,618
+show me everything
+
+4
+00:00:32,618 --> 00:00:41,618
+and I had two use cases, one I want to do Get-History, but I want to filter out all the duplicates, so just show
+
+5
+00:00:41,618 --> 00:00:46,618
+me the unique ones. Yes, I know. You could do that manually typing out the long command, but I'm just going
+
+6
+00:00:46,618 --> 00:00:56,618
+to screw that up more than likely or my other use case was I know I wrote a command and it had this pattern,
+
+7
+00:00:56,618 --> 00:00:58,618
+so I wrote a
+
+8
+00:00:58,618 --> 00:01:11,618
+parameter and added some code into the wrapper to use the regular expressions to get the history where the
+
+9
+00:01:11,618 --> 00:01:19,618
+pattern matches the command line. Again, I don't want to have to try
+
+10
+00:01:19,618 --> 00:01:26,618
+to remember how to do all of this manually at the console or rely on someone else to know what to type.
+
+11
+00:01:26,618 --> 00:01:34,618
+I want to build a tool that they can use using copy command, again, generating all the boring mundane stuff
+
+12
+00:01:34,618 --> 00:01:38,618
+then I just had to write the little fun pieces
+
+13
+00:01:38,618 --> 00:01:54,618
+like regex. Oh, I also wrote another version called Show-History (scrolling) that will, I'm not quite sure
+
+14
+00:01:54,618 --> 00:02:03,618
+what that does. Well you can play with that. Yeah. Well we can look at it.
+
+15
+00:02:03,618 --> 00:02:16,618
+I was just going to demo get Get-MyHistory. So I can find all of the commands that have a pattern and I
+
+16
+00:02:16,618 --> 00:02:17,618
+wanted to know
+
+17
+00:02:17,618 --> 00:02:23,618
+show me all the lines where I defined a variable. There we go. Now, yeah you have to know what the regex
+
+18
+00:02:23,618 --> 00:02:26,618
+pattern is, but that was
+
+19
+00:02:26,618 --> 00:02:41,618
+really easy to type to run the command and I built a better wheel.
+
+20
+00:02:41,618 --> 00:02:50,618
+I did another so I'm not going to do the copy command. I'll just go right to the final object, the final result.
+
+21
+00:02:50,618 --> 00:03:02,618
+F8. So I built another. This was before version 5 came out. How many of you have ever used Tee-Object?
+
+22
+00:03:02,618 --> 00:03:07,618
+That's a pretty hand cmdlet that I don't think a lot of people take advantage of.
+
+23
+00:03:07,618 --> 00:03:14,618
+With Tee-Object, you can run it and get the command at the console and you can save it to either a variable or
+
+24
+00:03:14,618 --> 00:03:25,618
+to a file. I'm not satisfied. I said I need it to also go to the clipboard because I do a lot of writing and
+
+25
+00:03:25,618 --> 00:03:30,618
+often I need to run the cmdlet and I need to copy the results to a clipboard, so I can paste it into my document
+
+26
+00:03:30,618 --> 00:03:37,618
+that I'm working on, and I don't want to have to go extra steps to run the command and then copy it.
+
+27
+00:03:37,618 --> 00:03:49,618
+I want to be able to see it, so I wrote a version of called Tee-MyObject that adds a parameter to specify the
+
+28
+00:03:49,618 --> 00:03:59,618
+clipboard as an option. So I just copied Tee-Object and went through and added a parameter.
+
+29
+00:03:59,618 --> 00:04:13,618
+I defined a new parameter set and I also ended up specifying the width through some trial and error.
+
+30
+00:04:13,618 --> 00:04:22,618
+If I do the clipboard, I also, in this case, again remember I wrote this before version 5, so I'm not using
+
+31
+00:04:22,618 --> 00:04:29,618
+any of the v5 clipboard cmdlets, so I'm using the actual Windows form, some .NET stuff to do the clipboard copy.
+
+32
+00:04:29,618 --> 00:04:36,618
+You could modify. What I found gives you some other regular expression stuff.
+
+33
+00:04:36,618 --> 00:04:43,618
+When you copy stuff to the clipboard, I was getting a lot of empty space at the end, which screwed up when I
+
+34
+00:04:43,618 --> 00:04:49,618
+paste it into a document, so I've got some regex to clean that up.
+
+35
+00:04:49,618 --> 00:05:01,618
+If I added all that, again this is just a wrapper, but now if I run this and let's just do, oh let's do this,
+
+36
+00:05:01,618 --> 00:05:25,618
+get-myvm Tee-MyObject -Clipboard. (Running) There we go. So it still, so I wasn't satisfied with the wheel
+
+37
+00:05:25,618 --> 00:05:26,618
+that Tee-Object
+
+38
+00:05:26,618 --> 00:05:34,618
+gave me, so it was close, it was so close. All they had to do was add one more parameter and I would be happy.
+
+39
+00:05:34,618 --> 00:05:40,618
+Well Microsoft is not going to make that change for me, so I did it.
+
+40
+00:05:40,618 --> 00:05:48,618
+A lot of the stuff that I write either is a result of something that I need for either training, or because of
+
+41
+00:05:48,618 --> 00:05:55,618
+writing, or something that comes across in a forum and a lot of people would probably have that issue and I
+
+42
+00:05:55,618 --> 00:06:03,618
+can use it then as a teachable moment. So like the Active Directory example came out of a form problem said
+
+43
+00:06:03,618 --> 00:06:09,618
+ah, that's kind of an interesting, let me see what I can come up with and now I have something,
+
+44
+00:06:09,618 --> 00:06:11,618
+you'll have something you can
+
+45
+00:06:11,618 --> 00:06:17,618
+actually use. Uh oh, they're having fun next door.
+
+46
+00:06:17,618 --> 00:06:25,618
+Questions, that was kind of the end of my official demos. Let's go back to the slides just so I
+
+47
+00:06:25,618 --> 00:06:35,618
+can be totally efficient here or at least cover all the bases. We can always come back to this.
+
+48
+00:06:35,618 --> 00:06:40,618
+So hopefully you saw a little magic there.
+
+49
+00:06:40,618 --> 00:59:59,999
+Questions over anything that I showed you.
+

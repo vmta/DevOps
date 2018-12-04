@@ -1,0 +1,480 @@
+1
+00:00:00,71 --> 00:00:05,71
+Desired State Configuration lets you write code describing configurations that you then programmatically
+
+2
+00:00:05,71 --> 00:00:12,71
+apply to another computer and this other computer might be another Windows Server, it could be a workstation,
+
+3
+00:00:12,71 --> 00:00:17,71
+it could be Server Core, it could be Nano Server, it could even be a Linux Server, and maybe someday,
+
+4
+00:00:17,71 --> 00:00:23,71
+you can even push to your toaster. We don't know. Now Desired Toast Configuration might be a little silly,
+
+5
+00:00:23,71 --> 00:00:27,71
+but the point is DSC doesn't care what you're endpoint is
+
+6
+00:00:27,71 --> 00:00:33,71
+and the reason it's able to do that is because every DSC capable endpoint is running at LCM.
+
+7
+00:00:33,71 --> 00:00:38,71
+That's what allows all of this to become endpoint agnostic. Now there are two
+
+8
+00:00:38,71 --> 00:00:44,71
+ways of getting configurations onto a node. You can push your configurations to the node or you can
+
+9
+00:00:44,71 --> 00:00:51,71
+configure your node, point it at a configuration repository, and have it reach out on its own and pull the configurations down.
+
+10
+00:00:51,71 --> 00:00:56,71
+Now getting a configuration may not be the only reason that the node reaches out to another server.
+
+11
+00:00:56,71 --> 00:01:02,71
+Configuration repositories for sure are one of the main reasons, but there are also resource repositories
+
+12
+00:01:02,71 --> 00:01:10,71
+that node can use to locate and download PowerShell modules containing custom resources that it needs for its configurations.
+
+13
+00:01:10,71 --> 00:01:14,71
+There is also the reporting server, which allows the node to report updates
+
+14
+00:01:14,71 --> 00:01:19,71
+on its status to a central location, so you can get all kinds of good info.
+
+15
+00:01:19,71 --> 00:01:22,71
+And that's it. And I think I made it in five minutes or less.
+
+16
+00:01:22,71 --> 00:01:28,71
+Now let's get into the heart of the LCM and what can make this thing do.
+
+17
+00:01:28,71 --> 00:01:32,71
+The best way that I found to explore this is to look at the different configuration options.
+
+18
+00:01:32,71 --> 00:01:34,71
+What the LCM does is basically define on
+
+19
+00:01:34,71 --> 00:01:41,71
+how you configure. So you can use the Get-DscLocalConfigurationManager cmdlet to get all these options.
+
+20
+00:01:41,71 --> 00:01:46,71
+What are their current values? There are quite a few and I'm not going to go through all of them,
+
+21
+00:01:46,71 --> 00:01:51,71
+but I'm going to go through some of the biggest ones that have the most impact on the behaviors and the first
+
+22
+00:01:51,71 --> 00:02:00,71
+ones are the timers. There are two timers on the LCM. Each one controls the firing of a separate event and
+
+23
+00:02:00,71 --> 00:02:03,71
+I call them the Refresh mode event and the Configuration
+
+24
+00:02:03,71 --> 00:02:10,71
+mode event. These timers, these settings allow you to control how often those events fire.
+
+25
+00:02:10,71 --> 00:02:12,71
+Now what do those events do?
+
+26
+00:02:12,71 --> 00:02:19,71
+The refresh mode event controls how does the LCM on this node get new configurations.
+
+27
+00:02:19,71 --> 00:02:25,71
+It's got three possible values, push, which we expect you're going to push configurations to the node,
+
+28
+00:02:25,71 --> 00:02:31,71
+pull, which we're expecting to have a configuration repository somewhere and you're going to pull them down, and disabled.
+
+29
+00:02:31,71 --> 00:02:33,71
+The disabled option affects
+
+30
+00:02:33,71 --> 00:02:39,71
+more than just the refresh mode of your node. If you change the refresh mode to disabled, you will not be
+
+31
+00:02:39,71 --> 00:02:45,71
+getting any configurations updated, or applied, or monitored, or anything.
+
+32
+00:02:45,71 --> 00:02:52,71
+It basically turns off DSC. How often this action or inaction happens.
+
+33
+00:02:52,71 --> 00:02:57,71
+Again, it's controlled by the refresh frequency NIMs property on the LCM.
+
+34
+00:02:57,71 --> 00:03:04,71
+Configuration mode. The configuration mode setting controls what does the LCM do with the configuration it's already got.
+
+35
+00:03:04,71 --> 00:03:09,71
+So whenever you get a configuration on a node, the LCM keeps a copy of it cached on the machine, so it always
+
+36
+00:03:09,71 --> 00:03:13,71
+knows what its current configuration is. Configuration mode controls
+
+37
+00:03:13,71 --> 00:03:19,71
+what does it do with it? Again, there are three options. First is ApplyOnly.
+
+38
+00:03:19,71 --> 00:03:26,71
+This option configuration gets to the node however you're getting it there, it's always applied, but then nothing.
+
+39
+00:03:26,71 --> 00:03:29,71
+We don't look at it, we don't care what happens to it after the fact.
+
+40
+00:03:29,71 --> 00:03:31,71
+The next is ApplyAndMonitor.
+
+41
+00:03:31,71 --> 00:03:35,71
+In this case, again we apply, and then we will periodically check on it.
+
+42
+00:03:35,71 --> 00:03:42,71
+We'll say hey is that service still running that I said should always be running and the LCM will report to
+
+43
+00:03:42,71 --> 00:03:49,71
+a report server, if you configure it that way, what the status is and what it's been able to see about what's
+
+44
+00:03:49,71 --> 00:03:54,71
+in compliance and what's not in compliance. The last option is ApplyAndAutoCorrect.
+
+45
+00:03:54,71 --> 00:04:01,71
+I think this is the coolest one. With this option, the LCM will actually actively correct deviations that it
+
+46
+00:04:01,71 --> 00:04:07,71
+sees in the configuration. These are all controlled by configuration mode frequency NIMS.
+
+47
+00:04:07,71 --> 00:04:11,71
+That's what determines how often whichever action you pick is going to happen.
+
+48
+00:04:11,71 --> 00:04:18,71
+So these two timers are very similar, but they do just two distinct functions and we're going to run through
+
+49
+00:04:18,71 --> 00:04:24,71
+a couple of examples to kind of help clarify that. So the first example is probably the most common operation
+
+50
+00:04:24,71 --> 00:04:30,71
+you're going to see. So here we have our node with our LCM on it and I don't care in this example whether
+
+51
+00:04:30,71 --> 00:04:37,71
+it's pull mode or push mode. What happens, configuration mode timer fires off based on that setting you set
+
+52
+00:04:37,71 --> 00:04:38,71
+in the configuration minutes,
+
+53
+00:04:38,71 --> 00:04:45,71
+wakes up the LCM, and the LCM does whatever you've told it to do with its current configuration.
+
+54
+00:04:45,71 --> 00:04:50,71
+This action has absolutely nothing to do with any server outside of your node.
+
+55
+00:04:50,71 --> 00:04:59,71
+It's doing an internal consistency check. Another example and this one we're talking about push mode.
+
+56
+00:04:59,71 --> 00:05:05,71
+Now the most common operation that you do in DSC, in push mode especially is you say Start-DscConfiguration.
+
+57
+00:05:05,71 --> 00:05:12,71
+That action actually has nothing to do with the timers. It sends over and immediately applies your configuration.
+
+58
+00:05:12,71 --> 00:05:18,71
+So I didn't animate that one on the slide. I animated the Publish-DscConfiguration cmdlet, which allows you
+
+59
+00:05:18,71 --> 00:05:26,71
+to send a configuration to a node in a pending state. At that point, whichever timer fires, actually both of
+
+60
+00:05:26,71 --> 00:05:31,71
+them will cause this action. The LCM will wake up, it will find that there is a new configuration in the
+
+61
+00:05:31,71 --> 00:05:38,71
+pending state and it will apply it. Sorry, it will apply in step four.
+
+62
+00:05:38,71 --> 00:05:43,71
+Now it's important to note that this step four isn't connected to your configuration mode, well you could say
+
+63
+00:05:43,71 --> 00:05:48,71
+it is, but every configuration mode starts with apply and, so it doesn't matter how you set your
+
+64
+00:05:48,71 --> 00:05:53,71
+configuration mode, it's getting applied once it finds out that it's there.
+
+65
+00:05:53,71 --> 00:05:57,71
+The last example, we're going to look at what happens in pull mode.
+
+66
+00:05:57,71 --> 00:06:02,71
+So in pull mode, the configuration mode timer does the same thing that we already saw in the earlier slide.
+
+67
+00:06:02,71 --> 00:06:07,71
+We're just going to focus on the refresh mode timer. When that fires off, it's going to wake up the LCM,
+
+68
+00:06:07,71 --> 00:06:14,71
+the LCM is going to reach out to the configuration repository where its configuration lives, and it's going to
+
+69
+00:06:14,71 --> 00:06:20,71
+compare the checksums. So it's going to compare the checksum of its local configuration against the server's
+
+70
+00:06:20,71 --> 00:06:27,71
+copy of that same configuration. If they do not match, we're going to pull down
+
+71
+00:06:27,71 --> 00:06:35,71
+a new copy of the configuration and we're going to apply it. If they do match, we're going to skip those steps,
+
+72
+00:06:35,71 --> 00:06:41,71
+but it's important to note that the refresh mode action
+
+73
+00:06:41,71 --> 00:06:48,71
+whether it is push or pull always ends, now if it's disabled it doesn't apply because you're not doing anything,
+
+74
+00:06:48,71 --> 00:06:50,71
+but if it's push or pull, the refresh mode action
+
+75
+00:06:50,71 --> 00:06:57,71
+always ends with a consistency check, which is the same action that happens when the configuration mode timer
+
+76
+00:06:57,71 --> 00:07:05,71
+fires, so it's almost as though the refresh mode timer is like a superset of the configuration mode.
+
+77
+00:07:05,71 --> 00:07:09,71
+So that was a lot for just a couple of seconds, but now we're going to look at a couple of other
+
+78
+00:07:09,71 --> 00:07:16,71
+settings that are on the LCM. These three settings tell the LCM about server-side components that it's referencing.
+
+79
+00:07:16,71 --> 00:07:20,71
+So ConfigurationDownloadManagers references, where are my configuration repositories?
+
+80
+00:07:20,71 --> 00:07:27,71
+Yeah. So the configuration mode timer, does that still work when it's in a file?
+
+81
+00:07:27,71 --> 00:07:34,71
+The configuration mode timer will fire when you are set to ApplyOnly, but it won't do anything.
+
+82
+00:07:34,71 --> 00:07:38,71
+It basically wakes up and says okay I'm done and goes back to sleep.
+
+83
+00:07:38,71 --> 00:07:45,71
+And then last question. And when it is an ApplyOnly, does it always test true if that one time it did
+
+84
+00:07:45,71 --> 00:07:51,71
+actually apply properly? You mean the first time? Yeah, so in other words, it took the configuration and it applied it.
+
+85
+00:07:51,71 --> 00:07:56,71
+Yes. Now from them on, does it show, if you do a test on it, does it show that it's true?
+
+86
+00:07:56,71 --> 00:08:01,71
+Well if you explicitly issue a test, it's going to invoke an actually consistency check.
+
+87
+00:08:01,71 --> 00:08:07,71
+Oh, okay. But if you just are observing the activities that are happening as the timers fire, you won't see
+
+88
+00:08:07,71 --> 00:08:13,71
+any warning signs or any flags of anything being noncompliant. It'll basically just go under the radar at that point.
+
+89
+00:08:13,71 --> 00:08:16,71
+Okay, thank you. No problem. And we'll touch on that a little later.
+
+90
+00:08:16,71 --> 00:08:24,71
+There's a Test-DscConfiguration cmdlet you can use for that. So we have ConfigurationDownloadManagers,
+
+91
+00:08:24,71 --> 00:08:30,71
+ResourceModuleManagers, that is where you configure your resource repositories, again where the node can
+
+92
+00:08:30,71 --> 00:08:36,71
+reach out to get PowerShell modules containing custom resources and report managers controls which report
+
+93
+00:08:36,71 --> 00:08:42,71
+servers you're reporting to. You can configure multiples of any of these, which I think is really cool
+
+94
+00:08:42,71 --> 00:08:46,71
+because if you have a bunch of different custom modules that you need to use and they're built by different
+
+95
+00:08:46,71 --> 00:08:51,71
+business units in your organization, they could each have their own repository, you can reference them all.
+
+96
+00:08:51,71 --> 00:08:55,71
+The LCM will figure out where the modules are that it needs. It will search them down.
+
+97
+00:08:55,71 --> 00:08:56,71
+And the ReportManagers
+
+98
+00:08:56,71 --> 00:09:00,71
+as well. If you've got complex hierarchy and you want some nodes to report here, some nodes to report
+
+99
+00:09:00,71 --> 00:09:07,71
+there or some nodes to report to three places, you can do that and you really don't have to think about it anymore.
+
+100
+00:09:07,71 --> 00:09:10,71
+So at this point, I want to look at a little code.
+
+101
+00:09:10,71 --> 00:09:14,71
+I know I'm a software engineer, I get excited about looking at code, but I try to keep it down to a minimum
+
+102
+00:09:14,71 --> 00:09:20,71
+because sometimes I go a little code happy. So how do you build a configuration for the LCM?
+
+103
+00:09:20,71 --> 00:09:26,71
+Maybe take a step back, how do you configure the LCM? You use Desired State Configuration to push a special
+
+104
+00:09:26,71 --> 00:09:27,71
+type of configuration. This is
+
+105
+00:09:27,71 --> 00:09:37,71
+called a Meta Configuration and you start by using the DscLocalConfigurationManager attribute at the top of your configuration.
+
+106
+00:09:37,71 --> 00:09:43,71
+This tells PowerShell that you're making a Meta Configuration. What I love about this is that now PowerShell
+
+107
+00:09:43,71 --> 00:09:47,71
+is not going to let you use any of your regular resources. It will yell at you and this is great because
+
+108
+00:09:47,71 --> 00:09:53,71
+it helps you keep your regular configurations and your Meta Configurations separated.
+
+109
+00:09:53,71 --> 00:09:56,71
+The next thing you'll see in this configuration is the settings resource.
+
+110
+00:09:56,71 --> 00:10:04,71
+This is where the majority of the standard LCM settings can be applied for configuring things like your
+
+111
+00:10:04,71 --> 00:10:10,71
+repositories and report servers, they have their own resource, and this is how you're able to apply multiples.
+
+112
+00:10:10,71 --> 00:10:16,71
+You can put three instances of configuration repository web in there and reference three different
+
+113
+00:10:16,71 --> 00:10:22,71
+configuration repositories if you'd like. So that's how you configure your configuration repositories for
+
+114
+00:10:22,71 --> 00:10:30,71
+your module resource repositories. There is a resource repository web resource for your report servers.
+
+115
+00:10:30,71 --> 00:10:36,71
+There is a report server web resource. And I also would like to reference, although I don't recommend,
+
+116
+00:10:36,71 --> 00:10:38,71
+there are also
+
+117
+00:10:38,71 --> 00:10:44,71
+two different versions of the configuration and resource repository resources, so these are the web versions.
+
+118
+00:10:44,71 --> 00:10:48,71
+There's also a share version of each of those as you can use
+
+119
+00:10:48,71 --> 00:10:55,71
+an SMB share for your configuration or resource repositories. Report servers must use HTTP.
+
+120
+00:10:55,71 --> 00:59:59,999
+They don't support SMB.
+

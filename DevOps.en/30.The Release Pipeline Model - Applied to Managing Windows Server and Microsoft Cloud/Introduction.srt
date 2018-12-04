@@ -1,0 +1,228 @@
+1
+00:00:11,5 --> 00:00:15,5
+So we've been working on this since about December.
+
+2
+00:00:15,5 --> 00:00:16,5
+Yeah.
+
+3
+00:00:16,5 --> 00:00:22,5
+We were talking on the phone and said here's all the---we like to just chat about these are the things we're
+
+4
+00:00:22,5 --> 00:00:26,5
+seeing going on with all the different customers we visit and some patterns that are working and patterns
+
+5
+00:00:26,5 --> 00:00:31,5
+that are not working and I'm going to cover this a little bit, but
+
+6
+00:00:31,5 --> 00:00:38,5
+we really kind of decided we should write a paper that explains all of this in terms that IT pros will
+
+7
+00:00:38,5 --> 00:00:43,5
+understand because there's all this chatter about DevOps and the amount of into is just flowing so quickly
+
+8
+00:00:43,5 --> 00:00:50,5
+now that no one has taken pause to actually reflect on if you're coming from a background that's Microsoft
+
+9
+00:00:50,5 --> 00:00:57,5
+Core infrastructure, what does all this mean to you and lay it out in a language that makes sense and that's
+
+10
+00:00:57,5 --> 00:01:03,5
+comprehensive as to why it should matter to your organization, so that's what we decided to tackle.
+
+11
+00:01:03,5 --> 00:01:10,5
+So this is a presentation, but we're releasing a whitepaper today, which I'll show you, I'll give a link to you,
+
+12
+00:01:10,5 --> 00:01:13,5
+that's about 50 pages long. So
+
+13
+00:01:13,5 --> 00:01:19,5
+for 20 minutes now, you guys just go ahead and read that and then we'll listen to your comments, no.
+
+14
+00:01:19,5 --> 00:01:25,5
+But no, hopefully, it's valuable to you. I suspect that this will end up being the first edition and that
+
+15
+00:01:25,5 --> 00:01:29,5
+we'll come back and make changes and I'll put up my information in front here.
+
+16
+00:01:29,5 --> 00:01:33,5
+So before you get too far, who the heck are you?
+
+17
+00:01:33,5 --> 00:01:38,5
+Well let me pull up the next slide with a picture of my jeep. So I'm Michael Greene.
+
+18
+00:01:38,5 --> 00:01:44,5
+I'm a principal program manager here in Enterprise Cloud Group. I'm actually in the CAT team and I'm the CAT
+
+19
+00:01:44,5 --> 00:01:49,5
+PM for PowerShell and DevOps. CAT is Customer Architectures and Technologies.
+
+20
+00:01:49,5 --> 00:01:54,5
+It has historically been our job to drive customer feedback. So we run the TAP program, that kind of stuff,
+
+21
+00:01:54,5 --> 00:02:01,5
+go out and meet with customers. I'm kind of the hunter in many ways now, so if you think about as Microsoft
+
+22
+00:02:01,5 --> 00:02:05,5
+has become very customer focused,
+
+23
+00:02:05,5 --> 00:02:11,5
+the CAT team ends up, previously we were driving customer feedback, well now it's like an even more aggressive role.
+
+24
+00:02:11,5 --> 00:02:16,5
+It's go meet with as many people as you can and every time you find something interesting that we need to
+
+25
+00:02:16,5 --> 00:02:22,5
+know about, make sure that you're just funneling all of that back to the PM team and we're continuing to evolve,
+
+26
+00:02:22,5 --> 00:02:28,5
+so we did an Azure CAT team and an Office CAT team and more and more you see CAT team sort of working on the
+
+27
+00:02:28,5 --> 00:02:36,5
+very latest cutting edge of what has come out and going to customers who are doing it first and being that
+
+28
+00:02:36,5 --> 00:02:42,5
+on-site, I'm here from engineering so that when you run into things that we didn't expect, there's a direct
+
+29
+00:02:42,5 --> 00:02:47,5
+conduit for those first couple of deployments to help make adoption easier.
+
+30
+00:02:47,5 --> 00:02:50,5
+So it's like I'm from Microsoft and I'm here to help.
+
+31
+00:02:50,5 --> 00:02:57,5
+Yeah. I should get a van with a logo on the side.
+
+32
+00:02:57,5 --> 00:03:04,5
+I just wanted to put up, oh so I've been with Microsoft for 12 years, out of that, I spent from 2010 to late
+
+33
+00:03:04,5 --> 00:03:12,5
+in 2012 in operations in what was called BPOS, now called Office 365. So
+
+34
+00:03:12,5 --> 00:03:21,5
+Don Jones taught me PowerShell in version 1 and in 2010, I spent 3 years in operations PowerShelling everything,
+
+35
+00:03:21,5 --> 00:03:26,5
+so I've lived a lot of the experiences that have resulted in things like what we're talking about today,
+
+36
+00:03:26,5 --> 00:03:30,5
+so I've got a lot of hands-on experience of PowerShell.
+
+37
+00:03:30,5 --> 00:03:34,5
+If you want to contact me, you're better off sending me a letter than sending me an email this week,
+
+38
+00:03:34,5 --> 00:03:40,5
+so if you want a response, but you can hit me up on Twitter. I don't mind doing a little dance where you
+
+39
+00:03:40,5 --> 00:03:45,5
+have to follow each other back and forth before we can DM each other or you're welcome to just tweet at me
+
+40
+00:03:45,5 --> 00:03:52,5
+and we'll get in touch with each other. And my GitHub repo is Mgreenegit and we'll be referencing probably
+
+41
+00:03:52,5 --> 00:03:56,5
+some stuff there. But Twitter is a good way to get a hold of me.
+
+42
+00:03:56,5 --> 00:04:03,5
+When I come to this event and I walk around, for me, it's like walking amongst celebrities because I'm not
+
+43
+00:04:03,5 --> 00:04:08,5
+really like into Hollywood celebrities, but when I look at Twitter and Slack channels and blogs and stuff
+
+44
+00:04:08,5 --> 00:04:13,5
+like that, it's all of you guys that I'm reading every day, so coming here and looking around at all the
+
+45
+00:04:13,5 --> 00:04:18,5
+badges and seeing those names, it's like whoa, that was that guy that I see every day and I've talked to him
+
+46
+00:04:18,5 --> 00:04:24,5
+every week for the past 20, but I've never met him in person, so it's really my pleasure to be here.
+
+47
+00:04:24,5 --> 00:04:31,5
+Great, and I'm Steve Morawski. I'm a principle engineer at Chef on the community engineering team.
+
+48
+00:04:31,5 --> 00:04:39,5
+I do a bit of DSC in PowerShell and stuff for a few years and Michael and I just kept bumping into each other
+
+49
+00:04:39,5 --> 00:04:47,5
+a lot at community events and at customers and talking about these same challenges, and so he's like hey
+
+50
+00:04:47,5 --> 00:04:55,5
+here's eight pages I just kind of scrawled out on my thoughts on this topic and let's go and do stuff, and so we
+
+51
+00:04:55,5 --> 00:05:03,5
+started collaborating back and forth and I just kind of rode along on his coat tails to help get some
+
+52
+00:05:03,5 --> 00:05:12,5
+feedback into the paper and all. And for me, this concept is one of the most critical things as you start to
+
+53
+00:05:12,5 --> 00:05:20,5
+move towards more DevOps environment and workflow. If you do not seriously look at addressing some of the
+
+54
+00:05:20,5 --> 00:05:28,5
+concerns that we're going to walk through here, you will not realize all of the benefits from working with
+
+55
+00:05:28,5 --> 00:05:35,5
+things like Desired State Configuration or Chef, being able to, you will not approach some of the big wins
+
+56
+00:05:35,5 --> 00:05:41,5
+that you see in reports like the state of DevOps and things like that where you see these faster times to
+
+57
+00:05:41,5 --> 00:59:59,999
+recovery and reduced failure rates and things like that. And so, for me, this is a---
+

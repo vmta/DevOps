@@ -1,0 +1,104 @@
+1
+00:00:12,12 --> 00:00:22,22
+Alright, so how many of you have been to my other sessions? Okay, because if you haven't, you are really in
+
+2
+00:00:22,22 --> 00:00:27,27
+the deep end of the pond at this point. This is the end, so to speak.
+
+3
+00:00:27,27 --> 00:00:34,34
+And what we're going to do is we're going to talk about DSC. We've already in other sessions built pull servers.
+
+4
+00:00:34,34 --> 00:00:44,44
+I already have a pull server. Pull server. Pull my finger, oh okay, no you're not going to do it, are you?
+
+5
+00:00:44,44 --> 00:00:49,49
+And so, what we're going to do now is this is really the hard part that throws a lot of people off when they
+
+6
+00:00:49,49 --> 00:00:57,57
+start with DSC is how do I get configurations on a pull server and how do I get resources on a pull server so
+
+7
+00:00:57,57 --> 00:01:06,66
+that when a node goes ask that pull server says hey I want this config and the config needs additional resources,
+
+8
+00:01:06,66 --> 00:01:12,72
+then it'll just download the resources that it needs. So I don't deploy these resources, it just gets what
+
+9
+00:01:12,72 --> 00:01:15,75
+it needs when it actually runs. Now if
+
+10
+00:01:15,75 --> 00:01:22,82
+you don't know this, here take a, use your phone, take a picture of this, whatever.
+
+11
+00:01:22,82 --> 00:01:26,86
+Here's where all the code is. This is actually the entire code that I did for the PreCon.
+
+12
+00:01:26,86 --> 00:01:33,93
+So this is start to finish DSC stuff starting out with how to write a config, how to manage the LCM,
+
+13
+00:01:33,93 --> 00:01:41,101
+all that kind of stuff. Take a picture because I'm going to make it go away.
+
+14
+00:01:41,101 --> 00:01:45,105
+So I put together a ton of code for you. What we're going to do is the last two modules and we're going to
+
+15
+00:01:45,105 --> 00:01:52,112
+do it really fast because this is short session, so and also Morawski's little reading list on DevOps.
+
+16
+00:01:52,112 --> 00:01:56,116
+It's an excellent reading list. And I think that's all I need to show you.
+
+17
+00:01:56,116 --> 00:02:04,124
+So here's what it looks like when you get the code, you will get a zip of looks like this.
+
+18
+00:02:04,124 --> 00:02:11,131
+Underneath a make a Scripts folder if you want to play with this at home and then copy DSCPreCon right there,
+
+19
+00:02:11,131 --> 00:02:16,136
+and underneath DSCPreCon, these are all the folders of all the code
+
+20
+00:02:16,136 --> 00:02:21,141
+and a ton of stuff in there, so you have a lot of fun. What we're going to focus on is the last two,
+
+21
+00:02:21,141 --> 00:02:22,142
+so I'm going to go
+
+22
+00:02:22,142 --> 00:02:28,148
+into PackagingConfigs and we're going to give this a shot. Everything starts with a demo script that actually
+
+23
+00:02:28,148 --> 00:02:33,153
+walks you through everything one step at a time, so let's do this, shall we?
+
+24
+00:02:33,153 --> 00:02:37,157
+Oh, that's not what I wanted. What am I doing? I'm in the wrong, ah.
+
+25
+00:02:37,157 --> 00:02:44,164
+Now you have to do it all over again. There we go. Make this a little bit bigger.
+
+26
+00:02:44,164 --> 00:59:59,999
+Oh, that's good. You guys see that okay? Awesome.
+

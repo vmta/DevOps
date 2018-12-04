@@ -1,0 +1,156 @@
+1
+00:00:00,0 --> 00:00:06,965
+So when you test modules, as opposed to scripts, you use the InModuleScope container, which means that you
+
+2
+00:00:06,965 --> 00:00:13,965
+can mock any function. It can't handle multiple versions, so make sure to use that Get-Module Remove-Module.
+
+3
+00:00:13,965 --> 00:00:22,965
+Oh, if you just use Remove-Module without Get-Module and there are no modules in there, it throws a non-terminating error.
+
+4
+00:00:22,965 --> 00:00:25,965
+Okay, but if you use Get-Module and then Remove-Module, it doesn't.
+
+5
+00:00:25,965 --> 00:00:30,965
+Yeah, it's nice. And then write separate tests for all of your nested modules because they're not
+
+6
+00:00:30,965 --> 00:00:39,965
+automatically tested, right, but you just give it the fully-qualified path to the module.
+
+7
+00:00:39,965 --> 00:00:46,965
+So a couple of conclusions. It took a really long time to do this.
+
+8
+00:00:46,965 --> 00:00:53,965
+It was my first one. I have since written more tests for things that I actually have in production code and
+
+9
+00:00:53,965 --> 00:01:01,965
+it went much snippier. Okay. So it took a really long time, but so did my first decent script.
+
+10
+00:01:01,965 --> 00:01:08,965
+Okay. It's a learning process and I think you really need to look at it in the long run, not in the short run,
+
+11
+00:01:08,965 --> 00:01:09,965
+right, so you
+
+12
+00:01:09,965 --> 00:01:15,965
+don't base how many times, how much time a test takes on somebody who's doing it for the first time.
+
+13
+00:01:15,965 --> 00:01:22,965
+Right? That's a ridiculous measure of efficiency. So I think that in a year or so when people get really
+
+14
+00:01:22,965 --> 00:01:30,965
+good at writing tests, we'll have better metrics for how efficient this process is.
+
+15
+00:01:30,965 --> 00:01:39,965
+It was much too easy for me to assume when I hit a bug in my test that it was a Pester bug.
+
+16
+00:01:39,965 --> 00:01:42,965
+This is a system in development and I did find a couple of Pester bugs.
+
+17
+00:01:42,965 --> 00:01:48,965
+They were pretty minor. Most of the time they were my bugs, they were logic bugs.
+
+18
+00:01:48,965 --> 00:01:54,965
+In this code, I have a for loop, right, and my for loop would not run.
+
+19
+00:01:54,965 --> 00:01:58,965
+You can debug these files too. Just run the test files, run them through your debugger, and I could watch
+
+20
+00:01:58,965 --> 00:02:06,965
+in my debugger, watch it skip that for loop. So I went up to Dave Wyatt and I said your code doesn't have a for loop.
+
+21
+00:02:06,965 --> 00:02:15,965
+I had set my for loop up to run while the value of a certain array, right, the index was less than the value
+
+22
+00:02:15,965 --> 00:02:24,965
+of a certain array and it was nothing in my array, okay. So really, don't assume that these things are Pester bugs.
+
+23
+00:02:24,965 --> 00:02:30,965
+Take responsibility. I found them to be most valuable for regression testing.
+
+24
+00:02:30,965 --> 00:02:38,965
+So in production, I have a system that runs fairly frequently and gathers some files and I change it a lot
+
+25
+00:02:38,965 --> 00:02:45,965
+because my boss always wants me improving my code, right, and this is wonderful for catching unintended side effects.
+
+26
+00:02:45,965 --> 00:02:51,965
+So normally, when you test a new feature, you test to make sure the feature works and this automatically
+
+27
+00:02:51,965 --> 00:02:58,965
+tests to make sure that your new feature didn't break other features that your users depend on.
+
+28
+00:02:58,965 --> 00:03:04,965
+The output type became really important to me. I have learned to use that output type attribute and to
+
+29
+00:03:04,965 --> 00:03:11,965
+include it in my documentation and it makes my writing, mocking, and tests much simpler.
+
+30
+00:03:11,965 --> 00:03:19,965
+It avoids a lot of mocking and test errors. Amen! Yes. The error should be explained in the help file.
+
+31
+00:03:19,965 --> 00:03:26,965
+Okay. That's a really important thing that I didn't realize how important it was for me to document errors
+
+32
+00:03:26,965 --> 00:03:31,965
+and not have my users try to figure out what errors they might encounter.
+
+33
+00:03:31,965 --> 00:03:39,965
+Okay, and then the final thing is that every module should have at least one test file.
+
+34
+00:03:39,965 --> 00:03:49,965
+This talk was reviewed by Dave Wyatt twice. He looked at all the tests and all the code and all of the slides
+
+35
+00:03:49,965 --> 00:03:55,965
+and I owe a huge debt of gratitude to the people who went before me including Jakub Jares and Mike Robbins
+
+36
+00:03:55,965 --> 00:03:59,965
+who wrote great articles about Pester.
+
+37
+00:03:59,965 --> 00:04:05,965
+We're celebrating 10 years of PowerShell and these are the people on the PowerShell team who've been there
+
+38
+00:04:05,965 --> 00:04:09,965
+all 10 years at Microsoft.
+
+39
+00:04:09,965 --> 00:59:59,999
+And this was Real World Test-Driven Development with Pester, so thank you for coming.
+

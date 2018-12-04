@@ -1,0 +1,424 @@
+1
+00:00:00,0 --> 00:00:05,278
+What about failure? This is the Twitter fail whale. You're going to fail.
+
+2
+00:00:05,278 --> 00:00:10,5
+You've always failed. Like I said, this is just a way of codifying that failure and making sure that what
+
+3
+00:00:10,5 --> 00:00:17,278
+you learn from that failure can't happen again because you've got a process in place that's coded.
+
+4
+00:00:17,278 --> 00:00:27,278
+So one more thing. It's fun to talk about all this, but a lot of folks will get a little bit stuck on okay
+
+5
+00:00:27,278 --> 00:00:34,278
+let's say I don't have software developers, that means I don't really need to do this, right?
+
+6
+00:00:34,278 --> 00:00:36,278
+Well, yes and no.
+
+7
+00:00:36,278 --> 00:00:40,278
+You guys have all heard the term infrastructure is code, right. I hate that.
+
+8
+00:00:40,278 --> 00:00:51,278
+It's syntactically wrong. Infrastructure from code is fine. Infrastructure from code.
+
+9
+00:00:51,278 --> 00:00:57,278
+How many of you have a vision, even if you're not doing it, have a vision of having all of your servers
+
+10
+00:00:57,278 --> 00:01:03,278
+managed via something like DSC or Chef or Puppet? Well boys and girls, that's code.
+
+11
+00:01:03,278 --> 00:01:10,278
+That DSC document, that configuration script, and the MOF that comes from it, that's code.
+
+12
+00:01:10,278 --> 00:01:13,278
+This exact same pipeline applies to you.
+
+13
+00:01:13,278 --> 00:01:21,278
+Here is my DSC configuration script. Push the button, compile, here's the MOF, let's spin up a virtual machine,
+
+14
+00:01:21,278 --> 00:01:26,278
+let's inject the MOF into the VM, let's let the LCM do its dance, and then when it's done, we're going to run
+
+15
+00:01:26,278 --> 00:01:34,278
+a bunch of automated tests to make sure the environment is configured the way we wanted it to be, and if it is,
+
+16
+00:01:34,278 --> 00:01:40,278
+then that code, that DSC configuration script is approved for use in production and we can push the other button
+
+17
+00:01:40,278 --> 00:01:45,278
+and start spinning up new servers with that thing. Okay, times change.
+
+18
+00:01:45,278 --> 00:01:49,278
+You know what, we're switching AV vendors now, we're going to use different antimalware on our servers,
+
+19
+00:01:49,278 --> 00:01:53,278
+so I'm going to go change my DSC configuration script to remove the old stuff, make sure it's not there,
+
+20
+00:01:53,278 --> 00:01:59,278
+make sure the new stuff is there, make sure it's configured correctly, deploy it to the test environment,
+
+21
+00:01:59,278 --> 00:02:05,278
+spin up the VMs, run the tests against it, looks good, push it to production, all my servers reconfigure
+
+22
+00:02:05,278 --> 00:02:15,278
+themselves consistently every single time. Infrastructure from code means that we are developers, sorry,
+
+23
+00:02:15,278 --> 00:02:21,278
+probably didn't think that was going to happen when you came out this week, but you're a dev now.
+
+24
+00:02:21,278 --> 00:02:27,278
+So infrastructure from code means we can use this same pipeline to manage our infrastructure and this is way
+
+25
+00:02:27,278 --> 00:02:28,278
+better than
+
+26
+00:02:28,278 --> 00:02:33,278
+well how did it use to be, right. Let's say you changed management agents and now you've got to go around
+
+27
+00:02:33,278 --> 00:02:41,278
+and uninstall the old one and install the new one on how many servers do you have, 500, 1000.
+
+28
+00:02:41,278 --> 00:02:45,278
+You have two ways of doing that. You could do it yourself manually by running around and doing it, right,
+
+29
+00:02:45,278 --> 00:02:48,278
+actually a couple of way, more than two. You could do it manually.
+
+30
+00:02:48,278 --> 00:02:54,278
+You sitting in this room probably would have written a script to do it, but scripts in that kind of situation
+
+31
+00:02:54,278 --> 00:02:58,278
+can be a little delicate, right. Anybody ever script something like that in the past?
+
+32
+00:02:58,278 --> 00:03:02,278
+Did it work perfectly on every single machine? No because you've always got those little specials ones out
+
+33
+00:03:02,278 --> 00:03:07,278
+there that are broken. And then you're third option is that new thing, the intern net where you go to a
+
+34
+00:03:07,278 --> 00:03:13,278
+college and you get a couple of kids, pay them, and they run around and do it manually.
+
+35
+00:03:13,278 --> 00:03:20,278
+But wouldn't it be better if you could have a policy-driven infrastructure where you just say look this is
+
+36
+00:03:20,278 --> 00:03:26,278
+what you need to be today, and if that ever changes, I'll let you know, and you can run all that through this
+
+37
+00:03:26,278 --> 00:03:34,278
+DevOps pipeline where we are both dev and ops and we automate the ops piece of it and we focus on that
+
+38
+00:03:34,278 --> 00:03:41,278
+creative human part, the dev piece, our code, our configuration.
+
+39
+00:03:41,278 --> 00:03:48,278
+Could you see yourself running things this way? See DSC, Chef, Puppet, all of them, they're scary as Hell if
+
+40
+00:03:48,278 --> 00:03:56,278
+you're not doing this. If you're not pushing things through test and testing and building it as a pipeline
+
+41
+00:03:56,278 --> 00:04:04,278
+where it goes from a successful test out into production. Just whacking out MOF files, that's scary.
+
+42
+00:04:04,278 --> 00:04:08,278
+But this automates all the ugly bits, the testing and everything else.
+
+43
+00:04:08,278 --> 00:04:12,278
+How many of you have played with DSC to provision a machine? Okay.
+
+44
+00:04:12,278 --> 00:04:18,278
+So you wrote your configuration script, yeah, you ran it so you get a MOF, right.
+
+45
+00:04:18,278 --> 00:04:22,278
+When you were just starting to do this, did you just push it out to the node first time?
+
+46
+00:04:22,278 --> 00:04:29,278
+Yeah, yeah -Verbose -Wait right just to see what happened and when it ran, the first time you got it to run
+
+47
+00:04:29,278 --> 00:04:34,278
+without errors, remember that? Remember how good that felt? What did you do next?
+
+48
+00:04:34,278 --> 00:04:37,278
+It ran without errors. What's the very next thing you did?
+
+49
+00:04:37,278 --> 00:04:38,278
+Source control.
+
+50
+00:04:38,278 --> 00:04:48,278
+You did not put it into source control next. You RDPd into the server, didn't you, to see if it worked.
+
+51
+00:04:48,278 --> 00:04:58,278
+Yeah, of course you did because you don't believe it. All we're doing is talking about automating that piece.
+
+52
+00:04:58,278 --> 00:05:02,278
+Instead of you RDP-ing into the server and looking around with your human eyeballs, we want the
+
+53
+00:05:02,278 --> 00:05:07,278
+machine to do it. Have the machine go check. Did you do this? Did you do this?
+
+54
+00:05:07,278 --> 00:05:10,278
+Did you do this? Did you do this? Is this true? Is this true?
+
+55
+00:05:10,278 --> 00:05:14,278
+You write a little script for it. We've got testing frameworks, but if you just wanted a little script,
+
+56
+00:05:14,278 --> 00:05:19,278
+you could even do that. And once the machines could because the machine is going to be able to check all
+
+57
+00:05:19,278 --> 00:05:23,278
+those things a lot faster than you and it's going to do it every time.
+
+58
+00:05:23,278 --> 00:05:29,278
+It's not going to forget. Make sure it's in the domain. That's important.
+
+59
+00:05:29,278 --> 00:05:34,278
+Make sure it's got an SSL certificate. Make sure it's got an HTTPS listener for remoting.
+
+60
+00:05:34,278 --> 00:05:39,278
+Make sure the HTTP listener is turned off, right. You're going to forget at least one of those things at some point.
+
+61
+00:05:39,278 --> 00:05:43,278
+The computer will never forget. So you build those checks. You don't RDP into the server please for the
+
+62
+00:05:43,278 --> 00:05:48,278
+love of all that's holy stop RDP-ing into your servers. Alright.
+
+63
+00:05:48,278 --> 00:05:53,278
+Not an option with Nano, so we're going to have to figure out how to automate this anyway.
+
+64
+00:05:53,278 --> 00:06:00,278
+So you automate it, let it check it. And if it says thumbs up, you've got to believe it.
+
+65
+00:06:00,278 --> 00:06:05,278
+And it might be wrong, you might have forgotten to test something and that's fine, you'll figure it out,
+
+66
+00:06:05,278 --> 00:06:08,278
+but then go back and add it to the test.
+
+67
+00:06:08,278 --> 00:06:12,278
+Create that confidence in your code and that's really what DevOps is.
+
+68
+00:06:12,278 --> 00:06:17,278
+Failure is always an option here. It was always an option. We always failed.
+
+69
+00:06:17,278 --> 00:06:24,278
+You know, one of the reasons, so Puppet labs if you dig into that state of DevOps, I think that number 200 times
+
+70
+00:06:24,278 --> 00:06:32,278
+shorter lead time to deployment. You know why? Because they eliminated all this human QA effort where it
+
+71
+00:06:32,278 --> 00:06:37,278
+was, okay here's the code, now we're going to have some monkeys sit here and just pound on it.
+
+72
+00:06:37,278 --> 00:06:41,278
+They're going to run through scenarios, they're going to try and break stuff, it's going to be a little random,
+
+73
+00:06:41,278 --> 00:06:44,278
+they're not really going to collect data, so the developers are going to get frustrated and we're going to go
+
+74
+00:06:44,278 --> 00:06:48,278
+back and forth and fight with each other and the devs are going to say it's fixed and then we're going to do
+
+75
+00:06:48,278 --> 00:06:51,278
+the whole cycle again and they're going to find something different and they're going to send it back and they
+
+76
+00:06:51,278 --> 00:06:57,278
+don't have enough data. That's why it took so long because that QA process was too random,
+
+77
+00:06:57,278 --> 00:07:03,278
+too not automated, too inconsistent. All this does is it flights all that a lot faster.
+
+78
+00:07:03,278 --> 00:07:09,278
+It's consistent. You're still going to fail. How many of you have ever seen a big code deployment go out
+
+79
+00:07:09,278 --> 00:07:16,278
+with 0 bugs? No. That's not true. They all go out with 0 bugs.
+
+80
+00:07:16,278 --> 00:07:22,278
+It's not until the users touch them and infect them, right. You know that's where bugs come from, they're infected.
+
+81
+00:07:22,278 --> 00:07:28,278
+Users infect code. Well it happens all the time. It's always happening.
+
+82
+00:07:28,278 --> 00:07:34,278
+It's always going to happen, but at least this way, we can get a less screwed up version a lot quicker.
+
+83
+00:07:34,278 --> 00:07:43,278
+Here's why a lot of developers like this. Rather than deploying one giant thing every year that has 800
+
+84
+00:07:43,278 --> 00:07:51,278
+moving parts because when something breaks, not if, when something breaks, you've got 800 moving parts to look at.
+
+85
+00:07:51,278 --> 00:07:56,278
+They would, most of them, much prefer to ship out something every week than only change one or two things
+
+86
+00:07:56,278 --> 00:08:02,278
+because if they break it, they're pretty sure what they broke. Right, the other problem you get with these
+
+87
+00:08:02,278 --> 00:08:07,278
+long release cycles, these let's work on it for six months or a year or a year is by the time you get to the
+
+88
+00:08:07,278 --> 00:08:13,278
+end and you ship the code. The guy who started the code doesn't work for your company anymore.
+
+89
+00:08:13,278 --> 00:08:18,278
+Right, either his brain has changed because he's lived through 6 or 12 months of life or he's quit and gone
+
+90
+00:08:18,278 --> 00:08:23,278
+on because he can't believe you can't deploy software any faster than that.
+
+91
+00:08:23,278 --> 00:08:28,278
+But you do these things quickly and constantly and small, tiny, tiny bits, then when something does break,
+
+92
+00:08:28,278 --> 00:08:32,278
+yeah, pretty sure I know what that was because we only changed that one line that said Y2K don't touch,
+
+93
+00:08:32,278 --> 00:08:38,278
+we touched it. We should go put that back. So it's really easy to recover a lot faster.
+
+94
+00:08:38,278 --> 00:08:43,278
+And so us letting them ship more stuff because who are your best beta testers, who's really going to find all your bugs?
+
+95
+00:08:43,278 --> 00:08:44,278
+Users.
+
+96
+00:08:44,278 --> 00:08:52,278
+Your users because they're infecting the code. So you might as well shorten up the path for getting the code out
+
+97
+00:08:52,278 --> 00:08:59,278
+to your users because that's where all the testing happens anyway and if you can do it in small bits.
+
+98
+00:08:59,278 --> 00:09:04,278
+And again, this is the same with infrastructure, infrastructure from code.
+
+99
+00:09:04,278 --> 00:09:12,278
+Don't save up all the changes you want to do to your servers for a once every five-year nightmare cluster.
+
+100
+00:09:12,278 --> 00:09:15,278
+Alright, change one little thing at a time. Okay, we're just going to push this out.
+
+101
+00:09:15,278 --> 00:09:20,278
+Oh, that went well. Great. Okay let's do the next thing. Let's push that out and we can do it constantly
+
+102
+00:09:20,278 --> 00:09:27,278
+and iteratively and evolve things rather than having massive revolution all the time.
+
+103
+00:09:27,278 --> 00:09:31,278
+This is one of the reasons Microsoft is trying to shift their own model over to this so that they can just
+
+104
+00:09:31,278 --> 00:09:37,278
+ship small little bits and gradually evolve the operating system, rather than having to come up with a brand
+
+105
+00:09:37,278 --> 00:09:42,278
+new user interface and rearrange the entire control panel every five years, right, which is all Windows has ever
+
+106
+00:09:42,278 --> 00:59:59,999
+done, right, new UI, new control panel.
+

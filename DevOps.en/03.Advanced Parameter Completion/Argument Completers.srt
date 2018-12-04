@@ -1,0 +1,484 @@
+1
+00:00:00,75 --> 00:00:03,974
+So argument completers.
+
+2
+00:00:03,974 --> 00:00:09,974
+So what is an argument completer? An argument completer is essentially, it's a ScriptBlock.
+
+3
+00:00:09,974 --> 00:00:17,974
+PowerShell is going to invoke it when it goes to look to see, when you're typing your command,
+
+4
+00:00:17,974 --> 00:00:20,974
+PowerShell behind the scenes is doing all kinds of completion events,
+
+5
+00:00:20,974 --> 00:00:27,974
+so when you start to type Get-Command, you know, as you're typing behind the scenes, there's a global
+
+6
+00:00:27,974 --> 00:00:31,974
+function called TabExpansion2 that's getting invoked that ends up passing everything you
+
+7
+00:00:31,974 --> 00:00:38,974
+just typed along with the cursor position and all that stuff into a helper function and that helper function
+
+8
+00:00:38,974 --> 00:00:43,974
+is pretty complicated, but it ends up figuring out whether or not the cursors on what's probably a command,
+
+9
+00:00:43,974 --> 00:00:53,974
+or parameter name, or parameter value, and behind the scenes, these completion events are occurring.
+
+10
+00:00:53,974 --> 00:01:06,974
+And so when you go to start typing, well that should have popped up something, there we go.
+
+11
+00:01:06,974 --> 00:01:11,974
+So at this stage, you know we could have registered what's called an argument completer and PowerShell would
+
+12
+00:01:11,974 --> 00:01:22,974
+have known that we've given this ScriptBlock the responsibility of showing the user what valid parameters are available.
+
+13
+00:01:22,974 --> 00:01:27,974
+And the completers themselves, they're actually just, they are just ScriptBlocks, so we're going to make a
+
+14
+00:01:27,974 --> 00:01:33,974
+very, very simple one real quick. And you register them, you tell PowerShell about them with this
+
+15
+00:01:33,974 --> 00:01:39,974
+Register-ArgumentCompleter command. So real quick, this presentation is mostly geared towards version 5,
+
+16
+00:01:39,974 --> 00:01:43,974
+but almost everything I talk about here does apply to version 3 and 4,
+
+17
+00:01:43,974 --> 00:01:49,974
+but you do have to do something special. That Tab expansion2 function, or yeah, the function that I mentioned,
+
+18
+00:01:49,974 --> 00:01:55,974
+in version 3, it doesn't provide an easy entry point into having these custom argument completers.
+
+19
+00:01:55,974 --> 00:02:00,974
+There's a module, the easiest way to get this available, there's a module called TabExpansionPlusPlus.
+
+20
+00:02:00,974 --> 00:02:05,974
+It's created by a PowerShell team member. I believe it's the same guy that made PSReadLine.
+
+21
+00:02:05,974 --> 00:02:11,974
+And essentially, so when I call Register-ArgumentCompleter here in version 5, this a native cmdlet,
+
+22
+00:02:11,974 --> 00:02:15,974
+but if you have that module, it's going to essentially do the same things behind the scenes.
+
+23
+00:02:15,974 --> 00:02:24,974
+It sets up, there are dictionaries of argument completers that all this stuff goes into.
+
+24
+00:02:24,974 --> 00:02:28,974
+So what we're going to do, we're going to register an argument completer for a command called DummyCommand,
+
+25
+00:02:28,974 --> 00:02:37,974
+which isn't a command yet, its definition is right here, and all we're going to do is output to strings.
+
+26
+00:02:37,974 --> 00:02:45,974
+Alright, a script, an argument completer ScriptBlock, it's supposed to return completion result instances and
+
+27
+00:02:45,974 --> 00:02:49,974
+we'll talk about what those are in just a minute, but it turns out PowerShell lets you do a lot of stuff,
+
+28
+00:02:49,974 --> 00:02:55,974
+sometimes it will get you in trouble and it turns out that a regular string can just be coerced into a completion result.
+
+29
+00:02:55,974 --> 00:02:58,974
+I'll show you why you probably don't want to do that in a minute.
+
+30
+00:02:58,974 --> 00:03:04,974
+But this is an argument completer that's just going to tell it that there are two strings that are available
+
+31
+00:03:04,974 --> 00:03:10,974
+and I just ran Register-ArgumentCompleter. That command has not been defined yet in my session and that's okay
+
+32
+00:03:10,974 --> 00:03:17,974
+because all Register-ArgumentCompleter did was put this completer into a dictionary and it was associated
+
+33
+00:03:17,974 --> 00:03:25,974
+with the DummyCommand, CommandName, and the Parameter, ParameterName.
+
+34
+00:03:25,974 --> 00:03:36,974
+So let's read that in and type out DummyCommand. When I type in parameter, I hit space, nothing happened.
+
+35
+00:03:36,974 --> 00:03:44,974
+If I hit Ctrl+Space to actually tell the completion engine to bring up the IntelliSense window, you notice,
+
+36
+00:03:44,974 --> 00:03:48,974
+I don't know if you've noticed this or not, but I'm calling it out so you should notice it in just a second.
+
+37
+00:03:48,974 --> 00:03:53,974
+There's no little icon right here, that's blank, and that's because we just let those strings get coerced
+
+38
+00:03:53,974 --> 00:03:55,974
+into completion results.
+
+39
+00:03:55,974 --> 00:04:00,974
+The completion results are what are used for CommandNames, for ParameterNames, for variable expansion,
+
+40
+00:04:00,974 --> 00:04:05,974
+all that stuff and you're supposed to tell it what type of completion result it is.
+
+41
+00:04:05,974 --> 00:04:14,974
+And so in this case, IntelliSense saw that this wasn't a parameter value completion, so that's why it didn't
+
+42
+00:04:14,974 --> 00:04:15,974
+automatically show it.
+
+43
+00:04:15,974 --> 00:04:19,974
+But let's go ahead and pick one of these. Now if you notice, I just picked that one.
+
+44
+00:04:19,974 --> 00:04:24,974
+There's no quotes around that, so it's kind of like what I was saying earlier there was like a bug in ValidateSet.
+
+45
+00:04:24,974 --> 00:04:28,974
+Well this actually is, in version 3 or 4 there was a bug in ValidateSet that would do this.
+
+46
+00:04:28,974 --> 00:04:35,974
+This isn't actually a bug though. You want to be able to, and you can and I'll show you in just a second how,
+
+47
+00:04:35,974 --> 00:04:36,974
+you want to be able to
+
+48
+00:04:36,974 --> 00:04:41,974
+control exactly what is returned to the command-line as that parameter value.
+
+49
+00:04:41,974 --> 00:04:47,974
+So it is on you if it's something that needs to be quoted, it's on you to get it quoted.
+
+50
+00:04:47,974 --> 00:04:54,974
+So another problem with this, I can type in gibberish, and I can press Tab, and it goes through.
+
+51
+00:04:54,974 --> 00:04:59,974
+So what's happening there, that ArgumentCompleter ScriptBlock, it's doing exactly what it was told.
+
+52
+00:04:59,974 --> 00:05:04,974
+Every time it's invoked, whatever it returns, that's what the IntelliSense is going to show.
+
+53
+00:05:04,974 --> 00:05:11,974
+So we told it to output those two strings. So it doesn't care what I have. I can start this with a G and
+
+54
+00:05:11,974 --> 00:05:17,974
+that should come back with the goodnight string, but when I hit tab, it goes Hello World in that order.
+
+55
+00:05:17,974 --> 00:05:25,974
+So every single time that ScriptBlock is invoked on behalf of PowerShell, it's going to output everything in that order.
+
+56
+00:05:25,974 --> 00:05:31,974
+So if we come in and let's first fix the quoting problem, right.
+
+57
+00:05:31,974 --> 00:05:37,974
+So here's that same completer. This time we're going to fancy it up some.
+
+58
+00:05:37,974 --> 00:05:44,974
+We're going to take each one of the strings that we wanted to output and for each one, we're going to do a
+
+59
+00:05:44,974 --> 00:05:46,974
+really bad check for how to whether or not it needs to be quoted.
+
+60
+00:05:46,974 --> 00:05:51,974
+All this is doing is taking spaces into account. There are other reasons you wouldn't want to quote a string
+
+61
+00:05:51,974 --> 00:05:56,974
+like parentheses and any other number of them, but for this instance, we're going to treat, we save that
+
+62
+00:05:56,974 --> 00:06:02,974
+string off and then we determine whether or not we need to quote it, and if so, we add quotes, and then we're
+
+63
+00:06:02,974 --> 00:06:13,974
+going to end up calling, creating a new completion result. And so, CompletionResult new, so it has two constructors.
+
+64
+00:06:13,974 --> 00:06:19,974
+We saw earlier that it will obviously allow just a regular string and when you give it just a single string,
+
+65
+00:06:19,974 --> 00:06:24,974
+it ends up for these three values that take strings, it just uses the same one for all of them.
+
+66
+00:06:24,974 --> 00:06:30,974
+But here's something really neat about them, they allow you to have different values, this first one,
+
+67
+00:06:30,974 --> 00:06:36,974
+this CompletionText, that's what's actually going to be put on, that's the value that will be put with the
+
+68
+00:06:36,974 --> 00:06:43,974
+command, whether or not that's up in the Script pane or down in the command-line.
+
+69
+00:06:43,974 --> 00:06:47,974
+The next one is what the IntelliSense menu is actually going to show you.
+
+70
+00:06:47,974 --> 00:06:52,974
+Next, we have the type of completion result and if you're using Register-ArgumentCompleter to do an argument
+
+71
+00:06:52,974 --> 00:06:56,974
+completer, you're probably always, I don't want to say you're always going to, but I can't think of a time
+
+72
+00:06:56,974 --> 00:07:03,974
+you wouldn't tell it it's a parameter value completion type. And then you get to provide tooltip texts.
+
+73
+00:07:03,974 --> 00:07:10,974
+So in this case, we're just going to put the word Tooltip in parenthesis, so you can see that it is doing something.
+
+74
+00:07:10,974 --> 00:07:16,974
+So we do the same thing, Parameter, and now you notice Hello World and Goodnight Moon, they don't have quotes
+
+75
+00:07:16,974 --> 00:07:21,974
+around them, but when I press Enter to select one, they do have the quotes.
+
+76
+00:07:21,974 --> 00:07:28,974
+We still have that problem though where it's not taking into account whatever we typed.
+
+77
+00:07:28,974 --> 00:07:33,974
+So in order to do that,
+
+78
+00:07:33,974 --> 00:07:39,974
+that ArgumentCompleter when it's being invoked, it has a lot of arguments that are passed to it to give it
+
+79
+00:07:39,974 --> 00:07:42,974
+information about the current command that's running.
+
+80
+00:07:42,974 --> 00:07:47,974
+So instead of just telling you what they are, I'm going to demo it real quick.
+
+81
+00:07:47,974 --> 00:07:49,974
+What we'll do,
+
+82
+00:07:49,974 --> 00:07:58,974
+we're going to run, just monitor a little log file here and we will create an ArgumentCompleter for that same
+
+83
+00:07:58,974 --> 00:08:02,974
+command that's just going to output stuff to this log file that we're watching.
+
+84
+00:08:02,974 --> 00:08:11,974
+And so, we can come in now and again, try not to override that, DummyCommand -Parameter.
+
+85
+00:08:11,974 --> 00:08:19,974
+And so, if you look up here, five arguments were passed into it. The first argument is a string and its
+
+86
+00:08:19,974 --> 00:08:23,974
+value is DummyCommand, so it turns out that first argument is the CommandName.
+
+87
+00:08:23,974 --> 00:08:28,974
+The completer is made aware of what command it is acting on behalf of.
+
+88
+00:08:28,974 --> 00:08:33,974
+The next one is a string and its name is Parameter, so that matches up with the parameter name.
+
+89
+00:08:33,974 --> 00:08:41,974
+The second argument is the current parameter name. The next one, this is blank right now, so if you come over
+
+90
+00:08:41,974 --> 00:08:48,974
+here and type in gibberish and then invoke that again, you'll see that the value for the third argument is
+
+91
+00:08:48,974 --> 00:08:53,974
+gibberish, so that's the word to complete, that's what the user has typed in.
+
+92
+00:08:53,974 --> 00:08:59,974
+The fourth one is a CommandAst object, so you're given the entire abstract syntax tree of the command.
+
+93
+00:08:59,974 --> 00:09:03,974
+So if you want to do something super crazy and advanced, you can have it.
+
+94
+00:09:03,974 --> 00:09:08,974
+It gives you all the tools you need to do make completers that depend on other parameters that the user has
+
+95
+00:09:08,974 --> 00:09:14,974
+typed in at the command-line or you can do lots of stuff with it.
+
+96
+00:09:14,974 --> 00:09:20,974
+The last one is a hash table and that's, you're going to see that referred to in a little bit as the fake bound parameters.
+
+97
+00:09:20,974 --> 00:09:28,974
+So you can see where it's got Parameter1 there. If I come in and give it, you know, we'll do OutVariable,
+
+98
+00:09:28,974 --> 00:09:34,974
+just one of the common parameters and call that again. You can see down at the bottom where it has those,
+
+99
+00:09:34,974 --> 00:09:38,974
+those are available. So I could do a check inside the completer to see, maybe I need, maybe I care what's in
+
+100
+00:09:38,974 --> 00:09:42,974
+OutVariable, so I can check and see that. Now it's called the fake bound parameters.
+
+101
+00:09:42,974 --> 00:09:48,974
+It's not truly, it's not doing everything that the real parameter binder would do once you submit a command.
+
+102
+00:09:48,974 --> 00:09:55,974
+If you were to try something like this, just put a command inside parentheses and call it, even though echo var
+
+103
+00:09:55,974 --> 00:10:01,974
+is going to do essentially the same thing as, or effectively the same thing as just putting a string out,
+
+104
+00:10:01,974 --> 00:10:06,974
+it's not going to bind that. It's not considered a safe value.
+
+105
+00:10:06,974 --> 00:10:10,974
+You could have anything in there. You maybe call a new item or something like that and you don't want to
+
+106
+00:10:10,974 --> 00:10:16,974
+actually do that until the user presses Enter, so it's not going to necessarily bind everything, but if you
+
+107
+00:10:16,974 --> 00:10:20,974
+look in the AST,
+
+108
+00:10:20,974 --> 00:10:24,974
+you would be able to see everything that was typed, so if you had to, you could still go in and do the hard
+
+109
+00:10:24,974 --> 00:10:33,974
+work of looking through that. So knowing that, let's now go back and modify our simple completer.
+
+110
+00:10:33,974 --> 00:10:39,974
+It doesn't look quite as simple anymore, but this is exactly the same as the last time, except we have this
+
+111
+00:10:39,974 --> 00:10:47,974
+ParamBlock now so that we can use the commands easily by name instead of having to do arg0, 1, 2, 3, 4.
+
+112
+00:10:47,974 --> 00:10:51,974
+And the only other difference is right here, we do a little filter because remember the ScriptBlock is going
+
+113
+00:10:51,974 --> 00:10:57,974
+to be invoked and whatever this ScriptBlock sends out, in this case we're going to construct completion results,
+
+114
+00:10:57,974 --> 00:11:01,974
+but whatever it sends out, that's what's going to be returned in that order.
+
+115
+00:11:01,974 --> 00:11:07,974
+So if we put a filter here to say these original strings, they need to be like whatever the user has said,
+
+116
+00:11:07,974 --> 00:11:14,974
+and we have a wildcard on there, so if the word to complete is empty, then it's just saying if it's like any of those.
+
+117
+00:11:14,974 --> 00:11:21,974
+So let's run that DummyCommand -Parameter and now let's see what happens.
+
+118
+00:11:21,974 --> 00:11:26,974
+Let's hit Escape. The test right here is, so it went straight to Goodnight Moon.
+
+119
+00:11:26,974 --> 00:11:34,974
+It didn't go to Hello World, gibberish. So I promise I'm pressing Tab, Ctrl+Space, nothing is happening because
+
+120
+00:11:34,974 --> 00:11:40,974
+that doesn't match any of the completion results and this is what I would expect to happen
+
+121
+00:11:40,974 --> 00:59:59,999
+with normal commands that have argument completion.
+

@@ -1,0 +1,304 @@
+1
+00:00:00,0 --> 00:00:11,345
+Okay, so some time pass and I continue to write these tests and I realized that I might because this is the
+
+2
+00:00:11,345 --> 00:00:18,345
+files, the Windows file system, I needed to do integration tests in addition to my unit tests, and this is just
+
+3
+00:00:18,345 --> 00:00:24,345
+because I didn't trust my own funny mocking of the file system, okay.
+
+4
+00:00:24,345 --> 00:00:36,345
+So what I did was I took the test file that I've been working on and I just renamed it to .Unit.Tests, okay,
+
+5
+00:00:36,345 --> 00:00:47,345
+and then just to make it easy for myself, when I wrote my Describe blocks, I changed it to
+
+6
+00:00:47,345 --> 00:00:55,345
+Get-ProfileUnitTest and Get-ProfileIntegrationTest and I added a UnitTest or IntegrationTest tag so that I
+
+7
+00:00:55,345 --> 00:01:01,345
+could run those separately. Okay, these are just structural. The code was the same.
+
+8
+00:01:01,345 --> 00:01:07,345
+And then I wrote some integration tests and I want to show these to you, okay?
+
+9
+00:01:07,345 --> 00:01:16,345
+I got rid of that great big function that creates that virtual world for me and here's that Get-ProfileTest,
+
+10
+00:01:16,345 --> 00:01:24,345
+but its integration test, so I use the real Enable-Profile to enable the profiles.
+
+11
+00:01:24,345 --> 00:01:29,345
+I have a Get-ExpectedProfile that goes and looks for profiles on the system.
+
+12
+00:01:29,345 --> 00:01:36,345
+I'm actually running Get-Profile and Disable-Profile on real profiles in the real file system.
+
+13
+00:01:36,345 --> 00:01:44,345
+Okay and this made me feel a little bit better. It did not follow the academic model, but it satisfied me
+
+14
+00:01:44,345 --> 00:01:52,345
+that the things that I'm doing actually work in the real file system with admin permissions and without.
+
+15
+00:01:52,345 --> 00:01:59,345
+And the other thing I did on these integration tests was that I put a #Requires -RunAsAdministrator at the top
+
+16
+00:01:59,345 --> 00:02:06,345
+so that I could test the admin parts. Okay. I'm testing the non-admin parts in my unit test.
+
+17
+00:02:06,345 --> 00:02:14,345
+Any questions about this or the structure? Yeah, Adam. The #Requires -RunAsAdministrator, does anything parse
+
+18
+00:02:14,345 --> 00:02:18,345
+that or is that just a comment? Oh, I'm sorry. That's part of PowerShell.
+
+19
+00:02:18,345 --> 00:02:23,345
+And you can put it on any script. Yeah, there are a couple of different #Requires.
+
+20
+00:02:23,345 --> 00:02:26,345
+In my version chaos talk, I was talking about
+
+21
+00:02:26,345 --> 00:02:34,345
+#Requires -Module, right, and it does, there's #Requires -Version for the PowerShellVersion.
+
+22
+00:02:34,345 --> 00:02:41,345
+There's #Requires -Module for dependent modules and you can, this is a different talk, you can actually use
+
+23
+00:02:41,345 --> 00:02:49,345
+a module specification object in your #Requires -Module to require a specific version of a specific module
+
+24
+00:02:49,345 --> 00:03:00,345
+with a specific GUID. So yes, very cool stuff. So now I have integration tests as well as unit tests and I
+
+25
+00:03:00,345 --> 00:03:12,345
+can, let me run them actually for you. I'm going to copy the file path and run as administrator.
+
+26
+00:03:12,345 --> 00:03:21,345
+Okay. Never trust yourself to type when you're doing a demo at a major conference.
+
+27
+00:03:21,345 --> 00:03:28,345
+Okay. And it should run them all. Have I forgotten anything? I don't think so.
+
+28
+00:03:28,345 --> 00:03:35,345
+Okay. Look at all of those tests for the simple little cmdlets.
+
+29
+00:03:35,345 --> 00:03:43,345
+Now one of the reasons that there are this many tests is that for each thing I did, I did an enumeration of
+
+30
+00:03:43,345 --> 00:03:49,345
+the files of the file paths that it returned and then I did a count
+
+31
+00:03:49,345 --> 00:03:57,345
+to make sure that I got all and only the ones that I expected and that's because PowerShell doesn't do a
+
+32
+00:03:57,345 --> 00:04:06,345
+great job of comparing arrays with arrays, right. Anyone who's ever used Get-Unique, right, will recognize that
+
+33
+00:04:06,345 --> 00:04:12,345
+and Pester, because it's PowerShell, doesn't do a great job of comparing arrays to arrays.
+
+34
+00:04:12,345 --> 00:04:19,345
+But in version 4 of Pester, there's going to be new array comparison features and I should be able to cut the
+
+35
+00:04:19,345 --> 00:04:31,345
+number of tests here in half, right, and just test, be able to compare arrays to arrays and that will be a huge change.
+
+36
+00:04:31,345 --> 00:04:37,345
+But again, that's why I specified that I'm doing 3.4.0, Pester 3.4.0.
+
+37
+00:04:37,345 --> 00:04:46,345
+Okay and fortunately everything passed. Okay and now what I'm going to do is I'm going to do, oh I'm going
+
+38
+00:04:46,345 --> 00:04:51,345
+to do it on a different set. I'm going to grab this next set. Let me show you.
+
+39
+00:04:51,345 --> 00:04:55,345
+We have a couple of extra minutes, so I'm actually going to show you something cool.
+
+40
+00:04:55,345 --> 00:05:01,345
+I didn't think I would get to show this to you, so I'm a little jazzed.
+
+41
+00:05:01,345 --> 00:05:13,345
+This is a great lesson and this is actually real life. So I'm going to do Invoke-Pester, whoops, do not type
+
+42
+00:05:13,345 --> 00:05:22,345
+during major talks at conferences. Copy the folder path will do it.
+
+43
+00:05:22,345 --> 00:05:33,345
+Okay. Great. And now I'm going to use the code coverage parameter, which is fantastic and it shows you code
+
+44
+00:05:33,345 --> 00:05:43,345
+that did not get run during the tests, so it helps you write your tests because it tells you where you've
+
+45
+00:05:43,345 --> 00:05:53,345
+missed code and it requires a file name and you always want to run it against your script file or modular file,
+
+46
+00:05:53,345 --> 00:05:58,345
+not against your test file. You don't want to test the code coverage in your test file.
+
+47
+00:05:58,345 --> 00:06:02,345
+You want to test the code coverage in your module file. So this actually happened to me.
+
+48
+00:06:02,345 --> 00:06:09,345
+This is real life. Okay, I had my unit tests and my integration tests and I thought I was really covered.
+
+49
+00:06:09,345 --> 00:06:18,345
+So let's see what happens. The output is at the very end. Okay.
+
+50
+00:06:18,345 --> 00:06:28,345
+And it shows here that my code coverage was 97.5%, which for people like me is a failing grade.
+
+51
+00:06:28,345 --> 00:06:40,345
+Okay, and what it showed me is that I'm missing a right warning, I'm missing what I interrupted to be a test
+
+52
+00:06:40,345 --> 00:06:44,345
+for a warning that I put in, right, and I cheated.
+
+53
+00:06:44,345 --> 00:06:50,345
+There's no example for that warning, but I put the warning in because I kept forgetting that when I change my
+
+54
+00:06:50,345 --> 00:06:56,345
+profile in one session, because those profiles are loaded when the session starts, I need to remember to
+
+55
+00:06:56,345 --> 00:07:02,345
+restart the session to make the profile changes effective, but I did not put that in my examples and I didn't
+
+56
+00:07:02,345 --> 00:07:10,345
+test and I thought I got caught, okay, but I didn't. Let me show you what was actually happening.
+
+57
+00:07:10,345 --> 00:07:23,345
+Note that this is on Line 172. Okay, and I'll go back to my code and I'll go to Line 1, whoops, delete, 172.
+
+58
+00:07:23,345 --> 00:07:31,345
+You see what's going on here? I'll scroll up just a little bit.
+
+59
+00:07:31,345 --> 00:07:40,345
+I did a cut and paste. No one ever does that. And I pasted my code outside of my function.
+
+60
+00:07:40,345 --> 00:07:56,345
+Of course it wasn't running. Okay. But if I grab this code and paste it back inside the function and save,
+
+61
+00:07:56,345 --> 00:08:16,345
+and I run that same test again, (Running) sadly, I get 100% and I don't deserve it, okay.
+
+62
+00:08:16,345 --> 00:08:24,345
+Code coverage means the code ran. This parameter does not say test coverage.
+
+63
+00:08:24,345 --> 00:08:27,345
+It's code coverage, right.
+
+64
+00:08:27,345 --> 00:08:37,345
+So a code coverage of 100% means that during those tests every line of code ran.
+
+65
+00:08:37,345 --> 00:08:44,345
+It does not mean that every line of code was tested. Okay, big lesson, important one.
+
+66
+00:08:44,345 --> 00:08:53,345
+Does that then mean that the code coverage is really making sure that you end up mocking something and then
+
+67
+00:08:53,345 --> 00:08:57,345
+never actually not mocking. That would be one way to look at it.
+
+68
+00:08:57,345 --> 00:09:06,345
+Yeah, so JB very brilliantly suggests that what we do is use code coverage to make sure that we're mocking
+
+69
+00:09:06,345 --> 00:09:12,345
+things so that it should show up in code coverage, to use it in a positive way, so I should see like a
+
+70
+00:09:12,345 --> 00:09:18,345
+if I'm mocking Get-Profile and I'm running only my Disable-Profile tests, that Get-Mocking doesn't run.
+
+71
+00:09:18,345 --> 00:09:24,345
+And I think the only thing I need to test that, the only thing that might happen is that if I only run my
+
+72
+00:09:24,345 --> 00:09:34,345
+Disable-Profile test, it might not look at Get-Profile at all, and also, it might recognize that it mocked.
+
+73
+00:09:34,345 --> 00:09:41,345
+Right, there's a great command called Assert-MockVerified, which means that even if the mock doesn't do
+
+74
+00:09:41,345 --> 00:09:48,345
+anything obvious, it lets you know that it was called.
+
+75
+00:09:48,345 --> 00:09:50,345
+Okay.
+
+76
+00:09:50,345 --> 00:59:59,999
+So there's my little CodeCoverage slide in case we didn't get to do this demo.
+

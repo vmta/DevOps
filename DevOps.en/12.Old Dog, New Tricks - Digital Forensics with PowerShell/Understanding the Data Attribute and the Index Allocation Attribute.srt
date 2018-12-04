@@ -1,0 +1,244 @@
+1
+00:00:00,65 --> 00:00:06,65
+And so that ends the Master File Table entry, right. So within that, we want to kind of start understanding
+
+2
+00:00:06,65 --> 00:00:12,65
+these data attributes, right, and so this is that data attribute just kind of showing that we have it there.
+
+3
+00:00:12,65 --> 00:00:19,65
+And so we use Where-Object Name as DATA and then we can go ahead and look at our storage.
+
+4
+00:00:19,65 --> 00:00:24,65
+And then this guy would be kind of a foreach loop, foreach data run
+
+5
+00:00:24,65 --> 00:00:30,65
+in the data run array. I want you to basically store this or write it all out to a file.
+
+6
+00:00:30,65 --> 00:00:35,65
+So Invoke-ForensicDD also allows you to output to a file, in this case, we're just going to write,
+
+7
+00:00:35,65 --> 00:00:45,65
+it's going to go through, in this case, two times and write each time to that file, so let's do that real quick.
+
+8
+00:00:45,65 --> 00:00:56,65
+It takes a little while. (Waiting) Alright, so now we can come back, and so I was writing out to a
+
+9
+00:00:56,65 --> 00:01:01,65
+C:\temp\MFT and if we play that, we see that the MFT has now been written
+
+10
+00:01:01,65 --> 00:01:07,65
+out to disk. So the MFT is a hidden operating system file, which you're theoretically are not allowed to touch,
+
+11
+00:01:07,65 --> 00:01:11,65
+right, you're not allowed to view the data within it. The operating system is doing that behind the scenes.
+
+12
+00:01:11,65 --> 00:01:15,65
+It's locked because there are some changes happening to it all the time.
+
+13
+00:01:15,65 --> 00:01:22,65
+What we just did is we found where the data that is associated with that file resides on disk and we read it
+
+14
+00:01:22,65 --> 00:01:27,65
+and then stored it in a file. So we never touched the MFT, we just touched the data that is associated with
+
+15
+00:01:27,65 --> 00:01:33,65
+the MFT, so kind of a roundabout way there.
+
+16
+00:01:33,65 --> 00:01:40,65
+Alright, so one thing that we've been doing this the hard way. Surprise!
+
+17
+00:01:40,65 --> 00:01:43,65
+There's a bunch of methods that are associated with the File Record object.
+
+18
+00:01:43,65 --> 00:01:49,65
+One of them is copy file, and so we could have or also there's also a GetContent, I think that's what we're showing here.
+
+19
+00:01:49,65 --> 00:01:57,65
+Let's see Ctrl+I. Okay, so now we're just going to GetContent and store that all to the byte variable.
+
+20
+00:01:57,65 --> 00:02:02,65
+And so a lot faster because we're not writing a disks. We don't have to worry about the I/O there.
+
+21
+00:02:02,65 --> 00:02:14,65
+And then I just wanted to kind of show the fact, whoops, oh nope, I put the wrong variable.
+
+22
+00:02:14,65 --> 00:02:23,65
+I changed the variable name and then didn't change it there. Okay, let's see.
+
+23
+00:02:23,65 --> 00:02:27,65
+Alright, so they're all the same size. So that's just kind of showing that kind of three different ways to
+
+24
+00:02:27,65 --> 00:02:33,65
+do or two different ways to do it and we're comparing it, we have the same data, well at least the same size
+
+25
+00:02:33,65 --> 00:02:37,65
+of data anyway. Just trust me this is the same data, I suppose.
+
+26
+00:02:37,65 --> 00:02:42,65
+Alright, so then I just want to store, so previously, we were looking at a single MFT entry, but if we
+
+27
+00:02:42,65 --> 00:02:47,65
+want to just grab the entire MFT, this is the thing that Lee helped me speed up.
+
+28
+00:02:47,65 --> 00:02:50,65
+So we're parsing the entire Master File Table
+
+29
+00:02:50,65 --> 00:02:57,65
+right now for the C drive. It takes about 4 seconds or so, and so just to kind of the wow factor, I guess,
+
+30
+00:02:57,65 --> 00:03:04,65
+there are 305,000 entries in the MFT that we just parsed in 4 seconds. So now we can start going through that.
+
+31
+00:03:04,65 --> 00:03:05,65
+We have all the data
+
+32
+00:03:05,65 --> 00:03:17,65
+stored in the variable there. Alright and then so one thing I want to show is that the index into the MFT array
+
+33
+00:03:17,65 --> 00:03:25,65
+is representative of the index into the MFT for that record itself, so for instance, if we look at MFT5 or
+
+34
+00:03:25,65 --> 00:03:33,65
+the MFT at Index 5, we see record number 5, which is the root directories MFT record.
+
+35
+00:03:33,65 --> 00:03:41,65
+So just kind of a way to quickly go through the MFT there. Alright, so now we have the root MFT record,
+
+36
+00:03:41,65 --> 00:03:47,65
+I just showed that, so we need to start being able to understand how the directory structure is built out so
+
+37
+00:03:47,65 --> 00:03:53,65
+that we can find, I don't want to just go through every single MFT entry to find where like the SAM hive is
+
+38
+00:03:53,65 --> 00:03:58,65
+because that's going to take forever. I'd have to pass all those through the pipeline, 305,000 records that
+
+39
+00:03:58,65 --> 00:04:03,65
+just takes some time. So it's better if we start parsing the directory structure to quickly be able to figure
+
+40
+00:04:03,65 --> 00:04:12,65
+out where like C:\\Windows\System32\Config\SAM is, right, then we only have to technically parse 5ish records.
+
+41
+00:04:12,65 --> 00:04:19,65
+And so I just stored this record into the root variable and so now we can look at the attributes.
+
+42
+00:04:19,65 --> 00:04:25,65
+We want to grab the attribute that's called Index_Allocation, so there it is.
+
+43
+00:04:25,65 --> 00:04:31,65
+It's another non-resident attribute, but this one is contiguous, so just to kind of show there's only one data
+
+44
+00:04:31,65 --> 00:04:38,65
+run meaning all the data is stored sequentially, and so that makes life a little bit easier, I guess,
+
+45
+00:04:38,65 --> 00:04:47,65
+and then we're going to store that. And now we can look at the methods here and again we have this GetBytes method,
+
+46
+00:04:47,65 --> 00:04:54,65
+so we're going to use that to read the contents. And so this is kind of a little hack, I don't actually know
+
+47
+00:04:54,65 --> 00:04:58,65
+why this is necessary, but PowerShell has a
+
+48
+00:04:58,65 --> 00:05:02,65
+weird thing to where sometimes it doesn't know that what you're giving it is an array, so this is just a
+
+49
+00:05:02,65 --> 00:05:09,65
+syntax to say hey I'm forcing you into being an array so that it works cleanly with format hex.
+
+50
+00:05:09,65 --> 00:05:10,65
+So we're going to run that.
+
+51
+00:05:10,65 --> 00:05:15,65
+So basically what we're running is index, which is the Index_Allocation
+
+52
+00:05:15,65 --> 00:05:22,65
+attribute, running the GetBytes method, passing it the \\.\C: so it knows what logically volume to read from,
+
+53
+00:05:22,65 --> 00:05:29,65
+and then we're going to pass the output, which is just a byte array to format hex.
+
+54
+00:05:29,65 --> 00:05:34,65
+And so this is what it looks like. Tons of data. The thing that I kind of want to point out is you have things
+
+55
+00:05:34,65 --> 00:05:44,65
+like Windows, let's see, Users, system, System32, System volume information, these are all records that
+
+56
+00:05:44,65 --> 00:05:49,65
+represent the files that are contained within that root directory, right, so if you parse that out,
+
+57
+00:05:49,65 --> 00:05:53,65
+then you'll start to understand what's going on with the file system.
+
+58
+00:05:53,65 --> 00:06:00,65
+Okay, let's see. And that's the end of that. So at this point, we've talked about how to get from the
+
+59
+00:06:00,65 --> 00:06:07,65
+Master Boot Record all the way down to the MFT and then started to figure out how we can understand what files are residing in
+
+60
+00:06:07,65 --> 00:06:13,65
+what directory, so we can start to kind of find our way around the MFT.
+
+61
+00:06:13,65 --> 00:59:59,999
+Alright. Okay,
+

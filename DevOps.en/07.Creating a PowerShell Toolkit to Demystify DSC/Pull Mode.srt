@@ -1,0 +1,404 @@
+1
+00:00:02,486 --> 00:00:04,486
+I've got a question. Sure, go for it.
+
+2
+00:00:04,486 --> 00:00:11,486
+The SMB share for your DSC resources on the pull server, in a push mode is there a way to specify alternate
+
+3
+00:00:11,486 --> 00:00:17,486
+credentials to get those resources? I'm not sure to be honest with you.
+
+4
+00:00:17,486 --> 00:00:24,486
+With the LCM, you can configure them. You can configure the credentials on the LCM, but I'm not sure it'll
+
+5
+00:00:24,486 --> 00:00:33,486
+use those in push mode. So if you're in pull mode, I mean, you can do that.
+
+6
+00:00:33,486 --> 00:00:39,486
+What I'll do, I'll actually test that after the session, and we'll find out.
+
+7
+00:00:39,486 --> 00:00:46,486
+Quick question. So if you're using partial configuration to kind of separate which department is handling
+
+8
+00:00:46,486 --> 00:00:54,486
+which configuration aspect on the system, is there any way to define like an order of operation or handle
+
+9
+00:00:54,486 --> 00:01:00,486
+conflicts if they were to rise, like set a precedent for like, okay, I have this server admin portion
+
+10
+00:01:00,486 --> 00:01:14,486
+configuration for always trump whatever conflicts… It depends because if it finds a conflict, it just stops.
+
+11
+00:01:14,486 --> 00:01:24,486
+(Audience discussion) Yeah, that's what I would think too. I haven't actually tried that, but that's what
+
+12
+00:01:24,486 --> 00:01:49,486
+I've been told as well. (Audience comment)
+
+13
+00:01:49,486 --> 00:01:55,486
+Okay, so let's talk a little bit about pull mode. There are some new features in pull mode as well.
+
+14
+00:01:55,486 --> 00:02:01,486
+So we have a SQL Server, we have all the default settings. What we're going to do is set the Local
+
+15
+00:02:01,486 --> 00:02:09,486
+Configuration Manager so that it will be in pull mode. This is actually compatible with version 4 and higher,
+
+16
+00:02:09,486 --> 00:02:19,486
+although, there is a new way to configure it in version 5. And the reason you need to know that is because
+
+17
+00:02:19,486 --> 00:02:25,486
+when you're querying the Local Configuration Manager, if you're designing a tool, you need to check both
+
+18
+00:02:25,486 --> 00:02:31,486
+locations if you're going to make your tool version agnostic. You want to check it to say, okay, is it set here,
+
+19
+00:02:31,486 --> 00:02:35,486
+and then if it's not set, then go ahead and check it somewhere else too.
+
+20
+00:02:35,486 --> 00:02:44,486
+Check it in the new location because the way you can configure this in V4, it's compatible with V5, so the machine
+
+21
+00:02:44,486 --> 00:02:54,486
+could be set one way and you'll---my point though will be a little bit clearer once we get this configured.
+
+22
+00:02:54,486 --> 00:03:00,486
+Okay, so we create the MetaMOF, we go ahead and create it on SQL01, we take a look at the Local
+
+23
+00:03:00,486 --> 00:03:09,486
+Configuration Manager, now we're in pull mode and we have this DownloadManagerName and we have a SourcePath
+
+24
+00:03:09,486 --> 00:03:18,486
+up here as well. Usually, you have to expand these properties to see what's really set so you can see what's
+
+25
+00:03:18,486 --> 00:03:27,486
+it's a UNC path, but it's in a different location on the Local Configuration Manager.
+
+26
+00:03:27,486 --> 00:03:34,486
+So let's take a look at the modules that the DSC resources that are installed on SQL01.
+
+27
+00:03:34,486 --> 00:03:40,486
+So you'll notice that I've got one that I wrote probably a year ago that's called cMrSQLRecoveryModel.
+
+28
+00:03:40,486 --> 00:03:49,486
+I'm going to remove that, so now you see it, now you don't. We're going to define a structural configuration
+
+29
+00:03:49,486 --> 00:04:00,486
+for both DC01 and SQL01. This is the same thing we did earlier, except we're defining one for two different
+
+30
+00:04:00,486 --> 00:04:09,486
+servers, two different types of servers. I've got a lot of comments in here that we're going to gloss over.
+
+31
+00:04:09,486 --> 00:04:14,486
+But like I said, this code is available already. I just want to look at---I want you to be able to see a
+
+32
+00:04:14,486 --> 00:04:18,486
+specific settings and I think this is actually the same thing I showed a couple of minutes ago.
+
+33
+00:04:18,486 --> 00:04:24,486
+So we did set a configuration id and we set it to refresh mode and the SMB path, as well.
+
+34
+00:04:24,486 --> 00:04:31,486
+So what we want to do now, we want to create a tool to automate the deployment of MOF configuration files to
+
+35
+00:04:31,486 --> 00:04:39,486
+the SMB share. So what needs to happen with that is the MOF configuration document needs to be renamed to
+
+36
+00:04:39,486 --> 00:04:47,486
+the configuration id on the Local Configuration Manager and then we have to create a checksum, which I already mentioned.
+
+37
+00:04:47,486 --> 00:04:56,486
+So we'll have a Publish-MrMOFToSMB tool. So if I take a look at that, it actually goes through, it checks several
+
+38
+00:04:56,486 --> 00:05:02,486
+things, it checks to see if it's in pull mode. If it doesn't, it generates a meaningful error message.
+
+39
+00:05:02,486 --> 00:05:08,486
+It checks all these different locations that can be defined in V4 and V5.
+
+40
+00:05:08,486 --> 00:05:14,486
+That way, whoever's using this, they don't have to worry about oh well do this if it's V4 and do that if it's V5
+
+41
+00:05:14,486 --> 00:05:20,486
+because especially if you're talking to a junior level engineer, the last thing, this is confusing enough as
+
+42
+00:05:20,486 --> 00:05:29,486
+it is without having to know all the manually know if it's V4 do this and V5 do that.
+
+43
+00:05:29,486 --> 00:05:38,486
+Okay, so if we look at the SMB share for the SQL servers, the neat thing about this one, it'll actually read
+
+44
+00:05:38,486 --> 00:05:41,486
+the Local Configuration Manager settings,
+
+45
+00:05:41,486 --> 00:05:46,486
+so it'll get the configuration id, it'll do it all for you, so you don't have to put anything in manually.
+
+46
+00:05:46,486 --> 00:05:47,486
+The only thing we're doing is
+
+47
+00:05:47,486 --> 00:05:52,486
+running the configuration to create the MOF files just like you would normally do, but then you just pipe it
+
+48
+00:05:52,486 --> 00:05:57,486
+to the command I've created an it's going to do everything for you and put in on the SMB share with the checksum
+
+49
+00:05:57,486 --> 00:05:59,486
+and all of it.
+
+50
+00:05:59,486 --> 00:06:04,486
+And if you give it more than one computer name, which I've actually given it two here, if you give it more
+
+51
+00:06:04,486 --> 00:06:10,486
+than one computer name, if one is not in pull mode, it'll give you a meaningful error message, but it will go
+
+52
+00:06:10,486 --> 00:06:16,486
+through like 50 servers, and if it's got different settings to find in the LCM settings on the servers,
+
+53
+00:06:16,486 --> 00:06:20,486
+it'll put it on the different shares.
+
+54
+00:06:20,486 --> 00:06:26,486
+So when I run this and you'll notice we've got a meaningful error message and I know you can't hardly see that,
+
+55
+00:06:26,486 --> 00:06:33,486
+but that's for DC01, it's because we're still in push mode, so it stops and it gives the user of it, it says hey
+
+56
+00:06:33,486 --> 00:06:38,486
+DC01 is not in pull mode, so instead of them spending half a day troubleshooting this.
+
+57
+00:06:38,486 --> 00:06:46,486
+But now we have our MOF configuration documents for the SQL Server and I'll just highlight this again,
+
+58
+00:06:46,486 --> 00:07:04,486
+so you'll be able to see it. So the other thing we need, I'll show this one more time, so we use the same
+
+59
+00:07:04,486 --> 00:07:11,486
+command before and this actually doesn't read the LCM settings, the command, we have to give it the SMB path,
+
+60
+00:07:11,486 --> 00:07:17,486
+but my thought process with that is normally, you're going to have a MOF configuration document per server
+
+61
+00:07:17,486 --> 00:07:22,486
+and I know you can have a group of servers and you can actually use the same configuration for multiple servers,
+
+62
+00:07:22,486 --> 00:07:31,486
+but with the resources, you probably don't want to publish the resource for every single server because
+
+63
+00:07:31,486 --> 00:07:38,486
+those are going to be, I might be using the PowerShellAccessControl module for multiple servers, and I don't
+
+64
+00:07:38,486 --> 00:07:42,486
+want to constantly be publishing that out.
+
+65
+00:07:42,486 --> 00:07:54,486
+So I'll go ahead and publish the required DSC resource out to the share,
+
+66
+00:07:54,486 --> 00:08:08,486
+I'll take a look at the module folder on SQL01, in addition to that, I'll take a look at the configuration
+
+67
+00:08:08,486 --> 00:08:19,486
+folder on SQL01 where the pending MOF is going to end up. So you'll notice we have a previous MOF,
+
+68
+00:08:19,486 --> 00:08:27,486
+we're going to end up with a pending MOF here in a second. We'll pin that folder as well.
+
+69
+00:08:27,486 --> 00:08:40,486
+So we'll run Update-DscConfiguration for SQL01 to force it to pull the configuration and the DSC resource.
+
+70
+00:08:40,486 --> 00:08:49,486
+So you'll notice now we have a pending MOF, which will become current MOF once the configuration is successfully applied.
+
+71
+00:08:49,486 --> 00:08:53,486
+In the background, this is having to load the SQLPS module because I'm setting a recovery model in some SQL
+
+72
+00:08:53,486 --> 00:08:59,486
+Server databases with this resource, so that's why it took a little bit longer than normal.
+
+73
+00:08:59,486 --> 00:09:05,486
+But now you'll notice the current MOF was updated. So if the configuration failed to apply it, it would still
+
+74
+00:09:05,486 --> 00:09:15,486
+be called pending MOF. But also the DSC resource was sent to the server.
+
+75
+00:09:15,486 --> 00:09:24,486
+Okay. It's going to share the same thing in the event logs, the same thing as before, so there's nothing
+
+76
+00:09:24,486 --> 00:09:33,486
+really new here to see. It's putting the resources in the temp folder again.
+
+77
+00:09:33,486 --> 00:09:40,486
+So with PowerShell V5 for a pull server, there's a new location to configure the pull server settings for at
+
+78
+00:09:40,486 --> 00:09:54,486
+least an SMB share. Well I believe for the web server for HTTP or HTTPS, there's a new location as well.
+
+79
+00:09:54,486 --> 00:10:16,486
+(Audience question) I know at least the way I just showed is I know that I could actually run, what is it,
+
+80
+00:10:16,486 --> 00:10:24,486
+Get-DscConfiguration and here on CimSession, you can actually just give it a computer name, you actually don't
+
+81
+00:10:24,486 --> 00:10:33,486
+have to give it a CimSession. So you can run that. You can also run Test-DscConfiguration, and in V5,
+
+82
+00:10:33,486 --> 00:10:38,486
+you've got a I believe a detailed parameter on Test-DscConfiguration that'll show you all the details,
+
+83
+00:10:38,486 --> 00:10:52,486
+not just the tree falls. (Audience question) It's magic. What…
+
+84
+00:10:52,486 --> 00:11:02,486
+(Audience comment) I don't know the answer to that. That's a good question.
+
+85
+00:11:02,486 --> 00:11:06,486
+I've got two things. I actually really enjoy blogging. It's probably one of the things I enjoy doing,
+
+86
+00:11:06,486 --> 00:11:12,486
+so I've got two really good articles I'm going to write from questions in here, so keep them coming.
+
+87
+00:11:12,486 --> 00:11:17,486
+I think it doesn't need the CimSession because the computer name in front of it.
+
+88
+00:11:17,486 --> 00:11:27,486
+So if you don't need your credential… So you can see actually it says SQL01 is it says it's false.
+
+89
+00:11:27,486 --> 00:11:43,486
+Let's look at, let's say detailed. Hmm, that's interesting. (Working)
+
+90
+00:11:43,486 --> 00:11:53,486
+We'll run this one more time. Yeah,
+
+91
+00:11:53,486 --> 00:12:03,486
+so I'll have to research that as well because it says it's not in the desired state.
+
+92
+00:12:03,486 --> 00:12:15,486
+Okay, so what I want to show you now is the DSC settings for an SMB pull server on PowerShell V5.
+
+93
+00:12:15,486 --> 00:12:21,486
+Not sure where I left off, but it won't hurt if we run this again. So we'll create the MetaMOF,
+
+94
+00:12:21,486 --> 00:12:34,486
+we'll apply it, and we'll actually, it's called ConfigurationDownloadManagers, we'll take a look at those settings.
+
+95
+00:12:34,486 --> 00:12:40,486
+So what I'm going to do here is query all three servers and show the LCM settings and I've kind of created
+
+96
+00:12:40,486 --> 00:12:50,486
+custom properties here, so you'll see these are what I would call it, and actually, we've got WEB01 in there twice.
+
+97
+00:12:50,486 --> 00:12:52,486
+So I didn't get an error message, so I'm going to run the command again.
+
+98
+00:12:52,486 --> 00:12:57,486
+I don't know why we had WEB01 in there. I've got gremlins today.
+
+99
+00:12:57,486 --> 00:13:03,486
+You'll see there's like three different paths you would have to check and we've got this pull mode for two
+
+100
+00:13:03,486 --> 00:13:09,486
+of them and then we've got a push mode for another one. So if you're pushing out like DSC resources,
+
+101
+00:13:09,486 --> 00:59:59,999
+you would have to check all these different locations on the Local Configuration Manager.
+

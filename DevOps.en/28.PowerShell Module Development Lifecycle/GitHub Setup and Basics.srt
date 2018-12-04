@@ -1,0 +1,360 @@
+1
+00:00:00,0 --> 00:00:07,287
+Alright, so I'm going to do the most dangerous demo of all time right now and I'm going to rely on the
+
+2
+00:00:07,287 --> 00:00:16,287
+conference internet to communicate with three different web services, so nothing is scripted here.
+
+3
+00:00:16,287 --> 00:00:22,287
+Alright and what's funny is I was actually working on this presentation yesterday and GitHub had an outage
+
+4
+00:00:22,287 --> 00:00:26,287
+for about 20 minutes in the middle of my practice. I'm like oh no, what did I do?
+
+5
+00:00:26,287 --> 00:00:32,287
+But it looks like it's actually back up and running today, so hopefully it works.
+
+6
+00:00:32,287 --> 00:00:36,287
+But so sign up for a GitHub account. It's super easy just like anything else.
+
+7
+00:00:36,287 --> 00:00:40,287
+When you sign in, yours is going to look a little different, like I follow a bunch of stuff, so that's why
+
+8
+00:00:40,287 --> 00:00:43,287
+I'm seeing all these notifications and I have all these reposts on the right-hand side.
+
+9
+00:00:43,287 --> 00:00:49,287
+What you're going to want to look at is a New Repository button, so you click that and you can create a new repository.
+
+10
+00:00:49,287 --> 00:00:53,287
+Let's say I want to create my module and my module is going to be a LoremIpsum generator, so it's just kind
+
+11
+00:00:53,287 --> 00:01:00,287
+of a random text generator. So just name your repository and then you can put a description in there.
+
+12
+00:01:00,287 --> 00:01:08,287
+It's telling me that this repository is available. Public repositories are free, so you can just sign up and
+
+13
+00:01:08,287 --> 00:01:15,287
+get that for free. Private repositories are not, but they're relatively cheap, but for the purpose of this
+
+14
+00:01:15,287 --> 00:01:22,287
+demo, we want to make a public repository for people to communicate on this particular module.
+
+15
+00:01:22,287 --> 00:01:26,287
+So the first thing you want to do is initialize with a readme. A readme is just that page that you see when
+
+16
+00:01:26,287 --> 00:01:31,287
+you first load up a GitHub page where it'll have like a description, it might have some images, a how to,
+
+17
+00:01:31,287 --> 00:01:35,287
+that kind of thing, like what is this thing. So you can initialize it with a readme and then you always want
+
+18
+00:01:35,287 --> 00:01:42,287
+to select a license. So I've actually had modules that I've published that didn't have a license specified
+
+19
+00:01:42,287 --> 00:01:46,287
+and I've had people comment and say like I can't even use your code because you don't have a license and my
+
+20
+00:01:46,287 --> 00:01:52,287
+company won't allow it, so you have to be careful which license you select and you want to make sure that you
+
+21
+00:01:52,287 --> 00:01:57,287
+have one because it kind of covers your butt, as well as whoever is using your code.
+
+22
+00:01:57,287 --> 00:02:04,287
+If you're ever curious about what a license means, you can head over to tldrlegal.com and you can just
+
+23
+00:02:04,287 --> 00:02:10,287
+search the different licenses and it has like a super easy-to-understand breakdown of what that license
+
+24
+00:02:10,287 --> 00:02:16,287
+actually means and what's covered there. So there's all kinds of cool stuff like what's a GPL license why
+
+25
+00:02:16,287 --> 00:02:23,287
+shouldn't I use it, that kind of thing. Alright, so now we're ready to create our repository and luckily
+
+26
+00:02:23,287 --> 00:02:29,287
+that was pretty quick. So now we have a repository where I can check in code, I can create issues, I can set
+
+27
+00:02:29,287 --> 00:02:34,287
+up my wiki, all that kind of stuff. But if we're going to follow the kind of development lifecycle,
+
+28
+00:02:34,287 --> 00:02:39,287
+the first thing we want to do is start tracking what requirements we have for our particular module.
+
+29
+00:02:39,287 --> 00:02:48,287
+Well a LoremIpsum module really needs to be able to, I've already typed in here, really needs to be able to
+
+30
+00:02:48,287 --> 00:02:58,287
+generate text, so generate random text. So the markdown language that you can put in these GitHub issues is
+
+31
+00:02:58,287 --> 00:03:05,287
+really rich, so you can do all kinds of things like put quoted text, you can have code, you can do links,
+
+32
+00:03:05,287 --> 00:03:11,287
+you can have images, you can actually reference commits and other users so they get notifications,
+
+33
+00:03:11,287 --> 00:03:17,287
+all that kind of stuff, but we're going to just leave that blank for now and look at some of the other
+
+34
+00:03:17,287 --> 00:03:24,287
+options on the right-hand side here. So labels allow you to kind of categorize your different issues.
+
+35
+00:03:24,287 --> 00:03:29,287
+You can have multiple labels on an item, in this case, as an enhancement, so we don't have any code here yet.
+
+36
+00:03:29,287 --> 00:03:34,287
+You can create your own labels and all that kind of stuff. There is also the concept of milestones.
+
+37
+00:03:34,287 --> 00:03:40,287
+So milestone is kind of like a container for a bunch of different issues.
+
+38
+00:03:40,287 --> 00:03:47,287
+So for example, we'll create this issue and we'll go back to the Issues tab and you can actually create a milestone here.
+
+39
+00:03:47,287 --> 00:03:52,287
+So you can actually group issues and pull requests into a particular milestone and milestones can be time boxed,
+
+40
+00:03:52,287 --> 00:04:00,287
+so you can say, I want this milestone done by the 7th, and then it's great for things like releases like 2.0
+
+41
+00:04:00,287 --> 00:04:06,287
+should be released on the 23rd, or it's good for features where you might want to say all these issues relate
+
+42
+00:04:06,287 --> 00:04:12,287
+to this particular feature, but we're going to say I want all this completed by the end of this session.
+
+43
+00:04:12,287 --> 00:04:19,287
+Alright, so now I have my issues set up and you can see it maintains like a history of things that are either
+
+44
+00:04:19,287 --> 00:04:25,287
+referencing it or have been added to it. So now if I set like the milestone, you can say, oh it's been added
+
+45
+00:04:25,287 --> 00:04:32,287
+to this milestone. I can add a comment like this is a great idea because all my ideas are great ideas.
+
+46
+00:04:32,287 --> 00:04:38,287
+And then, my favorite new feature is that you can upvote things, so that's pretty awesome, which is actually
+
+47
+00:04:38,287 --> 00:04:42,287
+kind of helpful when you go and look at an issue and you see how many people have actually said like yeah,
+
+48
+00:04:42,287 --> 00:04:49,287
+you should probably implement this even though the Issue pane is kind of organized by when it was submitted
+
+49
+00:04:49,287 --> 00:04:54,287
+sort of thing. So I mean you can reorganize it if you need to, but yeah.
+
+50
+00:04:54,287 --> 00:05:00,287
+So now that we have an issue, let's actually go out and try to get some code up here.
+
+51
+00:05:00,287 --> 00:05:06,287
+So you're going to go back to the code tab and there's a couple of buttons here that are helpful.
+
+52
+00:05:06,287 --> 00:05:14,287
+So right here, this is the actual URL that you can use for any git client, so there is a million git clients out there.
+
+53
+00:05:14,287 --> 00:05:18,287
+My favorite one is called GitKraken because it's a really cool name.
+
+54
+00:05:18,287 --> 00:05:24,287
+Then there's this handy button here though that you can click that actually will trigger one of these built-in
+
+55
+00:05:24,287 --> 00:05:33,287
+tools directly from the website. GitHub desktop is kind of GitHub's official client and then you can use Visual Studio.
+
+56
+00:05:33,287 --> 00:05:37,287
+I actually have GitHub desktop on here already, so I'll just click that.
+
+57
+00:05:37,287 --> 00:05:42,287
+It'll ask me launch this application, I'll click that, and GitHub Desktop will pop-up and ask me where I want
+
+58
+00:05:42,287 --> 00:05:50,287
+to clone this repository. So I'll click OK. So now it's actually cloning the repository out to my local box.
+
+59
+00:05:50,287 --> 00:05:55,287
+When it does that, I get the entire repository local. So if you haven't used Git before, Git is like a
+
+60
+00:05:55,287 --> 00:06:00,287
+distributed source control system, so when you clone a repository, you're actually getting an entire copy of
+
+61
+00:06:00,287 --> 00:06:04,287
+that entire source control system. And it has some links back to where it came from and that's how you sync
+
+62
+00:06:04,287 --> 00:06:10,287
+back up to your upstream repository. So now I have
+
+63
+00:06:10,287 --> 00:06:16,287
+my license and readme file available. You can actually go look in my GitHub folder, I have those files locally here.
+
+64
+00:06:16,287 --> 00:06:21,287
+So I can go ahead and edit that stuff, but let's actually implement our module.
+
+65
+00:06:21,287 --> 00:06:28,287
+But luckily enough, I already have done that. So I have a module sitting here that all it does is generate
+
+66
+00:06:28,287 --> 00:06:35,287
+some LoremIpsum text. It has one function in it, it accepts min/max words, min/max sentences,
+
+67
+00:06:35,287 --> 00:06:42,287
+it has some LoremIpsum text, then outputs that to the command-line when it's done or the output string when it's done.
+
+68
+00:06:42,287 --> 00:06:45,287
+And as any good developer, I also have some Pester tests I wrote.
+
+69
+00:06:45,287 --> 00:06:53,287
+So the Pester tests test to make sure that certain things are happening when I am generating this LoremIpsum text.
+
+70
+00:06:53,287 --> 00:06:57,287
+So what we're going to do is we're actually going to copy these to that folder and if we go look in that
+
+71
+00:06:57,287 --> 00:07:04,287
+folder now, you'll see that I have these two files, and if we go back to the GitHub client, you'll see here
+
+72
+00:07:04,287 --> 00:07:09,287
+that now I have these two files as changes in the Changes tab here.
+
+73
+00:07:09,287 --> 00:07:14,287
+So anything that's marked in green on this right-hand side is an addition.
+
+74
+00:07:14,287 --> 00:07:18,287
+Anything that would be marked in red is a subtraction, so you can see the changes in the code.
+
+75
+00:07:18,287 --> 00:07:26,287
+Since I'm just adding two files, the entire thing is green. So first, well what you can actually do is this
+
+76
+00:07:26,287 --> 00:07:32,287
+is kind of neat is from here you can say Fixes #1. So it's actually going out to GitHub and when you use the
+
+77
+00:07:32,287 --> 00:07:38,287
+the pound sign, it's looking for that issue number and if you say Fixes #1 because I have now generated this code,
+
+78
+00:07:38,287 --> 00:07:43,287
+it's going to reference that issue in this commit. So now I've committed it and what you'll notice is you'll
+
+79
+00:07:43,287 --> 00:07:50,287
+go back out to GitHub and refresh and it's not here. That's because since it's a distributed repository,
+
+80
+00:07:50,287 --> 00:07:55,287
+you actually need to sync it back up to the upstream repository and there's a handy Sync button right here that
+
+81
+00:07:55,287 --> 00:07:57,287
+you need to make sure to click after you've done commits.
+
+82
+00:07:57,287 --> 00:08:03,287
+So you can do a bunch of commits and then sync at a later date. So sync does two things.
+
+83
+00:08:03,287 --> 00:08:06,287
+It pushes up to the repository and it pulls down from the repository.
+
+84
+00:08:06,287 --> 00:08:09,287
+So in this case, we don't have any changes that were different from what I had locally.
+
+85
+00:08:09,287 --> 00:08:14,287
+I am only pushing changes up, so hopefully that happens pretty quickly.
+
+86
+00:08:14,287 --> 00:08:22,287
+And then up on GitHub, what we should see is now we've updated or added these two files up here.
+
+87
+00:08:22,287 --> 00:08:28,287
+So once these files are up, you can check on the different commits, you can see all the history of those
+
+88
+00:08:28,287 --> 00:08:33,287
+files, you can see what was included in each one of these commits, you can actually make comments on each one
+
+89
+00:08:33,287 --> 00:08:40,287
+of the lines and say like why did you do this or like this was dumb and then write a comment on the entire
+
+90
+00:08:40,287 --> 00:59:59,999
+conversation or on the entire commit if you wanted to.
+

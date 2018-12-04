@@ -1,0 +1,244 @@
+1
+00:00:00,0 --> 00:00:08,011
+So before we start that. Containers. Hands? Who's heard of containers?
+
+2
+00:00:08,011 --> 00:00:18,011
+Fantastic. Who uses containers? I love it. No, I mean that's the whole point, right?
+
+3
+00:00:18,011 --> 00:00:26,011
+We all know of this stuff, but until there's a reason or a benefit, we're not going to go and explore it,
+
+4
+00:00:26,011 --> 00:00:32,011
+so hopefully this is a good first introduction to this stuff for people that want to go explore.
+
+5
+00:00:32,011 --> 00:00:36,011
+Look, we want to kind of lessen this tension. It's a two-way thing.
+
+6
+00:00:36,011 --> 00:00:43,011
+Developers want to write their apps, IT needs to maintain it, the devs don't want to have the IT folks
+
+7
+00:00:43,011 --> 00:00:50,011
+reasonable understand and be equipped to do their jobs, and the IT folks end up thinking that the devs are just
+
+8
+00:00:50,011 --> 00:00:54,011
+running their stuff on their machines, but not thinking about the bigger picture of deploying it to the
+
+9
+00:00:54,011 --> 00:01:01,011
+actual production infrastructure. IT has all these policies you have to follow, all these procedures that
+
+10
+00:01:01,011 --> 00:01:08,011
+seem archaic and bureaucratic to the developer, but they're required to run a production service,
+
+11
+00:01:08,011 --> 00:01:15,011
+I mean that a developer often is not required to do and I have a feeling that a lot of the folks in this room
+
+12
+00:01:15,011 --> 00:01:24,011
+are in the middle of that arrow, so you guys kind of make the bridge between devs and IT.
+
+13
+00:01:24,011 --> 00:01:33,011
+So the focus here is how do make it so that developers can innovate and not be just kind of overloaded with
+
+14
+00:01:33,011 --> 00:01:40,011
+all of these processes and procedures and have it so that they can do what they need to do and IT can still
+
+15
+00:01:40,011 --> 00:01:48,011
+have some reasonable administration over the system. And the answer to that is containers.
+
+16
+00:01:48,011 --> 00:01:55,011
+So with containers, we have this completely new approach to building and shipping applications.
+
+17
+00:01:55,011 --> 00:02:01,011
+We traditionally would put out applications, deploy them into physical systems that we've built up with some
+
+18
+00:02:01,011 --> 00:02:08,011
+hydration script, or with a complex written manual, or a bunch of PowerShell scripts, or worse, a bunch of
+
+19
+00:02:08,011 --> 00:02:15,011
+batch scripts, but the whole point being here is that applications often require a lot of physical prep to
+
+20
+00:02:15,011 --> 00:02:22,011
+be able to be deployed. With virtual, we're a lot more destructive and we can pull stuff down if it doesn't work.
+
+21
+00:02:22,011 --> 00:02:32,011
+I don't know about you guys, but my dev box ends up having 100, 150, 200 VMs on it, not all of them running,
+
+22
+00:02:32,011 --> 00:02:35,011
+5% of them running, but it's not something I go and clean up often.
+
+23
+00:02:35,011 --> 00:02:43,011
+When I run out of disk space, I go delete the last 20% and the issue here is that while it's still at a fast
+
+24
+00:02:43,011 --> 00:02:49,011
+deployment, a lot of those same processes that apply to IT in the bare metal space is starting to apply in
+
+25
+00:02:49,011 --> 00:02:55,011
+the virtual space, so you're having now, we thought we had tricked them, right, we thought we had gotten around
+
+26
+00:02:55,011 --> 00:03:00,011
+it, but really what's happened is that now there's all sorts of policies and rules within organizations for
+
+27
+00:03:00,011 --> 00:03:09,011
+how you can use VMs. So with containers, you kind of get the best of both worlds and a couple of additional benefits.
+
+28
+00:03:09,011 --> 00:03:17,011
+You can push your app development forward, kind of get rid of a lot of the excess work in getting the
+
+29
+00:03:17,011 --> 00:03:25,011
+infrastructure up and mostly just consolidate a bunch of roles into a specific, into one server where you're
+
+30
+00:03:25,011 --> 00:03:29,011
+previously running an individual service for each.
+
+31
+00:03:29,011 --> 00:03:37,011
+Here, just stepping through a couple of the principles here, every application has its own dependencies.
+
+32
+00:03:37,011 --> 00:03:44,011
+The virtualization happens where the container engine, this really lightweight mechanism, isolates all this
+
+33
+00:03:44,011 --> 00:03:52,011
+stuff and packages them into these virtual containers. You have this shared Host OS that kind of lays on the bottom.
+
+34
+00:03:52,011 --> 00:03:59,011
+And then the flexibility that this gives you in the underlying OS is pretty great because the containers are
+
+35
+00:03:59,011 --> 00:04:08,011
+abstracting, the containers support within the OS is abstracting to those specific containers, what is the
+
+36
+00:04:08,011 --> 00:04:13,011
+host underneath it that the server was underneath it. And it's fast, right, containers can be changed
+
+37
+00:04:13,011 --> 00:04:19,011
+rapidly, you can scale them up, scale them down as you please. A lot of the benefits that we got going from
+
+38
+00:04:19,011 --> 00:04:24,011
+physical to VMs happen again with VMs to containers.
+
+39
+00:04:24,011 --> 00:04:28,011
+So this is what it looks like right now. Container operating system environments.
+
+40
+00:04:28,011 --> 00:04:32,011
+You've got Nano, highly optimized, born-in-the-cloud applications.
+
+41
+00:04:32,011 --> 00:04:39,011
+If it's something that has been developed, created in the past couple of years, Nano is usually the way to go.
+
+42
+00:04:39,011 --> 00:04:44,011
+You have Server Core, highly compatible, right, all the functionality that you expect is there.
+
+43
+00:04:44,011 --> 00:04:50,011
+I still see Server Core as that, what was that logical stepping stone to Nano Server and I think we're all
+
+44
+00:04:50,011 --> 00:04:55,011
+into Nano Server. I think you guys, if you're going to start experimenting, if you're still running full
+
+45
+00:04:55,011 --> 00:05:02,011
+server workloads, jump on board, come join the Nano Server train.
+
+46
+00:05:02,011 --> 00:05:09,011
+Nano Server is the future of Windows Server. It's a target for all internal iCloud components and new applications.
+
+47
+00:05:09,011 --> 00:05:19,011
+It's a new foundation for everything. It provides that Just Enough OS model to really mitigate the scope of what
+
+48
+00:05:19,011 --> 00:05:25,011
+could happen to a server and the possibilities, want that thing to be a role, an application, and really be
+
+49
+00:05:25,011 --> 00:05:31,011
+easy to maintain. If you haven't gotten this point yet, not everything will run on Nano Server.
+
+50
+00:05:31,011 --> 00:05:37,011
+There's going to be some work. Server Core will provide compatibility with a pretty long lead time for
+
+51
+00:05:37,011 --> 00:05:44,011
+existing enterprise applications to start coming aboard Server Core, sorry Nano Server.
+
+52
+00:05:44,011 --> 00:05:50,011
+And I mean yeah, you can see the picture there, right, let's move that way.
+
+53
+00:05:50,011 --> 00:05:58,011
+So next steps. I'd ask all of you to kind of embrace remote management of Server Core if you haven't already.
+
+54
+00:05:58,011 --> 00:06:03,011
+Understand that the GUID server is a thing of the past, my friends.
+
+55
+00:06:03,011 --> 00:06:07,011
+Let's move on. Server Core gives you a great way to do that today.
+
+56
+00:06:07,011 --> 00:06:14,011
+If you're running workloads in 2012 R2, a great place to start, so it's an easiest transition.
+
+57
+00:06:14,011 --> 00:06:22,011
+And make sure that things like tools and agents that only run locally, we've got to explore options that are remote friendly.
+
+58
+00:06:22,011 --> 00:06:30,011
+If you run into things that are big blockers for you, your partners, reach out to nanoserver@microsoft.com
+
+59
+00:06:30,011 --> 00:06:35,011
+and then get playing with it. So deploy it, the guide is there, feedback is on UserVoice, and that VHD link
+
+60
+00:06:35,011 --> 00:06:43,011
+again aka.ms/nanoeval. And lastly, RSMT feedback, you can go onto the Windows Server UserVoice.
+
+61
+00:06:43,011 --> 00:59:59,999
+If you go there, there's a link for it. That's it! Thank you so much!
+

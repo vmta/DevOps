@@ -1,0 +1,232 @@
+1
+00:00:00,0 --> 00:00:08,046
+So here's your call to action, help us grow the xAD resource in DSC.
+
+2
+00:00:08,046 --> 00:00:13,046
+If you've got a little bit of AD scripting skills, even if you don't have any AD scripting skills, just go watch
+
+3
+00:00:13,046 --> 00:00:16,046
+my videos out on Microsoft Virtual Academy. Anybody watch those?
+
+4
+00:00:16,046 --> 00:00:21,046
+There's a full eight sessions, full day of teaching you how to do Active Directory with PowerShell and then
+
+5
+00:00:21,046 --> 00:00:27,046
+go start hacking away on these resources out there and help us grow the Active Directory resources.
+
+6
+00:00:27,046 --> 00:00:33,046
+Now try it yourself. There's the URL, github.com/goateepffe/azurerm.
+
+7
+00:00:33,046 --> 00:00:35,046
+You just go out there. You can download that
+
+8
+00:00:35,046 --> 00:00:42,046
+one calling script file, you can tweak the parameters, the names of things, whatever, and then just run it
+
+9
+00:00:42,046 --> 00:00:47,046
+and you're done. It'll spin you up an environment. Just like we did right here, you can do it yourself.
+
+10
+00:00:47,046 --> 00:00:52,046
+And then, once you've got those files, just start editing and playing with them and make it work for yourself.
+
+11
+00:00:52,046 --> 00:00:58,046
+Question? How do you set the holes cache on the second disk to _____?
+
+12
+00:00:58,046 --> 00:01:03,046
+I didn't have to because over here in my
+
+13
+00:01:03,046 --> 00:01:10,046
+azuredeploy.json, it does all that for me. Let's see if it actually, it doesn't show that.
+
+14
+00:01:10,046 --> 00:01:21,046
+Let's see if it's got adDataDisk and the adDiskSize, somewhere in this long JSON template, it's set all
+
+15
+00:01:21,046 --> 00:01:24,046
+that for me and that's the thing I like about these JSON templates.
+
+16
+00:01:24,046 --> 00:01:29,046
+I don't have to know all that Azure business, alright. I just deploy the template and it builds it all for me.
+
+17
+00:01:29,046 --> 00:01:33,046
+At the end of the day, I blow it all away and I don't care. So it's that easy.
+
+18
+00:01:33,046 --> 00:01:36,046
+Yeah. And let's see, we're
+
+19
+00:01:36,046 --> 00:01:41,046
+still deleting that group. And so now, one last
+
+20
+00:01:41,046 --> 00:01:47,046
+favor I have to ask. Did anybody have to beg your boss to come to this event?
+
+21
+00:01:47,046 --> 00:01:52,046
+Alright, so like, yeah I know it's like, you know, funding travel, budget, conference, all that stuff.
+
+22
+00:01:52,046 --> 00:01:56,046
+Training budgets are really hard to come by. Well I kind of have to do that with my bosses too, so if you
+
+23
+00:01:56,046 --> 00:01:57,046
+could send me a tweet
+
+24
+00:01:57,046 --> 00:02:02,046
+@GoateePFE and just let me know was this helpful. Is this something that you're going to use?
+
+25
+00:02:02,046 --> 00:02:07,046
+How can you see some impact in your environment? That'll help me sell my boss on coming back next year.
+
+26
+00:02:07,046 --> 00:02:11,046
+Alright, appreciate it. Alright, yes. Would you like a copy of the emails?
+
+27
+00:02:11,046 --> 00:02:14,046
+Oh yeah, I'll take a copy of the emails. Thanks. When they come in, I'll send them.
+
+28
+00:02:14,046 --> 00:02:20,046
+Alright. So we've got about two minutes left here for questions.
+
+29
+00:02:20,046 --> 00:02:25,046
+First off, was this helpful? Yes. Alright, good.
+
+30
+00:02:25,046 --> 00:02:32,046
+Alright, so now you've seen what DSC looks like for Active Directory, and on top of that, now you can spin up
+
+31
+00:02:32,046 --> 00:02:34,046
+a domain controller to bang on.
+
+32
+00:02:34,046 --> 00:02:42,046
+Now this is just the scratching the surface here. You can deploy multiple machines with this.
+
+33
+00:02:42,046 --> 00:02:49,046
+You can deploy 10 domain controllers and you know build it all out with different roles and all that and you
+
+34
+00:02:49,046 --> 00:02:52,046
+could even, you know, kick off some other scripts to configure your environment.
+
+35
+00:02:52,046 --> 00:02:58,046
+We don't have resources available yet to set FSMO roles and things like that, so we need help building those,
+
+36
+00:02:58,046 --> 00:03:05,046
+so help us with that. Yes, question. Is there a similar infrastructure to the AzureRM if you're hosting locally?
+
+37
+00:03:05,046 --> 00:03:12,046
+Like on Hyper-V? Is there a similar equivalent set of cmdlets like…
+
+38
+00:03:12,046 --> 00:03:20,046
+Right, like if you've got a DSC template that you want to spin off of a VM in Hyper-V.
+
+39
+00:03:20,046 --> 00:03:25,046
+For Hyper-V, not necessarily. We have some Hyper-V resources that you might be able to, but you couldn't
+
+40
+00:03:25,046 --> 00:03:31,046
+do it exactly this way. Now you might check, keep an eye on Azure Stack when that comes out for onsite,
+
+41
+00:03:31,046 --> 00:03:36,046
+you'd have your own private cloud stuff, see if that might work with the AzureRM cmdlets.
+
+42
+00:03:36,046 --> 00:03:42,046
+I don't know. I can't make any official statements. I don't know what's happening there.
+
+43
+00:03:42,046 --> 00:03:53,046
+Other questions. Yes. Do you know anybody using the Active Directory DSC stuff for like production systems
+
+44
+00:03:53,046 --> 00:04:02,046
+like for users and stuff like that? I haven't heard of anybody using this much in production systems yet.
+
+45
+00:04:02,046 --> 00:04:08,046
+It would be kind of one of those things you'd only want to set it once with just the install, right,
+
+46
+00:04:08,046 --> 00:04:13,046
+so apply only for your LCM, right? That's what I just offhand I'd heard somebody.
+
+47
+00:04:13,046 --> 00:04:19,046
+I don't know if it was at the summit last year or somewhere else and someone had said and referenced to
+
+48
+00:04:19,046 --> 00:04:26,046
+to Active Directory DSC for like user provisioning and some OU provisioning and stuff like that where it was apply only.
+
+49
+00:04:26,046 --> 00:04:30,046
+They weren't using it to build like refresher _____.
+
+50
+00:04:30,046 --> 00:04:35,046
+Yeah, you could do that, but I just don't know if that's practical.
+
+51
+00:04:35,046 --> 00:04:39,046
+I mean, you can just run one line of script to create a new user OU group anyway.
+
+52
+00:04:39,046 --> 00:04:45,046
+Why would you do that with DSC? And somebody was asking me this last night and I thought, well, you know for
+
+53
+00:04:45,046 --> 00:04:53,046
+me, I support Active Directory, so all day long I'm standing up AD test environments just to beat on and
+
+54
+00:04:53,046 --> 00:04:57,046
+script against, so for me, this is really handy. I could run this all the time now.
+
+55
+00:04:57,046 --> 00:05:02,046
+And for you guys out there where you need a test environment, you don't have to go through all your VM
+
+56
+00:05:02,046 --> 00:05:07,046
+requests, you know, act of congress, you could just spin one of these up and then destroy it at the end of
+
+57
+00:05:07,046 --> 00:05:12,046
+the day, so. Alright, we're out of time. Thank you all for coming and please fill out our email.
+
+58
+00:05:12,046 --> 00:59:59,999
+Thank you.
+

@@ -1,0 +1,164 @@
+1
+00:00:12,12 --> 00:00:17,17
+Good afternoon ladies and gentleman, and welcome to the Package Management in PowerShell discussion,
+
+2
+00:00:17,17 --> 00:00:20,20
+and we're going to talk about a number of things here today.
+
+3
+00:00:20,20 --> 00:00:25,25
+First, I'll introduce myself. I'm Keith Bankston. I'm a program manager in the PowerShell team.
+
+4
+00:00:25,25 --> 00:00:32,32
+My primary focus is on the package management, PowerShell Gallery, PowerShellGet and that area, and if you
+
+5
+00:00:32,32 --> 00:00:36,36
+to talk about WMI and WinRM, I can talk about that too some other day.
+
+6
+00:00:36,36 --> 00:00:45,45
+Not now. Also, up here we have Mr. Raghu Shantha. He's a senior developer, senior software engineer,
+
+7
+00:00:45,45 --> 00:00:52,52
+I beg your pardon, in the same team that I work on and he's going to show you some of the things that he did
+
+8
+00:00:52,52 --> 00:00:57,57
+a lightening demo on later and we'll do introductions about that.
+
+9
+00:00:57,57 --> 00:01:04,64
+Quick review of what we're going to cover. For those of you who are familiar with package management and
+
+10
+00:01:04,64 --> 00:01:11,71
+have an idea of the concept, put your hand up real quick. Wow!
+
+11
+00:01:11,71 --> 00:01:16,76
+I like that. This is a good audience. Tougher than I thought. So I'm going to run through the overview
+
+12
+00:01:16,76 --> 00:01:22,82
+material very quickly. It's just give you an outline of what it is and make sure that everybody is up to speed,
+
+13
+00:01:22,82 --> 00:01:28,88
+but I'm going to run past that very rapidly. If you have questions about that, you can catch me later.
+
+14
+00:01:28,88 --> 00:01:32,92
+Then we're going to talk about the things you know probably a little better.
+
+15
+00:01:32,92 --> 00:01:39,99
+PowerShellGet, PowerShell Gallery, and then go a little bit more into the package management improvements,
+
+16
+00:01:39,99 --> 00:01:46,106
+some of the things that we've done in Windows Server TP5 that's coming out, and some of the other changes
+
+17
+00:01:46,106 --> 00:01:55,115
+we've made since WMF5 RTM has happened and also an EMWF5 RTM. And then we're going to put it all together
+
+18
+00:01:55,115 --> 00:02:01,121
+and we're going to leave the majority of the time available for Raghu to talk through setting up a PowerShell
+
+19
+00:02:01,121 --> 00:02:07,127
+Gallery, a private PowerShell Gallery, and the code that he did the five minute too-brief demo on
+
+20
+00:02:07,127 --> 00:02:14,134
+yesterday. So what are we talking about when we say package management?
+
+21
+00:02:14,134 --> 00:02:21,141
+The goal is pretty simple. There is one command that you can use anywhere in Windows that says
+
+22
+00:02:21,141 --> 00:02:28,148
+install this thing, make it happen. A lot of folks are familiar with apt-get on Linux.
+
+23
+00:02:28,148 --> 00:02:35,155
+You do apt-get something and especially on something like Ubuntu, where they've done a really good job of
+
+24
+00:02:35,155 --> 00:02:41,161
+carrying in a list of things that's there, you say app-get foo, and if foo is in the list, you get foo.
+
+25
+00:02:41,161 --> 00:02:47,167
+Well you have to do sudo apt-get foo. Now because we're Microsoft, we don't do apt-get, we do something like
+
+26
+00:02:47,167 --> 00:02:53,173
+Install-Package because we think it makes more sense. Same concept, you've got the idea.
+
+27
+00:02:53,173 --> 00:03:02,182
+We want to make it easier for folks to get stuff of a variety of types of installation mechanisms,
+
+28
+00:03:02,182 --> 00:03:07,187
+use the same command approach to get it onto your box. Now
+
+29
+00:03:07,187 --> 00:03:15,195
+in WMF5 and TP5, we've created the ability to abstract a lot of the Windows components and get those onto
+
+30
+00:03:15,195 --> 00:03:26,206
+your systems and we've also added repository management, and we'll do quick demos of these things along the way.
+
+31
+00:03:26,206 --> 00:03:32,212
+Package management though is going to become a lot more important when you start talking about Nano Server.
+
+32
+00:03:32,212 --> 00:03:43,223
+You all have heard Jeffrey Snover's basic vision. Nano Server is this minimal box, and it by minimal I mean
+
+33
+00:03:43,223 --> 00:03:50,230
+I've got just enough to connect to the box and do Install-Package to get the other stuff I need and control
+
+34
+00:03:50,230 --> 00:03:58,238
+it that way. That's actually one of the key elements that we're trying to accomplish ultimately is by keeping
+
+35
+00:03:58,238 --> 00:04:03,243
+Nano Server under your control, the set of things that are going to be installed there.
+
+36
+00:04:03,243 --> 00:04:07,247
+So package management is central to that vision.
+
+37
+00:04:07,247 --> 00:04:14,254
+And when we talk about package management, a lot of you guys, in particular, are familiar with this in terms
+
+38
+00:04:14,254 --> 00:04:18,258
+of dealing with the PowerShell Gallery and we're pretty proud of it.
+
+39
+00:04:18,258 --> 00:04:25,265
+We've had a few uses since we released that officially back in last June.
+
+40
+00:04:25,265 --> 00:04:32,272
+But it's also about control and it's about giving you the control over where the packages are coming from
+
+41
+00:04:32,272 --> 00:59:59,999
+based on the package type and that's one of the elements that we'll talk through.
+

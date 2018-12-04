@@ -1,0 +1,144 @@
+1
+00:00:00,0 --> 00:00:04,016
+Okay, so we'll just exit out of that remoting session.
+
+2
+00:00:04,016 --> 00:00:14,016
+Something else I want to show you is I've installed a SQL 2014 client tools on this PC.
+
+3
+00:00:14,016 --> 00:00:24,016
+And I want to show you that what it does it actually modifies the PS module path.
+
+4
+00:00:24,016 --> 00:00:32,016
+So there's some DLLs and other things that have to be installed to make SQL management objects work.
+
+5
+00:00:32,016 --> 00:00:38,016
+With SQL 2014 when you import the SQLPS module, all that happens magically.
+
+6
+00:00:38,016 --> 00:00:44,016
+It imports the DLLs and everything. Now if you have SQL 2008 R2 and you want to use SQL management objects,
+
+7
+00:00:44,016 --> 00:00:49,016
+you have to actually manually import the DLLs and there's plenty of documentation on the web for that.
+
+8
+00:00:49,016 --> 00:00:57,016
+So if you want to know the details of that, just do a Google or a Bing search on it.
+
+9
+00:00:57,016 --> 00:01:02,016
+Okay. I'm going to import the SQLPS module. It's going to take a couple minutes.
+
+10
+00:01:02,016 --> 00:01:05,016
+Do we have any questions at this point? I'm actually going to mess up our cameraman.
+
+11
+00:01:05,016 --> 00:01:12,016
+I'm going to walk off the stage here. But this is what I like about PowerShell is that SQL gives me that
+
+12
+00:01:12,016 --> 00:01:16,016
+little four square box to operate in and a lot of other products too.
+
+13
+00:01:16,016 --> 00:01:21,016
+And if I did something like called Microsoft and said hey I edited the registry on my server, they'd sorry that's
+
+14
+00:01:21,016 --> 00:01:26,016
+not supported, but with PowerShell I could probably call them and say yeah I modified the registry at PowerShell,
+
+15
+00:01:26,016 --> 00:01:32,016
+oh, that's okay. So I don't have to operate inside the box that people give me to operate in.
+
+16
+00:01:32,016 --> 00:01:39,016
+So you'll notice, we do have two cmdlets in here. I could use the verbose parameter to see the details of this,
+
+17
+00:01:39,016 --> 00:01:44,016
+but I have an encode and decode SQL name and I know why this occurred
+
+18
+00:01:44,016 --> 00:01:57,016
+because back in the snap-in days, they had those cmdlets and the snap-ins actually don't do the checking for
+
+19
+00:01:57,016 --> 00:02:03,016
+the approved verbs, so when they moved it to a module, they just moved their cmdlets, well then they started
+
+20
+00:02:03,016 --> 00:02:09,016
+getting this warning. So what they've done in the new version I said this was fixed in is they've been doing
+
+21
+00:02:09,016 --> 00:02:15,016
+what I've been telling them all along. They renamed the cmdlets and aliased the old names to the new ones,
+
+22
+00:02:15,016 --> 00:02:20,016
+so that way it's not a breaking change.
+
+23
+00:02:20,016 --> 00:02:24,016
+Okay and if you noticed, it actually changed my current location.
+
+24
+00:02:24,016 --> 00:02:32,016
+I was in the Demo folder and it changed me to the SQL Server PS drive.
+
+25
+00:02:32,016 --> 00:02:41,016
+I want to show you some of their code. So this is one of the things that it runs when you load the SQLPS module.
+
+26
+00:02:41,016 --> 00:02:48,016
+So they do a Get-Module -ListAvailable which is going to get every module on your machine and pipe it to where object.
+
+27
+00:02:48,016 --> 00:02:54,016
+So that's where my comment comes in that the more modules that you have on your machine, the slower it's
+
+28
+00:02:54,016 --> 00:03:05,016
+going to be to import the SQL module, but that is also fixed in the new SQL management installation.
+
+29
+00:03:05,016 --> 00:03:12,016
+And of course, you see that it's signed, so it's not like I can just go hack this file and fix it you know.
+
+30
+00:03:12,016 --> 00:03:21,016
+Okay, so let's change back to the Demo folder. Let's take a look at all the cmdlets we get with SQL 2014.
+
+31
+00:03:21,016 --> 00:03:29,016
+We get lots of cmdlets. We actually get some analysis services cmdlets and there are lots in the SQLPS module,
+
+32
+00:03:29,016 --> 00:03:34,016
+but when you import the SQLPS module, it imports both of those. So I stored it in a variable just because it's
+
+33
+00:03:34,016 --> 00:03:45,016
+not so easy to see how many. So we actually have 57 cmdlets. So between 2008 R2 and 2014, we went from 5
+
+34
+00:03:45,016 --> 00:04:01,016
+cmdlets to 57. I think that's a huge improvement. Okay, so what we can do, we can actually run Transact SQL
+
+35
+00:04:01,016 --> 00:04:13,016
+code directly from PowerShell using the invoke SQL command cmdlet that exists in SQL 2008 R2.
+
+36
+00:04:13,016 --> 00:59:59,999
+So I actually just queried the list of databases on SQL01. Pretty simple.
+

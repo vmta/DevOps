@@ -1,0 +1,140 @@
+1
+00:00:00,0 --> 00:00:06,844
+Now what I want you to think about is I'm sure everybody here is it's a beginner concept filtering left.
+
+2
+00:00:06,844 --> 00:00:11,844
+I mean everybody should know that you want to filter as early as possible in the pipeline.
+
+3
+00:00:11,844 --> 00:00:19,844
+So but when you're working with SQL Server, it may not be a 100% clear what you're doing.
+
+4
+00:00:19,844 --> 00:00:26,844
+So what I can do is actually query a SQL Server database and I'm actually going to do a select * from the person table.
+
+5
+00:00:26,844 --> 00:00:33,844
+I'm going to bring it back to PowerShell and filter it down to the people with the last name of Browning.
+
+6
+00:00:33,844 --> 00:00:38,844
+So I have a list of the users with the last name of Browning. Well I can actually do that same thing inside
+
+7
+00:00:38,844 --> 00:00:42,844
+my SQL code, which is a lot more efficient.
+
+8
+00:00:42,844 --> 00:00:46,844
+It's kind of like some of the Active Directory cmdlets. I mean I think we all know they leave a lot to be
+
+9
+00:00:46,844 --> 00:00:51,844
+desired sometimes depending on what you're doing and depending on the size of your organization and what
+
+10
+00:00:51,844 --> 00:00:57,844
+you're doing, a lot of times you're better off using ADSI. But if you don't know ADSI, then you've got to
+
+11
+00:00:57,844 --> 00:00:59,844
+use the PowerShell cmdlets.
+
+12
+00:00:59,844 --> 00:01:04,844
+So anyway now I execute this other command and you'll notice it was instant.
+
+13
+00:01:04,844 --> 00:01:09,844
+So what I'm going to do I'm just going to run the first one again and then I'll run the second one as well.
+
+14
+00:01:09,844 --> 00:01:24,844
+Well the first one took 1167 ms. So the second option took 8.1 ms and this is all running on this machine,
+
+15
+00:01:24,844 --> 00:01:29,844
+so we're not having to take into account network latency and all that sort of stuff.
+
+16
+00:01:29,844 --> 00:01:38,844
+So what's the difference? The second command was 21 times faster than the first 1.
+
+17
+00:01:38,844 --> 00:01:47,844
+So what I actually try to do, I try to write all my code in Transact SQL because I want to filter as early as possible.
+
+18
+00:01:47,844 --> 00:01:53,844
+I don't want to bring anything I don't need back to PowerShell and a lot of my knowledge with SQL Server is
+
+19
+00:01:53,844 --> 00:02:00,844
+actually, when I started working with PowerShell, it just made sense because you don't want to query all these
+
+20
+00:02:00,844 --> 00:02:07,844
+table and pull every column and every row back only to filter it later and it's the same concept as filtering
+
+21
+00:02:07,844 --> 00:02:10,844
+left with PowerShell.
+
+22
+00:02:10,844 --> 00:02:15,844
+So what I can also do, I can also run store procedures from PowerShell.
+
+23
+00:02:15,844 --> 00:02:22,844
+So that runs fine. Well there's kind of a caveat here. Not all store procedures will run in PowerShell and
+
+24
+00:02:22,844 --> 00:02:33,844
+not all T-SQL code will run in PowerShell. There's a store procedure called sp_who2 and it's basically the processes.
+
+25
+00:02:33,844 --> 00:02:40,844
+And you'll notice I got an error message. It says that duplicate columns are not permitted because it's trying
+
+26
+00:02:40,844 --> 00:02:46,844
+to pull back two columns with the same name and we can't have two objects with the same name.
+
+27
+00:02:46,844 --> 00:02:56,844
+So what I'll do, let's just copy this. So if I put that on my SQL Server and this is SQL Server on query1.
+
+28
+00:02:56,844 --> 00:03:04,844
+If I execute that, it executes fine. Well the problem is you've got a SPD here and you've got a SPD there,
+
+29
+00:03:04,844 --> 00:03:11,844
+and the reason you've got two SPD columns is they're doing a join, so they're joining on that column because
+
+30
+00:03:11,844 --> 00:03:18,844
+you have to have the same, it may not necessarily be the same name in SQL Server always,
+
+31
+00:03:18,844 --> 00:03:22,844
+but the problem with this, we can't just go modify system store procedures.
+
+32
+00:03:22,844 --> 00:03:28,844
+It's probably not a good idea to start with and even if it works well for a while, guess what, when you apply
+
+33
+00:03:28,844 --> 00:03:36,844
+a service pack, your changes are probably going to go bye-bye.
+
+34
+00:03:36,844 --> 00:03:40,844
+Okay, so what's the solution to that if I really want to run sp_who2?
+
+35
+00:03:40,844 --> 00:59:59,999
+I'll just write my own.
+

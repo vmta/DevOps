@@ -1,0 +1,236 @@
+1
+00:00:00,0 --> 00:00:04,018
+Well the big deal is I can't use the output in some other system, so since I'm the AD
+
+2
+00:00:04,018 --> 00:00:14,018
+guy and the SQL guy and the Exchange guy and so on, if I did this in SQL, then I couldn't use the output directly
+
+3
+00:00:14,018 --> 00:00:17,018
+anyway in another system.
+
+4
+00:00:17,018 --> 00:00:21,018
+So what I can do, I can actually run a command. I've done a bunch of joins here and I've even done a little
+
+5
+00:00:21,018 --> 00:00:24,018
+bit of text parsing with PowerShell. Don't be afraid
+
+6
+00:00:24,018 --> 00:00:31,018
+to do text parsing with PowerShell. If you can write a command more efficiently using text parsing than using
+
+7
+00:00:31,018 --> 00:00:36,018
+objects, don't be afraid to use it. I've seen people, they'll want the manager in AD and they'll actually
+
+8
+00:00:36,018 --> 00:00:40,018
+query the user and then do another query on AD to get the manager.
+
+9
+00:00:40,018 --> 00:00:46,018
+Well you have the manager, you have the DN for it and you can actually parse the manager out of that DN,
+
+10
+00:00:46,018 --> 00:00:53,018
+Distinguished Name, without having to do a second query to AD.
+
+11
+00:00:53,018 --> 00:01:05,018
+So anyway, I'll query these and guess what, all those joins and all, just imagine this is the HR database.
+
+12
+00:01:05,018 --> 00:01:11,018
+I've got the person's name, I've got their SAM account name, their UPN, all this is in SQL, not in AD.
+
+13
+00:01:11,018 --> 00:01:20,018
+Well guess what I can do with that? Create AD users.
+
+14
+00:01:20,018 --> 00:01:30,018
+So let's query this OU in Active Directory and I'll show it to you as well while that's waiting, it's the AdventureWorks OU.
+
+15
+00:01:30,018 --> 00:01:38,018
+I'll do a refresh, there's nothing in there. And we'll give this a second.
+
+16
+00:01:38,018 --> 00:01:45,018
+It shouldn't take that long, but do we have any questions at this point?
+
+17
+00:01:45,018 --> 00:01:56,018
+Well we got an error message. So let's do this. Let's just do a get-aduser, we'll do a get-adcomputer.
+
+18
+00:01:56,018 --> 00:02:04,018
+We'll make sure I can talk to AD and we'll say sql01. Okay, so we're talking to AD.
+
+19
+00:02:04,018 --> 00:02:07,018
+Let's run that command one more time. I don't see anything wrong with it.
+
+20
+00:02:07,018 --> 00:02:14,018
+You know that's the definition of insanity is to do the same thing and expect the different results,
+
+21
+00:02:14,018 --> 00:02:23,018
+but my definition of insanity is to do the same thing more than one time and get different results, which I just got.
+
+22
+00:02:23,018 --> 00:02:32,018
+If you're not insane, it will drive you insane. Okay, so what we're going to do, we're actually going to
+
+23
+00:02:32,018 --> 00:02:37,018
+encapsulate this inside Measure-Command. We're going to run the same query again, we're going to pipe it to
+
+24
+00:02:37,018 --> 00:02:42,018
+New-ADUser, and we're going to see how long this takes.
+
+25
+00:02:42,018 --> 00:02:48,018
+And I've shown this at some SQL Saturdays and I always challenge everybody who can type faster accurately
+
+26
+00:02:48,018 --> 00:02:56,018
+than I can run this command. And nobody has taken me up on the challenge yet.
+
+27
+00:02:56,018 --> 00:03:01,018
+So I run that command. It shouldn't take too long, unless we have a timeout.
+
+28
+00:03:01,018 --> 00:03:11,018
+So it took, I can see there at the bottom it took 3.1 seconds. Well guess what, 290 Active Directory accounts.
+
+29
+00:03:11,018 --> 00:03:17,018
+We put their name in there, we put their telephone number, we put their address, we put their job title.
+
+30
+00:03:17,018 --> 00:03:24,018
+Now who's got temps at your company that can do that and do that accurately in 3.1 seconds?
+
+31
+00:03:24,018 --> 00:03:28,018
+So just go ahead and fire your temps.
+
+32
+00:03:28,018 --> 00:03:38,018
+That's the benefit of doing this in PowerShell is you're not tied to one system or one technology.
+
+33
+00:03:38,018 --> 00:03:49,018
+So now if I query the OU, I can see there's 290 Active Directory user accounts.
+
+34
+00:03:49,018 --> 00:03:59,018
+Okay, let's talk about the .NET Framework. I actually wrote a SQL data reader using the .NET Framework.
+
+35
+00:03:59,018 --> 00:04:04,018
+It's a function. It's got all of the stuff you should have. It's got comment-based help to tell you how to
+
+36
+00:04:04,018 --> 00:04:11,018
+use it, it's got parameter validation, it's got a Begin block that sets up the connection one time, it's got a
+
+37
+00:04:11,018 --> 00:04:16,018
+Process block that'll iterate through all the commands on the same connection, and then it's actually got an
+
+38
+00:04:16,018 --> 00:04:23,018
+End block that'll close the command when it's done, instead of building a command for every query that you're
+
+39
+00:04:23,018 --> 00:04:30,018
+going to run. So it's a little more efficient to do it that way.
+
+40
+00:04:30,018 --> 00:04:37,018
+So I can actually use that command to query a database. So what I did I actually got backup information from
+
+41
+00:04:37,018 --> 00:04:48,018
+my MSDB database with that command. At this point, I want to jump over to another VM.
+
+42
+00:04:48,018 --> 00:04:58,018
+I've got a Windows 8.1 VM here and I want to show you the SQL tools are not installed on this machine.
+
+43
+00:04:58,018 --> 00:05:02,018
+The only SQL tools on this machine are my SQL tools.
+
+44
+00:05:02,018 --> 00:05:07,018
+And I don't mean my SQL, I mean MrSQL.
+
+45
+00:05:07,018 --> 00:05:16,018
+So I can take and run this data reader using the .NET Framework and receive the same results without needing,
+
+46
+00:05:16,018 --> 00:05:23,018
+without having any dependencies whatsoever, so that's the benefit of using the .NET Framework.
+
+47
+00:05:23,018 --> 00:05:34,018
+What I can do is and this here I actually have a command that we ran earlier, so I'm actually going to create
+
+48
+00:05:34,018 --> 00:05:42,018
+a very simple function to get a list of the databases and remember SQL03 doesn't have PowerShell.
+
+49
+00:05:42,018 --> 00:05:53,018
+So from a machine that doesn't have the SMO DLLs on it, I can use the .NET Framework and query a machine that
+
+50
+00:05:53,018 --> 00:05:58,018
+doesn't have PowerShell on it.
+
+51
+00:05:58,018 --> 00:06:06,018
+So I haven't found a reason, if you're able to write your own SQL cmdlets in the .NET Framework or use somebody
+
+52
+00:06:06,018 --> 00:06:12,018
+else's, I haven't found a reason not to use the .NET Framework. Generally, it's because it's much simpler
+
+53
+00:06:12,018 --> 00:06:17,018
+just to use SMO because it's there. You don't have to reinvent the wheel.
+
+54
+00:06:17,018 --> 00:06:23,018
+That would be the downfall of the .NET Framework, but when you can steal somebody else's code on the internet,
+
+55
+00:06:23,018 --> 00:06:28,018
+then you don't really have that downfall.
+
+56
+00:06:28,018 --> 00:06:37,018
+Okay, so this is the code we ran and I put it in this file as well because this is the only file that's on GitHub.
+
+57
+00:06:37,018 --> 00:06:48,018
+So now we're back to, notice now I'm going to use Invoke-Sqlcmd2, which is the file I was telling you about.
+
+58
+00:06:48,018 --> 00:06:55,018
+I'll get the same results. But it's not a data reader. You can use it in place of where you've used Invoke-Sqlcmd,
+
+59
+00:06:55,018 --> 00:59:59,999
+you can actually update and delete and everything. Okay, so let's do something that's a little more exciting.
+

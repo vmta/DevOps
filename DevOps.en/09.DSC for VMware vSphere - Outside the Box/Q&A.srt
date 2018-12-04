@@ -1,0 +1,88 @@
+1
+00:00:00,5 --> 00:00:09,553
+Are there any questions? Yep. (Audience question) Sorry, can you? Have you gotten some extra VMs themselves,
+
+2
+00:00:09,553 --> 00:00:17,553
+CPUs, memory VA, just substantial things like that? If I write the resource for the VM, yeah, that will be.
+
+3
+00:00:17,553 --> 00:00:22,553
+Have you got there yet? No, that's what I said. I first need to network before I can actually create a VM.
+
+4
+00:00:22,553 --> 00:00:28,553
+I know and I think Brandon is in the audience, he has a resource where you can create a VM.
+
+5
+00:00:28,553 --> 00:00:33,553
+I wanted to start from the bottom-up, he started from top-down, so that's, but I hope that we can reuse some
+
+6
+00:00:33,553 --> 00:00:37,553
+of his code in this environment.
+
+7
+00:00:37,553 --> 00:00:44,553
+Anymore questions? Okay, yeah. Can you see this getting rid of the need for profiles completely?
+
+8
+00:00:44,553 --> 00:00:53,553
+Yeah, I know what the question is. I got this. Does this eliminate the need for host profiles?
+
+9
+00:00:53,553 --> 00:01:00,553
+We got that exact same question at the VMworld where the question was more painful than when I have it here, of course.
+
+10
+00:01:00,553 --> 00:01:05,553
+In my opinion, and since I'm not working for VMware, yes this will eliminate your need for host profiles
+
+11
+00:01:05,553 --> 00:01:13,553
+because this will do a lot more. But my good mate who works for VMware, he will tell you, ah no, not completely,
+
+12
+00:01:13,553 --> 00:01:18,553
+you still will need host profiles. (Audience comment) He's convinced of that, but he can't say that you
+
+13
+00:01:18,553 --> 00:01:29,553
+don't need host profiles. So yes, I think if this is working and it is working 100%, you could because with
+
+14
+00:01:29,553 --> 00:01:34,553
+host profiles it's a passive thing. If we get this working, that's an active thing.
+
+15
+00:01:34,553 --> 00:01:40,553
+That's why I would like this monitoring correct. I don't need to suspect a drift and then take action.
+
+16
+00:01:40,553 --> 00:01:51,553
+I want this stuff to discover the drift and correct it. For the correcting mechanism, would you be putting
+
+17
+00:01:51,553 --> 00:01:56,553
+host in a maintenance mode, moving VMs? That could be one of the options here.
+
+18
+00:01:56,553 --> 00:02:01,553
+In fact, what I'm looking at is just writing the resources that would give you that possibility.
+
+19
+00:02:01,553 --> 00:02:06,553
+It would still be you who writes the configuration files. Yeah. Who decides how far this correction of
+
+20
+00:02:06,553 --> 00:02:19,553
+drift can go. Yep. Anybody else? Okay. I thank you. I know this is the last session of the day and my brain
+
+21
+00:02:19,553 --> 00:02:24,553
+was melted with the previous one, so I guess some of you would also be very tired now.
+
+22
+00:02:24,553 --> 00:59:59,999
+Okay, thanks for coming and enjoy.
+

@@ -1,0 +1,436 @@
+1
+00:00:00,0 --> 00:00:08,701
+So with PowerShell V4 and push mode, if I was running PowerShell V4, my only option is pretty much copy and paste
+
+2
+00:00:08,701 --> 00:00:16,701
+those modules out there. But with V5 and push mode, you can actually automate the distribution of resources
+
+3
+00:00:16,701 --> 00:00:30,701
+just like you can with pull mode.
+
+4
+00:00:30,701 --> 00:00:36,701
+Okay, so we'll take a look at the Local Configuration manager settings for DC01.
+
+5
+00:00:36,701 --> 00:00:46,701
+You notice we have a LCM state of a PendingConfiguration and that's because we tried to apply our MOF configuration document.
+
+6
+00:00:46,701 --> 00:00:53,701
+I've also noticed that sometimes when you're in that state with PowerShell 5, you'll get this warning message.
+
+7
+00:00:53,701 --> 00:00:58,701
+There's a cmdlet called Remove-DscConfigurationDocument, so we'll go ahead and run that.
+
+8
+00:00:58,701 --> 00:01:05,701
+We'll check the state of our LCM again and the main reason I wanted to show you this is that all our settings
+
+9
+00:01:05,701 --> 00:01:11,701
+are the default, but you'll notice now it's actually idle and we don't get that message since we've removed
+
+10
+00:01:11,701 --> 00:01:18,701
+that configuration we tried to apply. So what we're going to do, we're actually going to configure the LCM,
+
+11
+00:01:18,701 --> 00:01:31,701
+the Local Configuration Manager on DC01 to pick up the DSC resources from an SMB file share.
+
+12
+00:01:31,701 --> 00:01:37,701
+And one thing, there's actually a bug in this, you actually have to set a configuration id, even though it's
+
+13
+00:01:37,701 --> 00:01:48,701
+not needed for a push mode. So we'll apply the MetaMOF. When you go to configure the Local Configuration
+
+14
+00:01:48,701 --> 00:01:57,701
+Manager, you actually get a MetaMOF file and I don't know if you saw that here, but it says MetaMOF.
+
+15
+00:01:57,701 --> 00:02:03,701
+So I'll query the LCM again. We'll actually query it here. So you'll notice we've got this
+
+16
+00:02:03,701 --> 00:02:11,701
+ResourceModuleManagers property now. So we'll drill down into that, we'll expand that property, so we can
+
+17
+00:02:11,701 --> 00:02:20,701
+see exactly what was set. So this is what was set. And then we'll take one more look at it, just grab the
+
+18
+00:02:20,701 --> 00:02:26,701
+settings that I really want you to see. So DC01, we had to set a configuration id because of a bug in
+
+19
+00:02:26,701 --> 00:02:35,701
+PowerShell 5 and we have it set to a UNC path and we're still in push mode.
+
+20
+00:02:35,701 --> 00:02:41,701
+So what we want to do, like I said this is about toolmaking, so what if while you're here, your coworker
+
+21
+00:02:41,701 --> 00:02:47,701
+needs to make a modification to your configuration management system?
+
+22
+00:02:47,701 --> 00:02:55,701
+Do you trust them to take a DSC resource and put it in the proper file name and the file name is going to be
+
+23
+00:02:55,701 --> 00:03:00,701
+the name of the root module, it's going to be the version of the module, and then it's going to be zipped and
+
+24
+00:03:00,701 --> 00:03:07,701
+it's going to be .zip. So that's usually than me, if I didn't have this created, if I haven't done this for
+
+25
+00:03:07,701 --> 00:03:10,701
+like six months, I would have to look up, okay, what's the details of that.
+
+26
+00:03:10,701 --> 00:03:15,701
+Or what I would do is go look at it and say, okay, what's one like today?
+
+27
+00:03:15,701 --> 00:03:19,701
+How did I previously do this?
+
+28
+00:03:19,701 --> 00:03:23,701
+So the information that you need to create this is actually really simple.
+
+29
+00:03:23,701 --> 00:03:29,701
+You can run Get-DscResource and I'll specify the two resources that we're using.
+
+30
+00:03:29,701 --> 00:03:34,701
+So that one command will actually tell us the module name. It'll tell us the version and those are the
+
+31
+00:03:34,701 --> 00:03:45,701
+resources we're using under name. I'm not a 100% sure in PowerShell 4 that it gave you the version because I
+
+32
+00:03:45,701 --> 00:03:55,701
+actually used Get-Module to get the version with. So now let's---
+
+33
+00:03:55,701 --> 00:04:04,701
+in PowerShell 4, there wasn't a compressed archive cmdlet, which they added in 5, and I've actually read in
+
+34
+00:04:04,701 --> 00:04:08,701
+several places where you couldn't use the .NET framework to zip the file, but I've been doing that and I've
+
+35
+00:04:08,701 --> 00:04:17,701
+had no issues and you can actually use common object as well and I have an unzipped file function that'll
+
+36
+00:04:17,701 --> 00:04:22,701
+actually check and see if the .NET Framework is up-to-date, and if it's not, it can use com, so it's down level
+
+37
+00:04:22,701 --> 00:04:27,701
+to like PowerShell V2. But anyway, I'll just show you this function real quick.
+
+38
+00:04:27,701 --> 00:04:31,701
+I'm not going to walk you through all the details of these functions.
+
+39
+00:04:31,701 --> 00:04:35,701
+This one here, of course, it's got comment-based help because if you don't have help, then how are people
+
+40
+00:04:35,701 --> 00:04:40,701
+going to know how to use your functions. It requires a certain version of PowerShell.
+
+41
+00:04:40,701 --> 00:04:51,701
+It includes a parameter validation and so on. So now if you're running PowerShell V5, you don't have to
+
+42
+00:04:51,701 --> 00:04:58,701
+resort to something like that. So to get the file name I was just telling you about is fairly simple.
+
+43
+00:04:58,701 --> 00:05:03,701
+I want to show you what the file names would be for these two DSC resources and there they are there.
+
+44
+00:05:03,701 --> 00:05:12,701
+They're ModuleName_theVersion.zip. So all that information is very, very easy to grab.
+
+45
+00:05:12,701 --> 00:05:19,701
+But trying to figure that out manually is a challenge, especially this week while somebody else is trying to do it.
+
+46
+00:05:19,701 --> 00:05:26,701
+So you also have to create a checksum for the zip file and that doesn't matter if you're putting the MOF
+
+47
+00:05:26,701 --> 00:05:34,701
+configuration document out or if you're putting the DSC resource out on the file share or on a web server.
+
+48
+00:05:34,701 --> 00:05:39,701
+You have to have a checksum and the checksum is actually how it knows that an update is available.
+
+49
+00:05:39,701 --> 00:05:46,701
+So I can't tell you how many hours that I've spent that I've updated a configuration or a resource and then I
+
+50
+00:05:46,701 --> 00:05:51,701
+didn't regenerate the checksum. What happens is the server has a copy of the checksum, so it compares the
+
+51
+00:05:51,701 --> 00:06:01,701
+two checksums, says oh the configuration is the same.
+
+52
+00:06:01,701 --> 00:06:11,701
+I have a couple more functions here. So I've got one that publishes the DSC resource to the SMB share.
+
+53
+00:06:11,701 --> 00:06:18,701
+You'll notice all my modules and all my functions I use the prefix administer for Mike Robbins just so you
+
+54
+00:06:18,701 --> 00:06:28,701
+know why that's there. When you scroll down this one, you'll notice I'm using the New-MrZipFile function.
+
+55
+00:06:28,701 --> 00:06:35,701
+You could very easily use the compress archive and then also I'm using the New-DscCheckSum command,
+
+56
+00:06:35,701 --> 00:06:43,701
+but what I try to do, I try to break, I showed you the New-MrZipFile command, I try to break my commands down
+
+57
+00:06:43,701 --> 00:06:51,701
+so that I'm not writing 500 lines of code in 1 file and I'm not duplicating that code between functions.
+
+58
+00:06:51,701 --> 00:06:59,701
+I put it in a module and then if I call it with another function, then it just loads that function and uses it.
+
+59
+00:06:59,701 --> 00:07:10,701
+So I consider that, if you're duplicating data, that's real bad because you're creating technical debt for yourself.
+
+60
+00:07:10,701 --> 00:07:17,701
+Now redundancy of systems like you want to have more than one domain controller on site, of course,
+
+61
+00:07:17,701 --> 00:07:23,701
+but if you've got 50,000 copies of basically like the same database, that's really bad because one's going to
+
+62
+00:07:23,701 --> 00:07:26,701
+get updated and then all the other ones are going to be out of date.
+
+63
+00:07:26,701 --> 00:07:29,701
+So it's kind of the same thought process with
+
+64
+00:07:29,701 --> 00:07:39,701
+these PowerShell functions. And I have another one called Get-MrDSCResourcePath that gets the path to the root module.
+
+65
+00:07:39,701 --> 00:07:47,701
+So for creating a Guid, in PowerShell V4, you didn't have a cmdlet for creating in Guid.
+
+66
+00:07:47,701 --> 00:07:53,701
+In version 5, you've got New-Guid. So I'll show you the one that I created.
+
+67
+00:07:53,701 --> 00:08:02,701
+It's very simple. So I can use this, and notice I've got comment-based help, even though it's very simple, that's it.
+
+68
+00:08:02,701 --> 00:08:11,701
+So and I'll show you this. You know, a lot of times you find commands like that, so let's take one while
+
+69
+00:08:11,701 --> 00:08:17,701
+actually we can still see it on the screen. Notice the built-in one in PowerShell V5 is a function.
+
+70
+00:08:17,701 --> 00:08:22,701
+So what that means is it's not compiled, so we can see what the command looks like that they wrote.
+
+71
+00:08:22,701 --> 00:08:28,701
+So mine was written before they wrote theirs, but of course, we've kind of accomplished the same thing the same way.
+
+72
+00:08:28,701 --> 00:08:40,701
+So what we can see is we can see exactly how they wrote their command.
+
+73
+00:08:40,701 --> 00:08:49,701
+Let's make this a little smaller. So this is the SMB file share that we have defined for DC01.
+
+74
+00:08:49,701 --> 00:08:55,701
+What we're going to do, we're going to publish the resources to that location.
+
+75
+00:08:55,701 --> 00:08:59,701
+So we're going to run this command and you'll notice in the window they're going to show up.
+
+76
+00:08:59,701 --> 00:09:04,701
+It's going to be zip files. It's going to be the right name and it's also going to have a checksum.
+
+77
+00:09:04,701 --> 00:09:15,701
+Wasn't that easier than figuring all that out manually? (Clicking)
+
+78
+00:09:15,701 --> 00:09:24,701
+Okay, so now we'll look at the domain controller. This is the location and let me make this larger so you can see.
+
+79
+00:09:24,701 --> 00:09:29,701
+So it's the C, Program Files, WindowsPowerShell, Modules folder.
+
+80
+00:09:29,701 --> 00:09:36,701
+We're going to pin this open so that we can run a command behind it and still have that window open.
+
+81
+00:09:36,701 --> 00:09:41,701
+We're going to run the same command we ran before to apply this configuration to DC01.
+
+82
+00:09:41,701 --> 00:09:47,701
+So what's going to happen this time is it's actually going to pull those resources down from the SMB file server,
+
+83
+00:09:47,701 --> 00:09:58,701
+even though, we're in push mode and that's, like I said, only available in PowerShell V5.
+
+84
+00:09:58,701 --> 00:10:04,701
+Okay, so I have another command that I wrote. I don't want to have to figure out how to get the
+
+85
+00:10:04,701 --> 00:10:09,701
+which event log, there's only one event log enabled by default on DSC and there's a couple other ones that
+
+86
+00:10:09,701 --> 00:10:15,701
+are not enabled. So I just wrote a command that's a wrapper to a Get-WinEvent to get the commands from the
+
+87
+00:10:15,701 --> 00:10:16,701
+remote machine
+
+88
+00:10:16,701 --> 00:10:23,701
+and it has a, I'm using invoke command. So we'll go ahead and run this.
+
+89
+00:10:23,701 --> 00:10:31,701
+One of the things I like about grid view in PowerShell 5 is you can do a Ctrl+ and make it larger.
+
+90
+00:10:31,701 --> 00:10:35,701
+It'll tell you exactly what happened, that there's resources. You can see here are the
+
+91
+00:10:35,701 --> 00:10:42,701
+PowerShellAccessControl when it was successfully installed and it'll tell you the location,
+
+92
+00:10:42,701 --> 00:10:47,701
+and with PowerShell V5, you have a side by side versioning, so it puts it in a version folder,
+
+93
+00:10:47,701 --> 00:10:56,701
+but the same command I could run on a V4 machine and it would actually put it, it wouldn't create a version folder.
+
+94
+00:10:56,701 --> 00:10:57,701
+One thing I want you to notice
+
+95
+00:10:57,701 --> 00:11:04,701
+here is that it says the PowerShellAccessControl module was downloaded to this location C:\Windows\TEMP,
+
+96
+00:11:04,701 --> 00:11:06,701
+whatever this temp file is,
+
+97
+00:11:06,701 --> 00:11:10,701
+so every time you run this, you're resources that are being downloaded are being downloaded are being
+
+98
+00:11:10,701 --> 00:11:13,701
+downloaded into a temp file and that's not being cleaned up.
+
+99
+00:11:13,701 --> 00:11:24,701
+So if I go look at the temp file folder on the domain controller, you'll notice local time for me is 1:23 or 1:25 PM.
+
+100
+00:11:24,701 --> 00:11:29,701
+Two minutes ago, we had this temp file show up and you'll notice that I've got like 50 million of these
+
+101
+00:11:29,701 --> 00:11:33,701
+because I've run through this demo like 50 million times.
+
+102
+00:11:33,701 --> 00:11:42,701
+So unless I go up there and manually clean these up, then they're just going to keep building.
+
+103
+00:11:42,701 --> 00:11:53,701
+Okay, so what did we accomplish with that configuration? We actually created the SQL and the web SMB file share.
+
+104
+00:11:53,701 --> 00:11:59,701
+Not only did we create those, but we also set the security so that we have a SQL Server's global group in AD
+
+105
+00:11:59,701 --> 00:12:06,701
+that contains our SQL servers and that one has read access and then we also have a SQL admins group that
+
+106
+00:12:06,701 --> 00:12:11,701
+contains our SQL admins that can configure those servers.
+
+107
+00:12:11,701 --> 00:12:15,701
+So in this scenario, just imagine that we have three groups of people.
+
+108
+00:12:15,701 --> 00:12:20,701
+We've got the main admins who are doing the domain controllers, we got SQL admins that are doing the SQL servers,
+
+109
+00:12:20,701 --> 00:59:59,999
+and we've got web admins who are doing the web servers.
+

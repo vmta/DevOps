@@ -1,0 +1,224 @@
+1
+00:00:00,0 --> 00:00:03,3
+the concept I wanted to share today is something that I've been working on.
+
+2
+00:00:03,3 --> 00:00:07,3
+I'm very much interested in your thoughts on this as well. And it's what I
+
+3
+00:00:07,3 --> 00:00:15,3
+call the Application DNA. And when you look in an application and you think about all the different
+
+4
+00:00:15,3 --> 00:00:23,3
+relationships that are associated with it, the fact that there are multiple layers that must be delivered
+
+5
+00:00:23,3 --> 00:00:28,3
+consistently and accurately in order to have that application actually function.
+
+6
+00:00:28,3 --> 00:00:36,3
+In order for you to execute change, you have to understand this and let's just start with the reporting standpoint.
+
+7
+00:00:36,3 --> 00:00:37,3
+If you're reporting on
+
+8
+00:00:37,3 --> 00:00:45,3
+this, man that is a bear. I want to understand all of the virtual machines, actually you can't even say that, right.
+
+9
+00:00:45,3 --> 00:00:51,3
+I want to understand all the virtual disks that are associated with the data store that's associated with the
+
+10
+00:00:51,3 --> 00:00:59,3
+LUN that's associated with this file or this storage platform or this, right, because in today's world,
+
+11
+00:00:59,3 --> 00:01:07,3
+as everything moves to policy-based, it could be anywhere. So the concept that I've worked on and I won't
+
+12
+00:01:07,3 --> 00:01:12,3
+pretend like I've solved it, right, it's kind of why I wanted to have lots of time here so that we can talk
+
+13
+00:01:12,3 --> 00:01:20,3
+about it, is when you're trying to get that information and trying to do those things, when I was at Cisco,
+
+14
+00:01:20,3 --> 00:01:25,3
+we had a need for that kind of report. We wanted to understand all the applications that were sitting
+
+15
+00:01:25,3 --> 00:01:31,3
+on VMAC storage because it's expensive and we wanted to make sure that nobody was on there that wasn't supposed
+
+16
+00:01:31,3 --> 00:01:38,3
+to be on there. Are you kidding me? Right, like that's a significant undertaking, right, because not only
+
+17
+00:01:38,3 --> 00:01:43,3
+did I need to identify what virtual machines were there, I needed to understand what the applications were
+
+18
+00:01:43,3 --> 00:01:51,3
+and I needed to understand who the application belonged to, right, and I would run this report and it would
+
+19
+00:01:51,3 --> 00:02:04,3
+take about 22 hours. I was using Get-View, I was doing filtering, it just took time because you're still stuck
+
+20
+00:02:04,3 --> 00:02:10,3
+doing a lot of this, right. So what I ended up having to do, and this was one of the big challenges of scale,
+
+21
+00:02:10,3 --> 00:02:17,3
+is you end up having to break it out into multiple systems, so each Virtual Center Server then had its
+
+22
+00:02:17,3 --> 00:02:22,3
+own PowerShell Server, and that PowerShell server was specifically dedicated for executing things against
+
+23
+00:02:22,3 --> 00:02:29,3
+that Virtual Center Server. I created some trusts in there, but now I have to manage a dozen PowerShell Servers.
+
+24
+00:02:29,3 --> 00:02:35,3
+And of course, we did the one ring to rule them all. We have one PowerShell that would execute against all
+
+25
+00:02:35,3 --> 00:02:44,3
+the other PowerShell Servers. That sucked, but I was able to get it done in 6 hours instead of 22 hours.
+
+26
+00:02:44,3 --> 00:02:48,3
+And what dawned on me because like here's,
+
+27
+00:02:48,3 --> 00:02:50,3
+yeah, what dawned on me is that
+
+28
+00:02:50,3 --> 00:02:54,3
+there has to be a better way of doing this because not only did I get into that, but when there was an
+
+29
+00:02:54,3 --> 00:02:59,3
+opportunity that I needed to execute something or change something, maybe change a configuration,
+
+30
+00:02:59,3 --> 00:03:05,3
+maybe I needed to move all those virtual machines that weren't supposed to be there.
+
+31
+00:03:05,3 --> 00:03:09,3
+I have to deal with multiple layers of that infrastructure, and then guess what I end up having to do,
+
+32
+00:03:09,3 --> 00:03:16,3
+I have to do the same queries over again. That's just dumb, right, because it takes up time, it takes up memory
+
+33
+00:03:16,3 --> 00:03:22,3
+and that's time that the business would like back, especially when you start thinking about DevOps
+
+34
+00:03:22,3 --> 00:03:30,3
+organizations and you're trying to implement things in a fast reliable manner and you're trying to shave
+
+35
+00:03:30,3 --> 00:03:36,3
+seconds sometimes in your value string. Why? Because the faster that you can get through test and release,
+
+36
+00:03:36,3 --> 00:03:44,3
+the quicker you get value for your efforts. Okay? So the concept with the DNA is that what if in
+
+37
+00:03:44,3 --> 00:03:49,3
+the background, we kind of collect these relationship things. We find some efficiencies in how we collect,
+
+38
+00:03:49,3 --> 00:03:56,3
+but in the background we collect this information and store it and I've played with multiple types.
+
+39
+00:03:56,3 --> 00:04:01,3
+They're all ugly, so I'm very much interested in feedback on how to accomplish this, but I've kind of settled
+
+40
+00:04:01,3 --> 00:04:08,3
+on JSON because JSON is just really fast and you can collect the information into an object, pipe it out
+
+41
+00:04:08,3 --> 00:04:13,3
+to a JSON file and it's very easy to import it and it be object-based.
+
+42
+00:04:13,3 --> 00:04:15,3
+And so the way this would work
+
+43
+00:04:15,3 --> 00:04:22,3
+is you would go out and you'd collect that information just like I had said before, but you do it for everything.
+
+44
+00:04:22,3 --> 00:04:26,3
+Like this is just a single one, but you would do it for everything and you would get these mappings.
+
+45
+00:04:26,3 --> 00:04:35,3
+You pipe it to a JSON file, and when you start your session, you put in your profile to load the contents
+
+46
+00:04:35,3 --> 00:04:40,3
+of that file and you have this collection happen
+
+47
+00:04:40,3 --> 00:04:45,3
+several times a day, but here's the thing, most the time it's stuff doesn't change.
+
+48
+00:04:45,3 --> 00:04:50,3
+The relationship maps do not frequently change. The only time they really change is when you have to perform
+
+49
+00:04:50,3 --> 00:04:58,3
+maintenance event, right. And so, being able to collect this information and store it into a file and then
+
+50
+00:04:58,3 --> 00:05:07,3
+absorb it into an object, you can then reference that object instead of doing that cross-platform query.
+
+51
+00:05:07,3 --> 00:05:16,3
+You get away from doing the Get-AllVolumes and find the one that just does the SCSI with the SCSI Id.
+
+52
+00:05:16,3 --> 00:05:18,3
+What you do instead is
+
+53
+00:05:18,3 --> 00:05:25,3
+you just find the SCSI Id that's in that JSON or in that object that you imported and you have all the
+
+54
+00:05:25,3 --> 00:05:29,3
+information for that entire application stack that's associated with that.
+
+55
+00:05:29,3 --> 00:05:35,3
+Does that make sense? Am I off my rocker? If I am, please tell me.
+
+56
+00:05:35,3 --> 00:59:59,999
+Right, because this has felt a bit like a leap and it's a little challenging,
+

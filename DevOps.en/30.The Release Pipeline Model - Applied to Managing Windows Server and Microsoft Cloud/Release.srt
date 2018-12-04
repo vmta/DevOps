@@ -1,0 +1,164 @@
+1
+00:00:00,0 --> 00:00:04,4
+I can see the results of any one test and then I can create bugs.
+
+2
+00:00:04,4 --> 00:00:10,079
+So I can say, Steve you checked in junk, here's a bug back to you that this doesn't work right.
+
+3
+00:00:10,079 --> 00:00:12,079
+That never happens.
+
+4
+00:00:12,079 --> 00:00:13,079
+So I'm skimming fast.
+
+5
+00:00:13,079 --> 00:00:20,079
+Release is interesting because it's the most exciting thing to me, but it's the least interesting part of the
+
+6
+00:00:20,079 --> 00:00:26,079
+demo, so it's where I've been putting all of my thoughts lately, but as far as demo is concerned, if you're running
+
+7
+00:00:26,079 --> 00:00:32,079
+this, something got released, so it's not that exciting. But basically, something is going to go create the
+
+8
+00:00:32,079 --> 00:00:37,079
+environment if needed. If it doesn't already exist, it's going to manage any changes.
+
+9
+00:00:37,079 --> 00:00:44,079
+So as part of build, you might have in that script, go out and configure a load balancer or go create a new
+
+10
+00:00:44,079 --> 00:00:50,079
+volume on the SAN, something like that, right, so any environmental changes happen there.
+
+11
+00:00:50,079 --> 00:00:54,079
+What we did before obviously was go dig through all these things manually and that would include now that
+
+12
+00:00:54,079 --> 00:00:58,079
+I've built this machine, I'm going to go to Windows update and get it fully patched.
+
+13
+00:00:58,079 --> 00:01:04,079
+I'm going to make sure that antimalware is there. I'm going to onboard into our backup and monitoring services,
+
+14
+00:01:04,079 --> 00:01:11,079
+all of those things. It's why it took us three weeks instead of three minutes because we did all of those manually.
+
+15
+00:01:11,079 --> 00:01:13,079
+And then we announce a Go Live, right, which is
+
+16
+00:01:13,079 --> 00:01:18,079
+again where we get gray hair. So what do we do now? Build again.
+
+17
+00:01:18,079 --> 00:01:25,079
+Just that's another thing that it takes care of. So everything that we need to do to make that release
+
+18
+00:01:25,079 --> 00:01:33,079
+happen is stored in our deployment script in that source control and it's tested using Pester, we've tested it
+
+19
+00:01:33,079 --> 00:01:40,079
+locally from our workstation. As part of the build server doing things, you might have multiple environments,
+
+20
+00:01:40,079 --> 00:01:48,079
+so you might actually do a release to a quality assurance environment and then that's it for the automated
+
+21
+00:01:48,079 --> 00:01:52,079
+build and then you go back and trigger something else that goes into production.
+
+22
+00:01:52,079 --> 00:01:57,079
+I've seen a variety of things go through this and that's what we talked about promoting through stages.
+
+23
+00:01:57,079 --> 00:02:02,079
+You might have cut over scenario where you have a green/blue and you use a load balancer, so we're going to
+
+24
+00:02:02,079 --> 00:02:08,079
+deploy to green and then flip from blue to green, things like that.
+
+25
+00:02:08,079 --> 00:02:09,079
+Just to do a quick demo since
+
+26
+00:02:09,079 --> 00:02:12,079
+we're now out of time.
+
+27
+00:02:12,079 --> 00:02:19,079
+I'm huge fan of PSDeploy. So Warren is here. I think this project is absolutely awesome, and so we've been
+
+28
+00:02:19,079 --> 00:02:25,079
+working together on, he's just a champion with PowerShell and has been making some interesting changes to make
+
+29
+00:02:25,079 --> 00:02:34,079
+it work like Pester and PSake so that all of this is just one cohesive story, but I contributed an ARM plugin
+
+30
+00:02:34,079 --> 00:02:39,079
+so that it could work with this, which I think I broke last night, so my demo fails at this step,
+
+31
+00:02:39,079 --> 00:02:46,079
+but you can see it's the same concept, right, Deploy using ARM from that template to that resource group.
+
+32
+00:02:46,079 --> 00:02:51,079
+You can do tagging, so your tag might be production versus QA, which means it would just be a variable that
+
+33
+00:02:51,079 --> 00:02:59,079
+you could use from your deploy to say I'm going just set this for QA and then tell PSDeploy go run all the
+
+34
+00:02:59,079 --> 00:03:06,079
+deployments that are tagged for QA or that are tagged for dev or they're tagged for project name or whatever.
+
+35
+00:03:06,079 --> 00:03:09,079
+One of the things I can't wait to try is
+
+36
+00:03:09,079 --> 00:03:15,079
+use this because you can have these things depend on each other and have Azure and Azure Stack deployments
+
+37
+00:03:15,079 --> 00:03:20,079
+tied together, so I'm going to release a service onto Azure Stack, but I'm also going to have it go create an
+
+38
+00:03:20,079 --> 00:03:25,079
+Azure automation account, put my modules and configurations there, and then Bootstrap those machines to Azure,
+
+39
+00:03:25,079 --> 00:03:31,079
+and do a one-stop hybrid deployment. I can't wait to prototype that.
+
+40
+00:03:31,079 --> 00:03:37,079
+All of these tools make those really complex, mindboggling, new things very easy.
+
+41
+00:03:37,079 --> 00:59:59,999
+And I can now take the lessons I've learned in the past and bring them forward.
+

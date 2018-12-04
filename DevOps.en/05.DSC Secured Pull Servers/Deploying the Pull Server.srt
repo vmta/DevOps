@@ -1,0 +1,360 @@
+1
+00:00:00,0 --> 00:00:04,4
+Let me show you my config, and we're going to run it, and make a pull server.
+
+2
+00:00:04,4 --> 00:00:09,18
+Does that sound like a plan? Yes. Alright, I'm not going to show you the simple one,
+
+3
+00:00:09,18 --> 00:00:13,18
+I'm going to give you the advanced one, why, because I think you're advanced.
+
+4
+00:00:13,18 --> 00:00:20,18
+You get both, but it's the advanced one. I'm a web guy, so I'm real anal about web servers
+
+5
+00:00:20,18 --> 00:00:27,18
+and web servers are under constant attack. So here's what I do is I want to configure my pull server,
+
+6
+00:00:27,18 --> 00:00:30,18
+which is a web server, with the most minimal components possible.
+
+7
+00:00:30,18 --> 00:00:36,18
+I also want something that nobody else seems to like to set up. My boxes are all core.
+
+8
+00:00:36,18 --> 00:00:42,18
+There's occasionally when a web server needs to be managed from the iNet management tools like a developer or
+
+9
+00:00:42,18 --> 00:00:48,18
+something like that. You have to turn on and enable remote management on web servers.
+
+10
+00:00:48,18 --> 00:00:53,18
+On core, you can't do it because you can only do it through the graphical.
+
+11
+00:00:53,18 --> 00:00:59,18
+I need you to think that through. You can't turn on remote management because it requires the graphical on
+
+12
+00:00:59,18 --> 00:01:05,18
+the box to turn it on. Well why can't I turn it on remotely with the graphical?
+
+13
+00:01:05,18 --> 00:01:13,18
+Because it's not turned on. Well how am I going to turn it on? I wrote you the PowerShell code in DSC
+
+14
+00:01:13,18 --> 00:01:18,18
+format that does it. I figured it out. So I'm going to show you how to turn on remote management.
+
+15
+00:01:18,18 --> 00:01:23,18
+Nobody's pull server configs has this in it, so here's what happens.
+
+16
+00:01:23,18 --> 00:01:28,18
+You can't manage the damn thing after you get it set up. Isn't that stupid?
+
+17
+00:01:28,18 --> 00:01:31,18
+So do you want me to give you the good code or the bad code? Good code.
+
+18
+00:01:31,18 --> 00:01:36,18
+Okay, I like that. I'm up for good code. So here's what we do.
+
+19
+00:01:36,18 --> 00:01:43,18
+This is called the config data. I separate my configuration data from my actual configuration.
+
+20
+00:01:43,18 --> 00:01:51,18
+So what I'm allowed to do here is I can put in all of those things as properties right here at the top if I
+
+21
+00:01:51,18 --> 00:01:56,18
+want to change them. If I want to have multiple pull servers, which we'll talk about in a minute, I can just
+
+22
+00:01:56,18 --> 00:02:02,18
+have multiple hash tables here with different computer names in it.
+
+23
+00:02:02,18 --> 00:02:07,18
+Now what I'm setting up is roles. I've got a web role and then a pull server role.
+
+24
+00:02:07,18 --> 00:02:12,18
+So here's all my configuration data. Take a look at this, this is how I get the certificate thumbprint.
+
+25
+00:02:12,18 --> 00:02:24,18
+I Invoke-Command to the box that has the certificate, Get-Childitem to the store, I find the certificate with
+
+26
+00:02:24,18 --> 00:02:30,18
+a Where clause if it stays lit, and then I grab the thumbprint. This is a great piece of code, man.
+
+27
+00:02:30,18 --> 00:02:36,18
+You want this code. This is a great piece of code. So down here, here's how this works.
+
+28
+00:02:36,18 --> 00:02:41,18
+This is the actual configuration itself and I want you to take a look at the line, I import the DSC resources
+
+29
+00:02:41,18 --> 00:02:45,18
+that I need, but I want you to look at the line AllNodes.where Role -eq Web.
+
+30
+00:02:45,18 --> 00:02:47,18
+That's how you separate your configs for the
+
+31
+00:02:47,18 --> 00:02:52,18
+different roles that you want. This makes it real convenient because once I've written this correctly,
+
+32
+00:02:52,18 --> 00:02:58,18
+I never want to touch this code here again. The only thing I ever want to touch are the values in the config
+
+33
+00:02:58,18 --> 00:03:03,18
+data at the top. So I made this much better for everybody. And here's the other thing I did, and I'm not
+
+34
+00:03:03,18 --> 00:03:06,18
+going to make you try to watch the blinky thing.
+
+35
+00:03:06,18 --> 00:03:11,18
+I'll tell you about it and you'll see it here. When you install a web server,
+
+36
+00:03:11,18 --> 00:03:18,18
+you install a Windows feature web-server. It installs a limited set, a matter of fact, just enough stuff so
+
+37
+00:03:18,18 --> 00:03:22,18
+that you can have an HTML Page. No code will run all that kind of thing.
+
+38
+00:03:22,18 --> 00:03:26,18
+Microsoft thought that would be a brilliant idea and they're absolutely correct.
+
+39
+00:03:26,18 --> 00:03:34,18
+So what I do is I do that, but you still need some components for the pull server, so I install those,
+
+40
+00:03:34,18 --> 00:03:40,18
+but here's the thing, that basic set that it installed, there are things in there I don't want on my pull server
+
+41
+00:03:40,18 --> 00:03:46,18
+and I want to reduce the attack surface as much as possible. So not only do I have Windows feature resources
+
+42
+00:03:46,18 --> 00:03:54,18
+that are adding in individual components, I'm also removing the stuff I don't want that the default installed.
+
+43
+00:03:54,18 --> 00:04:00,18
+This gives me the tightest web server with the least amount of tax surface possible.
+
+44
+00:04:00,18 --> 00:04:06,18
+They don't do this if you use their sample documentation. They just go blah and it just barfs out.
+
+45
+00:04:06,18 --> 00:04:11,18
+I'm anal about this because I know it will be a and also this web role is what I use for all my web servers.
+
+46
+00:04:11,18 --> 00:04:18,18
+It's always the most minimum cut down for them and just the application components like ASP.NET 4, 5,
+
+47
+00:04:18,18 --> 00:04:23,18
+that it needs to run the applications. So what I here as this thing is blinking on and off is
+
+48
+00:04:23,18 --> 00:04:32,18
+a list of each one of those. So it's a detailed list, it'll come back, don't worry, you're not missing anything.
+
+49
+00:04:32,18 --> 00:04:40,18
+So pretty long list, but really cool. Let me get to the cool part.
+
+50
+00:04:40,18 --> 00:04:42,18
+GUI remote management, as soon as it comes back up. See the light?
+
+51
+00:04:42,18 --> 00:04:47,18
+Oh, no, of course you don't because it's not up long enough. I just give you…
+
+52
+00:04:47,18 --> 00:04:51,18
+So what I did is I figured out, I did this actually a long time ago through just regular PowerShell scripting.
+
+53
+00:04:51,18 --> 00:04:57,18
+I figured out how to enable and configure the remote management piece on IIS without being on the box.
+
+54
+00:04:57,18 --> 00:05:03,18
+You can do it in a script, but I put it in DSC format. So you have to install the window, the web management service.
+
+55
+00:05:03,18 --> 00:05:08,18
+The problem with this is that once you install the service, you still have to enable remote management and
+
+56
+00:05:08,18 --> 00:05:12,18
+then configure it. Those are done through the registry keys. I figured out the registry keys.
+
+57
+00:05:12,18 --> 00:05:18,18
+Now the registry keys don't exist until you install the management service, but then they exist, so you have
+
+58
+00:05:18,18 --> 00:05:22,18
+to make sure you get them in the right sequence. Please
+
+59
+00:05:22,18 --> 00:05:28,18
+flip back on. You can look at the code when you download it. There's the remote management stuff when it
+
+60
+00:05:28,18 --> 00:05:33,18
+flips back on and the registry keys for it to enable it, get it set up.
+
+61
+00:05:33,18 --> 00:05:39,18
+The other thing is with remote management on IIS, there's a service that has to be started called the WMSVC service.
+
+62
+00:05:39,18 --> 00:05:44,18
+There's a problem. I love this problem. This problem makes me so happy.
+
+63
+00:05:44,18 --> 00:05:46,18
+The service is not started. You guys know how to start a service.
+
+64
+00:05:46,18 --> 00:05:52,18
+You can remotely do a Start-ServiceWMSVC. But here's the problem.
+
+65
+00:05:52,18 --> 00:05:57,18
+The service is set to manual, so when the box reboots,
+
+66
+00:05:57,18 --> 00:06:02,18
+guess what isn't working. The remote management stuff doesn't work and you can't get to it again.
+
+67
+00:06:02,18 --> 00:06:12,18
+I love that! So what I did is I used a service resource to set it to run and configure it for automatic.
+
+68
+00:06:12,18 --> 00:06:18,18
+Yeah. So that way it will always be there. Okay, cool. Well let's run this.
+
+69
+00:06:18,18 --> 00:06:24,18
+Oh, let me go just show you down here. Here's the pull server and what I did is I replaced all those properties
+
+70
+00:06:24,18 --> 00:06:30,18
+I did in the config data as variables down here, so I never have to touch this code again.
+
+71
+00:06:30,18 --> 00:06:36,18
+This code is good code. It puts things in the right place, unlike the sample that's out there.
+
+72
+00:06:36,18 --> 00:06:42,18
+So you should applaud that I gave you good code instead of bad code because Richard Siddoway gives you bad code.
+
+73
+00:06:42,18 --> 00:06:53,18
+No, I'm just kidding. Okay, so let me run this and what'll happen here is it'll create a MOF and I'm going to
+
+74
+00:06:53,18 --> 00:06:57,18
+push this to the pull server. Well why can't you pull it to the pull server?
+
+75
+00:06:57,18 --> 00:07:02,18
+Because I don't have a pull server yet. And I'll show you, I'll let you see this as it runs.
+
+76
+00:07:02,18 --> 00:07:07,18
+I'm going to, I'm also going to change the LCM on the pull server.
+
+77
+00:07:07,18 --> 00:07:10,18
+You don't actually need to see this. This is just because I'm weird.
+
+78
+00:07:10,18 --> 00:07:23,18
+(Audience comment) Yeah, shut up. But here, let me… I'm going to kick off the configuration, so I'm going
+
+79
+00:07:23,18 --> 00:07:26,18
+to hit this and it's going to push it out, it's going to run the config.
+
+80
+00:07:26,18 --> 00:07:30,18
+It's only going to take it a couple minutes, but what's going to happen here is I want you to notice what I'm
+
+81
+00:07:30,18 --> 00:07:34,18
+doing right now. What am I doing right now? Talking to us, jazz hands.
+
+82
+00:07:34,18 --> 00:07:41,18
+Jazz hands! That's awesome! Nothing. In other words, I'm a big fan of I don't like to work hard,
+
+83
+00:07:41,18 --> 00:07:45,18
+so I'm going to let this thing do it. Now here's the best thing about it.
+
+84
+00:07:45,18 --> 00:07:50,18
+If I need a second pull server, what am I going to do? (Audience Answer)
+
+85
+00:07:50,18 --> 00:07:57,18
+Yeah. I may not even really, other than the name, I may not even need to change anything else, just push it out.
+
+86
+00:07:57,18 --> 00:08:05,18
+If I need 50 pull servers, which you would never need, I could just fire it to 50 machines all at once if I wanted to.
+
+87
+00:08:05,18 --> 00:08:12,18
+This is a beautiful thing, man. It's beautiful! It's really, except you can't see it, but it's getting to be beautiful.
+
+88
+00:08:12,18 --> 00:08:20,18
+And once this pull server comes up, he'll be in full operation. Now all you need to do is start putting your
+
+89
+00:08:20,18 --> 00:08:25,68
+configs and resources up and that's the hard part and that's my session that I hope the screen stays on the
+
+90
+00:08:25,68 --> 00:59:59,999
+entire time on I think Wednesday.
+

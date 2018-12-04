@@ -1,0 +1,208 @@
+1
+00:00:00,0 --> 00:00:08,179
+Okay, I'll take this slide. So one thing I wanted to talk a little bit about is why we went down this path
+
+2
+00:00:08,179 --> 00:00:14,179
+of bringing kind of PowerShell into the cloud and what were the reasons we thought about as we went down this path.
+
+3
+00:00:14,179 --> 00:00:20,179
+And I think the first one was-- we've seen a lot of customers, probably a lot of you are starting to look at
+
+4
+00:00:20,179 --> 00:00:26,179
+adopting cloud technologies and it might be that most of your stuff is on-premises today, but you're also
+
+5
+00:00:26,179 --> 00:00:30,179
+trying to say how do I take advantage as I move some of my services and applications to the cloud,
+
+6
+00:00:30,179 --> 00:00:33,179
+how can I also think about moving my management?
+
+7
+00:00:33,179 --> 00:00:39,179
+And so there's kind of core capabilities that the cloud gives you and one of those is you need to be able to
+
+8
+00:00:39,179 --> 00:00:42,179
+integrate into all these different clouds now because you're not going to get rid of all your on-premises
+
+9
+00:00:42,179 --> 00:00:48,179
+stuff as you start to bring things into Azure or into AWS or even into your own service provider.
+
+10
+00:00:48,179 --> 00:00:54,179
+So you want to be able to like talk to all those systems and still Integrate them today just like you might do on-premises.
+
+11
+00:00:54,179 --> 00:00:59,179
+The other thing that's been going around for a long time in the automation space is how do you deliver self-service?
+
+12
+00:00:59,179 --> 00:01:04,179
+Most of us are involved in writing PowerShell so that we can kind of complete some process, either a small process
+
+13
+00:01:04,179 --> 00:01:10,179
+on our own server or large processes that go across an entire organization and we think about that and one
+
+14
+00:01:10,179 --> 00:01:14,179
+of the main goals we have around that is so that we can offer out that automation to our end users so that
+
+15
+00:01:14,179 --> 00:01:20,179
+they can actually accomplish their tasks when they need it. And so as you think about the cloud, it just drives
+
+16
+00:01:20,179 --> 00:01:24,179
+the self-service capabilities. That's really what cloud is about is I want on-demand virtual machines,
+
+17
+00:01:24,179 --> 00:01:31,179
+I want on-demand storage, SQL, it's really about that self-service capabilities and how do we deliver self-service
+
+18
+00:01:31,179 --> 00:01:34,179
+around PowerShell as well as we go forward.
+
+19
+00:01:34,179 --> 00:01:38,179
+And then the last thing that I think if you look at the conference and where everyone is focused right now is
+
+20
+00:01:38,179 --> 00:01:44,179
+a lot on DevOps. How do we really enable the kind of continuous deployment of our services and applications,
+
+21
+00:01:44,179 --> 00:01:49,179
+working with the development teams, with the operations team, and allow that to go seamlessly back and forth
+
+22
+00:01:49,179 --> 00:01:51,179
+as continuous development happens.
+
+23
+00:01:51,179 --> 00:01:56,179
+A lot of people call this like infrastructure as code or some other name around it, but the idea is how do we
+
+24
+00:01:56,179 --> 00:02:01,179
+have the common tooling so that our development teams and our operations teams can actually talk the same
+
+25
+00:02:01,179 --> 00:02:09,179
+language, use the same tools, and gain the benefits of kind of that end-to-end development and management.
+
+26
+00:02:09,179 --> 00:02:13,179
+And then the other trend I talk a little bit about is as people start to think about okay I want to take
+
+27
+00:02:13,179 --> 00:02:17,179
+advantage of the cloud because I gain all the benefits of scale out there, I don't have to worry about the
+
+28
+00:02:17,179 --> 00:02:21,179
+infrastructure, how does management also play into that? You know, why
+
+29
+00:02:21,179 --> 00:02:25,179
+would you want to move your management to cloud and it's really the same reasons you might want to move
+
+30
+00:02:25,179 --> 00:02:29,179
+anything to the cloud is you don't really want to have to manage the infrastructure anymore.
+
+31
+00:02:29,179 --> 00:02:33,179
+You want to take advantage of the capabilities that cloud gives you and focus more on those scripts you're
+
+32
+00:02:33,179 --> 00:02:38,179
+writing and the process you're trying to do and not managing infrastructures.
+
+33
+00:02:38,179 --> 00:02:43,179
+The other big trend we've seen and I don't know if you guys are seeing it as well is that the world is
+
+34
+00:02:43,179 --> 00:02:48,179
+getting more and more heterogeneous and we think about heterogeneous it's mostly around, we live in a lot of
+
+35
+00:02:48,179 --> 00:02:49,179
+a Windows space,
+
+36
+00:02:49,179 --> 00:02:53,179
+but most of the customers we talk with and probably a lot of you have other systems in your environments.
+
+37
+00:02:53,179 --> 00:02:58,179
+You probably have Linux in your environments, but for sure you have other management solutions.
+
+38
+00:02:58,179 --> 00:03:02,179
+You're probably not running all of the management stack. And so, how do you talk to all of those systems
+
+39
+00:03:02,179 --> 00:03:06,179
+as they start to grow and grow, and as you move to the cloud, they just grow more and more.
+
+40
+00:03:06,179 --> 00:03:10,179
+And so we really want to think about how do we go about solving that communication, that integration across
+
+41
+00:03:10,179 --> 00:03:15,179
+Windows, Linux, as well as all the different systems you have to talk to complete that process.
+
+42
+00:03:15,179 --> 00:03:22,179
+And then the last one is I think everyone here is committed that kind of automation in PowerShell is the way
+
+43
+00:03:22,179 --> 00:03:27,179
+to actually automate your end-to-end process, but it also starts to put a lot more pressure on the systems
+
+44
+00:03:27,179 --> 00:03:30,179
+because now we're seeing automation at scale.
+
+45
+00:03:30,179 --> 00:03:35,179
+Whereas before we might do some automation to complete some tasks, we now see it as a pillar for most organizations
+
+46
+00:03:35,179 --> 00:03:40,179
+as they start to develop more and more integrated management solutions across the environment, and so we
+
+47
+00:03:40,179 --> 00:03:45,179
+wanted to build something that says okay we can actually solve that problem and give you automation at scale,
+
+48
+00:03:45,179 --> 00:03:49,179
+so it can go from your small needs all the way up to the largest needs you might ever need because we're able
+
+49
+00:03:49,179 --> 00:03:55,179
+to bring it from the cloud. So that's kind of a lot of the reasons why actually started thinking about okay
+
+50
+00:03:55,179 --> 00:04:00,179
+all the PowerShell stuff that works today, how can we actually bring that to the cloud, solve a lot of the problems
+
+51
+00:04:00,179 --> 00:04:05,179
+that you're seeing today, but also set you up for success in the future as you start to think about moving
+
+52
+00:04:05,179 --> 00:59:59,999
+more and more assets towards the cloud.
+

@@ -1,0 +1,244 @@
+1
+00:00:00,0 --> 00:00:07,512
+So let's get into why we would PowerShell the stack, right. I
+
+2
+00:00:07,512 --> 00:00:10,512
+almost feel like it was challenge that somebody has like can you get Salt N Pepa into a slide?
+
+3
+00:00:10,512 --> 00:00:17,512
+Yes, I can. So we're going to posh it real good. Alright? And here's the thing, right, why would you use
+
+4
+00:00:17,512 --> 00:00:25,512
+PowerShell across the whole stack? In your environments, let me just ask real quick, in your environments,
+
+5
+00:00:25,512 --> 00:00:32,512
+do you have control over multiple layers of your ecosystem that you could automate with PowerShell?
+
+6
+00:00:32,512 --> 00:00:39,512
+Yes. Right. That's becoming more of the norm. We hear a lot of conversations about silos.
+
+7
+00:00:39,512 --> 00:00:44,512
+Frankly, I don't like silos. I mean, I like the fact that they hold corn and corn is a primary ingredient of
+
+8
+00:00:44,512 --> 00:00:50,512
+bourbon and I'm a fan of that part of it, but when it comes down to organizational structures, I really prefer
+
+9
+00:00:50,512 --> 00:00:56,512
+looking at it as disciplines, right, and when you break down that concept of there being some separation
+
+10
+00:00:56,512 --> 00:01:03,512
+between you and a peer or how you look at your infrastructure, you now have opportunities to share and
+
+11
+00:01:03,512 --> 00:01:06,512
+contribute with one another. And so I did this poll
+
+12
+00:01:06,512 --> 00:01:11,512
+on Twitter and if you're on Twitter and you want to, go to my profile, it's pinned.
+
+13
+00:01:11,512 --> 00:01:18,512
+You can go ahead and contribute and then I can pull that up at the very end to see how this number changes.
+
+14
+00:01:18,512 --> 00:01:25,512
+But what I wanted to know is how many layers of your infrastructure stack do you manage with PowerShell currently?
+
+15
+00:01:25,512 --> 00:01:32,512
+And I won't lie, I was a little bit surprised to have that many people claiming seven plus layers.
+
+16
+00:01:32,512 --> 00:01:33,512
+Think about that.
+
+17
+00:01:33,512 --> 00:01:38,512
+Seven layers of infrastructure, right. And we'll get into how I define that in just a minute,
+
+18
+00:01:38,512 --> 00:01:44,512
+but seven components, seven layers of your infrastructure managing with PowerShell.
+
+19
+00:01:44,512 --> 00:01:48,512
+You know ten years ago if you would have asked anybody that was getting started with PowerShell if we would
+
+20
+00:01:48,512 --> 00:01:54,512
+be seeing that kind of result, I think that people would be a little bit bearish on that.
+
+21
+00:01:54,512 --> 00:01:58,512
+Jeffrey Snover will probably be bullish on that, as he should be.
+
+22
+00:01:58,512 --> 00:02:03,512
+But I also noted that the majority of people only have about three to four layers that they manage and I
+
+23
+00:02:03,512 --> 00:02:11,512
+think the fundamental element of that is based on what they have access to, right, what they were able to
+
+24
+00:02:11,512 --> 00:02:14,512
+automate and engage with PowerShell because this is
+
+25
+00:02:14,512 --> 00:02:23,512
+what our environments look like, right, and I tried to be heterogeneous if you will and demonstrate there's
+
+26
+00:02:23,512 --> 00:02:30,512
+more than just because I think most everybody here is VMware vSphere, we've got some Hyper-Vs, maybe a couple OpenStacks.
+
+27
+00:02:30,512 --> 00:02:35,512
+Anybody running OpenStack in here? Okay. Have you used the OpenStack PowerShell?
+
+28
+00:02:35,512 --> 00:02:43,512
+Okay, so it exists. Some folks at Rackspace built PowerShell modules for OpenStack, right.
+
+29
+00:02:43,512 --> 00:02:53,512
+And when we look at our ecosystem now, we have a few things that are really prevalent that we have to identify.
+
+30
+00:02:53,512 --> 00:02:58,512
+The fact that we have more layers. It used to be your applications were directly on physical hardware.
+
+31
+00:02:58,512 --> 00:03:04,512
+Alright, and we still see some of that, but we now have a lot more layers, a lot more components and one thing
+
+32
+00:03:04,512 --> 00:03:09,512
+that's really important there is that in that complexity, there's a lot of interdependency.
+
+33
+00:03:09,512 --> 00:03:10,512
+Anybody carry a
+
+34
+00:03:10,512 --> 00:03:15,512
+pager? Right and there's something that goes wrong. What's the first thing you have to do?
+
+35
+00:03:15,512 --> 00:03:19,512
+You've got to figure out what was impacted. Right, you've got to figure out where it came down to.
+
+36
+00:03:19,512 --> 00:03:25,512
+You're doing your root, you're trying to find out the root cause and what is going on and there's lots of
+
+37
+00:03:25,512 --> 00:03:32,512
+layers that you have to consider before you can identify exactly where the issue is, well unless it's blatant like
+
+38
+00:03:32,512 --> 00:03:38,512
+storage going down or a network just going poof and disappearing, right.
+
+39
+00:03:38,512 --> 00:03:42,512
+But with these additional layers, you have that additional complexity, right.
+
+40
+00:03:42,512 --> 00:03:49,512
+You have dependencies that we didn't have in the past, and so it's really important for us to take advantage
+
+41
+00:03:49,512 --> 00:03:54,512
+of the capabilities from a PowerShell standpoint in order to deal with that.
+
+42
+00:03:54,512 --> 00:03:59,512
+And then finally, another thing that I see in the work that I do from day to day is that
+
+43
+00:03:59,512 --> 00:04:04,512
+our consumption models of our resources is changing fundamentally, right.
+
+44
+00:04:04,512 --> 00:04:08,512
+We are very quickly moving away from this world
+
+45
+00:04:08,512 --> 00:04:13,512
+where someone calls you and asks you to provision something, right.
+
+46
+00:04:13,512 --> 00:04:20,512
+We're moving more to a world where people are enabled to do their own provisioning, they're enabled to make their
+
+47
+00:04:20,512 --> 00:04:24,512
+own changes in their environment. We're delivering IT as a service, right.
+
+48
+00:04:24,512 --> 00:04:25,512
+So
+
+49
+00:04:25,512 --> 00:04:31,512
+what we're seeking now is opportunities to manage at scale and when I say scale, I don't necessarily mean
+
+50
+00:04:31,512 --> 00:04:38,512
+Cisco IT scale, right. Your scale is completely relevant to what you are doing in your environment.
+
+51
+00:04:38,512 --> 00:04:42,512
+So if you only have a 100 virtual machines or you've got 10,000 virtual machines, you still
+
+52
+00:04:42,512 --> 00:04:48,512
+have issues with scale, right. You still have your constraints and the things that you're trying to do and
+
+53
+00:04:48,512 --> 00:04:55,512
+what you're limited to varies, right. We all have our limitations and things that we have to work against.
+
+54
+00:04:55,512 --> 00:05:01,512
+And then you look at where you have opportunities where you want to implement DevOps methodologies and tools
+
+55
+00:05:01,512 --> 00:05:03,512
+and you're looking at
+
+56
+00:05:03,512 --> 00:05:11,512
+like this complicated stack and you're saying how do I even get started, like what can I do?
+
+57
+00:05:11,512 --> 00:05:16,512
+How do I start moving towards this and how can I leverage things that I already know?
+
+58
+00:05:16,512 --> 00:05:18,512
+And we're going to talk about that today as well.
+
+59
+00:05:18,512 --> 00:05:21,512
+And I've already touched on it, right. We want more IT as a service.
+
+60
+00:05:21,512 --> 00:05:29,512
+We want to give people an opportunity to be self-empowered to do the things that they need and not being
+
+61
+00:05:29,512 --> 00:59:59,999
+completely reliant on submitting a ticket for everything that they do.
+

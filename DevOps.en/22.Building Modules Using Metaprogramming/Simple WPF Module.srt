@@ -1,0 +1,448 @@
+1
+00:00:00,0 --> 00:00:09,535
+Next, I'm going to move onto doing this without a domain-specific language.
+
+2
+00:00:09,535 --> 00:00:15,535
+This was an idea I had. I was trying to think of different uses for this and
+
+3
+00:00:15,535 --> 00:00:22,535
+I came up with something that I don't know how useful this would actually be, but a lot of times I've tried to
+
+4
+00:00:22,535 --> 00:00:30,535
+create little bitty miniature WPF user interfaces and first of all, there's a module, I think, that kind of
+
+5
+00:00:30,535 --> 00:00:39,535
+does this stuff, Show-UI. I haven't used it myself and this almost definitely is not going to be better
+
+6
+00:00:39,535 --> 00:00:45,535
+than that, so definitely go check that out. But what I've done because my interfaces are pretty simple,
+
+7
+00:00:45,535 --> 00:00:50,535
+I'll use the XAML, and I'll have it read that in, and then I'll have to go in, and find whatever controls I'm
+
+8
+00:00:50,535 --> 00:00:55,535
+looking for, and attach whatever events I want and I was wondering if there was any way
+
+9
+00:00:55,535 --> 00:01:05,535
+you could use this to build a module that would allow you to make WPF user interfaces.
+
+10
+00:01:05,535 --> 00:01:11,535
+So we're going to try that. Now again, this should look pretty similar.
+
+11
+00:01:11,535 --> 00:01:16,535
+In this instance we're going to have, here's our hash table for command names.
+
+12
+00:01:16,535 --> 00:01:22,535
+This is going to kind of be like the command info before, but we're going to actually just let PowerShell use
+
+13
+00:01:22,535 --> 00:01:30,535
+Reflection to try to take a look at the different parameters to use for our WPF commands that are generated.
+
+14
+00:01:30,535 --> 00:01:36,535
+So in this case, we're going to have, let's take a look at the reference scriptblock.
+
+15
+00:01:36,535 --> 00:01:41,535
+This time around, the DynamicParam block isn't quite as simple and I'll go ahead and spoil this for you.
+
+16
+00:01:41,535 --> 00:01:49,535
+What's it's doing is in a little bit I'll show you where it's going to write, it's going to look for every
+
+17
+00:01:49,535 --> 00:01:56,535
+single WPF UI element, which I believe is the base class for all of the visual, the elements in WPF that you would use.
+
+18
+00:01:56,535 --> 00:02:03,535
+It's going to take every one of those and create a new function based off of those and inside that CommandName,
+
+19
+00:02:03,535 --> 00:02:07,535
+it's just going to store whatever name you used and whatever the type is.
+
+20
+00:02:07,535 --> 00:02:15,535
+Now that makes it so if you want, you can add prefixes to your CommandNames or something like that.
+
+21
+00:02:15,535 --> 00:02:17,535
+Then it's going to come through and here's where it uses reflection.
+
+22
+00:02:17,535 --> 00:02:23,535
+It takes that type and it gets a list of all the public properties and then it ends up taking a look and if
+
+23
+00:02:23,535 --> 00:02:28,535
+the public property has a public setter, then it's going to make that, that's going to be a valid parameter
+
+24
+00:02:28,535 --> 00:02:38,535
+that you can use. It also takes a look to see if that property has an Add method attached.
+
+25
+00:02:38,535 --> 00:02:45,535
+If it doesn't have a public setter, but it does have an Add method and that Add method takes a single argument,
+
+26
+00:02:45,535 --> 00:02:51,535
+then it will allow that to be a parameter as well and we'll have logic inside the process block that will fix all that.
+
+27
+00:02:51,535 --> 00:02:57,535
+Here's where it actually generates the parameter and then it does the exact same thing for public events.
+
+28
+00:02:57,535 --> 00:03:06,535
+So what we should end up with is like if we have a WPF window, we'll have a command called window and we're
+
+29
+00:03:06,535 --> 00:03:12,535
+going to have a whole bunch of parameters, anything that is a public property or a public event that can be
+
+30
+00:03:12,535 --> 00:03:19,535
+set, we will have that available to us as a parameter. And then here's the actual code that's going to
+
+31
+00:03:19,535 --> 00:03:27,535
+happen when everything's run. It's going to, it will go through each one of the properties that you've defined.
+
+32
+00:03:27,535 --> 00:03:39,535
+First it will create an instance of itself, let's see that must have been up here or right there.
+
+33
+00:03:39,535 --> 00:03:44,535
+Yeah, so it's aware of what its type is, and so it will actually create an instance of itself and then it's
+
+34
+00:03:44,535 --> 00:03:48,535
+going to go through each one of those properties and we already checked to make sure it could have some,
+
+35
+00:03:48,535 --> 00:03:54,535
+it could be set or if it's a collection it could be added to. So then the big foreach block here,
+
+36
+00:03:54,535 --> 00:04:00,535
+goes through each one of the properties, and does that. And here's the part where it takes that reference
+
+37
+00:04:00,535 --> 00:04:11,535
+scriptblock and associates it with each one. So let's see, we have, we'll take a look at the amount of code
+
+38
+00:04:11,535 --> 00:04:24,535
+this is, so from Line 11 to 175, so a little over 160 lines of code, we'll take that and first, let's take a
+
+39
+00:04:24,535 --> 00:04:34,535
+look at how many commands we have. So with a 160 lines of code, we made 181 commands.
+
+40
+00:04:34,535 --> 00:04:38,535
+So things like, well let's take a look at Button and this isn't going to be pretty.
+
+41
+00:04:38,535 --> 00:04:44,535
+I'm going to warn you. So yeah, this isn't something where you're going to use the help system to try to
+
+42
+00:04:44,535 --> 00:04:50,535
+help you take a look. Yeah, I mean, you're going to want to go to online help for this, but what's neat
+
+43
+00:04:50,535 --> 00:04:59,535
+about this, if you've ever written anything in XAML from PowerShell without help, which is actually not that bad,
+
+44
+00:04:59,535 --> 00:05:07,535
+but it's, I'm going to just kind of retype what we have here because I want to show you that as you're writing
+
+45
+00:05:07,535 --> 00:05:14,535
+you get should be IntelliSense title, so you can do all that stuff.
+
+46
+00:05:14,535 --> 00:05:20,535
+So we have something here that it kind of resembles XAML without all the extra XML stuff on it.
+
+47
+00:05:20,535 --> 00:05:26,535
+Now what this is saying is we're going to create a window and inside the window, now this is I don't like
+
+48
+00:05:26,535 --> 00:05:33,535
+this part right now. We have to know that the actual property that contains the, in XAML you would just have a
+
+49
+00:05:33,535 --> 00:05:37,535
+window opening tag, a window closing tag, and in the middle you would put the stuff you want.
+
+50
+00:05:37,535 --> 00:05:43,535
+Right now, we're having to say Content, then we create a stack panel, and for stack panel, instead of content,
+
+51
+00:05:43,535 --> 00:05:51,535
+we're having to say Children. But one thing that's kind of neat with that very, very simple code we're able
+
+52
+00:05:51,535 --> 00:05:56,535
+to, this is kind of a weird syntax right here, but what I'm telling it is create a text box, assign it to the
+
+53
+00:05:56,535 --> 00:06:03,535
+text variable and then output that. So you can in PowerShell if you were to do something like a = 1 and wrap
+
+54
+00:06:03,535 --> 00:06:08,535
+that in parentheses, it will do the assignment and then also output what it is.
+
+55
+00:06:08,535 --> 00:06:14,535
+So what this is saying, this is like saying create this text box, but we're also getting a handle to it so
+
+56
+00:06:14,535 --> 00:06:22,535
+that we can, and here for the button, oh and I need to fix that, I was supposed to go in and show you how in
+
+57
+00:06:22,535 --> 00:06:29,535
+the module, right now the events don't have a prefix. There was a little variable at the beginning of the
+
+58
+00:06:29,535 --> 00:06:39,535
+dynamic module where I could add a prefix, so right now we have Button -Click somewhere, but anyway.
+
+59
+00:06:39,535 --> 00:06:44,535
+So we're able to add an event handler in line in PowerShell like this.
+
+60
+00:06:44,535 --> 00:06:48,535
+Again, the only way I've known how to do this if you do everything from PowerShell before is you create your
+
+61
+00:06:48,535 --> 00:06:53,535
+XAML, you have to read that in, and then you have to kind of walk through, you could assign it a name,
+
+62
+00:06:53,535 --> 00:06:57,535
+but then you have to go search for that and get that and attach the event later.
+
+63
+00:06:57,535 --> 00:07:03,535
+So with any luck, hopefully this won't crash because that does happen occasionally.
+
+64
+00:07:03,535 --> 00:07:09,535
+All this is doing is set up so you can say put a message here, you can type Show Message and you can see that
+
+65
+00:07:09,535 --> 00:07:17,535
+it did truly, it was able to read that and we could attach that event handler in line.
+
+66
+00:07:17,535 --> 00:07:23,535
+Now, the biggest problems I kind of have with this right now are the fact that I had to do that.
+
+67
+00:07:23,535 --> 00:07:29,535
+Normally, when you're using XAML, you can just give it a name and then you can reference everything by that name later.
+
+68
+00:07:29,535 --> 00:07:36,535
+So we're going to try to make it so we can do that. The other problem is I don't like how we have to know
+
+69
+00:07:36,535 --> 00:07:41,535
+again that I would rather just be able to say window and then at some point have an open curly brace and a
+
+70
+00:07:41,535 --> 00:07:49,535
+closed curly brace and have all that stuff in the middle. And WPF is really, it's really kind of cool.
+
+71
+00:07:49,535 --> 00:07:54,535
+There is metadata associated with all of these different elements, so you can come in and look at the window
+
+72
+00:07:54,535 --> 00:08:06,535
+type and go to Get-CustomAttributes and we'll tell it that we want to look at the attributes that were inherited.
+
+73
+00:08:06,535 --> 00:08:14,535
+So you can take a look, oh actually we're running low on time. So what we're going to do now, we're going to
+
+74
+00:08:14,535 --> 00:08:21,535
+make a couple improvements to that, alright, so the two big improvements are going to be we're going to make
+
+75
+00:08:21,535 --> 00:08:25,535
+it so we can use the name parameter and it will automatically make a variable for us and we don't have to
+
+76
+00:08:25,535 --> 00:08:30,535
+worry about it. And we're also going to make it to where you don't have to know about that content in that.
+
+77
+00:08:30,535 --> 00:08:37,535
+If you still want to use that syntax, that's fine. So I won't bore you too much with the details.
+
+78
+00:08:37,535 --> 00:08:44,535
+I'll just show you that it definitely is possible. Our code, we have several more lines of code, except now it's
+
+79
+00:08:44,535 --> 00:08:54,535
+over 200, but now we can, I do want to show one thing here. Let's copy this instead of running it directly.
+
+80
+00:08:54,535 --> 00:09:05,535
+Let's do this and before, so text box is still yeah, so text box is there because we did that earlier.
+
+81
+00:09:05,535 --> 00:09:11,535
+Alright, let's run that again, and so now if you look here, so we called text box and we didn't have to do
+
+82
+00:09:11,535 --> 00:09:16,535
+that weird assignment thing. We were able to just say the name is going to be text box.
+
+83
+00:09:16,535 --> 00:09:22,535
+And if you come and look, text box is not in the global scope. We don't want it in the global scope.
+
+84
+00:09:22,535 --> 00:09:31,535
+That's going to get real noisy and real messy. If you look, what I was able to do there is to add a dynamically,
+
+85
+00:09:31,535 --> 00:09:41,535
+like a dynamic module that's attached to that window object and if we try to run this, you'll see that the
+
+86
+00:09:41,535 --> 00:09:53,535
+text box lives inside that scope, so it shouldn't affect anybody and it should still, ShowDialog,
+
+87
+00:09:53,535 --> 00:10:02,535
+this should still work and it does. So now you can have events that are completely in line.
+
+88
+00:10:02,535 --> 00:10:07,535
+You define text box there and then you can use it down here. Also, if you looked, we didn't have to do the
+
+89
+00:10:07,535 --> 00:10:16,535
+content, it was aware of. It knows that a Windows default content property is called content and it lets you do that.
+
+90
+00:10:16,535 --> 00:10:22,535
+The next problem with this is if I try to add like something with a grid, so in XAML you have to have,
+
+91
+00:10:22,535 --> 00:10:27,535
+there's a concept of something called an attached property. A stack panel, or so like if you have a button
+
+92
+00:10:27,535 --> 00:10:33,535
+inside of a grid, that button doesn't have a concept of the row or column it belongs to in a grid or in a dock
+
+93
+00:10:33,535 --> 00:10:39,535
+panel which one of those it belongs to, so you use what's called an attached property.
+
+94
+00:10:39,535 --> 00:10:46,535
+So right now, I can't really specify one of those. If I were to come in and try to type Button -grid.row,
+
+95
+00:10:46,535 --> 00:10:49,535
+which is kind of what the XAML stuff would look like, it's not going to let me do that.
+
+96
+00:10:49,535 --> 00:10:54,535
+I can't create a dynamic parameter to do that. It turns out though with a little bit of trickery with that,
+
+97
+00:10:54,535 --> 00:11:01,535
+you can end up, if you create a parameter, like a catch-all parameter that will allow all that stuff to come
+
+98
+00:11:01,535 --> 00:11:06,535
+through, and we're just going to skip to the very, very end and run this.
+
+99
+00:11:06,535 --> 00:11:15,535
+Oh, let's see. So you can end up with something that looks like this.
+
+100
+00:11:15,535 --> 00:11:22,535
+This will work, hold on, the big thing I want to demo, so this is attached properties, right.
+
+101
+00:11:22,535 --> 00:11:34,535
+So Grid.ColumnProperty, ColumnSpanProperty, right. So we're able to with a couple of extra lines of code,
+
+102
+00:11:34,535 --> 00:11:42,535
+now we can start doing attached properties. You have this is what is called an attached event, so we have a
+
+103
+00:11:42,535 --> 00:11:54,535
+combo box and a combo box itself doesn't have a text changed event, but it does have a, it comes from
+
+104
+00:11:54,535 --> 00:11:59,535
+somewhere along the line I think it inherits from a text box base, which does have a text box event or a text change event.
+
+105
+00:11:59,535 --> 00:12:08,535
+So anyway, just to show that this kind of works we can run that and hopefully it won't crash, don't crash.
+
+106
+00:12:08,535 --> 00:12:14,535
+There we go. So and this was, I didn't really describe what it was going to do, but it's a silly thing just
+
+107
+00:12:14,535 --> 00:12:20,535
+to show that it did assign everything to the right columns and again we had inline events that we were able
+
+108
+00:12:20,535 --> 00:12:26,535
+to attach, so we can come in and grab something from here and it should change what's in that right span over there.
+
+109
+00:12:26,535 --> 00:12:43,535
+Yep, because so. Anyway so that's it. Thank you. Any questions?
+
+110
+00:12:43,535 --> 00:12:45,535
+When's your code going to be available?
+
+111
+00:12:45,535 --> 00:12:50,535
+I will put it up right after this. It's going to be on GitHub, Rohn@ as a matter of fact, hold on,
+
+112
+00:12:50,535 --> 00:59:59,999
+get this captured. So github.com/rohnedwards and if you need to contact me, Twitter @ magicrohn.
+

@@ -1,0 +1,184 @@
+1
+00:00:00,0 --> 00:00:19,19
+Good afternoon. You know, normally, what you have seen in the past is that Jeffrey Snover tends to be here
+
+2
+00:00:19,19 --> 00:00:24,24
+to talk a little bit about the future, but this time Jeffrey's on a trip.
+
+3
+00:00:24,24 --> 00:00:29,29
+He's in Hawaii somewhere taking a vacation. Can you believe it? But anyway, so Kenneth and I, we're going to
+
+4
+00:00:29,29 --> 00:00:34,34
+spend a little time today talk about the past, the present, and the future of PowerShell.
+
+5
+00:00:34,34 --> 00:00:40,40
+For all of you guys who don't know me, my name is Angel Calvo. I'm the partner group software engineering
+
+6
+00:00:40,40 --> 00:00:46,46
+manager for Enterprise Cloud Management. My team is the team responsible for the management technologies for
+
+7
+00:00:46,46 --> 00:00:50,50
+Windows, as well as PowerShell, Desired State Configuration.
+
+8
+00:00:50,50 --> 00:00:59,59
+Ken Hansen and I guess I've been on the PowerShell team for 13 years, a very long time.
+
+9
+00:00:59,59 --> 00:01:05,65
+Turn the mic on. Who didn't turn that on? Is that working? Yes.
+
+10
+00:01:05,65 --> 00:01:14,74
+I'm Ken Hansen and I don't know how to work these mics, but I do PowerShell for about 13 years,
+
+11
+00:01:14,74 --> 00:01:19,79
+so that's---I need a command. Where's the command turn on mic? Alright, good deal.
+
+12
+00:01:19,79 --> 00:01:20,80
+That's it.
+
+13
+00:01:20,80 --> 00:01:22,82
+So let's talk a little bit about PowerShell.
+
+14
+00:01:22,82 --> 00:01:29,89
+This is great. So it's 10 years, 2006-2016 and I couldn't resist putting up the actual original book that
+
+15
+00:01:29,89 --> 00:01:36,96
+came out with Monad. Anybody remember MSH and Monad? How many Monads do we have here?
+
+16
+00:01:36,96 --> 00:01:39,99
+Thank you very much. You guys have been with us a long time. It's been a fun journey.
+
+17
+00:01:39,99 --> 00:01:41,101
+I just couldn't resist.
+
+18
+00:01:41,101 --> 00:01:45,105
+Lee Holmes actually had it on his desk just so you know where that photo shot came from.
+
+19
+00:01:45,105 --> 00:01:50,110
+It's kind of a fun little thing. We thank you for your great support.
+
+20
+00:01:50,110 --> 00:01:55,115
+Our mission we actually started with a while ago and this is a great one almost worth reading.
+
+21
+00:01:55,115 --> 00:02:06,126
+Deliver an extensible scripting environment that is secure, interactive, programmable, production-ready,
+
+22
+00:02:06,126 --> 00:02:14,134
+that's a lot, to enable consistent, now you're getting really out there, consistent and reliable automation
+
+23
+00:02:14,134 --> 00:02:20,140
+of administration tasks. What's fascinating is, we're not there yet, but we're going to do our job eventually.
+
+24
+00:02:20,140 --> 00:02:21,141
+Yeah, we are.
+
+25
+00:02:21,141 --> 00:02:25,145
+Alright. The good news is we've had 10 years of progress. With your help, we made great strides,
+
+26
+00:02:25,145 --> 00:02:27,147
+but there's a lot to do.
+
+27
+00:02:27,147 --> 00:02:30,150
+In 10 years, I mean this year, November?
+
+28
+00:02:30,150 --> 00:02:31,151
+November 14th.
+
+29
+00:02:31,151 --> 00:02:36,156
+November 14th, 10 years of PowerShell. I mean it is quite an amazing journey for all of us,
+
+30
+00:02:36,156 --> 00:02:40,160
+especially for all of you who been since day 1.
+
+31
+00:02:40,160 --> 00:02:41,161
+A few gray hairs to prove it.
+
+32
+00:02:41,161 --> 00:02:47,167
+And actually, the community, I mean what an amazing community. By the way, how many of you started using
+
+33
+00:02:47,167 --> 00:02:49,169
+PowerShell 10 years ago?
+
+34
+00:02:49,169 --> 00:02:57,177
+Isn't that amazing? Give these guys a hand. This has absolutely been a phenomenal journey.
+
+35
+00:02:57,177 --> 00:03:02,182
+It's these people who together with the rest of the community made PowerShell what it is today.
+
+36
+00:03:02,182 --> 00:03:07,187
+I mean this was known not only at Microsoft a journey, it was a journey that we took with all of you,
+
+37
+00:03:07,187 --> 00:03:12,192
+so we really appreciate it. You help to get us to what we are today.
+
+38
+00:03:12,192 --> 00:03:18,198
+Oh, and to make a point to that, these are about 80 names, I think it's 81.
+
+39
+00:03:18,198 --> 00:03:23,203
+These are actually people, the community, not members of Microsoft, these are all community members who filed
+
+40
+00:03:23,203 --> 00:03:31,211
+bugs in the year 2004 on PowerShell at the time. Isn't that an incredible list?
+
+41
+00:03:31,211 --> 00:03:34,214
+Eighty people. From the very beginning, it's been a community effort and one thing I couldn't resist because
+
+42
+00:03:34,214 --> 00:03:39,219
+we did miss this, we're going back in slides, a complete no, no, but I can't resist.
+
+43
+00:03:39,219 --> 00:03:44,224
+Right there at the bottom right-hand side, if you want to, for those of you who are archeologists and you
+
+44
+00:03:44,224 --> 00:03:47,227
+want to go see the original BNF, go see Jim Truher. He's actually got it.
+
+45
+00:03:47,227 --> 00:03:52,232
+It's kind of fun. And Lee Holmes actually had at one point a VM running the old PowerShell.
+
+46
+00:03:52,232 --> 00:59:59,999
+Just wanted to point that out. It's kind of a fun thing to have.
+

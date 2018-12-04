@@ -1,0 +1,228 @@
+1
+00:00:00,0 --> 00:00:02,811
+Now guys I want to show you this because I'm just proud of this.
+
+2
+00:00:02,811 --> 00:00:06,811
+This is what it looks like when it works. I know it looks like it doesn't work, but that's what it looks like
+
+3
+00:00:06,811 --> 00:00:12,811
+when it works. And if you come to the next session, you'll actually see it work as we do configurations on it
+
+4
+00:00:12,811 --> 00:00:18,811
+and all that kind of stuff, but I just want to show you just the remote management because I'm so happy that,
+
+5
+00:00:18,811 --> 00:00:30,811
+come on light up long enough on the screen, wait a minute it'll light up, you'll see it, hold on.
+
+6
+00:00:30,811 --> 00:00:43,811
+Connect. Hey, I got management. Oh, come on I got remote management to the web box!
+
+7
+00:00:43,811 --> 00:00:46,811
+And your pull server, that's that endpoint website pull server
+
+8
+00:00:46,811 --> 00:00:53,811
+on port 8080. Now you will teach the LCMs or the nodes how to get there and I will show you that in the next session.
+
+9
+00:00:53,811 --> 00:01:02,811
+Yes, sir. (Audience question) It has an AD binding. If you have a, you should be building this on your own
+
+10
+00:01:02,811 --> 00:01:05,811
+new box, so don't build it on somebody that's already messed with the ports.
+
+11
+00:01:05,811 --> 00:01:10,811
+What I do is I want to tell you this. In the configuration, what we usually do with web servers is we turn
+
+12
+00:01:10,811 --> 00:01:15,811
+off the default site because we're going to make our own stuff. People will say to me why don't you just
+
+13
+00:01:15,811 --> 00:01:22,811
+delete the default website. That's not good. Sometimes we like to bring that guy back, so I just turn him off.
+
+14
+00:01:22,811 --> 00:01:31,811
+I do not turn off the default website if it's a pull server or if it's an ADSC server, if it's a certificate server.
+
+15
+00:01:31,811 --> 00:01:36,811
+Because if it's a certificate server, now you can't get any, and your pull server, there might be reasons
+
+16
+00:01:36,811 --> 00:01:42,811
+for us to use that default website. Now I need to give you some good news, oh no, I can give you that news
+
+17
+00:01:42,811 --> 00:01:49,811
+in the next session, that's when it applies. So let me check the time.
+
+18
+00:01:49,811 --> 00:01:54,811
+Awesome. I know it didn't look like much, but you get all the code to make your own pull server, so you can
+
+19
+00:01:54,811 --> 00:01:59,811
+start your own infrastructure. Does that look cool? Yes. Okay, come to the other session I'm doing because
+
+20
+00:01:59,811 --> 00:02:04,811
+now we'll go through how to put all your configs on there and you'll see it all run because there's some
+
+21
+00:02:04,811 --> 00:02:08,811
+tricky parts to getting all the configs and the resources onto the pull server.
+
+22
+00:02:08,811 --> 00:02:15,811
+Once you have that done, you now have the infrastructure you need for DSC, both for lab and for scalable
+
+23
+00:02:15,811 --> 00:02:20,811
+stuff out there. Now I do want to point a couple of things out.
+
+24
+00:02:20,811 --> 00:02:25,811
+Right now, if you especially come to the next session or if you were in the session yesterday, right now there
+
+25
+00:02:25,811 --> 00:02:30,811
+are a few things that we are, that the team is working on with the pull servers.
+
+26
+00:02:30,811 --> 00:02:36,811
+You notice how I said we're at diversion XPSDesiredState 3.9 and we were at 3.8, that's because they're
+
+27
+00:02:36,811 --> 00:02:41,811
+working on some issues that we might have in situations. So if you come to the next session,
+
+28
+00:02:41,811 --> 00:02:46,811
+we have an issue with configuration names that I'll show you a work-a-round for until that gets fixed.
+
+29
+00:02:46,811 --> 00:02:51,811
+I want you to keep something in mind. When you go back to your office, you should try this and build this.
+
+30
+00:02:51,811 --> 00:02:59,811
+Use my code, whatever, make your own code for this, but follow along what's going on with these version updates
+
+31
+00:02:59,811 --> 00:03:07,811
+on XPSDesiredState because you might run into something that you don't need to fight because it got fixed.
+
+32
+00:03:07,811 --> 00:03:11,811
+If you come to my next session, you'll see exactly what that is and how it's getting fixed and we'll just
+
+33
+00:03:11,811 --> 00:03:16,811
+move on from there. So just want you to know, this is work in progress, but I use this in customers,
+
+34
+00:03:16,811 --> 00:03:22,811
+in their infrastructure. It is a stable, usable pull server. It's a great product.
+
+35
+00:03:22,811 --> 00:03:28,811
+Now if this pull server does not provide you, and I say this about anything in DSC, if you're working with DSC,
+
+36
+00:03:28,811 --> 00:03:32,811
+we assume you're going to start building your own tooling for a while because this is a platform,
+
+37
+00:03:32,811 --> 00:03:36,811
+it's not a whole product, but I have a tendency to say this, if you came to yesterday's and you'll see him
+
+38
+00:03:36,811 --> 00:03:42,811
+walking around here, Steven Marowski, he's a chef guy. He's the chef guy, right, the chef guy wearing an apron
+
+39
+00:03:42,811 --> 00:03:47,811
+and a chef hat. Other options are like Chef and Puppet and Ancible, stuff like that.
+
+40
+00:03:47,811 --> 00:03:54,811
+I have a tendency to go to Chef. When I work with customers that cannot build their own tooling today,
+
+41
+00:03:54,811 --> 00:03:59,811
+I'll direct them towards Chef. If I'm working with customers that already have developers and IT guys that
+
+42
+00:03:59,811 --> 00:04:07,811
+are PowerShell capable like you guys are, that can build their own tooling, building the tooling you need is easy
+
+43
+00:04:07,811 --> 00:04:12,811
+and the types of tools. Well I want to inventory everybody to see what configs they're running and stuff
+
+44
+00:04:12,811 --> 00:04:18,811
+that into a database. That's easy to write! In the future, I can't tell you this for sure because I don't
+
+45
+00:04:18,811 --> 00:04:22,811
+know for sure, but I would assume that probably Microsoft at some point is going to have some more tooling
+
+46
+00:04:22,811 --> 00:04:26,811
+around this, but right now, you can easily write anything that you need.
+
+47
+00:04:26,811 --> 00:04:30,811
+Now if you were here yesterday, you saw a lot of that. You saw somebody writing a lot of tooling and some
+
+48
+00:04:30,811 --> 00:04:35,811
+of the stuff I gave you I've done some additional tooling about it, but this is a really good product to
+
+49
+00:04:35,811 --> 00:04:39,811
+start with and what we see a lot of people doing, even if they think they're going down the Chef path,
+
+50
+00:04:39,811 --> 00:04:46,811
+they're doing the DSC path alongside it. A matter of fact, I'm working with somebody right now that's doing both.
+
+51
+00:04:46,811 --> 00:04:54,811
+How many hypervisors do you guys use? Oh, so you only use Hyper-V, that's good, good answer.
+
+52
+00:04:54,811 --> 00:05:01,811
+(Audience comment) Yeah, use one. So a lot of companies, you have VM, you have Hyper-V, so some companies
+
+53
+00:05:01,811 --> 00:05:07,811
+are doing multiple configuration management systems and that's not always a great idea, but if you haven't
+
+54
+00:05:07,811 --> 00:05:12,811
+gotten into DSC, this is the thing to get into. This product rocks.
+
+55
+00:05:12,811 --> 00:05:16,811
+And configuration management is the most important thing and on Wednesday, I think it is, Michael Green is
+
+56
+00:05:16,811 --> 00:05:21,811
+going to go through all the DevOp stuff. You want to see that. Marowski's going to talk about DevOp stuff.
+
+57
+00:05:21,811 --> 00:59:59,999
+You want to see that.
+

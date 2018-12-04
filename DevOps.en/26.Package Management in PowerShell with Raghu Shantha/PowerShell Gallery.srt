@@ -1,0 +1,76 @@
+1
+00:00:01,053 --> 00:00:06,053
+Little bit of commentary on how we've been doing with PowerShell Gallery, I said you all have been working
+
+2
+00:00:06,053 --> 00:00:25,053
+with it and adopting it fairly well. As of, I guess it was Mid-February, we passed 1 million downloads.
+
+3
+00:00:25,053 --> 00:00:28,053
+We're at 1.4 million now.
+
+4
+00:00:28,053 --> 00:00:36,053
+It's growing rapidly. The statistics page shows this hockey stick of growth and if you are familiar with it,
+
+5
+00:00:36,053 --> 00:00:44,053
+that actually says we're very stable. So as of about Mid-February, we realized we are stable enough plus we
+
+6
+00:00:44,053 --> 00:00:52,053
+had implemented the support for antivirus scanning and also we've built in script analyzer scanning to make
+
+7
+00:00:52,053 --> 00:00:59,053
+sure that the code that's coming into the gallery meets a basic bar, so people can trust it.
+
+8
+00:00:59,053 --> 00:01:04,053
+A lot of what we focus on is ensuring that the features that we're adding are about trust.
+
+9
+00:01:04,053 --> 00:01:13,053
+The people who publish, we have about 700 people who've registered to publish, okay?
+
+10
+00:01:13,053 --> 00:01:21,053
+We have about 700,000 people who are downloading. You guys can do the math.
+
+11
+00:01:21,053 --> 00:01:30,053
+We will focus our energies on ensuring that the people who are requiring content that experience is optimized
+
+12
+00:01:30,053 --> 00:01:36,053
+and so there will be times occasionally when you're going to come in say well that seems like you're putting
+
+13
+00:01:36,053 --> 00:01:41,053
+a little extra burden on the publisher that's because we want the things that are out on the gallery to be
+
+14
+00:01:41,053 --> 00:01:49,053
+something that somebody can look at and make a trust decision. Yes, I trust it, no, I don't.
+
+15
+00:01:49,053 --> 00:01:55,053
+Some of the lightening demos that you saw yesterday including the viewing scripts, including some of the
+
+16
+00:01:55,053 --> 00:02:03,053
+other things that we show here, those are being put into place so that people know I can trust this content.
+
+17
+00:02:03,053 --> 00:02:12,053
+We're also adding in integration with Azure automation and some improved filtering and I'll show you that UI
+
+18
+00:02:12,053 --> 00:02:15,053
+in just a little bit.
+
+19
+00:02:15,053 --> 00:59:59,999
+So real quick, let's do some demo because otherwise you guys will kill me.
+

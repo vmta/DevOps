@@ -1,0 +1,604 @@
+1
+00:00:00,0 --> 00:00:06,779
+So yeah, so we learn a lot and hopefully that resonates with you the way we are addressing some of the main areas.
+
+2
+00:00:06,779 --> 00:00:13,779
+So specifically about engineering, one of the things that we are changing in the culture within the team is
+
+3
+00:00:13,779 --> 00:00:20,779
+that we are becoming more and more of a DevOps culture about how we are developing innovation within the team.
+
+4
+00:00:20,779 --> 00:00:30,779
+And what I mean by DevOps culture and model is that we really are focusing more of how we deliver innovation
+
+5
+00:00:30,779 --> 00:00:35,779
+based on solutions that they are really addressing the customer problem.
+
+6
+00:00:35,779 --> 00:00:41,779
+This kind of goes to the point that Kenneth was referring earlier, that direct communication with customers
+
+7
+00:00:41,779 --> 00:00:47,779
+and with the community is surfacing scenarios and controlling the spaces that we need to start thinking about
+
+8
+00:00:47,779 --> 00:00:52,779
+not only just delivering features, but it's about delivering the solutions.
+
+9
+00:00:52,779 --> 00:00:58,779
+You deliver that that in way that it's a platform that enables others, you to absolutely take that technology
+
+10
+00:00:58,779 --> 00:01:03,779
+and results in progress within your companies. Now here that is a really important shift culturally how we
+
+11
+00:01:03,779 --> 00:01:09,779
+are doing that. The other thing too is the concept about functional and test code.
+
+12
+00:01:09,779 --> 00:01:14,779
+Remember when I said only about the roles and responsibilities how they are evolving in Microsoft, so one of
+
+13
+00:01:14,779 --> 00:01:17,779
+the things that we are doing today is start thinking about the software engineering.
+
+14
+00:01:17,779 --> 00:01:22,779
+They need to start thinking about when you write functional code, you've got to have test code associated with it.
+
+15
+00:01:22,779 --> 00:01:28,779
+So part of the code reviews prior to checking new code is to be sure that you have robust test coverage as
+
+16
+00:01:28,779 --> 00:01:33,779
+part of your functional code. The other pieces have all the scenario validation and demos.
+
+17
+00:01:33,779 --> 00:01:38,779
+For all of you who maybe has been adopting a DevOps model, this is really important.
+
+18
+00:01:38,779 --> 00:01:44,779
+It's about really holding accountable the engineers to be able to demo the features and the scenarios that
+
+19
+00:01:44,779 --> 00:01:48,779
+they are working on. You see something really cool. Today, actually later today, you're going to see a
+
+20
+00:01:48,779 --> 00:01:54,779
+little bit of that. But I think it also will enable us is that PMP to partner with us, then when we finish
+
+21
+00:01:54,779 --> 00:01:56,779
+the work, yeah, were also addressing that problem.
+
+22
+00:01:56,779 --> 00:01:59,779
+And we go reach out to you guys and others and make sure it really is.
+
+23
+00:01:59,779 --> 00:02:03,779
+So there's an ongoing process here that we're evolving through. How do we do our engineering in a way that's
+
+24
+00:02:03,779 --> 00:02:08,779
+a little more test and demo-driven, if you will, almost to make sure we're completing the scenarios.
+
+25
+00:02:08,779 --> 00:02:15,779
+A few places where we've not quite closed those gaps, we're trying to close and I think it'll really help us
+
+26
+00:02:15,779 --> 00:02:22,779
+over the next year or so as we try to land the complete result if you will.
+
+27
+00:02:22,779 --> 00:02:26,779
+Yeah, I think that through that journey, I'll ask the obvious question.
+
+28
+00:02:26,779 --> 00:02:34,779
+How many of you think that we should do more about debugging and troubleshooting in PowerShell and DSC?
+
+29
+00:02:34,779 --> 00:02:38,779
+It's a rhetorical. It's a rhetorical question because we know that.
+
+30
+00:02:38,779 --> 00:02:43,779
+So yeah, where I think it's going to help is that the engineering team has started developing the scenarios
+
+31
+00:02:43,779 --> 00:02:46,779
+to these solutions. We've got to start having the mindset to say
+
+32
+00:02:46,779 --> 00:02:52,779
+how easy for me is to also troubleshoot the scenario. What kind of instrumentation I need to put in place?
+
+33
+00:02:52,779 --> 00:02:59,779
+What kind of eventing I need to put in place? It will really help you have that telemetry to help us to troubleshoot.
+
+34
+00:02:59,779 --> 00:03:05,779
+You'd be able as well to debug problems within the environment. So this is a scenario that we're going to do
+
+35
+00:03:05,779 --> 00:03:08,779
+little more, include like a script on alias has been a greatest start.
+
+36
+00:03:08,779 --> 00:03:15,779
+We learn a lot of that. That is a great approach and how we can start helping you and helping others to
+
+37
+00:03:15,779 --> 00:03:21,779
+really focus about how debugging and troubleshooting can be done within PowerShell and DSC both in the
+
+38
+00:03:21,779 --> 00:03:29,779
+private cloud, as well as in the public. Another thing that we do, either this is going to start becoming
+
+39
+00:03:29,779 --> 00:03:34,779
+absolutely more important is about implementing this process of tracking things, right.
+
+40
+00:03:34,779 --> 00:03:43,779
+I want to start providing a _____ engineer monitor, visibility, and transparency to you about our tests,
+
+41
+00:03:43,779 --> 00:03:49,779
+about the results of those tests, so you can have a tool as well to apply the same test.
+
+42
+00:03:49,779 --> 00:03:53,779
+It could be Pester, it could be a set of other type of a technology.
+
+43
+00:03:53,779 --> 00:03:58,779
+But it will help you to say when I deliver a module or I'm delivering a solution, that you have some tests
+
+44
+00:03:58,779 --> 00:04:03,779
+associated with them. It gives you visibility about what the results are expected, so when you are doing your
+
+45
+00:04:03,779 --> 00:04:09,779
+own development and deployment, actually that will have as a tool for you to actually do the same things that
+
+46
+00:04:09,779 --> 00:04:10,779
+we do in Microsoft.
+
+47
+00:04:10,779 --> 00:04:15,779
+And it's really an interesting approach because I will say that it's a little more, not just a DevOps approach,
+
+48
+00:04:15,779 --> 00:04:19,779
+but also taking kind of the open source model to some extent. Even if the code is not open source,
+
+49
+00:04:19,779 --> 00:04:25,779
+maybe we should pretend that it is and how we would actually do our development in those scenarios and that
+
+50
+00:04:25,779 --> 00:04:31,779
+would actually help us out a little bit. So we're certainly, I think, kind of learning as we go from both
+
+51
+00:04:31,779 --> 00:04:37,779
+models and trying to adopt it inside as well as out. So we'll see an increase in that.
+
+52
+00:04:37,779 --> 00:04:38,779
+Absolutely.
+
+53
+00:04:38,779 --> 00:04:46,779
+I think we talked a bit about the overall of what we're going to start doing here.
+
+54
+00:04:46,779 --> 00:04:50,779
+Let me just, I'll bring these all up and then we'll talk about it.
+
+55
+00:04:50,779 --> 00:04:59,779
+So we are, excuse me, we will be delivering more blogs, more, and I would say right now the PowerShell blog,
+
+56
+00:04:59,779 --> 00:05:02,779
+and you can give me feedback on this after, I'm happy with this, right now the PowerShell blog occasionally
+
+57
+00:05:02,779 --> 00:05:07,779
+is a little more formal. It's more casual. We're probably tone that down a bit, move the formality a
+
+58
+00:05:07,779 --> 00:05:12,779
+little bit more to the home page announcements and hopefully just have a little chattier blog where people
+
+59
+00:05:12,779 --> 00:05:18,779
+are more comfortable sort of having a discussion, if you will. We'll increase the overall,
+
+60
+00:05:18,779 --> 00:05:24,779
+the community artifacts, and our engagement and this is worth noting. We do rely on you overall to handle
+
+61
+00:05:24,779 --> 00:05:33,779
+the community in a broad sense, but I would say that we need to lean in a little more in a few areas and
+
+62
+00:05:33,779 --> 00:05:38,779
+actually, A, make sure we're monitoring to check if there's okay, some fire blows up, how do we solve this
+
+63
+00:05:38,779 --> 00:05:42,779
+really quickly, make sure we're really addressing the issues the community is beginning to have,
+
+64
+00:05:42,779 --> 00:05:46,779
+make sure we're backstopping it and engage directly just as frequently.
+
+65
+00:05:46,779 --> 00:05:50,779
+We had a great time when we had that new Twitter account that actually Angel created for us and it's been a
+
+66
+00:05:50,779 --> 00:05:55,779
+lot of fun to watch people jump on it, it's been fun to use, obviously, you're not going to have an in-depth
+
+67
+00:05:55,779 --> 00:06:00,779
+of design discussion on Twitter. Some people occasionally try to, in which case, we'll try to kindly redirect
+
+68
+00:06:00,779 --> 00:06:09,779
+you, but we do have a process for that. Yeah, in fact, over time we want more and more our thinking, in fact,
+
+69
+00:06:09,779 --> 00:06:15,779
+we should address this just a little bit. UserVoice is actually not up here and it probably should be.
+
+70
+00:06:15,779 --> 00:06:21,779
+It's really not a social media, but part of what we do want you to do over time is to drive requests and
+
+71
+00:06:21,779 --> 00:06:26,779
+issues into UserVoice, so we track them. They're being looked at across many levels of the organization it
+
+72
+00:06:26,779 --> 00:06:32,779
+turns out and the team is looking at them regularly every week actually just to make sure that we actually got them.
+
+73
+00:06:32,779 --> 00:06:33,779
+Now we move
+
+74
+00:06:33,779 --> 00:06:43,779
+hundreds and hundreds from Connect, alright, and so those we're sort of going back through more slowly,
+
+75
+00:06:43,779 --> 00:06:47,779
+but anything recent, we should be on fairly quick. And for some reason you haven't gotten a response within
+
+76
+00:06:47,779 --> 00:06:51,779
+some reasonable period of time, feel free to reach out direct and say hey I just thought I'd note that I put
+
+77
+00:06:51,779 --> 00:06:56,779
+this out there. You can do that just directly via email. But nonetheless, over time, now just because it's
+
+78
+00:06:56,779 --> 00:07:01,779
+up there and we've looked at it, doesn't mean we're going to do it the next week, right.
+
+79
+00:07:01,779 --> 00:07:06,779
+So we'll try to also get a little more transparent as we can within our reasonable business constraints about
+
+80
+00:07:06,779 --> 00:07:12,779
+when we're actually doing things. We're working through ongoing planning on a regular basis, so it's a little,
+
+81
+00:07:12,779 --> 00:07:17,779
+it will come and go our ability to share that. Sometimes it will be high, sometimes it will be low.
+
+82
+00:07:17,779 --> 00:07:23,779
+Over time, we think that we will end up with the issues being kind of raised on UserVoice and then probably
+
+83
+00:07:23,779 --> 00:07:30,779
+more in-depth discussions as we begin to flow this process more in the RFC GitHub kind of a discussion,
+
+84
+00:07:30,779 --> 00:07:33,779
+so we can have those discussions. We just started. If you'll notice with some
+
+85
+00:07:33,779 --> 00:07:39,779
+RFC stuff even today and we'll probably grow that, so sort of look in that space, if you will.
+
+86
+00:07:39,779 --> 00:07:46,779
+Theoretically, if we were to look into the community holistically, you see Twitter and otherwise is broad
+
+87
+00:07:46,779 --> 00:07:52,779
+discussion, broad quick tweets. The blog is a more casual interaction.
+
+88
+00:07:52,779 --> 00:07:58,779
+The home page the more official announcement. UserVoice is the way for you guys to tell us hey we have a bug
+
+89
+00:07:58,779 --> 00:08:05,779
+or a feature request to weigh in on that and then in-depth discussion will probably take more of the GitHub RFC.
+
+90
+00:08:05,779 --> 00:08:10,779
+Now I think one of the things that I want to highlight also so well are involvement, how we are going to be
+
+91
+00:08:10,779 --> 00:08:15,779
+working with you in the future. I think that this is an important thing and it's a change for us culturally
+
+92
+00:08:15,779 --> 00:08:21,779
+is that we need to go also to where you are. I mean the reason why we've done the Twitter account or there
+
+93
+00:08:21,779 --> 00:08:27,779
+is actually a really popular Facebook PowerShell page, yeah, it's got an alias, we start learning that the
+
+94
+00:08:27,779 --> 00:08:33,779
+community is everywhere, which is awesome. We are like super happy about it and this then does create a
+
+95
+00:08:33,779 --> 00:08:38,779
+challenge for us because the challenge that we've got to go and learn, the discussions that are occurring in
+
+96
+00:08:38,779 --> 00:08:44,779
+all these different social medias, and then try to bring those learnings back into our team to figure out how
+
+97
+00:08:44,779 --> 00:08:50,779
+to address a particular problem or how to prioritize work. Another thing too that I want to highlight about
+
+98
+00:08:50,779 --> 00:08:57,779
+increasing the community's sharing artifacts. So we are going to go and invest a little more as we
+
+99
+00:08:57,779 --> 00:09:03,779
+developing these solutions to give you with those solutions the artifacts to enable those scenarios.
+
+100
+00:09:03,779 --> 00:09:06,779
+I think that that's really important, so it's pretty open source.
+
+101
+00:09:06,779 --> 00:09:10,779
+I want to be able to make it completely available for you, not only just to use, but contribute as well.
+
+102
+00:09:10,779 --> 00:09:16,779
+So help us. Help us with the contributions. There are tons of innovation happening in all your companies that
+
+103
+00:09:16,779 --> 00:09:21,779
+you do every day, so if you see a vehicle for you to share that with the rest of you, this is the time to do it
+
+104
+00:09:21,779 --> 00:09:28,779
+because I think if we evolve, I think that we want to become more and more open with all of us basically to
+
+105
+00:09:28,779 --> 00:09:32,779
+share these artifacts across the companies.
+
+106
+00:09:32,779 --> 00:09:33,779
+Absolutely. And one thing worth
+
+107
+00:09:33,779 --> 00:09:36,779
+noting here, I know I got the direct customer engagement. We already talked about that.
+
+108
+00:09:36,779 --> 00:09:44,779
+I won't land it again, but I will note that we are imminently aware that many of you are kind of forward leaning.
+
+109
+00:09:44,779 --> 00:09:51,779
+You're kind of in the early adopter crazy innovator early majority phases and there are many companies that
+
+110
+00:09:51,779 --> 00:09:57,779
+still exist and Microsoft leveraging our technology, which are more in the late majority lag are those who are
+
+111
+00:09:57,779 --> 00:10:07,779
+more cautious in their approach. That's okay. We want to hear from them too and try to support them as well.
+
+112
+00:10:07,779 --> 00:10:13,779
+So while we're pushing more and more aggressively in this open source and new world, we know that there are
+
+113
+00:10:13,779 --> 00:10:18,779
+some people, in fact, there was an interesting survey read the other day where as soon as we said the word
+
+114
+00:10:18,779 --> 00:10:22,779
+modern, like the entire room just died. It's like I don't want anything modern.
+
+115
+00:10:22,779 --> 00:10:30,779
+I want what's working today. It's like, you know, and so there is this interesting a blend of culture that
+
+116
+00:10:30,779 --> 00:10:36,779
+we work with on a regular base that Microsoft just because of the breadth of our offering.
+
+117
+00:10:36,779 --> 00:10:40,779
+That doesn't go away. We're happy. We want to work with both aspects.
+
+118
+00:10:40,779 --> 00:10:45,779
+We will be very forward leaning moving forward, but we're simultaneously, one of the reasons we go so far
+
+119
+00:10:45,779 --> 00:10:52,779
+down with WMF 5 is we recognize that people are not necessarily moving forward on the core technologies,
+
+120
+00:10:52,779 --> 00:10:59,779
+but they want to, but we feel that PowerShell actually enables them to run their operations across all
+
+121
+00:10:59,779 --> 00:11:05,779
+technologies better, more efficiently, and actually allows them to adopt a new technologies underlying
+
+122
+00:11:05,779 --> 00:11:10,779
+platform technologies sooner. That's actually part of the argument we have to make in order to go down level.
+
+123
+00:11:10,779 --> 00:11:12,779
+So we're well aware of that.
+
+124
+00:11:12,779 --> 00:11:19,779
+One thing I want touch while we're waiting for Erin is that we talk a little bit about this whole community artifact sharing.
+
+125
+00:11:19,779 --> 00:11:26,779
+The one thing that we learn, there were a couple of questions earlier in the previous talk that we had,
+
+126
+00:11:26,779 --> 00:11:31,779
+is this concept about versioning. You know how problematic versioning is becoming, right.
+
+127
+00:11:31,779 --> 00:11:38,779
+As we start releasing more modules, scripts, previews, we realize that the current versioning scheme that we
+
+128
+00:11:38,779 --> 00:11:41,779
+created literally 10 years ago,
+
+129
+00:11:41,779 --> 00:11:44,779
+it really ties into Windows, it's not going to scale moving forward.
+
+130
+00:11:44,779 --> 00:11:51,779
+So when you're still thinking about versioning of DSC resources for like for a class base resources,
+
+131
+00:11:51,779 --> 00:11:55,779
+well when you start thinking about, it's a great example, when you start thinking about all these different
+
+132
+00:11:55,779 --> 00:12:00,779
+cmdlets that we're going to be delivering in the galleries, I feel one of the obvious questions like how are
+
+133
+00:12:00,779 --> 00:12:04,779
+we going to be managing versioning, right. So one of the things the team is doing right now, we are going
+
+134
+00:12:04,779 --> 00:12:10,779
+through a journey to figure out how to redesign a versioning scheme, so as we start releasing more previews
+
+135
+00:12:10,779 --> 00:12:14,779
+and more artifacts to the galleries, we'll start addressing these versioning scheme.
+
+136
+00:12:14,779 --> 00:12:17,779
+I think we're going to have some discussions in the near future with many of you to give us feedback, right.
+
+137
+00:12:17,779 --> 00:12:22,779
+We'll start some MVA discussions, we'll go over and eventually get to RFC sometime in the next while as we
+
+138
+00:12:22,779 --> 00:12:27,779
+start talking to the versioning. And it's not just the modules. Even as you know, we've put PowerShell on
+
+139
+00:12:27,779 --> 00:12:35,779
+CoreCLR in order to put it to Nano. Well CoreCLR does side by side, so how are we going to handle that?
+
+140
+00:12:35,779 --> 00:12:41,779
+How are we going to handle that versioning story? So we're doing kind of an all-up think about.
+
+141
+00:12:41,779 --> 00:12:42,779
+We'll just give you mine.
+
+142
+00:12:42,779 --> 00:12:43,779
+Here you can take it.
+
+143
+00:12:43,779 --> 00:12:48,779
+We're just giving an all-up discussion around versioning. We have to step back.
+
+144
+00:12:48,779 --> 00:12:54,779
+And versioning is one of those tricky things. There is no easy right answer.
+
+145
+00:12:54,779 --> 00:13:00,779
+If there was, we would just steal it. We're not proud here alright.
+
+146
+00:13:00,779 --> 00:13:04,779
+And if you have it, I'm okay stealing it just to be clear. I'm not proud about this.
+
+147
+00:13:04,779 --> 00:13:06,779
+We don't have to reinvent the version.
+
+148
+00:13:06,779 --> 00:13:07,779
+I don't feel the need to reinvent any wheels here.
+
+149
+00:13:07,779 --> 00:13:09,779
+We don't want to do that.
+
+150
+00:13:09,779 --> 00:13:15,779
+But it just turns out none of these wheels really are great that we've found yet, so but we'll work with you
+
+151
+00:13:15,779 --> 00:59:59,999
+to see if we get one that really works across all of the artifacts that work with PowerShell.
+

@@ -1,0 +1,180 @@
+1
+00:00:00,0 --> 00:00:19,5
+So welcome to Real World Test-Driven Development with Pester. My name is June Blender.
+
+2
+00:00:19,5 --> 00:00:24,5
+I'm a technology evangelist at SAPIEN Technologies in Napa, California.
+
+3
+00:00:24,5 --> 00:00:33,5
+I spent some time writing help with the PowerShell team and I'm now honored to a Windows PowerShell MVP.
+
+4
+00:00:33,5 --> 00:00:42,5
+Thank you. So this is really different than most of the talks that I give, which tend to be sort of I know
+
+5
+00:00:42,5 --> 00:00:48,5
+all about this. Here's the syntax, here is how you do this, here is some examples, right.
+
+6
+00:00:48,5 --> 00:00:55,5
+Instead, I'm going to talk about my experiences learning Pester, which is really a different view and I hope
+
+7
+00:00:55,5 --> 00:01:02,5
+that this will help those of you who don't know Pester to learn it and those of you who are teaching Pester
+
+8
+00:01:02,5 --> 00:01:08,5
+to have some insight into what it's like to learn it and this is real world stuff.
+
+9
+00:01:08,5 --> 00:01:17,5
+So I tested the code and information on the slides to these versions of Windows and these versions of
+
+10
+00:01:17,5 --> 00:01:27,5
+PowerShell and particularly Pester 3.4.0. When I started putting together this talk it was Pester 2 and
+
+11
+00:01:27,5 --> 00:01:39,5
+they're ready to release Pester 4 now. The versions will vary, so this one is 3.4.0.
+
+12
+00:01:39,5 --> 00:01:47,5
+So we talked a little bit in the pre-session about why test and I'm going to call it moot.
+
+13
+00:01:47,5 --> 00:01:57,5
+Alright, I'm going to say that folks who are here understand why we test, but I'm always happy to entertain discussions.
+
+14
+00:01:57,5 --> 00:02:04,5
+But for a while, even those who wanted to test did not have a professional framework to do so.
+
+15
+00:02:04,5 --> 00:02:11,5
+And then along came Pester. And Pester is really an extraordinary contribution to PowerShell because it's a
+
+16
+00:02:11,5 --> 00:02:18,5
+professional test environment that's built as part of the academic discipline of code testing.
+
+17
+00:02:18,5 --> 00:02:26,5
+The people who built it really knew what they were doing and rather than developing some helter skelter test system,
+
+18
+00:02:26,5 --> 00:02:35,5
+they built on the academic discipline of test-driven development and it's a huge contribution on,
+
+19
+00:02:35,5 --> 00:02:41,5
+when you learn the domain-specific language in pester and by domain, I don't mean like domain controller,
+
+20
+00:02:41,5 --> 00:02:48,5
+right, I mean the academic discipline of testing, and you go to another language and look at its test
+
+21
+00:02:48,5 --> 00:02:56,5
+framework, it will look very similar and familiar to you. So when you see the folks who contribute to Pester,
+
+22
+00:02:56,5 --> 00:03:01,5
+thank them, buy them a beer, right. It's really an extraordinary contribution.
+
+23
+00:03:01,5 --> 00:03:09,5
+So it says up there that Pester is a BDD style testing framework, so let's talk about that a bit.
+
+24
+00:03:09,5 --> 00:03:19,5
+Test-Driven development is decades old. It is certainly not as old as programming, but people like Kent Beck
+
+25
+00:03:19,5 --> 00:03:28,5
+and others decided that the way to approach testing is to write the test before writing the code and this was
+
+26
+00:03:28,5 --> 00:03:36,5
+pretty revolutionary, okay. They said that you write a test, you write only the code that you need to pass
+
+27
+00:03:36,5 --> 00:03:44,5
+the test, and then you go onto the next test. The first time you test that code, run the test, it should fail
+
+28
+00:03:44,5 --> 00:03:52,5
+because there's no code, right. But you write only the code that you need to pass each test.
+
+29
+00:03:52,5 --> 00:04:00,5
+And in theory, the code is simpler because you've only written enough code to pass the test, everything is tested,
+
+30
+00:04:00,5 --> 00:04:06,5
+sort of a priori, and the developer can be a little more bold because they don't have to worry about regression errors.
+
+31
+00:04:06,5 --> 00:04:14,5
+They can put in a new feature and if they accidentally break something, the test will pick it up.
+
+32
+00:04:14,5 --> 00:04:21,5
+Behavior-driven development grew out of test-driven development and it's the theory that you write tests that
+
+33
+00:04:21,5 --> 00:04:27,5
+describe the behavior, not the implementation of your code, right.
+
+34
+00:04:27,5 --> 00:04:33,5
+So that way, you can change the implementation and do novel things without having to rewrite your test suite.
+
+35
+00:04:33,5 --> 00:04:39,5
+It is a really hard thing to do in practice. I failed. You'll see.
+
+36
+00:04:39,5 --> 00:04:45,5
+But in addition, your tests should be independent of the environment in which they were written, right,
+
+37
+00:04:45,5 --> 00:04:52,5
+it doesn't have to, you know the it works on my machine is not a good excuse, right, and they're also
+
+38
+00:04:52,5 --> 00:04:57,5
+independent of each other. You're testing the code segments in isolation.
+
+39
+00:04:57,5 --> 00:05:06,5
+You should test all of the features and you ship your tests. Your tests become part of your code.
+
+40
+00:05:06,5 --> 00:05:16,5
+But that didn't answer the question of which tests do I write? Right, I'm supposed to write my test before my code.
+
+41
+00:05:16,5 --> 00:05:21,5
+How do I figure out which tests to write? Yet, a lot of the tests that I've seen are so easy,
+
+42
+00:05:21,5 --> 00:05:27,5
+right, they're so simple to pass that of course the code looks great when you test it and then hand it to a
+
+43
+00:05:27,5 --> 00:05:34,5
+real user and it breaks all over the place, right, so there's a real art in writing tests.
+
+44
+00:05:34,5 --> 00:05:40,5
+And it was about this time last year that I heard Dave Wyatt's talk about Pester and this was the first question
+
+45
+00:05:40,5 --> 00:59:59,999
+that I hit that I could not solve. So this is where this talk will start.
+

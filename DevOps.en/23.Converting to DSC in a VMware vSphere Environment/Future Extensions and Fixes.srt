@@ -1,0 +1,248 @@
+1
+00:00:01,1 --> 00:00:07,098
+Now this script is producing the files that I showed previously. There are some extensions that I want to
+
+2
+00:00:07,098 --> 00:00:13,098
+create on this script. I'm not there yet. I'm working on it, but they will be coming.
+
+3
+00:00:13,098 --> 00:00:20,098
+There's first of all the integration that get, there is a very good module or announced at least that allows you
+
+4
+00:00:20,098 --> 00:00:26,098
+to automatically once you have that configuration file, you will start it automatically, so automate will be
+
+5
+00:00:26,098 --> 00:00:31,098
+our primary goal. You will automatically start it in your get environment.
+
+6
+00:00:31,098 --> 00:00:39,098
+And then were some of you in the previous session with Steve Marowski and Michael Green I think on this release pipeline.
+
+7
+00:00:39,098 --> 00:00:46,098
+In fact, this plugs it into what these guys were saying. This is the integration that we ultimately
+
+8
+00:00:46,098 --> 00:00:51,098
+want in our automation of our environment. We want not only the creator's configuration files,
+
+9
+00:00:51,098 --> 00:00:56,098
+that's only part of the story. We want to recreate, for example,
+
+10
+00:00:56,098 --> 00:01:03,098
+you create a new distributed switch, okay, we can generate the configuration file, but I would also like with
+
+11
+00:01:03,098 --> 00:01:10,098
+this script since we're handling the object, recreate or create the Pester code to test that switch if it's
+
+12
+00:01:10,098 --> 00:01:14,098
+function is as it should. We have all the information available.
+
+13
+00:01:14,098 --> 00:01:20,098
+We know the name of the thing, we know the configuration settings, we know where it's located, so with this
+
+14
+00:01:20,098 --> 00:01:26,098
+ultimate goal of automate everything, this would be a nice integration that I'm looking at.
+
+15
+00:01:26,098 --> 00:01:32,098
+Same goes for PSake, I want what they announced these composite resources.
+
+16
+00:01:32,098 --> 00:01:36,098
+It's typical in a vSphere environment we could use this very well.
+
+17
+00:01:36,098 --> 00:01:41,098
+I think I used the example of a cluster. You have a default cluster in just one click, but then again if you
+
+18
+00:01:41,098 --> 00:01:47,098
+look at the components in a cluster, for example, there's high availability, you have the source scheduling,
+
+19
+00:01:47,098 --> 00:01:56,098
+you have DPM. Those require additional parameters, so you could use those as SUP resources under your cluster
+
+20
+00:01:56,098 --> 00:02:01,098
+and your complete cluster could become one composite DSC resource in that case.
+
+21
+00:02:01,098 --> 00:02:08,098
+So instead of generating all these individual DSC resources configuration files, the ideal world, we should be
+
+22
+00:02:08,098 --> 00:02:15,098
+able to create a composite resource and just plug in the values that we need for that specific instance that
+
+23
+00:02:15,098 --> 00:02:24,098
+we are trying to move under DSC control. There's one shortcoming in the script at the moment and I mentioned
+
+24
+00:02:24,098 --> 00:02:30,098
+the blue and the yellow folders, but you notice as well in the beginning already that there are other types
+
+25
+00:02:30,098 --> 00:02:35,098
+of folders, the hidden ones, remember, there's network and data storage.
+
+26
+00:02:35,098 --> 00:02:40,098
+Those need special taking care of because their paths are a bit different.
+
+27
+00:02:40,098 --> 00:02:45,098
+In fact, they need to make sure that they are created under those hidden folders.
+
+28
+00:02:45,098 --> 00:02:51,098
+If you create a folder where you want to store, for example, all your datastore clusters, that folder should
+
+29
+00:02:51,098 --> 00:02:59,098
+be created under the hidden datastore folder, not under the VM or host folder, so I need a bit more expansion
+
+30
+00:02:59,098 --> 00:03:02,098
+on that one in the script.
+
+31
+00:03:02,098 --> 00:03:08,098
+Another thing that is quite useful and this is one of the beauties of PowerShell, you can have access to
+
+32
+00:03:08,098 --> 00:03:17,098
+everything in your environment. In this case, I created, I'm working with this class-based resource VMW folder.
+
+33
+00:03:17,098 --> 00:03:26,098
+You could look at that resource folder, resource class, list the properties and check for completeness.
+
+34
+00:03:26,098 --> 00:03:33,098
+So somebody in your team adds a property to the class, you could use this to check if the configuration files
+
+35
+00:03:33,098 --> 00:03:39,098
+that you are recreating are complete, are containing all the properties that should be there.
+
+36
+00:03:39,098 --> 00:03:44,098
+I know not all of them are required, but still it would be useful to have all of them in there.
+
+37
+00:03:44,098 --> 00:03:51,098
+So this is another part I'm looking at, use what is available or what is returned by the Get-DSC resource to
+
+38
+00:03:51,098 --> 00:03:56,098
+make it more complete what you generate in your configuration file.
+
+39
+00:03:56,098 --> 00:04:01,098
+And then of course, you noticed my text that I generated was all left-aligned.
+
+40
+00:04:01,098 --> 00:04:08,098
+We need a bit more alignment. It makes it more readable, but that I consider one of the minor issues that I
+
+41
+00:04:08,098 --> 00:04:12,098
+need to solve in the ultimate script.
+
+42
+00:04:12,098 --> 00:04:17,098
+Are there any questions on this? I know it's a lot of code. It's 10:00 in the morning.
+
+43
+00:04:17,098 --> 00:04:21,098
+You have more sessions to come. You have a question?
+
+44
+00:04:21,098 --> 00:04:37,098
+(Audience comment)
+
+45
+00:04:37,098 --> 00:04:43,098
+Yeah, this is something in fact that I discussed in the first session, but I can pull up the slide so you can
+
+46
+00:04:43,098 --> 00:04:49,098
+have a look. If you give me a minute, I'll switch to that one. I think I still have it here.
+
+47
+00:04:49,098 --> 00:04:50,098
+(Audience comment)
+
+48
+00:04:50,098 --> 00:04:59,098
+No, no problem. That's just a minute.
+
+49
+00:04:59,098 --> 00:05:05,098
+What we discussed in that, this is just a view on the lab I'm using to test this environment, but it gives
+
+50
+00:05:05,098 --> 00:05:13,098
+you a good idea of the set up that I'm propagating here. Bottom right, this blue box is your vSphere environment,
+
+51
+00:05:13,098 --> 00:05:23,098
+classical thing, VSCA vCenter hypervisors. Top left is your standard Windows domain, domain control and pull server.
+
+52
+00:05:23,098 --> 00:05:29,098
+I need a work station to edit some stuff, so I have two of them because I want to test them on 8 and 10 at
+
+53
+00:05:29,098 --> 00:05:35,098
+the same time, but that's just a practical thing. And the key thing in there is this vEngine that you see on the left.
+
+54
+00:05:35,098 --> 00:05:41,098
+So on that vEngine, that is if because we can't install LCM agents, VCSA is an appliance.
+
+55
+00:05:41,098 --> 00:05:48,098
+VMware doesn't like you to put stuff in there. ESXi is a closed hypervisor.
+
+56
+00:05:48,098 --> 00:05:54,098
+They don't want you to put stuff in there, so what we're doing is we are installing the LCM agent on that vEngine
+
+57
+00:05:54,098 --> 00:06:00,098
+and it's on the vEngine that we run the configuration files. On that machine, you need PowerShell and
+
+58
+00:06:00,098 --> 00:06:07,098
+PowerCLI on top of it. That's the one that will actually do the changes in your vSphere environment on the right.
+
+59
+00:06:07,098 --> 00:06:13,5
+So yes, you need PowerCLI on that vEngine. But in the end, you don't need to touch your vSphere environment at all.
+
+60
+00:06:13,5 --> 00:06:17,5
+You just need this helper server. Does that answer your---?
+
+61
+00:06:17,5 --> 00:06:18,378
+Yeah.
+
+62
+00:06:18,378 --> 00:59:59,999
+Okay, thank you.
+

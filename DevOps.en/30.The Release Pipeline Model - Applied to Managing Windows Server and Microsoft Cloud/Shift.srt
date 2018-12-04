@@ -1,0 +1,164 @@
+1
+00:00:00,0 --> 00:00:05,5
+This is a super personal topic because this is what's going to help make your lives better.
+
+2
+00:00:05,5 --> 00:00:07,7
+There's a lot of learning to kind of get our heads around,
+
+3
+00:00:07,7 --> 00:00:11,11
+a lot of different terminology, so I'm going to get out of the way and let's dive in because we've got lots to cover.
+
+4
+00:00:11,11 --> 00:00:12,899
+Yeah.
+
+5
+00:00:12,899 --> 00:00:17,899
+So I'm going to start with this slide because this is how big of a mind-boggling change this is.
+
+6
+00:00:17,899 --> 00:00:23,899
+So I was talking about this subject with a friend and he reached up on his shelf and handed me a book.
+
+7
+00:00:23,899 --> 00:00:26,899
+I believe it's the Theory of Scientific Revolution. It's by Thomas Kuhn.
+
+8
+00:00:26,899 --> 00:00:32,899
+But then he spoiled it for me and he told me when you read this, all you need to get out of it is the following.
+
+9
+00:00:32,899 --> 00:00:37,899
+And so, I searched for that and read that page and I didn't read the rest of the book, but I'm sure it's good.
+
+10
+00:00:37,899 --> 00:00:47,899
+The point is in order for a scientific revolution to be an actual revolution, to have a paradigm shift,
+
+11
+00:00:47,899 --> 00:00:52,899
+you have to satisfy two things. There's a new set of problems. So you're thing came out and it solved those problems.
+
+12
+00:00:52,899 --> 00:00:57,899
+Great. You also have to solve all the existing problems.
+
+13
+00:00:57,899 --> 00:01:02,899
+So when a new thing comes out in the industry and we're looking at it and saying is this something that's
+
+14
+00:01:02,899 --> 00:01:07,899
+going to be huge impact, it's great, yep, all these new cloud adoption and deployment type stuff,
+
+15
+00:01:07,899 --> 00:01:15,899
+it really helps out with that, but if it doesn't help solve that, by the way, I'm going to have servers that
+
+16
+00:01:15,899 --> 00:01:23,899
+are not real, I've been supporting these things or that model for 10 years and I can't just do continuous
+
+17
+00:01:23,899 --> 00:01:28,899
+deployments and knock these things over once a day. I'm going to support them like pets even though we want
+
+18
+00:01:28,899 --> 00:01:32,899
+to support everything like cattle and that's going to happen for a while, it has to support both, right.
+
+19
+00:01:32,899 --> 00:01:38,899
+The paradigm shift has to make your life better for all of the scenarios in order for it to actually be a
+
+20
+00:01:38,899 --> 00:01:45,899
+revolution, otherwise, it's just more tools, right. So
+
+21
+00:01:45,899 --> 00:01:51,899
+when I go out and the only like universal truth I've learned in my life to this point is that there's usually
+
+22
+00:01:51,899 --> 00:01:57,899
+not an extreme, right. Usually, things sort of land somewhere more at a moderate place.
+
+23
+00:01:57,899 --> 00:02:01,899
+So everything starts looking like a spectrum. If I go meet with 10 customers, I'm going to find some that
+
+24
+00:02:01,899 --> 00:02:06,899
+are really on the cutting edge. I'm like oh the whole world must be doing this and then I'll go to the next
+
+25
+00:02:06,899 --> 00:02:13,899
+customer, it's like oh, no they haven't changed at all. So as we met with people, I really found two voices.
+
+26
+00:02:13,899 --> 00:02:20,899
+The first was, yeah, yeah, we've been doing DevOps, so thanks for showing up and having an interest in what
+
+27
+00:02:20,899 --> 00:02:22,899
+we're doing because that's neat.
+
+28
+00:02:22,899 --> 00:02:27,899
+What we've been trying to figure out is how do we bring Windows Server into what we're doing, so when we go
+
+29
+00:02:27,899 --> 00:02:32,899
+meet with those customers and help figure out what their model looks like and how Windows Server can be part of
+
+30
+00:02:32,899 --> 00:02:36,899
+that, and obviously, PowerShell takes a huge role for something like that.
+
+31
+00:02:36,899 --> 00:02:41,899
+On the other side of the spectrum, you meet with customers and you explain what you just learned from the
+
+32
+00:02:41,899 --> 00:02:47,899
+first customer, I don't know what just happened, there we go, and they say yeah, yeah, that sounds like
+
+33
+00:02:47,899 --> 00:02:51,899
+you're speaking a developer language and that's not really an IT pro thing.
+
+34
+00:02:51,899 --> 00:02:59,899
+So 80 or 90% of the people are in the middle and they're just trying to keep things from falling over, right.
+
+35
+00:02:59,899 --> 00:03:05,899
+So you can walk up and talk about hey there's this other way people are doing things now and it's really
+
+36
+00:03:05,899 --> 00:03:10,899
+interesting and I think it's better and they're like look, I will look at making my life better after I'm
+
+37
+00:03:10,899 --> 00:03:15,899
+done with all these things that make my life hard. So I love that animation.
+
+38
+00:03:15,899 --> 00:03:20,899
+There's like three or four different versions of it. So we wrote this paper and it occurred to me just a
+
+39
+00:03:20,899 --> 00:03:26,899
+second ago that I should prescribe a hashtag. If anybody wants to tweet about it, you're more than welcome to.
+
+40
+00:03:26,899 --> 00:03:30,899
+It's live as of this morning. That short code should work. It goes directly to the pdf,
+
+41
+00:03:30,899 --> 00:59:59,999
+and if you use that hashtag on Twitter, then I can search for it and I can tell my boss that lots of people were interested.
+

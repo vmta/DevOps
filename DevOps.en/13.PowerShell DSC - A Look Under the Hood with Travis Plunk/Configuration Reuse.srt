@@ -1,0 +1,612 @@
+1
+00:00:00,0 --> 00:00:06,524
+Alright, so I didn't ask this earlier on. How many of you have been working with Desired State Configuration?
+
+2
+00:00:06,524 --> 00:00:11,524
+Raise your hands. Alright, about half the room maybe. Did you have a question?
+
+3
+00:00:11,524 --> 00:00:16,524
+Yeah. I was curious. So is there a place that we could go for documentation on how to do that sort of if
+
+4
+00:00:16,524 --> 00:00:23,524
+we got away with any of that. There was a link in the slide deck.
+
+5
+00:00:23,524 --> 00:00:29,524
+Are we giving out the slide deck? Yeah, if you can let me help them at the end, I'll make sure to get those to you.
+
+6
+00:00:29,524 --> 00:00:36,524
+Okay. Alright, so I'm going to, we're going to be really short on time here, so I'm going to breeze through
+
+7
+00:00:36,524 --> 00:00:39,524
+some of this stuff. I'm going to go over the configuration reuse.
+
+8
+00:00:39,524 --> 00:00:41,524
+There are basically
+
+9
+00:00:41,524 --> 00:00:49,524
+two use cases, I think, primary use cases for reuse. There is reuse-like functions, so I have a configuration.
+
+10
+00:00:49,524 --> 00:00:53,524
+I'm going to do some stuff multiple times in that configuration, so I want to have a chunk of something that
+
+11
+00:00:53,524 --> 00:00:58,524
+I don't have to write out a bunch of times with for loops in it and all this complicated logic.
+
+12
+00:00:58,524 --> 00:01:03,524
+So there's that use case and then there's the other use case where I have a distributed environment.
+
+13
+00:01:03,524 --> 00:01:08,524
+I have someone that knows SQL. They're creating a configuration that I want to use for my web app or IIS or
+
+14
+00:01:08,524 --> 00:01:13,524
+whatever where I'm not authoring that thing, but I want to reuse it so that I don't have to write the same
+
+15
+00:01:13,524 --> 00:01:19,524
+code again, so there are a couple of different ways that you can reuse configurations and I'm sure there are
+
+16
+00:01:19,524 --> 00:01:25,524
+way more than that, but these are two kind of bigger ones and I'll go through some examples of both of those.
+
+17
+00:01:25,524 --> 00:01:27,524
+And the options that we have
+
+18
+00:01:27,524 --> 00:01:34,524
+for configuration reuse or composite configurations, I don't know if we've done any documentation on this,
+
+19
+00:01:34,524 --> 00:01:36,524
+but composite configurations are basically
+
+20
+00:01:36,524 --> 00:01:43,524
+just using a configuration like a function. So in your script, you say I have this configuration, now I want
+
+21
+00:01:43,524 --> 00:01:47,524
+to reuse that configuration in the configuration below that I use.
+
+22
+00:01:47,524 --> 00:01:51,524
+It's not packaging it up in any special way. There's no versioning or anything like that.
+
+23
+00:01:51,524 --> 00:01:59,524
+It's just I have this code, so a good example of that is before we add the new service set and those new
+
+24
+00:01:59,524 --> 00:02:06,524
+resources that we put out there, if I want to make sure that 20 of my services are turned off in DSC,
+
+25
+00:02:06,524 --> 00:02:12,524
+I don't want to, well for optimization purposes, I probably don't want to have a big configuration that has
+
+26
+00:02:12,524 --> 00:02:18,524
+service, service, service, service, service, so I can create a function or a configuration that is above my
+
+27
+00:02:18,524 --> 00:02:24,524
+other configuration that says I have a for loop, I'm going to pass in all of the resources that I want to or
+
+28
+00:02:24,524 --> 00:02:30,524
+all of the services I want to shut off, it's going to loop through those, create all of the individual resources,
+
+29
+00:02:30,524 --> 00:02:35,524
+and then dump that out in a MOF, so you can create that above your configuration and then call that within
+
+30
+00:02:35,524 --> 00:02:41,524
+your configuration just like another resource. So it allows you to do stuff like that very easily.
+
+31
+00:02:41,524 --> 00:02:45,524
+There are partial configurations, which I think a lot of people jump onto right away when they have a
+
+32
+00:02:45,524 --> 00:02:50,524
+distributed environment that says this guy's going to configure my system this way, this guy's going to
+
+33
+00:02:50,524 --> 00:02:51,524
+configure my system that way.
+
+34
+00:02:51,524 --> 00:02:55,524
+I want to take those things and jam them together on a target node.
+
+35
+00:02:55,524 --> 00:03:01,524
+There are a lot of good things about partial configurations, but there are lot of or there are other things
+
+36
+00:03:01,524 --> 00:03:05,524
+that aren't so good about partial configurations like partial configurations you need to set the
+
+37
+00:03:05,524 --> 00:03:11,524
+MetaConfiguration and say this is how my system is going to look with these chunks of partial configuration.
+
+38
+00:03:11,524 --> 00:03:17,524
+There's no versioning for partial configuration. It's just whatever if my configuration changed, I'm going to
+
+39
+00:03:17,524 --> 00:03:26,524
+apply that and there's what else with partial configs. (Audience comment)
+
+40
+00:03:26,524 --> 00:03:34,524
+Thank you. That was my other point. Yes, the other thing is, so it's going to take all those configurations
+
+41
+00:03:34,524 --> 00:03:38,524
+and doing DSC it's going to say are there any conflicts with these configurations?
+
+42
+00:03:38,524 --> 00:03:43,524
+But it's not going to do it when you compile the scripts. It's going to do it on a target node after it has
+
+43
+00:03:43,524 --> 00:03:49,524
+all the configuration parts. It's going to jam them together and then go something failed, fix it, and you have
+
+44
+00:03:49,524 --> 00:03:53,524
+to figure out what that is. That's one of the negatives to that.
+
+45
+00:03:53,524 --> 00:03:59,524
+Then one of the positives to it is I can be a security guy and I don't care who's out there, I want this
+
+46
+00:03:59,524 --> 00:04:07,524
+configuration on that target node and I want it to apply. So it takes, puts the power in someone's hands who
+
+47
+00:04:07,524 --> 00:04:11,524
+need to make sure that this configuration applies on that system. And the last
+
+48
+00:04:11,524 --> 00:04:15,524
+option is composite resources. It's very much like composite configurations,
+
+49
+00:04:15,524 --> 00:04:20,524
+except you bundle the thing up into a module and say I want to be able to share this with a bunch of
+
+50
+00:04:20,524 --> 00:04:26,524
+different people, so it looks just like a PowerShell module, it just has resources in it that are able to be reused.
+
+51
+00:04:26,524 --> 00:04:31,524
+You can have parameters that you can pass in and do the configuration and stuff like that.
+
+52
+00:04:31,524 --> 00:04:39,524
+One of the key things to know about composite resources is it looks and behaves very much like a resource,
+
+53
+00:04:39,524 --> 00:04:44,524
+but it's different in that if you're using pull, those resources only need to live on the build server.
+
+54
+00:04:44,524 --> 00:04:48,524
+They do not need to live anywhere else. You don't need to put them on the pull server.
+
+55
+00:04:48,524 --> 00:04:52,524
+They do not need to be on the target node because they get exploded before the MOF is generated and turned
+
+56
+00:04:52,524 --> 00:04:57,524
+into those underlying resources and those underlying resources are what need to be on the pull server and on
+
+57
+00:04:57,524 --> 00:05:04,524
+the target nodes. So if you have logic in there that's trying to get information from the target node,
+
+58
+00:05:04,524 --> 00:05:08,524
+it's not going to work because that's never going to be run on the target node.
+
+59
+00:05:08,524 --> 00:05:12,524
+Alright, I have a quick demo here of the different examples.
+
+60
+00:05:12,524 --> 00:05:18,524
+So right here, I have a composite configuration. Can everyone see that okay?
+
+61
+00:05:18,524 --> 00:05:23,524
+Alright on a composite configuration, this is very much like the example that I mentioned.
+
+62
+00:05:23,524 --> 00:05:28,524
+I have an Iis configuration up here and then I three other configurations for configuring WebApps.
+
+63
+00:05:28,524 --> 00:05:33,524
+I'm going to do the exact same thing when I configure each of those WebApps and I'm going to stand up Iis and
+
+64
+00:05:33,524 --> 00:05:39,524
+I'm going to open up a firewall port, so I create a configuration up above here that has a single parameter
+
+65
+00:05:39,524 --> 00:05:47,524
+that's a port parameter, and I'm going to install, make sure the web server role is enabled, and I'm going
+
+66
+00:05:47,524 --> 00:05:54,524
+to open up a firewall port on that system. And then I can call this thing in each of these things just like another resource.
+
+67
+00:05:54,524 --> 00:06:00,524
+So this configuration is Iis. That becomes the type like any other resource in here.
+
+68
+00:06:00,524 --> 00:06:06,524
+So I'd say this type of resource is Iis. You know what it is because I had to find it up above in this script
+
+69
+00:06:06,524 --> 00:06:13,524
+and I'm going to give the unique name of basic to this thing and the one parameter that I have in that
+
+70
+00:06:13,524 --> 00:06:18,524
+configuration is what I pass into the property here and then do that configuration.
+
+71
+00:06:18,524 --> 00:06:24,524
+So I can get each of these WebApps configured very easily, cleanly, someone looks at this, they can know
+
+72
+00:06:24,524 --> 00:06:30,524
+I'm standing up Iis on this system. I can name this thing whatever I want and I'm going to open up Port 80
+
+73
+00:06:30,524 --> 00:06:35,524
+on this one, I'm going to open up Port 880 on this one and another port on the other one.
+
+74
+00:06:35,524 --> 00:06:41,524
+And so, it gives you that reusability and when the MOF is created for each of these things and I can show you
+
+75
+00:06:41,524 --> 00:06:51,524
+that here real quickly, in the composite config. That App1 MOF, one of the things, so a couple things here,
+
+76
+00:06:51,524 --> 00:06:57,524
+the name of the ResourceID here gets jammed together so when you create
+
+77
+00:06:57,524 --> 00:07:03,524
+composite resources or composite configurations, in the MOF, it generates the unique name for that resource
+
+78
+00:07:03,524 --> 00:07:13,524
+by saying this is the type that I have :: and then this is it. So basically it takes the name of the
+
+79
+00:07:13,524 --> 00:07:18,524
+configuration and then the name of the configuration you're in and puts them together with ::, so if you have
+
+80
+00:07:18,524 --> 00:07:22,524
+multiple layers there, you'll know where that thing came from. So it gives you the ability like in Azure
+
+81
+00:07:22,524 --> 00:07:29,524
+automation DSC, they're going to be able to combine those things together on their porting, so you can say
+
+82
+00:07:29,524 --> 00:07:34,524
+where'd my failure happen and dig down into the individual resources from there, so it gives you that unique
+
+83
+00:07:34,524 --> 00:07:40,524
+name for that. And when you do a get status, it'll have those names in there as well, so you don't have to
+
+84
+00:07:40,524 --> 00:07:47,524
+dig into the MOF to see that. But you get your configuration right there.
+
+85
+00:07:47,524 --> 00:07:53,524
+So the next one, real quickly, and again, if anyone has questions at any point, just yell.
+
+86
+00:07:53,524 --> 00:07:59,524
+How many levels deep do you go in? We don't limit how many levels deep you can go.
+
+87
+00:07:59,524 --> 00:08:09,524
+(Audience comment) It'll keep going. Do word wrap and then you'll be able to see it.
+
+88
+00:08:09,524 --> 00:08:13,524
+Alright, so the next example here real quickly is the composite
+
+89
+00:08:13,524 --> 00:08:19,524
+resource and now you'll start to see kind of these are used in very much a same way as a composite configuration,
+
+90
+00:08:19,524 --> 00:08:26,524
+but I said you'd bundle that thing up into a module and this example right here is a module that I created,
+
+91
+00:08:26,524 --> 00:08:33,524
+so this is a Fabricam_Infra, so I have common stuff that I want to use here.
+
+92
+00:08:33,524 --> 00:08:38,524
+I have a module directory. I have the module psd1 here that defines the thing.
+
+93
+00:08:38,524 --> 00:08:43,524
+I have DSCResources inside of that and with the new versioning and stuff like that, you have a version folder
+
+94
+00:08:43,524 --> 00:08:51,524
+in here as well. So inside of the DSCResources, I have for each of my individual composite resources,
+
+95
+00:08:51,524 --> 00:08:57,524
+I have a folder for that and then I have a psd1 for that, which doesn't do a whole lot, but that needs to be
+
+96
+00:08:57,524 --> 00:09:06,524
+there to define that, and then I have a file, which is just my logic that is IIS, so it's a name of the resource,
+
+97
+00:09:06,524 --> 00:09:13,524
+.schema.psm1 and then you have the same code in there that you would have in your configuration above that.
+
+98
+00:09:13,524 --> 00:09:18,524
+So I have that for IIS, I have one for Security, and then I have one for SQL.
+
+99
+00:09:18,524 --> 00:09:23,524
+I don't actually use the one for SQL on my example. But then I have my psd1s here.
+
+100
+00:09:23,524 --> 00:09:29,524
+So the difference that you'll see here is that importing that new module and then I can use that just like I
+
+101
+00:09:29,524 --> 00:09:36,524
+could the composite configurations, but I have my Iis Basic, pass in my port, and I'm good to go.
+
+102
+00:09:36,524 --> 00:09:43,524
+So when I compile these things, you'll actually see that they look practically identical when you come down
+
+103
+00:09:43,524 --> 00:09:48,524
+to the resources themselves. They have the same naming, so it squishes the two together.
+
+104
+00:09:48,524 --> 00:09:53,524
+It says here's my composite resource. I'm going to squish that name together with how it was used in my
+
+105
+00:09:53,524 --> 00:09:59,524
+configuration, so you can uniquely identify that, and otherwise, it looks exactly the same.
+
+106
+00:09:59,524 --> 00:10:12,524
+(Audience question) Yes, I can. So I go to SQL. Go ahead. So one of the things that happens in here that
+
+107
+00:10:12,524 --> 00:10:17,524
+is nice about composite resources or composite configurations is you can do logic in here.
+
+108
+00:10:17,524 --> 00:10:23,524
+Like this one I have a validation set and a version, so if you have different things that you want to do
+
+109
+00:10:23,524 --> 00:10:29,524
+depending on the version of SQL you want to install, you can do that logic in here.
+
+110
+00:10:29,524 --> 00:10:36,524
+And did I delete that? Oh no. So I have a switch statement says this is where I'm going to get the install
+
+111
+00:10:36,524 --> 00:10:42,524
+for each of these different things and then I just use that in here somewhere in the source thing.
+
+112
+00:10:42,524 --> 00:10:45,524
+So it's a source and I use a source in here, so it's going to install in a different place, so you can do
+
+113
+00:10:45,524 --> 00:11:05,524
+that kind of logic in… (Audience question) Excuse me? (Audience question)
+
+114
+00:11:05,524 --> 00:11:10,524
+It really depends. I will show you an example after this demo real quick on some of the pluses and minuses
+
+115
+00:11:10,524 --> 00:11:16,524
+to each one of them. But it depends on your use case and how you want it to work.
+
+116
+00:11:16,524 --> 00:11:26,524
+So the question was in a distributed environment, which should be used, composite resources or partial configurations?
+
+117
+00:11:26,524 --> 00:11:31,524
+I have a quick question. Sorry. So I find that using the PS Desired State Configuration and an
+
+118
+00:11:31,524 --> 00:11:36,524
+XPS Desired State Configuration kind of confusing. Yes. They're not the same thing, right?
+
+119
+00:11:36,524 --> 00:11:42,524
+Yes, well they're not. So it's like I think I'm putting on the new versions, but I find that I have to call
+
+120
+00:11:42,524 --> 00:11:49,524
+the old one because that's where the cmdlets are, I guess, and I get the warning sometimes I don't, and so what's
+
+121
+00:11:49,524 --> 00:11:55,524
+the difference, I guess. How do I… So the idea with the XPS Desired State Configuration was essentially the
+
+122
+00:11:55,524 --> 00:12:07,524
+things that we thought that we might pull back into the box, we would put in that module, but that has not happened
+
+123
+00:12:07,524 --> 00:12:10,524
+and I don't know if it will happen. So should we call it something else?
+
+124
+00:12:10,524 --> 00:12:16,524
+I mean we can, I don't know. It's a module. You can rename it and call it whatever you want, not to be
+
+125
+00:12:16,524 --> 00:12:23,524
+flippant, but it's potentially. There are a few different things that we're looking into and one of the
+
+126
+00:12:23,524 --> 00:12:28,524
+things is should we open source all of the PSDSC and the stuff that's on the box, shouldn't we just put that
+
+127
+00:12:28,524 --> 00:12:34,524
+up on the gallery and let that be there. So it's, and if we did that, we would definitely squish the two
+
+128
+00:12:34,524 --> 00:12:41,524
+together and make that one. But we are, in general, investigating naming of the modules that are from the
+
+129
+00:12:41,524 --> 00:12:47,524
+community in XDSC. Desired State Configuration is one from the community.
+
+130
+00:12:47,524 --> 00:12:54,524
+Alright. Sorry, (Audience question). Will what work with class base?
+
+131
+00:12:54,524 --> 00:13:05,524
+(Audience question) You composite, yes they will. Composite resources are actually much simpler in class based.
+
+132
+00:13:05,524 --> 00:13:10,524
+I probably should have had an example in here, but I don't. With the class-based resources, you just use a
+
+133
+00:13:10,524 --> 00:13:16,524
+class syntax and then you can have multiple in one module. It actually simplifies it quite a bit.
+
+134
+00:13:16,524 --> 00:13:23,524
+But then you can't do versions of the pull server right? For, that's correct yeah.
+
+135
+00:13:23,524 --> 00:13:30,524
+Alright, so partial configs here real quickly. So I have the same set up with partial configs.
+
+136
+00:13:30,524 --> 00:13:37,524
+When I run each of these, it's going to generate a MOF for each of them and then basically on the target nodes,
+
+137
+00:13:37,524 --> 00:13:44,524
+you have to come in and say I have partial configs for each of these things and in a case where you're pulling,
+
+138
+00:13:44,524 --> 00:13:52,524
+in this case I'm pushing, so I've defined a MetaConfiguration that says I'm going to push each of these
+
+139
+00:13:52,524 --> 00:13:57,524
+configurations to the target node. You define the partial configs that are going to be on that box,
+
+140
+00:13:57,524 --> 00:14:03,524
+give it a description and then when you push the target or the partial config there, it'll get it,
+
+141
+00:14:03,524 --> 00:14:10,524
+jam them together, and then apply it at that point. So each of these will generate a single MOF like you see
+
+142
+00:14:10,524 --> 00:14:18,524
+here in my Partial directory. So it'll just generate a MOF for each of these and then you send those to
+
+143
+00:14:18,524 --> 00:14:21,524
+whatever machines should apply them. Go ahead. Will it wait until it
+
+144
+00:14:21,524 --> 00:14:27,524
+has a configuration for every partial defined before it compiles and does the final jamming or if you only
+
+145
+00:14:27,524 --> 00:14:33,524
+have two submit right now and two are coming later, will it submit the two it has and then allow you to wait
+
+146
+00:14:33,524 --> 00:14:39,524
+for another one. That is a very good question. The question was about how it applies partial configurations.
+
+147
+00:14:39,524 --> 00:14:46,524
+We allow you to define that in the MetaConfiguration. So in the MetaConfiguration, if you have this partial
+
+148
+00:14:46,524 --> 00:14:52,524
+config depends on another partial config, and that's not tab completing, but if you have it dependsOn with
+
+149
+00:14:52,524 --> 00:14:57,524
+another partial config, it'll wait until that other partial config gets there to apply it, and if not,
+
+150
+00:14:57,524 --> 00:15:03,524
+it should just apply it. Well it's not just going to go because you have to, well with pulling it will,
+
+151
+00:15:03,524 --> 00:15:13,524
+with pushing, you push it, and then you have to apply it. So alright, so now I will, I went through those.
+
+152
+00:15:13,524 --> 00:15:14,524
+I'll jump back
+
+153
+00:15:14,524 --> 00:59:59,999
+to my presentation here.
+

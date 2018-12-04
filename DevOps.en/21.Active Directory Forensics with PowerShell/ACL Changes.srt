@@ -1,0 +1,432 @@
+1
+00:00:00,0 --> 00:00:05,886
+Now where I want to spend more time is on ACL changes.
+
+2
+00:00:05,886 --> 00:00:12,886
+Somebody has granted themselves access to something else in Active Directory that you weren't aware of.
+
+3
+00:00:12,886 --> 00:00:20,886
+Probably ought to check on that too, shouldn't we? So by default, in the schema somewhere, there are default
+
+4
+00:00:20,886 --> 00:00:28,886
+permissions defined for all the objects. That'd be kind of painful to go actually delta all those to see what's
+
+5
+00:00:28,886 --> 00:00:32,886
+because over the life of the directory it's going to be really messy to figure that out, but I want to show
+
+6
+00:00:32,886 --> 00:00:43,886
+you a way to look at this. So using that same thing Get-ADReplicationAttributeMetadata, how many have used Get-ACL?
+
+7
+00:00:43,886 --> 00:00:49,886
+Alright, yeah, you're working with, looking at the permissions of an object, did you know that Get-ACL
+
+8
+00:00:49,886 --> 00:00:55,886
+actually works against Active Directory objects? When you get that AD drive letter, you can do a Get-ACL to
+
+9
+00:00:55,886 --> 00:01:05,886
+see what are the permissions on an AD object. So what we can do then, the ACL on an AD object is stored in a
+
+10
+00:01:05,886 --> 00:01:16,886
+property called nTSecurityDescriptor. So think about what we just looked at with the group changes,
+
+11
+00:01:16,886 --> 00:01:24,886
+now we can filter the metadata of every object in the Active Directory to see which ones have had an ACL
+
+12
+00:01:24,886 --> 00:01:31,886
+change in the last 24 hours or the last week. Sound interesting?
+
+13
+00:01:31,886 --> 00:01:39,886
+Yeah. So now we can actually go look and see who has been delegating access in the environment recently
+
+14
+00:01:39,886 --> 00:01:41,886
+and get a report of that.
+
+15
+00:01:41,886 --> 00:01:45,886
+So what we're going to do then is we're going to get a list. Now you need to be careful here.
+
+16
+00:01:45,886 --> 00:01:52,886
+Grabbing a list of every object in the directory, that's going to be, yeah, you'll be there a while, so instead,
+
+17
+00:01:52,886 --> 00:01:56,886
+what I'm just going to do is I'm just going to filter on OUs. We'll start there.
+
+18
+00:01:56,886 --> 00:02:05,886
+So I'm just going to get a list of OUs, and for each OU, I'm going to grab the replication metadata of that OU
+
+19
+00:02:05,886 --> 00:02:14,886
+to see if there have been any changes to the nTSecurityDescriptor and then I'm going to sort that in descending order.
+
+20
+00:02:14,886 --> 00:02:25,886
+And so when I look into this data, I see that the HR OU, let's zoom in there, so the HR OU on April 1st of
+
+21
+00:02:25,886 --> 00:02:33,886
+all days had a permission change. Now the rest of these OUs, this is my lab, so it's been a long time since
+
+22
+00:02:33,886 --> 00:02:39,886
+anybody's touched these. That was April 1st of 2014. Wow. Yeah, that's been a while.
+
+23
+00:02:39,886 --> 00:02:47,886
+Alright, so let's make a change then. Oh, I'm sorry. That's whenCreated.
+
+24
+00:02:47,886 --> 00:02:55,886
+I apologize. Let's look at the proper attribute here. Let's scroll across to the LastOriginatingChange.
+
+25
+00:02:55,886 --> 00:03:00,886
+That's actually the date we want. There we go, that's the one. That's 4/6/2016.
+
+26
+00:03:00,886 --> 00:03:06,886
+So right there I can see the LastOriginatingChange on that ACL was the 6th.
+
+27
+00:03:06,886 --> 00:03:14,886
+That was this week. Somebody changed access to the HR OU. So what do you think we ought to do?
+
+28
+00:03:14,886 --> 00:03:20,886
+Let's go look at the access for the HR OU, but there's a problem with that.
+
+29
+00:03:20,886 --> 00:03:28,886
+Let's see what the problem is. What I can do then is say, alright, here's all of the ACEs that have been
+
+30
+00:03:28,886 --> 00:03:35,886
+updated in the last amount of time, let's say within the last 90 days here.
+
+31
+00:03:35,886 --> 00:03:42,886
+So then what we will do is we'll look at here's the HR OU in CohoVineyard.
+
+32
+00:03:42,886 --> 00:03:46,886
+Alright, so let's get on down to see the actual permissions now.
+
+33
+00:03:46,886 --> 00:03:54,886
+So what we can do is I'm going to do a quick little dosey-doe to query the property names for the permissions
+
+34
+00:03:54,886 --> 00:04:00,886
+out of the schema so that we're not looking at GUIDs, that makes it easier to see the permissions, and we're going
+
+35
+00:04:00,886 --> 00:04:08,886
+to look at objects with change permissions. And so here's our list and actually let me skip down one more
+
+36
+00:04:08,886 --> 00:04:14,886
+section, here we go. So permissions that were changed. So what I'm going to do now is going to say okay,
+
+37
+00:04:14,886 --> 00:04:20,886
+here's a list of all the objects, and why did that give me nothing?
+
+38
+00:04:20,886 --> 00:04:25,886
+Oh, okay, I just grabbed the data, now list Out-GridView. There we go.
+
+39
+00:04:25,886 --> 00:04:38,886
+So, here we go. Here's the HR OU in the top of the list and I see the change originated on the CVDCR2 and
+
+40
+00:04:38,886 --> 00:04:43,886
+if I scroll across, let me zoom in here, I want you to see what we're looking at.
+
+41
+00:04:43,886 --> 00:04:49,886
+I know this is a lot of data, but everything we want is right here.
+
+42
+00:04:49,886 --> 00:04:54,886
+So let's take a look. I'm going to zoom in and I see these are the named permissions that are applied to that
+
+43
+00:04:54,886 --> 00:05:01,886
+OU and it will tell me what's inherited, what's not inherited, GenericRead, Write, for User, Computers,
+
+44
+00:05:01,886 --> 00:05:07,886
+and groups, things like that in the OU and as I scroll across, I will see here are the account names that are granted
+
+45
+00:05:07,886 --> 00:05:17,886
+access to that and there's GoodGuy. But here's the problem, every one of these are currently on that ACL.
+
+46
+00:05:17,886 --> 00:05:25,886
+We don't know which one was changed. We just know that this is the current ACL.
+
+47
+00:05:25,886 --> 00:05:32,886
+We don't know which piece of the ACL was changed, which ACE individually was added or removed.
+
+48
+00:05:32,886 --> 00:05:40,886
+So I'm going to cheat and show you another way we can look at that.
+
+49
+00:05:40,886 --> 00:05:48,886
+This is the piece that I woke up about 6 am after a full night of conference sleep and I thought I need to do
+
+50
+00:05:48,886 --> 00:05:55,886
+something else to really take this to the next level. So two years ago here I did
+
+51
+00:05:55,886 --> 00:06:02,886
+a presentation on Active Directory snapshots. Some of you are nodding your head, most of you probably never
+
+52
+00:06:02,886 --> 00:06:08,886
+heard of Active Directory Snapshots. It was a feature we introduced in server 2008 and you think, wait a minute,
+
+53
+00:06:08,886 --> 00:06:12,886
+snapshots, Active Directory, I thought we're never supposed to snapshot Active Directory right.
+
+54
+00:06:12,886 --> 00:06:20,886
+Well that's VM snapshots. This is the actual database. There's a feature in Ntdsutil where you can do a
+
+55
+00:06:20,886 --> 00:06:28,886
+volume shadow copy of just the Active Directory database and logs, and keep that, and then mount it into memory
+
+56
+00:06:28,886 --> 00:06:36,886
+on a different port, and query historical AD values. Pretty cool, huh?
+
+57
+00:06:36,886 --> 00:06:43,886
+So now we've got this prior state of Active Directory in the current state of Active Directory.
+
+58
+00:06:43,886 --> 00:06:48,886
+Well somebody I know happened to write a module to do all that for you, so you don't have to type all those
+
+59
+00:06:48,886 --> 00:06:52,886
+long crazy commands, alright. So out on the blog,
+
+60
+00:06:52,886 --> 00:07:00,886
+it's called Oh Snap! Active Directory attribute recovery, yes, Oh Snap!
+
+61
+00:07:00,886 --> 00:07:10,886
+So what I've got is a function library here with my snapshots, and in this functional library, I have some
+
+62
+00:07:10,886 --> 00:07:16,886
+functions here like let's see we've got a---
+
+63
+00:07:16,886 --> 00:07:22,886
+So an answer. Yes. These guys never bothered to audit something, but they did do an AP snapshot?
+
+64
+00:07:22,886 --> 00:07:26,886
+Okay, alright. I'm glad you asked the question. I just want to make sure it's (inaudible).
+
+65
+00:07:26,886 --> 00:07:31,886
+No, they never did a snapshot. That's oh snap. Exactly. Right.
+
+66
+00:07:31,886 --> 00:07:34,886
+They didn't do the snapshot. That would have been amazing. It would have been amazing.
+
+67
+00:07:34,886 --> 00:07:37,886
+It would have made this very easy. There would have been five people who were in AP snapshots.
+
+68
+00:07:37,886 --> 00:07:47,886
+Right, right. So my part of my role here is to tell you to go start using snapshots in your environment
+
+69
+00:07:47,886 --> 00:07:53,886
+because you can do, you don't have to buy some third-party popular product to do attribute level recovery.
+
+70
+00:07:53,886 --> 00:07:57,886
+You can do it for free with this functional library on my blog. Alright.
+
+71
+00:07:57,886 --> 00:08:03,886
+So you can do free attribute level restores copying the data back out of a good copy of AD when somebody
+
+72
+00:08:03,886 --> 00:08:09,886
+blew all the email addresses out. I know some of you have been there.
+
+73
+00:08:09,886 --> 00:08:15,886
+Alright. So I've got a snapshot here that I took
+
+74
+00:08:15,886 --> 00:08:20,886
+in my environment. Here's the last snapshot I just did today. And so what I'm going to do is I'm going to
+
+75
+00:08:20,886 --> 00:08:29,886
+mount this snapshot. So yes, they didn't have a snapshot there, but the moral of the story is go make snapshots
+
+76
+00:08:29,886 --> 00:08:35,886
+and schedule them. It's all documented on my blog. So what's happening here is we're actually mounting a
+
+77
+00:08:35,886 --> 00:08:45,886
+utility dsamain.exe, I'm giving it a port 33389 that nobody's using right now, and now when I look at my
+
+78
+00:08:45,886 --> 00:08:55,886
+snapshots, I'll see that it's mounted this exposed name here into this $SNAP folder, so it's actually
+
+79
+00:08:55,886 --> 00:09:00,886
+temporarily restored a copy of an older Active Directory database and logs.
+
+80
+00:09:00,886 --> 00:09:01,886
+So I've got
+
+81
+00:09:01,886 --> 00:09:08,886
+that mounted on a separate port and now I can query the live AD and the history AD and compare the results.
+
+82
+00:09:08,886 --> 00:09:16,886
+And I have created some functions here for you that you can query an object and give it a list of attributes
+
+83
+00:09:16,886 --> 00:09:21,886
+and it'll rewrite those attributes back into production copy. Alright, so free recovery.
+
+84
+00:09:21,886 --> 00:09:27,886
+Yeah. This might be kind of hard to answer, but I'm just curious like what's the general size of something like that?
+
+85
+00:09:27,886 --> 00:09:32,886
+I mean, is it huge or is it relatively easy to keep that kind of stuff?
+
+86
+00:09:32,886 --> 00:09:38,886
+I mean, small? Yeah, it's pretty small. But you do want, in my article I give you some guidance around
+
+87
+00:09:38,886 --> 00:09:43,886
+keeping that cleaned up. You don't want it to get out of hand. Just determine how many you want to keep.
+
+88
+00:09:43,886 --> 00:09:44,886
+So
+
+89
+00:09:44,886 --> 00:09:53,886
+today I wrote a new function in this module called Compare-ADObjectACL and I pass it in a OU path because HR
+
+90
+00:09:53,886 --> 00:10:02,886
+was the OU where the attribute or the permission change happened, and so I want to compare that OU ACL
+
+91
+00:10:02,886 --> 00:10:11,886
+between what's historical and what's right now. So when I run this, it dumps out a list of permissions.
+
+92
+00:10:11,886 --> 00:10:23,886
+Here's a permission that was removed. Oh, look at this, somebody removed HRAdmins from the HR OU and they,
+
+93
+00:10:23,886 --> 00:10:29,886
+I guess that's it. It looks like they just removed the HRAdmins was the change that they made.
+
+94
+00:10:29,886 --> 00:10:32,886
+I could probably update my snapshot to see the other changes as well.
+
+95
+00:10:32,886 --> 00:10:38,886
+But anyway the only challenge here
+
+96
+00:10:38,886 --> 00:10:46,886
+is that I have to manage, I haven't built the logic in yet, but you have to manage the date that the snapshot
+
+97
+00:10:46,886 --> 00:10:51,886
+was taken against the date that the change happened. Make sure you get those date windows set correctly,
+
+98
+00:10:51,886 --> 00:10:58,886
+so you can go view the actual changes that were there. So that will allow you then to take a snapshot and
+
+99
+00:10:58,886 --> 00:11:06,886
+view what was in place before somebody made the change. So I can go, it's like a time machine to look at my
+
+100
+00:11:06,886 --> 00:11:14,886
+directory and see what was there before Joe Jr. Admin came in and fixed everything.
+
+101
+00:11:14,886 --> 00:11:18,886
+You've had Joe Jr. Admin come in and fix things in your directory, right?
+
+102
+00:11:18,886 --> 00:11:22,886
+So you've got to go refix them.
+
+103
+00:11:22,886 --> 00:11:27,886
+So now that I've done, I've looked in there, I've found that I'm just going to dismount that database,
+
+104
+00:11:27,886 --> 00:11:34,886
+mount it in memory, and this little LDP icon down at the bottom will go away, and then that is now unmounted,
+
+105
+00:11:34,886 --> 00:11:42,886
+that snapshot is gone. So that's the way that you can do it, but it does require you to be prepared and take
+
+106
+00:11:42,886 --> 00:11:48,886
+snapshots on a scheduled basis in your environment. What about deleted users?
+
+107
+00:11:48,886 --> 00:11:57,886
+Let's go ahead and delete these two guys if they're, yeah. And let's go take a look then, let me skip through
+
+108
+00:11:57,886 --> 00:59:59,999
+here ACL_Changes, Recycle_Bin, here we go.
+

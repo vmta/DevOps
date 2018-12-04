@@ -1,0 +1,404 @@
+1
+00:00:00,0 --> 00:00:03,3
+So let's dig into that a little bit more.
+
+2
+00:00:03,3 --> 00:00:08,8
+Setting up that environment. Tools like DSC, Chef, Puppet, Ansible, Salt, SCVMM, this is designed to read
+
+3
+00:00:08,8 --> 00:00:14,795
+the application's environment needs from that document and then set up the environment appropriately,
+
+4
+00:00:14,795 --> 00:00:20,795
+including dependencies like packages or DLLs or whatever other dependencies might exist.
+
+5
+00:00:20,795 --> 00:00:26,795
+We're now documenting those things in a way that can be automated.
+
+6
+00:00:26,795 --> 00:00:29,795
+Now it sounds hard when you just talk about it, but really think about it, how many of you think you could
+
+7
+00:00:29,795 --> 00:00:36,795
+probably rig this up at least in like a trial situation using something like maybe DSC or Chef or Puppet, yeah.
+
+8
+00:00:36,795 --> 00:00:43,795
+The technologies all exist at this point. We can actually do this.
+
+9
+00:00:43,795 --> 00:00:51,795
+We don't have like a complete pipeline product that we can just go buy that will magically do all this,
+
+10
+00:00:51,795 --> 00:00:54,795
+but all the pieces exist and we'll talk about some of those pieces.
+
+11
+00:00:54,795 --> 00:00:59,795
+So setting up the environment is straightforward. How many of you think you could automate the creation of
+
+12
+00:00:59,795 --> 00:01:02,795
+a VM if I pushed you to it?
+
+13
+00:01:02,795 --> 00:01:03,795
+I already have.
+
+14
+00:01:03,795 --> 00:01:05,795
+Yeah, and a lot of you already have.
+
+15
+00:01:05,795 --> 00:01:10,795
+If you've got something like DSC or Chef or Puppet or whatever, how many of you think you could automate the
+
+16
+00:01:10,795 --> 00:01:13,795
+provisioning of that environment once the VM is up. Of course you could.
+
+17
+00:01:13,795 --> 00:01:23,795
+Absolutely. How many of you think you could have a developer give you a PowerShell configuration,
+
+18
+00:01:23,795 --> 00:01:29,795
+a DSC configuration script, you can run that, produce a MOF, but then you could also have your own
+
+19
+00:01:29,795 --> 00:01:35,795
+operational concerns configuration script, which you could run and produce a MOF.
+
+20
+00:01:35,795 --> 00:01:40,795
+So now you've got the stuff the developer needs, but you've also got the stuff you need, the security,
+
+21
+00:01:40,795 --> 00:01:44,795
+the firewall, the things the developer might not necessarily care about, getting your management agents
+
+22
+00:01:44,795 --> 00:01:49,795
+installed or whatever else and you just hand both of those to the LCM.
+
+23
+00:01:49,795 --> 00:01:54,795
+Okay, I'll do that. I'll configure it. I'll set it up boss. Right.
+
+24
+00:01:54,795 --> 00:02:01,795
+We have all this. We have the pieces. So once the environment is up, standard compilers just get called to
+
+25
+00:02:01,795 --> 00:02:07,795
+compile your code or you can take it out of a checked in source control repository, right, when someone says go,
+
+26
+00:02:07,795 --> 00:02:11,795
+you just get the latest check in from source control that's passed whatever validation it has.
+
+27
+00:02:11,795 --> 00:02:17,795
+That code gets injected into the new VM. Tools like TeamCity can help you do this.
+
+28
+00:02:17,795 --> 00:02:23,795
+These exist, they're out there. And then if it's a test environment, once it's up and running,
+
+29
+00:02:23,795 --> 00:02:30,795
+you run automated tests against it. Now the exact tools you use to create those tests are going to depend on
+
+30
+00:02:30,795 --> 00:02:34,795
+your software dev environment. Right, if you've got Microsoft developers who are doing .NET, then you're going
+
+31
+00:02:34,795 --> 00:02:38,795
+to use the tools that are part of Visual Studio to create these automated tests.
+
+32
+00:02:38,795 --> 00:02:41,795
+If you're pushing PowerShell code, you're going to need something like Pester.
+
+33
+00:02:41,795 --> 00:02:44,795
+If you're pushing Python code, they've got automated test engines as well.
+
+34
+00:02:44,795 --> 00:02:49,795
+So you're going to use the matching testing framework. You run the test against the code.
+
+35
+00:02:49,795 --> 00:02:55,795
+If the tests fail, you bounce it back to the developer, you decommission the environment, you destroy it,
+
+36
+00:02:55,795 --> 00:02:58,795
+they've got all the evidence they need to go try again.
+
+37
+00:02:58,795 --> 00:03:04,795
+This isn't any effort on your part. It's all automated. It happens when the developer sits in their Visual Studio
+
+38
+00:03:04,795 --> 00:03:13,795
+and they say go. A miracle occurs. We create the miracle and then we just watch it lovingly from afar.
+
+39
+00:03:13,795 --> 00:03:22,795
+If the tests pass, then you repeat the entire process in the production side of the environment because the tests passed.
+
+40
+00:03:22,795 --> 00:03:27,207
+Alright, where's the weak spot here? Just because the tests pass, am I guaranteed that this is going to work
+
+41
+00:03:27,207 --> 00:03:28,5
+perfectly in production?
+
+42
+00:03:28,5 --> 00:03:29,209
+No.
+
+43
+00:03:29,209 --> 00:03:35,795
+No, I'm not. This is where you have to be willing to accept failure.
+
+44
+00:03:35,795 --> 00:03:42,795
+You get to production, Oh God, we missed something. Fine, roll back, do the whole process again with the last
+
+45
+00:03:42,795 --> 00:03:47,795
+known good version, which is still in source control, which is why we use source control, kids.
+
+46
+00:03:47,795 --> 00:03:53,795
+Go get the last known version, repeat the whole process. How long do you think it would take for most applications?
+
+47
+00:03:53,795 --> 00:04:00,795
+From the time you go oh crap, it's not working, push the abort button, how long do you think it would take to
+
+48
+00:04:00,795 --> 00:04:09,795
+go get the old version of the source code, spin up the environment, and get the old version running in production again?
+
+49
+00:04:09,795 --> 00:04:13,795
+Seconds to minutes. Quick, quick like a bunny. Quick, quick, quick, quick, quick, quick.
+
+50
+00:04:13,795 --> 00:04:18,795
+Because we've automated it all and we know it's going to work because the last time we did it with that version,
+
+51
+00:04:18,795 --> 00:04:21,795
+it worked fine. There's no reason it shouldn't work fine this time.
+
+52
+00:04:21,795 --> 00:04:22,795
+So
+
+53
+00:04:22,795 --> 00:04:30,795
+now that you know it failed in production, you know you forgot to test something in your automated tests.
+
+54
+00:04:30,795 --> 00:04:37,795
+Now production is back up and running, everybody can breathe easy, go fix your tests.
+
+55
+00:04:37,795 --> 00:04:42,795
+Right, okay well that didn't work out so well, so let's make sure that we're going to test for that situation
+
+56
+00:04:42,795 --> 00:04:49,795
+again next time and we'll catch it. So you failed, but you recovered quickly and the learning process,
+
+57
+00:04:49,795 --> 00:04:53,795
+right, because we're supposed to learn from failure. Most places are supposed to have the attitude that it's
+
+58
+00:04:53,795 --> 00:04:59,795
+okay to fail so long as we learn and we don't do it again. Your learning process is going and updating those tests.
+
+59
+00:04:59,795 --> 00:05:04,795
+That's code. The next time you run those tests, the computer is going to do it exactly the same way every
+
+60
+00:05:04,795 --> 00:05:10,795
+single time, and so you have learned and you have improved your automated environment's ability to resist
+
+61
+00:05:10,795 --> 00:05:19,795
+error the next time. And you were only down for a few minutes. Small price to pay because what we do now is
+
+62
+00:05:19,795 --> 00:05:26,795
+we ship it out after spending a ton of time wasted trying to ensure we will have no failure, we have failures
+
+63
+00:05:26,795 --> 00:05:31,795
+anyway and our learning process is everyone standing in a room screaming at each other hoping to God the
+
+64
+00:05:31,795 --> 00:05:35,795
+developers remember to test it the next time, so it doesn't happen again.
+
+65
+00:05:35,795 --> 00:05:40,795
+Well this is a much more codified form of failure. It's a form of failure that leads to improvement.
+
+66
+00:05:40,795 --> 00:05:49,795
+You can point to it. You can chart the number of failures you have and you can chart the number of things you're testing.
+
+67
+00:05:49,795 --> 00:05:58,795
+That's why people like this. Managers can get behind this because they can see the gradual improvement over time.
+
+68
+00:05:58,795 --> 00:06:06,795
+Make sense? So we run our automated tests, and like I said, Elastic Beanstalk is the perfect example of this.
+
+69
+00:06:06,795 --> 00:06:10,795
+You're shaking your head. In disbelief or?
+
+70
+00:06:10,795 --> 00:06:11,795
+No, I don't know anything (inaudible).
+
+71
+00:06:11,795 --> 00:06:19,795
+Oh, Elastic Beanstalk is just that. It's an Amazon service. You point it at your Git repo and your project
+
+72
+00:06:19,795 --> 00:06:26,795
+needs to have a configuration file, not unlike a MOF, different because they have their own format, and you say
+
+73
+00:06:26,795 --> 00:06:33,795
+okay deploy it, go. They spin up some VMs, they read your configuration file, they install packages,
+
+74
+00:06:33,795 --> 00:06:37,795
+they do whatever, they suck your source code over, they put it where it's supposed to go, they register the
+
+75
+00:06:37,795 --> 00:06:43,795
+VM with a load balancer, and they make it available to the public. It takes about 10 seconds.
+
+76
+00:06:43,795 --> 00:06:51,795
+It's magic. And it's the perfect implementation of DevOps and a lot of people will look at that and go well
+
+77
+00:06:51,795 --> 00:06:55,795
+that can't be DevOps because there's no ops, it's just the dev deploying stuff.
+
+78
+00:06:55,795 --> 00:07:04,795
+Yeah, now it's awesome. There is ops. Amazon is the ops. They've just automated human beings out of that sequence
+
+79
+00:07:04,795 --> 00:07:12,795
+because we don't scale well and we make mistakes. And this way, we've taken the one piece of the pie we
+
+80
+00:07:12,795 --> 00:07:22,795
+cannot automate coding and we've made that the highlight feature and everything else is automagic after that.
+
+81
+00:07:22,795 --> 00:07:26,795
+Yeah, but does that mean developers can deploy stuff straight to production?
+
+82
+00:07:26,795 --> 00:07:33,795
+It means that depending on how you set up your pipeline, developers can deploy directly to a test environment,
+
+83
+00:07:33,795 --> 00:07:38,795
+and if all the tests pass, does that mean it automatically goes to production?
+
+84
+00:07:38,795 --> 00:07:46,795
+Well no. It's how you set it up. Maybe if the tests pass, it logs a help desk ticket and says we're ready
+
+85
+00:07:46,795 --> 00:07:52,795
+for deployment and then during your next maintenance window or your next release cycle, after you've had a
+
+86
+00:07:52,795 --> 00:07:56,795
+chance to let your users know this is coming, whatever your process is, you push the button and it all
+
+87
+00:07:56,795 --> 00:08:03,795
+happens automatically from there. So you can still have business process cutouts and for some projects
+
+88
+00:08:03,795 --> 00:08:05,795
+you're going to want that and for other projects you're not going to want that.
+
+89
+00:08:05,795 --> 00:08:10,795
+You're just going to want it to sail automatically through. It's going to depend on the situation and your business needs.
+
+90
+00:08:10,795 --> 00:08:17,795
+So ops still exists, right. People make this mistake that DevOps is no ops and that's not the case.
+
+91
+00:08:17,795 --> 00:08:23,795
+We're still there. We've just automated all of the finicky bits and we've become decision makers because
+
+92
+00:08:23,795 --> 00:08:31,795
+that's what people do well. Right, we're really good at processes and making decisions about those processes.
+
+93
+00:08:31,795 --> 00:08:35,795
+Where we suck is when things get boring. Alright, and we're deploying the app again.
+
+94
+00:08:35,795 --> 00:08:40,795
+And we're just typing, throw that package, and that, oh crap I missed two things and that exploded.
+
+95
+00:08:40,795 --> 00:08:46,795
+Alright, we're not good at consistently doing repetitive things over and over and over and over, but we're really
+
+96
+00:08:46,795 --> 00:08:53,795
+good at those decisions, and so we just take on a human role. Now I've got a couple of companies that I talk
+
+97
+00:08:53,795 --> 00:08:59,795
+to that do this and there's a lot of companies that do it, a couple I talked to that do it really well,
+
+98
+00:08:59,795 --> 00:09:05,795
+and what they found is they've basically removed most of their second tier of IT.
+
+99
+00:09:05,795 --> 00:09:12,795
+They've got a help desk to unlock people's passwords, right, because you do, and then they've got engineers
+
+100
+00:09:12,795 --> 00:09:19,795
+high level, tier three folks who write all this. They write all the code necessary to automate all this and
+
+101
+00:09:19,795 --> 00:59:59,999
+that's about it. That's all they have.
+

@@ -1,0 +1,68 @@
+1
+00:00:00,083 --> 00:00:02,083
+So I've learned a ton
+
+2
+00:00:02,083 --> 00:00:07,083
+from all the IT professionals that I've had the opportunity to work with and talk to, especially at conferences
+
+3
+00:00:07,083 --> 00:00:13,083
+like this, so I'm really happy to be able to give back a little bit and take what I'm good at, writing code all
+
+4
+00:00:13,083 --> 00:00:17,083
+day long without breaking a sweat and kind of share some of that with you and some of the things that I've
+
+5
+00:00:17,083 --> 00:00:22,083
+learned exploring Desired State Configuration. Somebody else that's important for you to meet, the Local
+
+6
+00:00:22,083 --> 00:00:27,083
+Configuration Manager itself. This is what we're going to be focusing on.
+
+7
+00:00:27,083 --> 00:00:29,083
+Now I'm going to be assuming, since this is a deep dive,
+
+8
+00:00:29,083 --> 00:00:34,083
+that everyone's familiar with the basics of DSC and all of those introductory concepts.
+
+9
+00:00:34,083 --> 00:00:36,083
+However, if you do need to fill in some of the
+
+10
+00:00:36,083 --> 00:00:42,083
+gaps, this morning, Jason Helmick had a great talk. Unfortunately, it's passed, but you can track down the
+
+11
+00:00:42,083 --> 00:00:47,083
+video for that and there's a link here for the code that he released after his talk.
+
+12
+00:00:47,083 --> 00:00:52,083
+He's also got another one on Wednesday, have the details there. If you are
+
+13
+00:00:52,083 --> 00:00:57,083
+interested in filling in on some of the details, if you're a little light on those, definitely go check those out.
+
+14
+00:00:57,083 --> 00:01:04,083
+He's covering most of what I'm glossing over. What we're going to do today.
+
+15
+00:01:04,083 --> 00:01:09,083
+We are going to make a very quick run through an overview of Desired State Configuration, just touching on
+
+16
+00:01:09,083 --> 00:01:13,583
+some of the points that are significant from the LCM perspective, then we're going to get into the nitty gritty.
+
+17
+00:01:13,583 --> 00:59:59,999
+So let's jump right into it.
+

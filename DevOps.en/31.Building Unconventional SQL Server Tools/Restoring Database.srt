@@ -1,0 +1,136 @@
+1
+00:00:00,0 --> 00:00:11,37
+So if you spread your transaction log backups across 64 files for some insane reason, it'll work.
+
+2
+00:00:11,37 --> 00:00:20,37
+Okay, now for something really cool. We've only got a few more minutes.
+
+3
+00:00:20,37 --> 00:00:24,37
+Okay, so what this is doing, it's getting me the chain of backups
+
+4
+00:00:24,37 --> 00:00:28,37
+and what I would do is never trust the information that SQL Server gives you.
+
+5
+00:00:28,37 --> 00:00:32,37
+You'll say sure, your boss will say do you have backups of the database, sure.
+
+6
+00:00:32,37 --> 00:00:36,37
+It says so right there. Guess what, that's pulling it out of the database.
+
+7
+00:00:36,37 --> 00:00:39,37
+Something else could have cleaned up those files and deleted them.
+
+8
+00:00:39,37 --> 00:00:44,37
+Just because it says you have a backup, doesn't mean you have a backup.
+
+9
+00:00:44,37 --> 00:00:48,37
+So that's what we have test path for.
+
+10
+00:00:48,37 --> 00:00:56,37
+So now we're going to restore the database. We're going to restore it in an alternate database because you know
+
+11
+00:00:56,37 --> 00:01:01,37
+March 28, that's been a while, so we would lose all our records since then if we restored over the top of it.
+
+12
+00:01:01,37 --> 00:01:07,37
+So I actually have a command here called a MrSqlDbRestoreFileList.
+
+13
+00:01:07,37 --> 00:01:13,37
+It gets the logical and physical filenames so that you can do a move on those to a different database name
+
+14
+00:01:13,37 --> 00:01:20,37
+when you're performing a restore. That's the other thing you want to do when you're writing your commands is
+
+15
+00:01:20,37 --> 00:01:26,37
+have it so you can pipe your commands together so that the output of one can be used for the input of another.
+
+16
+00:01:26,37 --> 00:01:34,37
+So we're going to generate an error here. I read a blog article about this last week.
+
+17
+00:01:34,37 --> 00:01:39,37
+Guess what, the log sequence number that we get from the transaction logs, can't use it in a restore because
+
+18
+00:01:39,37 --> 00:01:43,37
+it gives you a three-part hex decimal number that's separated by colons.
+
+19
+00:01:43,37 --> 00:01:49,37
+You have to split that, you have to convert that to numeric and the first part you just put the 2 numbers
+
+20
+00:01:49,37 --> 00:01:55,37
+in there, the second part has to be 10 digits, so you pad it with 0s, and the third part has to be 5 digits,
+
+21
+00:01:55,37 --> 00:01:59,37
+so you have to pad it with 0s, and then when you're done, you have to join it all back together and then you
+
+22
+00:01:59,37 --> 00:02:05,37
+have the number you can do a restore with. So guess what, I wrote a tool to do that, I wrote a blog article
+
+23
+00:02:05,37 --> 00:02:11,37
+about it and now I can delete that from my memory.
+
+24
+00:02:11,37 --> 00:02:18,37
+So that's this Convert-MrSqlLogSequenceNumber, so that's the converted number.
+
+25
+00:02:18,37 --> 00:02:27,37
+You can also pipe the, when you're searching for a delete, you can pipe it directly to the command.
+
+26
+00:02:27,37 --> 00:02:34,37
+So now we're going to do a restore and we're going to stop at that LSN, the Log Sequence Number.
+
+27
+00:02:34,37 --> 00:02:38,37
+Now if we do a Find-MrSqlDatabaseChange,
+
+28
+00:02:38,37 --> 00:02:46,37
+it doesn't find anything, but this is no longer a valid command because this command searches the transaction log backups.
+
+29
+00:02:46,37 --> 00:02:53,37
+I just created a new database. The new database doesn't have any transaction log backups.
+
+30
+00:02:53,37 --> 00:03:04,37
+So the real way to find out if it worked is to query for the information that was deleted and there it is.
+
+31
+00:03:04,37 --> 00:03:10,37
+So as I told you the other day, every time I write a command or write another command to undo everything,
+
+32
+00:03:10,37 --> 00:03:15,37
+so that's cleaning up my demo. We'll jump back to the slide deck.
+
+33
+00:03:15,37 --> 00:03:20,37
+So I'd like to thank everybody from the PowerShell team that's been around for the last 10 years.
+
+34
+00:03:20,37 --> 00:59:59,999
+We wouldn't be where we are today if it wasn't for those guys. We'd still be the click, next, admin.
+

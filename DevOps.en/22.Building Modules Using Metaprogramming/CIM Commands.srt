@@ -1,0 +1,424 @@
+1
+00:00:00,0 --> 00:00:08,144
+So yesterday, I saw Jeff's session about building, coming up with code to help you build other commands and
+
+2
+00:00:08,144 --> 00:00:15,144
+he had a really, really neat one where he took, he had a little GUI that you could create a command based on
+
+3
+00:00:15,144 --> 00:00:22,144
+you give it a CIM class and you could go in and pick the different properties that you want and it would spin
+
+4
+00:00:22,144 --> 00:00:29,144
+up a command for you that would just be easier to use than Get-CimInstance and with the CIM class and telling
+
+5
+00:00:29,144 --> 00:00:31,144
+it all the properties that you wanted.
+
+6
+00:00:31,144 --> 00:00:40,144
+So what we're going to do and this should look very familiar, so it's going to be almost exactly like the
+
+7
+00:00:40,144 --> 00:00:47,144
+previous one, except the reference scriptblock will actually be, well first let's look at, it might be easier
+
+8
+00:00:47,144 --> 00:00:52,144
+if we take a look at how we're going to define the command, so this will give you an idea of what the domain-specific
+
+9
+00:00:52,144 --> 00:00:56,144
+language will look like. So we're going to create a keyword. Instead of DynCommand, we're going to have
+
+10
+00:00:56,144 --> 00:01:03,144
+CimCommand and CimCommand will take a name and that's going to be the name of the function that we will create.
+
+11
+00:01:03,144 --> 00:01:09,144
+These probably aren't very good because it kind of looks like Get-CimInstance and all that, so you would
+
+12
+00:01:09,144 --> 00:01:20,144
+probably want to rename these. But we will allow inside the domain-specific language, you can give it 0 or more CimParameters.
+
+13
+00:01:20,144 --> 00:01:26,144
+So when you don't define any CimParameters like down here, it's going to actually use Get-CimClass to figure
+
+14
+00:01:26,144 --> 00:01:32,144
+out what all the parameters are and it'll allow all that stuff for you or it'll do all that work for you.
+
+15
+00:01:32,144 --> 00:01:40,144
+But if you do give it parameters, Get-CimService should only have two parameters that it will allow you to
+
+16
+00:01:40,144 --> 00:01:46,144
+filter on and two properties that come back on the objects that are output.
+
+17
+00:01:46,144 --> 00:01:51,144
+But you also tell it which CimClass you want, so the first two are going to use Win32_Service and the last
+
+18
+00:01:51,144 --> 00:01:58,144
+one is going to use Win32_Process. So that's what the domain-specific language is going to look like,
+
+19
+00:01:58,144 --> 00:02:09,144
+so we'll very, very briefly talk about what the---implementing the domain-specific language again looks very, very similar.
+
+20
+00:02:09,144 --> 00:02:14,144
+We make a CimCommand function that's going to act like a keyword.
+
+21
+00:02:14,144 --> 00:02:26,144
+We have a string and a scriptblock. When you look down in the process block, you'll see where just like with
+
+22
+00:02:26,144 --> 00:02:36,144
+the previous command, we take, we create a new parameter dictionary and then we invoke the definition and the
+
+23
+00:02:36,144 --> 00:02:42,144
+only things that or really would be valid inside the definition, well besides other valid PowerShell commands,
+
+24
+00:02:42,144 --> 00:02:47,144
+but the other domain-specific language constructs that would be valid inside there would be the CimClass and
+
+25
+00:02:47,144 --> 00:02:55,144
+the CimParameter keywords. CimParameter is going to do just like the previous parameter from last time would do
+
+26
+00:02:55,144 --> 00:03:01,144
+and CimClass is just going to take it and it'll optionally take a namespace, but this will take that
+
+27
+00:03:01,144 --> 00:03:09,144
+CommandInfo and add the CimClass and CimNamespace information there.
+
+28
+00:03:09,144 --> 00:03:15,144
+So after we've invoked that definition, we do a little bit of error checking.
+
+29
+00:03:15,144 --> 00:03:23,144
+You need to make sure that a CimClass was specified. If not, write an error and the command just won't get generated.
+
+30
+00:03:23,144 --> 00:03:29,144
+If it was, go ahead and, this is kind of, this has two purposes, we're going to Get-CimClass on and we're
+
+31
+00:03:29,144 --> 00:03:33,144
+going to check against that namespace and that actual class. We'll make sure it's valid.
+
+32
+00:03:33,144 --> 00:03:39,144
+If it's not, it's going to give us an error. But we'll use this CimClassInfo just in case the user didn't
+
+33
+00:03:39,144 --> 00:03:48,144
+give any parameters. So if there are no parameters, then we'll go through and call the CimParameter keyword
+
+34
+00:03:48,144 --> 00:03:56,144
+here for each parameter that Get-CimClass is aware of. And then of course, we define the function and export
+
+35
+00:03:56,144 --> 00:04:05,144
+the module member, so that leaves explaining what our ReferenceCommand does and this is where all the work
+
+36
+00:04:05,144 --> 00:04:12,144
+is going to happen whenever you use this method. So now, you notice our DynamicParam block is still really simple.
+
+37
+00:04:12,144 --> 00:04:19,144
+All that work was done when we built the command. But now if you look inside the process block, what this is
+
+38
+00:04:19,144 --> 00:04:26,144
+going to do, I'm not going to go line by line through it, but essentially what this does, we're going to create
+
+39
+00:04:26,144 --> 00:04:32,144
+a hash table that will be splatted to Get-CimInstance and we're going to take a look, I forgot to mention
+
+40
+00:04:32,144 --> 00:04:38,144
+that the reference command now has a parameter that we're defining, it will be on every one of the commands
+
+41
+00:04:38,144 --> 00:04:40,144
+generated from this called ComputerName.
+
+42
+00:04:40,144 --> 00:04:44,144
+This isn't a very good parameter to use because there probably are some CimClasses that have a property
+
+43
+00:04:44,144 --> 00:04:52,144
+called ComputerName, so you would, so I'm seeing, so maybe that's not a bad name to use.
+
+44
+00:04:52,144 --> 00:04:53,144
+(Audience comment) What's that?
+
+45
+00:04:53,144 --> 00:04:55,144
+We'll likely use the name.
+
+46
+00:04:55,144 --> 00:05:00,144
+Okay, so but that is something to think about. You may want to confirm that it's not going to be in a case
+
+47
+00:05:00,144 --> 00:05:11,144
+where you're allowing almost any kind of property, this could cause some kind of a conflict potentially.
+
+48
+00:05:11,144 --> 00:05:13,144
+But this is proof of concept code,
+
+49
+00:05:13,144 --> 00:05:19,144
+so we'll let it ride. But you can provide a ComputerName, so every one of these commands that get generated
+
+50
+00:05:19,144 --> 00:05:25,144
+will have that ComputerName. Think of it as a common parameter.
+
+51
+00:05:25,144 --> 00:05:33,144
+And so, we create a hash table and we take a look and then at that point, we also get the information out of
+
+52
+00:05:33,144 --> 00:05:37,144
+the CommandInfo hash table that's living in module scope, that should have a reference to every one of the
+
+53
+00:05:37,144 --> 00:05:44,144
+dynamic commands we created. And again, we use the key for that is the current command's name.
+
+54
+00:05:44,144 --> 00:05:53,144
+So we get that CimClass and let's see, then we go through each one of the parameters and we know that everybody
+
+55
+00:05:53,144 --> 00:05:59,144
+has a ComputerName, so if the parameter we're looking at is ComputerName, then we had ComputerName to those
+
+56
+00:05:59,144 --> 00:06:04,144
+Get-CimInstance params. We're going to end up splatting that hash table back to Get-CimInstance.
+
+57
+00:06:04,144 --> 00:06:09,144
+So if there's no ComputerName specified, it'll just run on the local system.
+
+58
+00:06:09,144 --> 00:06:15,144
+Then we go through every other parameter and we're going to just build a dynamic WQL statement.
+
+59
+00:06:15,144 --> 00:06:20,144
+And so, we have a little bit of logic there that checks to see the type of the parameter, if it's a string,
+
+60
+00:06:20,144 --> 00:06:26,144
+this is something you would definitely want to work on more. It's not going to be very resilient,
+
+61
+00:06:26,144 --> 00:06:31,144
+but right now it just looks, if it's a string, then it's going to quote it and it's going to change the
+
+62
+00:06:31,144 --> 00:06:43,144
+operator to like and then it'll end up, and this is to build the WHERE clause, so if the user doesn't provide
+
+63
+00:06:43,144 --> 00:06:51,144
+any parameters, then it's just going to call it without any WHERE clause, there would be no where conditions.
+
+64
+00:06:51,144 --> 00:06:59,144
+So then down here is where it actually takes, it looks at all of the parameters that are valid for this thing
+
+65
+00:06:59,144 --> 00:07:06,144
+that are all of the dynamic parameters and then it ends up just building a select statement and from the
+
+66
+00:07:06,144 --> 00:07:12,144
+CimClass and it does not, so yeah I just now realized this, this isn't taking the namespace into account.
+
+67
+00:07:12,144 --> 00:07:22,144
+So yeah, don't do anything outside of Root CIM v2 right now. But then it takes our CimInstance param hash
+
+68
+00:07:22,144 --> 00:07:29,144
+table that we defined earlier, it adds this to the query parameter and then it just splats that to Get-CimInstance.
+
+69
+00:07:29,144 --> 00:07:49,144
+So let's read this in and see if it works. So if we Get-Module or Get-Command -Module $DynamicModule,
+
+70
+00:07:49,144 --> 00:07:57,144
+you can see that we have our three commands. Remember Get-CimService, the first one, Get-Command
+
+71
+00:07:57,144 --> 00:08:08,144
+Get-CimService -Syntax, the first one only had we told it we wanted the state and the name, so that is all that's there.
+
+72
+00:08:08,144 --> 00:08:17,144
+If we call Get-CimService, you'll see. Now what's happening here, and as a matter of fact,
+
+73
+00:08:17,144 --> 00:08:27,144
+let's actually filter this real quick, so State is running. So you can see that we were able to,
+
+74
+00:08:27,144 --> 00:08:32,144
+it's working and it really is only returning name and state. It's PowerShell's formatting system is kicking in
+
+75
+00:08:32,144 --> 00:08:40,144
+and for a service if you did a normal Get-CimService or Get-CimInstance on Win32_Service, all of these
+
+76
+00:08:40,144 --> 00:08:47,144
+properties would be returned by default. We could very easily go back in and add these if we wanted to,
+
+77
+00:08:47,144 --> 00:08:56,144
+but the neat thing is Get-CimService2, that was the one that we actually we told it to just let it put all
+
+78
+00:08:56,144 --> 00:09:10,144
+the valid parameters in there. So we should be able to come in and do something like where -State is stopped,
+
+79
+00:09:10,144 --> 00:09:15,144
+oop, hold on, something else you might want to do is transform the parameters as they're put in so that you
+
+80
+00:09:15,144 --> 00:09:31,144
+replace asterisks with the WQL and SQL wildcard. But you can say where it's stopped and start mode is auto select,
+
+81
+00:09:31,144 --> 00:09:40,144
+so and let's actually take that and run it against local host. And so you can see that you can take this
+
+82
+00:09:40,144 --> 00:09:46,144
+command that we spun up with just a few lines of code. I mean behind the scenes it took a decent amount of work,
+
+83
+00:09:46,144 --> 00:10:00,144
+but we were able to with just, what was that three lines of code for the actual command definition down here,
+
+84
+00:10:00,144 --> 00:10:07,144
+with that we were able to have a command generated that we can perform filtering, we can perform it against
+
+85
+00:10:07,144 --> 00:10:16,144
+any number of machines that we would like. And there is one more thing I wanted to show before we move on
+
+86
+00:10:16,144 --> 00:10:24,144
+and that is if we come back in this reference scriptblock and this is just to kind of, this is like an idea,
+
+87
+00:10:24,144 --> 00:10:30,144
+maybe you get an idea of you want IntelliSense to be added for some of the properties, so that kind of gets
+
+88
+00:10:30,144 --> 00:10:38,144
+back to that idea of you make improvements and you want to use them so that every command gets to come along
+
+89
+00:10:38,144 --> 00:10:45,144
+for the ride. So when we look somewhere I define the CimParameter, there it is.
+
+90
+00:10:45,144 --> 00:10:50,144
+So inside the CimParameter, I have this commented out because it's actually pretty inefficient because
+
+91
+00:10:50,144 --> 00:10:56,144
+there's not very many properties that fit on this, but what we're going to do is every parameter that comes
+
+92
+00:10:56,144 --> 00:11:02,144
+through, we're going to add an argument completer attribute on it, and inside the argument attribute,
+
+93
+00:11:02,144 --> 00:11:08,144
+it's a whole bunch of, and to be honest, it's only going to work on certain properties.
+
+94
+00:11:08,144 --> 00:11:13,144
+What we end up doing is using Get-CimClass to look up whatever the current class is and it looks for any
+
+95
+00:11:13,144 --> 00:11:19,144
+properties that have a qualifier, a value map, which I think and it appears to work.
+
+96
+00:11:19,144 --> 00:11:25,144
+It's kind of WMIs way of having, telling you what the valid values are.
+
+97
+00:11:25,144 --> 00:11:33,144
+So we just uncommented that. That kind of mimics adding that functionality and now we can call Get-CimService
+
+98
+00:11:33,144 --> 00:11:37,144
+and we look at State and you can see that we now have IntelliSense added to it.
+
+99
+00:11:37,144 --> 00:11:41,144
+So that was Get-CimService. It's the same way with Get-CimService2.
+
+100
+00:11:41,144 --> 00:11:50,144
+State, well status has it as well, I guess. Let's see the StartMode, I don't remember, yep, StartMode.
+
+101
+00:11:50,144 --> 00:11:56,144
+So you get IntelliSense for, this made it essentially for anything that has that value map qualifier and we
+
+102
+00:11:56,144 --> 00:12:06,144
+never did look at Get-CimProcess, but it's there too. So anyway, I don't know, does that look like it could
+
+103
+00:12:06,144 --> 00:12:07,144
+be useful for anything?
+
+104
+00:12:07,144 --> 00:12:08,144
+Yeah.
+
+105
+00:12:08,144 --> 00:12:09,144
+Alright.
+
+106
+00:12:09,144 --> 00:59:59,999
+Absolutely.
+

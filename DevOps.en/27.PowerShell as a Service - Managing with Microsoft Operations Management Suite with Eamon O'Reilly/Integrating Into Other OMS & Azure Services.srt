@@ -1,0 +1,152 @@
+1
+00:00:00,0 --> 00:00:11,388
+Cool. I know we're running out of time, so I'm going to jump just into a last couple of slides.
+
+2
+00:00:11,388 --> 00:00:16,388
+One of the things that obviously there's real power in the service itself and that's where you can do all of
+
+3
+00:00:16,388 --> 00:00:20,388
+your automation, all your PowerShell, all your configurations inside of service, but you'll start to see
+
+4
+00:00:20,388 --> 00:00:25,388
+we've actually integrated it into a lot of the other OMS services as well.
+
+5
+00:00:25,388 --> 00:00:29,388
+And so as you're starting to do that monitoring and all that logging, it means you can actually now trigger
+
+6
+00:00:29,388 --> 00:00:35,388
+your automation so that if this action happens, which you're monitoring, maybe you want to escalate it to a
+
+7
+00:00:35,388 --> 00:00:40,388
+service disk or maybe you want to restart the VM. We're all depending on that process, you can now tie the
+
+8
+00:00:40,388 --> 00:00:46,388
+insides with the action together inside the services. Similarly, with site recovery, you can do pre-automation
+
+9
+00:00:46,388 --> 00:00:52,388
+scripts to run, some post automation scripts to make sure that failover actually happens and that's first
+
+10
+00:00:52,388 --> 00:00:54,388
+class integrated into the service.
+
+11
+00:00:54,388 --> 00:00:59,388
+And then there's a bunch of integration into Azure as well. So if you create Azure alert today, you can actually
+
+12
+00:00:59,388 --> 00:01:03,388
+say when this alert fires, I want to call a webhook. We didn't go into the webhooks, but we have webhooks
+
+13
+00:01:03,388 --> 00:01:07,388
+available on our service as well. That basically allows you to call them.
+
+14
+00:01:07,388 --> 00:01:12,388
+But then if you do anything on Azure VMs, we have rich integration where it says run this runbook.
+
+15
+00:01:12,388 --> 00:01:15,388
+It's not just a webhook, so we've kind of first classed that experience as well.
+
+16
+00:01:15,388 --> 00:01:20,388
+Obviously I mentioned earlier, it is because we're a service, it really makes it easy for you to extend it as well,
+
+17
+00:01:20,388 --> 00:01:25,388
+so you can write your own modules, they're going to work in the service, you can call our SDK,
+
+18
+00:01:25,388 --> 00:01:30,388
+you can leverage Azure resource manager, all of those capabilities are built into the service and allows you
+
+19
+00:01:30,388 --> 00:01:36,388
+to build on top of that and extend. So if you haven't tried it out, definitely do try out our SDK.
+
+20
+00:01:36,388 --> 00:01:42,388
+For the ISE add-on, I gave a link to GitHub here, so you can actually see where the source code lives if you
+
+21
+00:01:42,388 --> 00:01:46,388
+want to use it. I'll see if I can open that up.
+
+22
+00:01:46,388 --> 00:01:48,388
+But while I do,
+
+23
+00:01:48,388 --> 00:01:56,388
+let me just jump in real quick and show you what the ISE looks like because I think it's useful to see what it does.
+
+24
+00:01:56,388 --> 00:02:03,388
+So you can see here I've actually logged in to the service, I can pick my subscription if you had multiple ones
+
+25
+00:02:03,388 --> 00:02:07,388
+and this, if you remember my RM account is the one I'm actually pointing to here.
+
+26
+00:02:07,388 --> 00:02:12,388
+So that's my automation account and it just enumerates all of the accounts inside the service.
+
+27
+00:02:12,388 --> 00:02:20,388
+But inside if your now all those runbooks are available to you, and so you can just open up one and just start
+
+28
+00:02:20,388 --> 00:02:25,388
+to reuse it. Let's see if I can. So this is a very simple one.
+
+29
+00:02:25,388 --> 00:02:29,388
+I was testing some output, but these could be any PowerShell, so you get all of the benefits of this,
+
+30
+00:02:29,388 --> 00:02:33,388
+and so you can author inside of here, but then you can also throw in some key vault stuff.
+
+31
+00:02:33,388 --> 00:02:37,388
+There's almost anything you want to do you would just normally do in PowerShell.
+
+32
+00:02:37,388 --> 00:02:43,388
+Author it here and you can test it, but then you can upload it to the draft, so you can see this is updated
+
+33
+00:02:43,388 --> 00:02:48,388
+locally, so I can just upload it directly into the service. And now it's in the service, but I can test it
+
+34
+00:02:48,388 --> 00:02:54,388
+here obviously just running it, but then I can also test it directly up in Azure because we put it into the service,
+
+35
+00:02:54,388 --> 00:02:59,388
+and so the identical script you author and tested here, you can push it to the service and just test it
+
+36
+00:02:59,388 --> 00:03:07,388
+directly inside of here and just off it goes. One thing I mentioned is you can test it either in Azure or if
+
+37
+00:03:07,388 --> 00:03:11,388
+you have a hybrid, you can cut it there as well. Alright, so let me jump out of
+
+38
+00:03:11,388 --> 00:59:59,999
+here because I know we want to just finish up.
+

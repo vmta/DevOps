@@ -1,0 +1,160 @@
+1
+00:00:00,0 --> 00:00:04,702
+Alright, so I'm going to be using splatting, which for those that aren't familiar, basically we have a hash
+
+2
+00:00:04,702 --> 00:00:10,702
+table, each one of these represents an argument that we're going to pass to a cmdlet, so in this case,
+
+3
+00:00:10,702 --> 00:00:18,702
+we have an InFile argument, which has a value of \\.\PHYSICALDRIVE0 and when we do the @ sign in front of the
+
+4
+00:00:18,702 --> 00:00:23,702
+props variable, that's going to just splat that out there and assume that each one of those items in the
+
+5
+00:00:23,702 --> 00:00:28,702
+hash table represent an argument. So just for readability purposes, we're doing it that way.
+
+6
+00:00:28,702 --> 00:00:34,702
+So Invoke-ForensicDD takes a few different arguments. So InFile is the file that we want to read from,
+
+7
+00:00:34,702 --> 00:00:40,702
+Offset is where we want to start reading from, BlockSize is how many blocks or how many bytes at a time we
+
+8
+00:00:40,702 --> 00:00:44,702
+want to read, and then Count is how many of those blocks that we want to read.
+
+9
+00:00:44,702 --> 00:00:49,702
+In this case, we're going to start at 0, read the first block, which represents the Master Boot Record,
+
+10
+00:00:49,702 --> 00:00:53,702
+and then we're going to output in text so that we can kind of see what it looks like.
+
+11
+00:00:53,702 --> 00:01:00,702
+So this is the master boot record for this hard drive, the physical drive 0 on this virtual machine.
+
+12
+00:01:00,702 --> 00:01:04,702
+You can kind of see down here there's some error messages, invalid partition tables, so on, and so forth.
+
+13
+00:01:04,702 --> 00:01:08,702
+This guy is the partition table, but that doesn't really make sense.
+
+14
+00:01:08,702 --> 00:01:12,702
+I don't know about you, but I don't really want to look at that, and so what we can do is we can take that
+
+15
+00:01:12,702 --> 00:01:14,702
+capability where we're reading that first
+
+16
+00:01:14,702 --> 00:01:18,702
+sector and we're just going to do Get-ForensicMasterBootRecord,
+
+17
+00:01:18,702 --> 00:01:22,702
+and so now I've interpreted it for you, right. You have a disk signature in there.
+
+18
+00:01:22,702 --> 00:01:27,702
+This is the code section. It's actual like boot code that's going to be running when you first start up your
+
+19
+00:01:27,702 --> 00:01:31,702
+system, and then there's three NTFS partitions on this hard drive.
+
+20
+00:01:31,702 --> 00:01:39,702
+Okay, so going forward, we can then do like, for instance, Select-Object -ExpandProperty PartitionTable.
+
+21
+00:01:39,702 --> 00:01:45,702
+There's a PartitionTable array, which is this guy. We just want to see the actual contents of that array,
+
+22
+00:01:45,702 --> 00:01:50,702
+and so there's partition objects. So NTFS we see that this one is bootable.
+
+23
+00:01:50,702 --> 00:01:59,702
+It starts at sector 2048, this is all decimal, and goes through to whatever that sector is 1026047.
+
+24
+00:01:59,702 --> 00:02:05,702
+Okay, so another way to do this same concept is there's Get-ForensicPartitionTable, so kind of skipping past
+
+25
+00:02:05,702 --> 00:02:11,702
+that select statement there and it does just the same thing as the one to show, we'll see, I don't know,
+
+26
+00:02:11,702 --> 00:02:13,702
+Ctrl+I, I think. Question here. Yes.
+
+27
+00:02:13,702 --> 00:02:18,702
+What's the best way to bind to enumerate all of the like physical drive strings?
+
+28
+00:02:18,702 --> 00:02:26,702
+Is there like a WMI class? Yeah, there's a WMI class. I forget what it is, like Win32 physical disk or
+
+29
+00:02:26,702 --> 00:02:30,702
+something like that. Yeah, okay. It's in the help File because I couldn't figure out how…
+
+30
+00:02:30,702 --> 00:02:37,702
+Oh yeah, it's in the help. When I started doing that, I have Jared and I said not all drives are callback, right.
+
+31
+00:02:37,702 --> 00:02:46,702
+I have CND. Yeah, and so to clarify the drive, right now we're looking at the physical disks, CND would be
+
+32
+00:02:46,702 --> 00:02:52,702
+the logical volumes, so we're going to get to that point in a second, but for the master boot record, in particular,
+
+33
+00:02:52,702 --> 00:02:58,702
+we're not dealing with the volumes yet because we're trying to figure out what those are.
+
+34
+00:02:58,702 --> 00:03:03,702
+Okay, so now I want to, I'm going to skip over this one command, but in general what we're going to do here
+
+35
+00:03:03,702 --> 00:03:06,702
+is we're going to, this was just showing, the command above was just
+
+36
+00:03:06,702 --> 00:03:13,702
+showing. We're going to take the bootable partition and we're going to save that to a variable, so that's simple enough.
+
+37
+00:03:13,702 --> 00:03:18,702
+Alright, so that's what we're doing with the master boot record, right, so we had a string of 512 bytes.
+
+38
+00:03:18,702 --> 00:03:20,702
+They're just garbly
+
+39
+00:03:20,702 --> 00:03:24,702
+GIF, we don't know what they were, but then we actually parse them out and so that a human could understand
+
+40
+00:03:24,702 --> 00:59:59,999
+what they were, right Get-ForensicMasterBootRecord.
+

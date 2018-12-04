@@ -1,0 +1,28 @@
+1
+00:00:11,5 --> 00:00:15,5
+So welcome everyone to the last session of the first day. You made it!
+
+2
+00:00:15,5 --> 00:00:20,5
+I know it's been a very interesting day, a very exciting day. Probably all a little tired and eager to get
+
+3
+00:00:20,5 --> 00:00:27,5
+out and for the meet and greets. (Audience comment) I'm glad everyone's ready for this.
+
+4
+00:00:27,5 --> 00:00:28,5
+We're going to do a little
+
+5
+00:00:28,5 --> 00:00:30,5
+bit of a deep dive on the LCM.
+
+6
+00:00:30,5 --> 00:00:35,5
+My name is Adam Platt. I'm a software engineer in the IT world, which gives me a little bit of an
+
+7
+00:00:35,5 --> 00:59:59,999
+interesting perspective on things. I am used to working at software companies and not seeing the IT end of things,
+

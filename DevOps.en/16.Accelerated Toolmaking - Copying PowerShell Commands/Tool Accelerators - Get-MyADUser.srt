@@ -1,0 +1,220 @@
+1
+00:00:00,0 --> 00:00:09,223
+let's run, take a look at Get-MyADUser. So I wrote this function.
+
+2
+00:00:09,223 --> 00:00:22,223
+This is a, let's just hide the help here, and this was created using my copy command for Get-ADUser and it
+
+3
+00:00:22,223 --> 00:00:31,223
+automatically got all of the default parameters because from being dynamic.
+
+4
+00:00:31,223 --> 00:00:39,223
+Most of these should look the same, except I made a few changes, one, I wanted to be able to search for users in
+
+5
+00:00:39,223 --> 00:00:49,223
+multiple OUs. The default for Get-ADUser, the search base only takes a single string.
+
+6
+00:00:49,223 --> 00:00:53,223
+I wanted multiple locations, so I modified
+
+7
+00:00:53,223 --> 00:01:03,223
+if you can see there and put in take an array. Why not? Who's in charge here, you know?
+
+8
+00:01:03,223 --> 00:01:17,223
+And I also wanted the ability to exclude user accounts by some pattern.
+
+9
+00:01:17,223 --> 00:01:20,223
+And you'll see I'll do a demo here, so you can see how that works.
+
+10
+00:01:20,223 --> 00:01:31,223
+Everything else is pretty much copied over from Get-ADUser. What I had to do was remove the parameters that
+
+11
+00:01:31,223 --> 00:01:45,223
+Get-ADUser doesn't know about like exclude. Now it knows about search base, but what I ended up doing here,
+
+12
+00:01:45,223 --> 00:01:51,223
+now this is not a proxy function, this is a wrapper, so here's a reason and one of the reasons I did this was
+
+13
+00:01:51,223 --> 00:01:57,223
+because notice I have a foreach that's basically looping through
+
+14
+00:01:57,223 --> 00:02:07,223
+the collection of OUs. That would be really hard to do in that step-able pipeline thing trying to piece that out.
+
+15
+00:02:07,223 --> 00:02:17,223
+This is much easier, at least for me. (Audience question) Actually, I think I wrote this someone posted
+
+16
+00:02:17,223 --> 00:02:23,223
+something in a forum and they were trying to search for users in multiple locations.
+
+17
+00:02:23,223 --> 00:02:29,223
+Why wouldn't they just not specify the script base? Because they didn't want to search the entire Active
+
+18
+00:02:29,223 --> 00:02:38,223
+Directory OU, so they've got 100,000 users, but all they care about, the user could be in one of three OUs,
+
+19
+00:02:38,223 --> 00:02:45,223
+which limits them to maybe only searching a 1,000 user accounts, so they wanted a way to fine tune and
+
+20
+00:02:45,223 --> 00:02:52,223
+restrict where they searched. Does this work meaningfully different than simply putting my script bases in
+
+21
+00:02:52,223 --> 00:02:56,223
+strings and then iterating in a foreach block and calling Get-ADUser?
+
+22
+00:02:56,223 --> 00:03:04,223
+You could do that too. Exactly. But that requires you to have more knowledge of how PowerShell were to work.
+
+23
+00:03:04,223 --> 00:03:10,223
+This runs faster than something like that or if its… I don't know if it necessarily runs faster,
+
+24
+00:03:10,223 --> 00:03:18,223
+but it's easier to type, to run the command because I just have to run Get-MyADUser and specify the parameters.
+
+25
+00:03:18,223 --> 00:03:24,223
+So all I'm doing is hiding all of, yes, what you could do manually.
+
+26
+00:03:24,223 --> 00:03:30,223
+There's not necessarily a performance gain in terms of getting the end result.
+
+27
+00:03:30,223 --> 00:03:32,223
+It's just a matter of
+
+28
+00:03:32,223 --> 00:03:38,223
+ease of use for whoever might need to use this tool.
+
+29
+00:03:38,223 --> 00:03:49,223
+So actually let's see if this is going to work. So let's dot source that.
+
+30
+00:03:49,223 --> 00:03:54,223
+Okay, so I had, now this does require the Active Directory module.
+
+31
+00:03:54,223 --> 00:04:03,223
+Now if I look at help for Get-ADUser, the original command, you'll notice original parameter for exclude, right.
+
+32
+00:04:03,223 --> 00:04:16,223
+Nothing up my fancy sleeves here. But my version, my copy version, does have and I added help for it,
+
+33
+00:04:16,223 --> 00:04:23,223
+which you should be doing, and you can also, I'm going to compare some parameters.
+
+34
+00:04:23,223 --> 00:04:32,223
+So I'm going to get the parameters for Get-ADUser and my Get-MyADUser.
+
+35
+00:04:32,223 --> 00:04:37,223
+It's another way if you want to prove what's different between two things.
+
+36
+00:04:37,223 --> 00:04:49,223
+Alright, so exclude is the only difference. Although, I know for a fact that search base is different.
+
+37
+00:04:49,223 --> 00:04:52,223
+So search base in the original is just a string and
+
+38
+00:04:52,223 --> 00:04:59,223
+in my version you can see it's a collection of strings. That's just kind of to prove things.
+
+39
+00:04:59,223 --> 00:05:08,223
+So I'm going to build a hash table. I want to filter on, I'm going to find all user accounts where the department
+
+40
+00:05:08,223 --> 00:05:15,223
+is equal to engineering. I want to search in either of the employees or the research engineering locations
+
+41
+00:05:15,223 --> 00:05:27,223
+and that's it. And I want to get the title and department back. So let's, this is not using the exclude piece.
+
+42
+00:05:27,223 --> 00:05:37,223
+If I were to do this and splat that to Get-ADUser that fails because the search base says hey you're
+
+43
+00:05:37,223 --> 00:05:43,223
+trying to tell me to do more than I'm designed to do.
+
+44
+00:05:43,223 --> 00:06:00,223
+Fine. Be that way. I'm in control. There's the result. So I searched using Get-ADUser and I wrote my own
+
+45
+00:06:00,223 --> 00:06:01,223
+little code
+
+46
+00:06:01,223 --> 00:06:06,223
+very quickly that, when I made the copy of the command, the only code I had come up with was really just that
+
+47
+00:06:06,223 --> 00:06:12,223
+little bit in the process block. All the other boring mundane stuff, which you have to have anyway,
+
+48
+00:06:12,223 --> 00:06:15,223
+I copied over.
+
+49
+00:06:15,223 --> 00:06:24,223
+So and that ran pretty quickly considering I have like 5,000 plus user accounts in my domain, and if you want
+
+50
+00:06:24,223 --> 00:06:37,223
+to see how the exclude works, so I want to find all users in the domain, except, oh so the exclude is
+
+51
+00:06:37,223 --> 00:06:48,223
+actually for a particular container, I want to find all users that have a name like Joseph, but skip anything
+
+52
+00:06:48,223 --> 00:07:02,223
+that's in a testing OU because Get-ADUser has no way to do that and that's actually probably a more typical use case.
+
+53
+00:07:02,223 --> 00:07:12,223
+I want to find something, but I want to ignore, there's no easy way to do that with Get-ADUser.
+
+54
+00:07:12,223 --> 00:07:22,223
+It would take a long complicated command, so but I put that in.
+
+55
+00:07:22,223 --> 00:59:59,999
+Another before and after.
+

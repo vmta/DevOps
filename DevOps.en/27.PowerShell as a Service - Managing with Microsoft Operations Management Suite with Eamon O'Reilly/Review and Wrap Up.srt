@@ -1,0 +1,48 @@
+1
+00:00:00,0 --> 00:00:04,809
+So here's kind of the last slide. It's really about just what were the session objectives.
+
+2
+00:00:04,809 --> 00:00:10,809
+Hopefully, you learned about what we're doing, kind of where we're heading, how you can bring a lot of your PowerShell forward.
+
+3
+00:00:10,809 --> 00:00:15,809
+But I did want to mention as well that we have some customer days going on.
+
+4
+00:00:15,809 --> 00:00:17,809
+Ed maybe can talk about those.
+
+5
+00:00:17,809 --> 00:00:25,809
+So we've got customer days where people can come in. We actually have two of them scheduled and if you're
+
+6
+00:00:25,809 --> 00:00:32,809
+within the US, yeah just send me or Eamon an email and we'll see if we can get you into it.
+
+7
+00:00:32,809 --> 00:00:37,809
+It's for US only, but if you're internationally and you're willing to pay for your travel, then we'll put
+
+8
+00:00:37,809 --> 00:00:41,809
+you up for hearing that as well. The last thing is the
+
+9
+00:00:41,809 --> 00:00:49,809
+OMS blog, so blogs.technet msoms and that's where a lot of this stuff is and where a lot of it's going to be going forward.
+
+10
+00:00:49,809 --> 00:00:56,809
+And so, thank you. And with that, I've got some stickers, if you guys want to slide by, grab these as we
+
+11
+00:00:56,809 --> 00:00:58,809
+clear out the room for the next people.
+
+12
+00:00:58,809 --> 00:59:59,999
+Alright, thanks guys.
+

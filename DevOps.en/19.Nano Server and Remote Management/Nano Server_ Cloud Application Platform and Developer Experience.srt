@@ -1,0 +1,480 @@
+1
+00:00:00,0 --> 00:00:08,232
+Okay, so snapping back to where we were here. The point here is to support applications that are born in the cloud.
+
+2
+00:00:08,232 --> 00:00:12,232
+We're not trying to bring the legacy Win32 apps to Nano Server as the first tenant.
+
+3
+00:00:12,232 --> 00:00:21,232
+It's to support a new generation of application and tool. A subset of the Win32 APIs exist, again, CoreCLR,
+
+4
+00:00:21,232 --> 00:00:28,232
+PaaS, .NET and we want to have this kind of available as an OS everywhere, so you can install Nano as a host
+
+5
+00:00:28,232 --> 00:00:34,232
+OS onto bare metal, you can install it as a guest OS on a VM, you can install it within Windows Server
+
+6
+00:00:34,232 --> 00:00:41,232
+containers, Hyper-VM containers, run it in Azure, you can run it nested, you can do whatever you want.
+
+7
+00:00:41,232 --> 00:00:46,232
+With other hypervisors we want it to kind of be a utility more than anything else.
+
+8
+00:00:46,232 --> 00:00:54,232
+And future additions, as far as completion go, DSC will be feature complete in the next release of Nano server,
+
+9
+00:00:54,232 --> 00:01:00,232
+so all the functionality that those of you that has played with it seems to be missing or not fully cooked
+
+10
+00:01:00,232 --> 00:01:06,232
+kind of the similar way that we did with WMF previews, what was in previous TPs was experimental, what'll be in
+
+11
+00:01:06,232 --> 00:01:08,232
+the next TP should be more lock down
+
+12
+00:01:08,232 --> 00:01:15,232
+and every day, we're getting more and more resources that are working with Nano out-of-the-box.
+
+13
+00:01:15,232 --> 00:01:23,232
+So we run into one issue when I try to join the domain. Are we allowed to be calling the Nano Server first
+
+14
+00:01:23,232 --> 00:01:30,232
+and then try the domain join or will it be the same issue like when you need to join in like new create an image.
+
+15
+00:01:30,232 --> 00:01:37,232
+Yeah, the question is right now with Nano Server you have to join the domain before you bring it up and the
+
+16
+00:01:37,232 --> 00:01:41,232
+question is whether you will be able to online domain join. In a future release of Nano Server, you will be
+
+17
+00:01:41,232 --> 00:01:50,232
+able to do online domain joining. Will it be like on the final version of the 2016 or will it even (inaudible)?
+
+18
+00:01:50,232 --> 00:01:56,232
+I can't answer that question. It's going to be in an upcoming release.
+
+19
+00:01:56,232 --> 00:02:03,232
+Okay, so dev experience. I heard some people in the front row talking about writing C# code and I love hearing that.
+
+20
+00:02:03,232 --> 00:02:08,232
+So let's talk a little bit about what the developer experience is like.
+
+21
+00:02:08,232 --> 00:02:12,232
+And before I do that, so I should really ask that who's worked with PowerShell Node?
+
+22
+00:02:12,232 --> 00:02:18,232
+How many people have written C# code in the last 12 to 24 months?
+
+23
+00:02:18,232 --> 00:02:27,232
+That half of the room. Okay. Was there a sign out front? Cool, so here's the point with being able to take
+
+24
+00:02:27,232 --> 00:02:32,232
+what developer knowledge you have and take it to Nano Server. We don't want to redefine the developer
+
+25
+00:02:32,232 --> 00:02:38,232
+experience around a lightweight product. We want to take the best developer experience and bring that part
+
+26
+00:02:38,232 --> 00:02:41,232
+forward to Nano Server. So with that,
+
+27
+00:02:41,232 --> 00:02:48,232
+apps need to remove references to what's there, sorry, what is not in Nano Server and 32-bit references,
+
+28
+00:02:48,232 --> 00:02:54,232
+and developers can use Visual Studio 2015 Update 1 in the Windows SDK to target Nano Server today.
+
+29
+00:02:54,232 --> 00:03:00,232
+This functionality has been around since TP3, but it's significantly better in the past few months.
+
+30
+00:03:00,232 --> 00:03:07,232
+So first of all, the latest version of PowerShell WIN 10 or server 2016 TP, the latest WMF, if you're using
+
+31
+00:03:07,232 --> 00:03:12,232
+a VM, you make sure Hyper-V is installed, connect to that Nano Server machine,
+
+32
+00:03:12,232 --> 00:03:19,232
+In Visual Studio Update 1, you do a custom install, mark those 2 additional options, and then this link,
+
+33
+00:03:19,232 --> 00:03:25,232
+which I will have available a couple of links at the end that will get you towards all this stuff.
+
+34
+00:03:25,232 --> 00:03:33,232
+We'll get you the details, the files that you need to load into Visual Studio, the v6 file, and then you run that,
+
+35
+00:03:33,232 --> 00:03:38,232
+follow the instructions to install it, import the module, and you're good to go, and start creating a Nano project.
+
+36
+00:03:38,232 --> 00:03:45,232
+And I know people previously prior to the TP3 timeframe had started pulling DLLs off of their Nano Server VMs
+
+37
+00:03:45,232 --> 00:03:50,232
+and trying to fuddle with it, but this is really a first class dev experience now and we look to refine it
+
+38
+00:03:50,232 --> 00:03:56,232
+and get it to the point where it is just like developing for any other skew of Windows.
+
+39
+00:03:56,232 --> 00:04:07,232
+Yeah. Does this just pertain to unmanaged code or does it also pertain to anything .NET?
+
+40
+00:04:07,232 --> 00:04:09,232
+So the question is whether it pertains to unmanaged or managed code as well.
+
+41
+00:04:09,232 --> 00:04:17,232
+It pertains to a subset of .NET because not everything is there, but the intent here is that as we go through
+
+42
+00:04:17,232 --> 00:04:24,232
+this dev experience stuff, you would be able to explore a lot easier on your dev box what is and isn't available,
+
+43
+00:04:24,232 --> 00:04:29,232
+as opposed to blindly targeting and finding the APIs in there.
+
+44
+00:04:29,232 --> 00:04:39,232
+Okay, so it's more of like an API check versus allowing you to target .NET Core firmly right?
+
+45
+00:04:39,232 --> 00:04:47,232
+As we work towards a more holistic dev experience, yeah, you'll be able to say specifically target .NET Core.
+
+46
+00:04:47,232 --> 00:04:54,232
+The intent now is to kind of help you in exploring what it is and isn't there, and in addition to that,
+
+47
+00:04:54,232 --> 00:04:58,232
+there's an API port tool that the .NET team runs and that's on GitHub.
+
+48
+00:04:58,232 --> 00:05:04,232
+You can pull it down and say check my whatever you're working with, whatever file it is and see whether or
+
+49
+00:05:04,232 --> 00:05:12,232
+not this has APIs that are not CoreCLR compliant, or .NET Core, or ASP.NET compliant.
+
+50
+00:05:12,232 --> 00:05:20,232
+So project templates, full IntelliSense experience, your little error squiggles, full remote debugging experience.
+
+51
+00:05:20,232 --> 00:05:28,232
+If you download that thing that was linked and run that PowerShell script and all the info is on the Nano Server blog.
+
+52
+00:05:28,232 --> 00:05:34,232
+It's with the last blog post from 2015, if you're looking for it, and it kind of outlines the process.
+
+53
+00:05:34,232 --> 00:05:40,232
+And then also for this half of the room, there is like a Hello World example in C# that you can run,
+
+54
+00:05:40,232 --> 00:05:49,232
+execute on your Nano Server and I think it's like eight or nine steps should take you five minutes.
+
+55
+00:05:49,232 --> 00:05:56,232
+Any questions about dev experience before we move on? Great. So reverse forwarders.
+
+56
+00:05:56,232 --> 00:06:02,232
+Show of hands, who knows what this? Okay. Ten people. Alright.
+
+57
+00:06:02,232 --> 00:06:10,232
+So as we know, a missing DLL will result in an app failing to run, even if everything else that you require is present.
+
+58
+00:06:10,232 --> 00:06:16,232
+We need it to provide a way to run existing payloads without having to recompile for Nano Server.
+
+59
+00:06:16,232 --> 00:06:23,232
+So this doesn't eliminate the need to refactor code. This is merely meant as a stepping stone and having a
+
+60
+00:06:23,232 --> 00:06:30,232
+fully Nano Server compliant product. And so, there's a bunch of stuff that runs with reverse forwarders today.
+
+61
+00:06:30,232 --> 00:06:37,232
+Here's a sample of some of them and some of those versions have incremented as we've gone on and we're letting
+
+62
+00:06:37,232 --> 00:06:46,232
+up more and more that the intent here is to try and have these applications and these tools work directly on Nano
+
+63
+00:06:46,232 --> 00:06:54,232
+without the need for reverse forwards, like I said, it's a stepping stone, but they are there.
+
+64
+00:06:54,232 --> 00:06:57,232
+And so here's the colorful part. So let's talk about some of improvements.
+
+65
+00:06:57,232 --> 00:07:03,232
+I know some of you will have seen this, but let's talk about what Nano Server, what benefits there are graphically.
+
+66
+00:07:03,232 --> 00:07:10,232
+So servicing. These are servicing the full patch cycle from 2014. It has not been updated for 2015 yet,
+
+67
+00:07:10,232 --> 00:07:15,232
+but this is kind of what it looks like between Nano, Server Core, and Full Server.
+
+68
+00:07:15,232 --> 00:07:21,232
+Critical bulletins. You can see that the number there is significantly more for full.
+
+69
+00:07:21,232 --> 00:07:28,232
+And number of reboots. So the point here being that like I said at the start of this, that the intent is to
+
+70
+00:07:28,232 --> 00:07:36,232
+work down to a point where we take all the benefits and all the great functionality that we brought when we
+
+71
+00:07:36,232 --> 00:07:42,232
+went to Server Core with a little cost that people had to incur there to go to Nano Server because the
+
+72
+00:07:42,232 --> 00:07:48,232
+benefits far outweigh the cost as you can see just from a servicing perspective.
+
+73
+00:07:48,232 --> 00:07:58,232
+Security. Drivers, I mean it's every driver is one more that you wish you could run without on Nano Server
+
+74
+00:07:58,232 --> 00:08:03,232
+compared to Server Core, we reduce that footprint by about a quarter.
+
+75
+00:08:03,232 --> 00:08:08,232
+Services running. So this is always a great thing to do when you first spin up your Nano Server VM is take a
+
+76
+00:08:08,232 --> 00:08:13,232
+look at the list of services. It looks a lot better than Server Core.
+
+77
+00:08:13,232 --> 00:08:18,232
+And open ports. For those of you security conscience folks, I know that jumps out at you right away.
+
+78
+00:08:18,232 --> 00:08:28,232
+Going from about 27 to 12, I believe.
+
+79
+00:08:28,232 --> 00:08:34,232
+And deployment. So setup time. What I'm going to show you at the end of this is a great way to get off the
+
+80
+00:08:34,232 --> 00:08:40,232
+ground with Nano for those of you that haven't. Those of you that have spun up your own Nano image and
+
+81
+00:08:40,232 --> 00:08:46,232
+injected all that stuff and spent hours and written great blogs about how people can do it easier are going to
+
+82
+00:08:46,232 --> 00:08:53,232
+feel like I should have just waited. We now have a URL that'll get you a Nano Server VHD.
+
+83
+00:08:53,232 --> 00:08:59,232
+No more of this fuddling around with it, so with that setup time, under 50 seconds.
+
+84
+00:08:59,232 --> 00:09:11,232
+Disk footprint, half a gig! VHD size. So I mean on the way here, I realize I don't have a Nano VM with me.
+
+85
+00:09:11,232 --> 00:09:16,232
+My box is in my car for this afternoon's lightning demo, which I recommend you all come with all of our Nano
+
+86
+00:09:16,232 --> 00:09:23,232
+VMs on it. But this right here took me 45 seconds.
+
+87
+00:09:23,232 --> 00:09:31,232
+I had downloaded the VHD through into Hyper-V and it's what I'll use to show a demo here in a sec.
+
+88
+00:09:31,232 --> 00:09:41,232
+Sorry. (Audience question) Yeah, hang tight. So an installation option like Server Core here for 2016.
+
+89
+00:09:41,232 --> 00:09:47,232
+It's not the installation option. It is something that you pull off of media.
+
+90
+00:09:47,232 --> 00:09:51,232
+It's not listed in setup because there's additional steps that are required.
+
+91
+00:09:51,232 --> 00:09:56,232
+It wouldn't be really logical to step through the Windows setup process when what you really need is to configure
+
+92
+00:09:56,232 --> 00:10:07,232
+an image that you can reuse. So as you can see on the Windows Server TP4 ISO, there's a NanoServer folder.
+
+93
+00:10:07,232 --> 00:10:10,232
+And for drivers, for the leanest image, you just bring in what you want.
+
+94
+00:10:10,232 --> 00:10:16,232
+So we provide a couple of conveniences that I'll again show you in a minute, but it's as simple as just
+
+95
+00:10:16,232 --> 00:10:24,232
+injecting your driver as you vote to configure image. And all of the drivers that you experience, that you expect
+
+96
+00:10:24,232 --> 00:10:30,232
+from Server Core are available through this Nano Server OEM Drivers package.
+
+97
+00:10:30,232 --> 00:10:37,232
+And to run as a VM, define that Guest package.
+
+98
+00:10:37,232 --> 00:10:41,232
+So what I was talking about is features being available as you want them.
+
+99
+00:10:41,232 --> 00:10:48,232
+You'll notice that there is a subdirectory of packages. As we move forward, this will slightly change.
+
+100
+00:10:48,232 --> 00:10:55,232
+It will become much more logical in that they will not be static packages available on media.
+
+101
+00:10:55,232 --> 00:11:01,232
+I'll let you put two and two together. Right now, this is how you add packages.
+
+102
+00:11:01,232 --> 00:11:07,232
+Again, this experience will be greatly improved and for those of you that decide to take that VHD that I'm
+
+103
+00:11:07,232 --> 00:11:14,232
+going to show to you today between now and the time you start playing with that, in the next release coming out,
+
+104
+00:11:14,232 --> 00:11:17,232
+you may not have to fiddle with this too much because you might have everything you need, especially if you're
+
+105
+00:11:17,232 --> 00:11:22,232
+running in Hyper-V.
+
+106
+00:11:22,232 --> 00:11:29,232
+So let's talk about installation agents, tools, other software. So no MSI support in Nano right now.
+
+107
+00:11:29,232 --> 00:11:35,232
+Current builds require that you drop whatever you need on there or have a PowerShell script and there is new
+
+108
+00:11:35,232 --> 00:11:38,232
+installer technology coming. There's been some blog posts about it.
+
+109
+00:11:38,232 --> 00:11:45,232
+Again, upcoming release of Nano Server. So you'll be able to install, uninstall, inventory, do offline and
+
+110
+00:11:45,232 --> 00:11:51,232
+online installation support to kind of integrate it into your environment.
+
+111
+00:11:51,232 --> 00:11:58,232
+And then this is what I was talking about deploying. So up to now, you could go and do a bunch of work.
+
+112
+00:11:58,232 --> 00:12:05,232
+There is a tool now, the NanoServerImageGenerator, you can import that, and then you are able to just kick
+
+113
+00:12:05,232 --> 00:12:12,232
+off building the image, kind of just put the pieces together, run your Convert-WindowsImage and you're good
+
+114
+00:12:12,232 --> 00:12:23,232
+to go or there's a link, aka.ms/nanoeval will take you to a page that will describe the TP4 Nano eval process.
+
+115
+00:12:23,232 --> 00:12:30,232
+There's a ULA, you click the link, and it downloads a VHD, you put that VHD into Hyper-VM, and you're good to go.
+
+116
+00:12:30,232 --> 00:12:36,232
+I'm sure some of you could do it now and before we're done, you'd have Nano running.
+
+117
+00:12:36,232 --> 00:12:38,232
+So accept it,
+
+118
+00:12:38,232 --> 00:12:50,232
+deploys in a few. (Audience comment) Sorry. Yeah, or use your great cellular data connections.
+
+119
+00:12:50,232 --> 00:12:57,232
+But we have this available and if you guys want to sync with me, I actually have it available on my GUSB keys,
+
+120
+00:12:57,232 --> 00:59:59,999
+so I can hook those up and you can just copy it off to speed up the process.
+

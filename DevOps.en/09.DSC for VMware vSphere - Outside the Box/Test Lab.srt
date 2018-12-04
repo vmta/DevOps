@@ -1,0 +1,152 @@
+1
+00:00:00,0 --> 00:00:06,036
+So these were a few of the concepts. I had to drop some temporarily, I hope.
+
+2
+00:00:06,036 --> 00:00:14,036
+But I started working on this thing and this is just a screenshot to give you an idea of my lab.
+
+3
+00:00:14,036 --> 00:00:18,036
+It's not a home lab anymore. It's sitting in the cloud nowadays, so I can access it here.
+
+4
+00:00:18,036 --> 00:00:25,036
+I can access it at home. It's a cloud lab. The setup is quite simple.
+
+5
+00:00:25,036 --> 00:00:32,036
+I have a very simple Windows environment, one domain controller, one pull server.
+
+6
+00:00:32,036 --> 00:00:39,036
+I have a workstation. I use 10 and 8 to be able to test both flavors of VMF5.
+
+7
+00:00:39,036 --> 00:00:46,036
+And then I have the famous vEngine and I have a very small separate vSphere environment, in this case,
+
+8
+00:00:46,036 --> 00:00:54,036
+it's a VCSA, a couple of ESXi nodes, and some storage. I use FreeNas at the moment because that's the
+
+9
+00:00:54,036 --> 00:00:59,036
+simplest to set up for me.
+
+10
+00:00:59,036 --> 00:01:06,036
+Okay, most of this is, I already mentioned in the previous slides, it was a bumpy road, so like I said I
+
+11
+00:01:06,036 --> 00:01:11,036
+often felt that I took one step forward, two steps backwards, but there was progress.
+
+12
+00:01:11,036 --> 00:01:19,036
+Ultimately, there was progress, especially when RTMF5 RTM became available or available again in February
+
+13
+00:01:19,036 --> 00:01:29,036
+that I could continue actually progressing on my DSC resources. Most of it what I mentioned here
+
+14
+00:01:29,036 --> 00:01:34,036
+is already mentioned on the previous slides.
+
+15
+00:01:34,036 --> 00:01:42,036
+Okay, the virtual, the vEngine box, I started configuring that with the RegistrationKey.
+
+16
+00:01:42,036 --> 00:01:50,036
+I think most of you know, or if you didn't, you heard it in previous sessions today how you can use this RegistrationKey.
+
+17
+00:01:50,036 --> 00:01:56,036
+I think the next slide will show you how it works with your,
+
+18
+00:01:56,036 --> 00:02:02,036
+okay, so you update your Web.config, you point to this RegistrationKey's text, there you put this
+
+19
+00:02:02,036 --> 00:02:11,036
+registration key, so it simplifies your registration, in my opinion, of your machine, of your DSC client with
+
+20
+00:02:11,036 --> 00:02:19,036
+the pull server. This is just background info. For the rest, it doesn't impart your DSC, vSphere DSC
+
+21
+00:02:19,036 --> 00:02:27,036
+resources normally, but that's how I set it up just to make it simple, what I think is simple in this case.
+
+22
+00:02:27,036 --> 00:02:34,036
+Then the partial configurations on the discussions as I said, but what I'm doing there is I tried, and that was
+
+23
+00:02:34,036 --> 00:02:37,036
+one of my arguments to use partial configuration, alright.
+
+24
+00:02:37,036 --> 00:02:42,036
+What we noticed or what I noticed in my environment that the people who manage your storage and the people
+
+25
+00:02:42,036 --> 00:02:48,036
+who manage your network, they start managing your virtual storage and your virtual network nowadays and they
+
+26
+00:02:48,036 --> 00:02:54,036
+aren't necessarily your virtual environment administrator, otherwise, your vSphere administrators.
+
+27
+00:02:54,036 --> 00:02:59,036
+I thought if we pull that apart, it would be easier than the network part how you configure your switches,
+
+28
+00:02:59,036 --> 00:03:04,036
+what settings are on there that would go to your network team, same for the storage part.
+
+29
+00:03:04,036 --> 00:03:11,036
+Same for the virtualization part, the virtual server itself, the cluster and so on that would go to your
+
+30
+00:03:11,036 --> 00:03:15,036
+virtualization administrator or whatever you want to call them in your environment.
+
+31
+00:03:15,036 --> 00:03:23,036
+So hence this separation. This is just a small sample where I have folders and datacenters and clusters in
+
+32
+00:03:23,036 --> 00:03:31,036
+separate part of configurations. And thanks to the DependsOn, we could then determine somewhat what should
+
+33
+00:03:31,036 --> 00:03:37,036
+be there, so you should have a datacenter present before you define a cluster if you're cluster is in a
+
+34
+00:03:37,036 --> 00:03:46,036
+datacenter, of course. So those simple dependencies can easily be configured in this way, so that's what I
+
+35
+00:03:46,036 --> 00:03:52,036
+was playing and still playing with at the moment.
+
+36
+00:03:52,036 --> 00:04:01,036
+This is once you launch this through your vEngine, this is the LCM configuration on that vEngine.
+
+37
+00:04:01,036 --> 00:04:07,036
+Nothing world shattering in there. It's what you saw several times today, I suppose.
+
+38
+00:04:07,036 --> 00:59:59,999
+It's a very straightforward standard thing configuring LCM.
+

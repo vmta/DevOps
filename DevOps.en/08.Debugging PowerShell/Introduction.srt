@@ -1,0 +1,156 @@
+1
+00:00:12,12 --> 00:00:21,5
+Okay, hi everybody. Thanks for coming. I did already push the button, so you don't have to ask to make sure.
+
+2
+00:00:21,5 --> 00:00:27,5
+I want to talk to you guys today about something that I spend a lot of time doing, which is debugging PowerShell.
+
+3
+00:00:27,5 --> 00:00:38,5
+I've been working with PowerShell for 10 years now and I worked on, in past lifetimes, Power GUI as an evangelist
+
+4
+00:00:38,5 --> 00:00:42,5
+and then later on as an architect and as a product manager
+
+5
+00:00:42,5 --> 00:00:48,5
+and I used to work on Power WF and Power SD, so I've been working on PowerShell and PowerShell tools for
+
+6
+00:00:48,5 --> 00:00:53,5
+quite a long time, especially in the past with the tool side of the fence.
+
+7
+00:00:53,5 --> 00:01:00,5
+And so through all that work, I've done a lot of debugging and I've come up with a lot of tips and tricks
+
+8
+00:01:00,5 --> 00:01:09,5
+that I use and I'm constantly, I guess the curious side of me is always creating, I think looking for ways to
+
+9
+00:01:09,5 --> 00:01:13,5
+create new tools that make debugging even easier and tinker around with how things work under the covers and
+
+10
+00:01:13,5 --> 00:01:18,5
+finding cool solutions that weren't necessarily readily available before.
+
+11
+00:01:18,5 --> 00:01:21,5
+So the talk I want to give today is about sharing of that back with you.
+
+12
+00:01:21,5 --> 00:01:28,5
+All of the content that I'm sharing here works on PowerShell V3 and later, so this is not bleeding edge
+
+13
+00:01:28,5 --> 00:01:32,5
+latest and greatest, you have to have V5, otherwise it's no good to you.
+
+14
+00:01:32,5 --> 00:01:36,5
+If you're using version 3 or later, anything I talk about here, you guys are going to be able to use,
+
+15
+00:01:36,5 --> 00:01:42,5
+unless I call it something and specifically from a new version, in which case I'll highlight that, but in general
+
+16
+00:01:42,5 --> 00:01:44,5
+that's the way that I'm going to roll with this.
+
+17
+00:01:44,5 --> 00:01:50,5
+So who am I? My name's Kirk Munro. I go by the nickname, Poshoholic.
+
+18
+00:01:50,5 --> 00:01:55,5
+If you want to contact me, that's my Twitter handle, poshoholic.com, poshoholic@gmail.com,
+
+19
+00:01:55,5 --> 00:02:01,5
+poshoholic@hotmail.com, you kind of get the drift. If you want to look for me somewhere around the web,
+
+20
+00:02:01,5 --> 00:02:05,5
+just look for that handle and then you can find me and reach out to me.
+
+21
+00:02:05,5 --> 00:02:12,5
+I work for, these days, by the way, I work for a company called Provance Technologies, which is we specialize
+
+22
+00:02:12,5 --> 00:02:19,5
+in IT solutions management and I'm a technical product manager there still doing a lot of PowerShell in that space.
+
+23
+00:02:19,5 --> 00:02:24,5
+I've been with them for the past three years and just doing PowerShell as well on the
+
+24
+00:02:24,5 --> 00:02:28,5
+side as a hobby and passion at home.
+
+25
+00:02:28,5 --> 00:02:36,5
+So the agenda is just talking about a collection of PowerShell modules that I've written that help make
+
+26
+00:02:36,5 --> 00:02:42,5
+debugging and defensive scripting easier, some tips and tricks, recommendations, best practices,
+
+27
+00:02:42,5 --> 00:02:48,5
+things you can avoid, and hopefully, you'll come out of this a bit more enlightened in some of the things you
+
+28
+00:02:48,5 --> 00:02:54,5
+might run into in debugging your own work, and so that it'll ring a bell when you run into it later and maybe
+
+29
+00:02:54,5 --> 00:03:01,5
+think of some of these solutions and ideas and be able to get through your issues more quickly.
+
+30
+00:03:01,5 --> 00:03:06,5
+And because it's about debugging, I can't really teach about debugging PowerShell from a slide deck,
+
+31
+00:03:06,5 --> 00:03:13,5
+so all the content that I'm going to do from here on is going to be in PowerShell ISE and doing demos because
+
+32
+00:03:13,5 --> 00:03:16,5
+it's going to make learning it a lot easier to see firsthand.
+
+33
+00:03:16,5 --> 00:03:22,5
+By the way, any questions that anybody has, don't feel you have to save them for the end.
+
+34
+00:03:22,5 --> 00:03:26,5
+Interrupt me at any time. If I don't see you, just speak up and grab my attention.
+
+35
+00:03:26,5 --> 00:03:29,5
+I don't have this scripted down to the wire and timed to the last minute.
+
+36
+00:03:29,5 --> 00:03:34,5
+I leave breathing room for working with the audience and if there are particular things you want me to drill in
+
+37
+00:03:34,5 --> 00:03:39,5
+deeper on or have questions about, bring it up and I'll see where I can fit it and how I can handle it.
+
+38
+00:03:39,5 --> 00:03:44,5
+And if I can't handle it here or can't answer the questions here, I'll be happy to do research and figure out
+
+39
+00:03:44,5 --> 00:59:59,999
+or talk to you after the fact in one of the side rooms or in the hall and see what I can do to help as well.
+

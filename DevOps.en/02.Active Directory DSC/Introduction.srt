@@ -1,0 +1,96 @@
+1
+00:00:12,12 --> 00:00:19,5
+Okay. Active Directory Desired Stake Configuration. How many of you have Active Directory in your environment?
+
+2
+00:00:19,5 --> 00:00:24,5
+Oh, nice. Alright, you came to the same place, alright? How many of you have an Active Directory test lab
+
+3
+00:00:24,5 --> 00:00:30,5
+in your environment. Nice, alright. That's better than average.
+
+4
+00:00:30,5 --> 00:00:35,5
+You guys are above average here. How many have Lamas in your data center?
+
+5
+00:00:35,5 --> 00:00:38,5
+Two, alright I'm not going to talk about Lamas in a data center.
+
+6
+00:00:38,5 --> 00:00:44,5
+Alright, let's talk about Active Directory in DSC. That's my stuff up there, GoateePFE.
+
+7
+00:00:44,5 --> 00:00:48,5
+If you search anywhere online you'll find me. Alright, let's dive.
+
+8
+00:00:48,5 --> 00:00:56,5
+And yes, thank you, applause to all the guys who made this possible for the last 10 years.
+
+9
+00:00:56,5 --> 00:01:06,5
+Okay, here's the problem. I'm a Microsoft Premier field engineer, and I visit premier customers and help them
+
+10
+00:01:06,5 --> 00:01:11,5
+with their Active Directory, that's kind of what I've done for years, and most of those customers do not have
+
+11
+00:01:11,5 --> 00:01:17,5
+an Active Directory test lab. So what I'm going to show you today is how to spin up your own Active Directory
+
+12
+00:01:17,5 --> 00:01:24,5
+test lab in 30 minutes. Alright, that's mostly just wait time. It takes you just a minute to run the script.
+
+13
+00:01:24,5 --> 00:01:29,5
+It's going to be about 30 minutes and you're going to have your own domain controller spun up in Azure that
+
+14
+00:01:29,5 --> 00:01:36,5
+you can just destroy, do whatever you want to against it, and then at the end of the day, just delete and you're done.
+
+15
+00:01:36,5 --> 00:01:42,5
+So you can have an on-demand domain controller to beat up anytime, just run the script.
+
+16
+00:01:42,5 --> 00:01:44,5
+That's what we're going to do today. Does that sound like fun?
+
+17
+00:01:44,5 --> 00:01:46,5
+Yep. Alright.
+
+18
+00:01:46,5 --> 00:01:53,5
+So that was my goal then. I wanted to be able to deploy an Active Directory test lab to Azure including,
+
+19
+00:01:53,5 --> 00:01:58,5
+because you know this DSC stuff, usually somebody just spins up a server, but I want to actually put OUs,
+
+20
+00:01:58,5 --> 00:02:05,5
+and in those OUs, I wanted users and groups, and I wanted to enable the AD recycle bin, here do some AD
+
+21
+00:02:05,5 --> 00:02:11,5
+configuration, and then I want it to be as simple as running a script and I did not want to have to open
+
+22
+00:02:11,5 --> 00:02:13,5
+Visual Studio
+
+23
+00:02:13,5 --> 00:02:18,5
+because I'm not a big Visual Studio person, right. I'm an infrastructure guy.
+
+24
+00:02:18,5 --> 00:59:59,999
+I don't do---I'm an ops. I'm not a dev on that side of that equation.
+

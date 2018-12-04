@@ -1,0 +1,700 @@
+1
+00:00:00,0 --> 00:00:06,588
+So let's, let me see my next demo. I don't want to get too far ahead of myself here.
+
+2
+00:00:06,588 --> 00:00:12,588
+We're going to come back. I'm going to do another version of this so you can see again the before and after.
+
+3
+00:00:12,588 --> 00:00:18,588
+So that's Get-CommandMetadata, which is designed to create basically a rapid way of creating a proxy function
+
+4
+00:00:18,588 --> 00:00:24,588
+that you can then modify. I realize that I want to go more that.
+
+5
+00:00:24,588 --> 00:00:32,588
+I may want a wrapper function where I don't want the proxy, I'm probably still going to call the underlying
+
+6
+00:00:32,588 --> 00:00:38,588
+command, but for whatever reason, I want to build a wrapper around it, but again, I don't want to have to try
+
+7
+00:00:38,588 --> 00:00:41,588
+to find all the parameters and retype them and the help and all of that.
+
+8
+00:00:41,588 --> 00:00:42,588
+So I built
+
+9
+00:00:42,588 --> 00:00:52,588
+a second version of my script and I'm going to close some of these things here.
+
+10
+00:00:52,588 --> 00:00:59,588
+This tool actually is on GitHub. So my GitHub repo is jdhitsolutions.
+
+11
+00:00:59,588 --> 00:01:06,588
+There's also a link on my blog or ping me on Twitter if you can't find it.
+
+12
+00:01:06,588 --> 00:01:21,588
+So let's see this is this command. We'll just hide the help. I also realize in after I finished that first
+
+13
+00:01:21,588 --> 00:01:28,588
+function that even though it was getting rid of forwarded help, well there may be some instances where I do
+
+14
+00:01:28,588 --> 00:01:33,588
+want to use forwarded help because I'm still going to create a new version of Get-Service.
+
+15
+00:01:33,588 --> 00:01:41,588
+It's going to override and I'm still going to call it Get-Service and I want to show the forwarded help.
+
+16
+00:01:41,588 --> 00:01:46,588
+I want to be able to include that as an option. So I have a parameter there with switch,
+
+17
+00:01:46,588 --> 00:01:53,588
+so I go ahead and use it if it's there, so basically don't delete it.
+
+18
+00:01:53,588 --> 00:01:59,588
+The default behavior for this command is to create a wrapper function
+
+19
+00:01:59,588 --> 00:02:10,588
+or I can use that as proxy and it's going to do the same, a lot of the same code that I just showed you is in this command.
+
+20
+00:02:10,588 --> 00:02:33,588
+The big differences here, this forwarded help, is that as I go through, again I'm building a here string,
+
+21
+00:02:33,588 --> 00:02:38,588
+and if I'm specifying a proxy command, then it will go in and add the proxy
+
+22
+00:02:38,588 --> 00:02:46,588
+pieces, otherwise, it just uses the different commands that I showed you with that proxy object,
+
+23
+00:02:46,588 --> 00:02:53,588
+the proxy command class, to get the different pieces that I want and then manually paste them in.
+
+24
+00:02:53,588 --> 00:03:11,588
+The difference being, so I'm entering the parameters, the big difference is when I define here on Line 220
+
+25
+00:03:11,588 --> 00:03:16,588
+that process, that is what will show up in the eventual command that I'm creating.
+
+26
+00:03:16,588 --> 00:03:22,588
+So I can either create the proxy version of it or I can just build a wrapper
+
+27
+00:03:22,588 --> 00:03:29,588
+that's going to run the command and then splat PSBoundParameters, at least as a starting point.
+
+28
+00:03:29,588 --> 00:03:37,588
+You'll see some of my examples again before and after where I go a little bit further than that.
+
+29
+00:03:37,588 --> 00:03:44,588
+And even in my copied commands, you'll notice I'm inserting write-verbose commands, so you have no choice,
+
+30
+00:03:44,588 --> 00:04:06,588
+but to use them. Alright, so let's see how this works in action.
+
+31
+00:04:06,588 --> 00:04:20,588
+Alright, let's clear that. So I'm going to run Get-Command, again with Get-VM called Get-MyVM -IncludeDynamic -AsProxy.
+
+32
+00:04:20,588 --> 00:04:28,588
+This is basically, this will give me nope, no, no, no, no, no don't run the script.
+
+33
+00:04:28,588 --> 00:04:40,588
+Now I need to do. (Typing) For those of you whoever do presentations like I'm doing where you're walking
+
+34
+00:04:40,588 --> 00:04:46,588
+through a script, and I never do it, put a return keyword at the very beginning of your script file
+
+35
+00:04:46,588 --> 00:04:52,588
+that you're walking through. So if you do it like I did and accidentally hit F5, it'll hit return and then stop.
+
+36
+00:04:52,588 --> 00:05:02,588
+It won't run through all of my demo. I busted many a demo by not putting that in.
+
+37
+00:05:02,588 --> 00:05:12,588
+Alright, so we are going to create basically recreate that proxy version of Get-VM.
+
+38
+00:05:12,588 --> 00:05:21,588
+A few differences, I've inserted a little header metadata so it shows who created this and some copy of what
+
+39
+00:05:21,588 --> 00:05:24,588
+command, who created it, when they created it, I know, I just personally I find that useful.
+
+40
+00:05:24,588 --> 00:05:35,588
+I put in my standard disclaimer. I'm using the help. Help has all been modified.
+
+41
+00:05:35,588 --> 00:05:42,588
+Oh, this version I fixed my issues with the parameters, so now I've got everything in line with the way that
+
+42
+00:05:42,588 --> 00:05:44,588
+I want it to be. I have all
+
+43
+00:05:44,588 --> 00:05:57,588
+of the parameter sets and the names. And now I have the Begin, Process, and End ScriptBlocks just like we
+
+44
+00:05:57,588 --> 00:06:07,588
+had before with a proxy command. I can go through and modify this as necessary.
+
+45
+00:06:07,588 --> 00:06:20,588
+So what I did, let's just, so this is the before. So you can see I have all the parameters that I would have
+
+46
+00:06:20,588 --> 00:06:33,588
+running Get-VM and this is the after. So I'm going to reach in the oven, pull out the finished cake,
+
+47
+00:06:33,588 --> 00:06:46,588
+which in, make sure I'm on the right line here, yeah. So in this case, I went through and cleaned up the help
+
+48
+00:06:46,588 --> 00:07:01,588
+a little bit. It's always easier to delete stuff and then just copy and paste in my new examples.
+
+49
+00:07:01,588 --> 00:07:07,588
+Oh this copy command script, that function, will also detect
+
+50
+00:07:07,588 --> 00:07:13,588
+if the command that you are copying comes from a module, it will make that a requirement.
+
+51
+00:07:13,588 --> 00:07:15,588
+So it detected that this
+
+52
+00:07:15,588 --> 00:07:22,588
+was not from one of the standard out-of-the-box Microsoft.PowerShell modules and requires Hyper-V,
+
+53
+00:07:22,588 --> 00:07:26,588
+so it automatically inserts that for you.
+
+54
+00:07:26,588 --> 00:07:31,588
+Remember lazy.
+
+55
+00:07:31,588 --> 00:07:41,588
+I don't want to have to think too much. So the reason that I wrote this particular command is I use Hyper-V
+
+56
+00:07:41,588 --> 00:07:42,588
+all the time
+
+57
+00:07:42,588 --> 00:07:46,588
+and I'm running Get-VM, but I want to know what VMs are running.
+
+58
+00:07:46,588 --> 00:07:53,588
+I'm tired of having to type Get-VM, type it to Where-Object, where the State equals, so I just want a version
+
+59
+00:07:53,588 --> 00:08:04,588
+of Get-VM that has a parameter, I can't remember what I called it now and I can't see that, called state,
+
+60
+00:08:04,588 --> 00:08:13,588
+State= Running, so I've made that the default. You'll also notice and this once you go to add stuff,
+
+61
+00:08:13,588 --> 00:08:19,588
+yeah that's where you've got to earn your paycheck, so I did a little work and I discovered the class
+
+62
+00:08:19,588 --> 00:08:26,588
+name for that state is that, is an Enum. The advantage is, instead of making that a string or anything,
+
+63
+00:08:26,588 --> 00:08:30,588
+by going that route and identifying the enumeration,
+
+64
+00:08:30,588 --> 00:08:36,588
+I get IntelliSense. Okay. How cool is that?
+
+65
+00:08:36,588 --> 00:08:44,588
+So that is a new parameter that Get-VM doesn't know about, so here's how we fix that.
+
+66
+00:08:44,588 --> 00:08:56,588
+So I have some verbose messages. I remove that state parameter, right, because Get-VM is not going to know
+
+67
+00:08:56,588 --> 00:09:07,588
+that from PSBoundParameters and then I, this is a really simple version that's why I'm showing it to you,
+
+68
+00:09:07,588 --> 00:09:15,588
+I then modify the script command, basically say go ahead and run the initial command, but then filter it to
+
+69
+00:09:15,588 --> 00:09:19,588
+where object State= Running. So I don't
+
+70
+00:09:19,588 --> 00:09:27,588
+have to rely on having to type that all out. I can give this someone else and they want to say find me all
+
+71
+00:09:27,588 --> 00:09:35,588
+the VMs that are paused, they can do that without having to understand how to pipe to where and know what to type
+
+72
+00:09:35,588 --> 00:09:41,588
+because we've got the IntelliSense it's all braindead simple.
+
+73
+00:09:41,588 --> 00:09:48,588
+That command that wrapped that script command then gets thrown to the pipeline.
+
+74
+00:09:48,588 --> 00:09:56,588
+Everything else in Get-VM works just fine the way I expect it to be.
+
+75
+00:09:56,588 --> 00:10:10,588
+Now what I don't know, oh let's see if that even works. (Working)
+
+76
+00:10:10,588 --> 00:10:20,588
+Well let's do this here first just to show you. So get help. So all the parameters and stuff are copied over
+
+77
+00:10:20,588 --> 00:10:31,588
+from Get-VM and you can see my state parameter and
+
+78
+00:10:31,588 --> 00:10:37,588
+because I had that enum, PowerShell automatically expands all of that and shows me all the possible options.
+
+79
+00:10:37,588 --> 00:10:41,588
+Kind of handy.
+
+80
+00:10:41,588 --> 00:11:02,588
+And in my description I say that it's a copy. (Typing) Now what I don't know is if I can see on the network,
+
+81
+00:11:02,588 --> 00:11:15,588
+let's find out here, there's my verbose, oh good it worked. Because I'm going, because this virtual machine
+
+82
+00:11:15,588 --> 00:11:16,588
+I'm running is trying
+
+83
+00:11:16,588 --> 00:11:23,588
+to connect to the Hyper-V host, which is my laptop itself and when you present and the way I have to stuff it
+
+84
+00:11:23,588 --> 00:11:27,588
+up so I have a switch to make sure the networking all works and good it worked.
+
+85
+00:11:27,588 --> 00:11:28,588
+So I didn't have to do
+
+86
+00:11:28,588 --> 00:11:44,588
+anything and now I have all running VMs, -State. So
+
+87
+00:11:44,588 --> 00:11:51,588
+very easily, I just created a copy of Get-VM, made my little tweaks,
+
+88
+00:11:51,588 --> 00:11:57,588
+tweaked the help, done. It didn't take nearly as long as if I had started
+
+89
+00:11:57,588 --> 00:12:04,588
+with an empty ps1 file and manually had to type all that stuff out.
+
+90
+00:12:04,588 --> 00:12:13,588
+Questions over and this is kind of a one-way ways you would use a proxy function.
+
+91
+00:12:13,588 --> 00:12:16,588
+I'm still calling the underlying command,
+
+92
+00:12:16,588 --> 00:12:20,588
+but I have tweaked it in a way, in this case, I've added a parameter.
+
+93
+00:12:20,588 --> 00:12:29,588
+Yeah. (Audience Comment) So let's say like Get-ADUser, do you always want it to be -prompt department title
+
+94
+00:12:29,588 --> 00:12:38,588
+in edge or something, but so you're wrapping or you're doing it, now you're setting the whole value of the
+
+95
+00:12:38,588 --> 00:12:45,588
+parameter that already exists. How would you go about wrapping it?
+
+96
+00:12:45,588 --> 00:12:50,588
+He could use PS default parameter values and then you don't have to deal with…
+
+97
+00:12:50,588 --> 00:13:02,588
+Yeah, no he's saying if I'm building a new command and I want to set a, well yeah, it should override that or
+
+98
+00:13:02,588 --> 00:13:10,588
+you can just explicitly in your command because you can still splat something and specify additional parameters.
+
+99
+00:13:10,588 --> 00:13:15,588
+It's not an either/or situation. What about these other ones that you sort have been provided because properties
+
+100
+00:13:15,588 --> 00:13:20,588
+have showed they have to set other things and you're also setting that override to that.
+
+101
+00:13:20,588 --> 00:13:23,588
+What, are you talking about the properties on the underlying as a user object?
+
+102
+00:13:23,588 --> 00:13:36,588
+(Audience comment) Right. And so you said that your wrapper showed this specific value, but it's like calling
+
+103
+00:13:36,588 --> 00:13:42,588
+it also tries to set that. What happens? It depends on how you've written your command.
+
+104
+00:13:42,588 --> 00:13:49,588
+Hold on to that thought. I have some Active Directory examples we'll get to later.
+
+105
+00:13:49,588 --> 00:13:56,588
+Maybe you'll see something there that will answer that. (Audience comment)
+
+106
+00:13:56,588 --> 00:14:02,588
+They shouldn't be able to override anything unless they open up the script file and modify it.
+
+107
+00:14:02,588 --> 00:14:09,588
+All they're going to do is see your command. Right, I don't see how that's the way to write that to make it
+
+108
+00:14:09,588 --> 00:14:17,588
+work that way. Well you would just modify the help and assign, for example, here what I could do,
+
+109
+00:14:17,588 --> 00:14:27,588
+let's go back to my I need, even though this is default, I set a default to the computer name, let's say I
+
+110
+00:14:27,588 --> 00:14:40,588
+know that my, let's see if this will work. I know that my Hyper-V host is Chi-p50.
+
+111
+00:14:40,588 --> 00:15:11,588
+Let's reload that. Invalid class. Oh, that may be an issue. Let's put in, so we're going off the off-script
+
+112
+00:15:11,588 --> 00:15:19,588
+right now, but that's fine. That's how we learn things. I can't type and talk at the same time.
+
+113
+00:15:19,588 --> 00:16:03,588
+(Typing) I also hope that I'm running the right version of this. (Typing)
+
+114
+00:16:03,588 --> 00:16:07,588
+It's not passing through the computer name, which this is what someone was asking earlier.
+
+115
+00:16:07,588 --> 00:16:25,588
+So let's because I didn't specify, so the PSBoundParameters, so what I might have to do then is and I don't
+
+116
+00:16:25,588 --> 00:16:37,588
+want to totally delete, I don't want to totally ruin my command here, but maybe I will.
+
+117
+00:16:37,588 --> 00:16:50,588
+We're going to do this. I'm going to, let's just comment out this parameter just because I don't want to
+
+118
+00:16:50,588 --> 00:17:00,588
+have to modify my original command too much because this is kind of what you were talking about with the properties, right?
+
+119
+00:17:00,588 --> 00:17:03,588
+I want for my command computer name
+
+120
+00:17:03,588 --> 00:17:12,588
+to always be ChicagoP50. So I don't want to even make that an option for them, so I remove that from the parameter.
+
+121
+00:17:12,588 --> 00:17:15,588
+So now what I can do here
+
+122
+00:17:15,588 --> 00:17:35,588
+is I could add it, so let's do that. We'll just do PSBoundParameters Add Computername, right?
+
+123
+00:17:35,588 --> 00:17:45,588
+And I should see that because I'm adding that before I display it.
+
+124
+00:17:45,588 --> 00:18:00,588
+Let's clear this here. There we go. I'm not quite sure. Oh, because I have some additional code in there
+
+125
+00:18:00,588 --> 00:18:07,588
+That's still relying on the Computername, so that's, but so that's what you could do.
+
+126
+00:18:07,588 --> 00:18:17,588
+You would just remove from your version of Get-ADUser and then just hardcode in whatever other
+
+127
+00:18:17,588 --> 00:18:27,588
+commands you want. Would another way of doing that be to examine the collection that you could use the value
+
+128
+00:18:27,588 --> 00:18:35,588
+of the properties. Sure, I mean if you want you could leave properties in there and if it doesn't have,
+
+129
+00:18:35,588 --> 00:18:45,588
+yeah, then you could add something. So an example is make sure that those three always give up regardless
+
+130
+00:18:45,588 --> 00:18:48,588
+what else they have in the process. Right, a couple different ways that
+
+131
+00:18:48,588 --> 00:18:59,588
+you could do that. Alright, let's move on here because I'm amazed an hour has gone by already.
+
+132
+00:18:59,588 --> 00:19:18,588
+Or this is another version of Get-MyVM. Parameters and stuff are all the same, except this is now a wrapper function.
+
+133
+00:19:18,588 --> 00:19:22,588
+So it's not a proxy, so basically all I'm doing is saying take whatever parameters come through
+
+134
+00:19:22,588 --> 00:19:31,588
+PSBoundParameters and they're splatted in the process block and that's it.
+
+135
+00:19:31,588 --> 00:19:40,588
+It took like no time to create an entire working function. Can you go back into the line you were…?
+
+136
+00:19:40,588 --> 00:19:43,588
+Show me which line? The line that you select to amortize that.
+
+137
+00:19:43,588 --> 00:19:51,588
+Oh, to create this?
+
+138
+00:19:51,588 --> 00:19:59,588
+So I just ran my command, my copy command function, so that's when I can get VM, the NewName, include dynamic just
+
+139
+00:19:59,588 --> 00:20:08,588
+in case, done. (Audience comment) Yeah, the proxy, if you do it as proxy, then it creates a proxy command
+
+140
+00:20:08,588 --> 00:20:15,588
+version with a step-able pipeline and the wrap stuff. (Audience Comment)
+
+141
+00:20:15,588 --> 00:20:21,588
+Right, the first command, Get-CommandMetadata that I wrote just does proxy functions only.
+
+142
+00:20:21,588 --> 00:20:24,588
+This version Copy-Command because that's what it does.
+
+143
+00:20:24,588 --> 00:20:31,588
+It allows me to copy an existing command and I can either create a proxy version of it or a wrapper version
+
+144
+00:20:31,588 --> 00:20:34,588
+of it, which kind of brings me
+
+145
+00:20:34,588 --> 00:20:43,588
+to my next question, can talk about which is better. Why would I want to use a proxy function and maybe why
+
+146
+00:20:43,588 --> 00:20:51,588
+would I want to use a wrapper? Anyone? Yeah, well what you're doing if you don't use the step-able thing,
+
+147
+00:20:51,588 --> 00:20:57,588
+I think you actually can go through the inside command multiple times, but the behavior's not always going to
+
+148
+00:20:57,588 --> 00:21:03,588
+be the same. Okay. Which may or may not be, depending on what you need
+
+149
+00:21:03,588 --> 00:21:08,588
+accomplished, that's something. And that's why I want to have this quick little discussion here as to because
+
+150
+00:21:08,588 --> 00:21:15,588
+there may or may not, actually the only way you're going to know which is the right version is to probably do
+
+151
+00:21:15,588 --> 00:21:23,588
+both and test. It may also depend on how much you need to add or delete.
+
+152
+00:21:23,588 --> 00:21:28,588
+Do you need to put in stuff, I have to ensure that these certain things are met.
+
+153
+00:21:28,588 --> 00:21:36,588
+How much more difficult is that?
+
+154
+00:21:36,588 --> 00:21:43,588
+Proxy function I find a little harder to troubleshoot because everything's kind of nested in those step-able
+
+155
+00:21:43,588 --> 00:21:51,588
+pipelines versus a wrapper function. I mean if you look at the wrapper versions that we just created in
+
+156
+00:21:51,588 --> 00:22:09,588
+Untitled7, and my mouse, this is really simple. So there are a number of things that you have to, again,
+
+157
+00:22:09,588 --> 00:22:12,588
+and also think about who's going to use the command.
+
+158
+00:22:12,588 --> 00:22:23,588
+Are you going to be piping stuff to it? Will they need access to other commands or they may be part of like
+
+159
+00:22:23,588 --> 00:22:29,588
+the Get-VM stuff, I don't know. So you have to kind of make those decisions, but I have a tool now that you
+
+160
+00:22:29,588 --> 00:22:34,588
+can use to go both ways and you
+
+161
+00:22:34,588 --> 00:22:42,588
+can decide and it does not take very long to create something totally new.
+
+162
+00:22:42,588 --> 00:22:57,588
+So here is the finished version of Get-MyVM2. This is the wrapper version.
+
+163
+00:22:57,588 --> 00:23:12,588
+So in this case, I hardcoded in the computer name, I removed the state because Get-VM doesn't understand that,
+
+164
+00:23:12,588 --> 00:23:25,588
+and I'm not sure I tested this when I created this just the other day, so let's test it.
+
+165
+00:23:25,588 --> 00:23:27,588
+The default behavior
+
+166
+00:23:27,588 --> 00:23:35,588
+should be able to display all the running virtual machines on ChicagoP50.
+
+167
+00:23:35,588 --> 00:23:43,588
+And again, I didn't put in my, oh let's do this with verbose because I bet I'm having that same issue with
+
+168
+00:23:43,588 --> 00:23:52,588
+the PSBoundParameters. Oh, not clear screen verbose, that's kind of silly.
+
+169
+00:23:52,588 --> 00:24:00,588
+(Audience comment) Yeah. Okay, so yeah that's why you've got to test everything and I
+
+170
+00:24:00,588 --> 00:24:06,588
+modified it, but I never went back and tested it. So I need to go through and do the same things I did before.
+
+171
+00:24:06,588 --> 00:24:12,588
+I'll probably just get rid of computer, well no because I still want to give them the option, but I want it to
+
+172
+00:24:12,588 --> 00:24:21,588
+default, so I need to do some other magic, so I'll tweak this before I publish it or share it with all my demo stuff.
+
+173
+00:24:21,588 --> 00:24:30,588
+You can see how I solve that. Because in this particular case, I want them to be able to specify something else
+
+174
+00:24:30,588 --> 00:24:39,588
+in addition, but have it default to the current one, so I'll have to go back and look at that.
+
+175
+00:24:39,588 --> 00:59:59,999
+Alright.
+

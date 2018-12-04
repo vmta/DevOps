@@ -1,0 +1,276 @@
+1
+00:00:00,229 --> 00:00:04,229
+Here's what we're going to do. I'm going to go ahead and we are
+
+2
+00:00:04,229 --> 00:00:11,229
+going to do this live right here today. So I've got some code. I've done my Login to AzureRM.
+
+3
+00:00:11,229 --> 00:00:15,229
+I'm going to come back and show you how this works. I'm going to create a couple of variables here that are
+
+4
+00:00:15,229 --> 00:00:23,229
+going to define the name of my resource group and then I'm going to just do a quick check to make sure that
+
+5
+00:00:23,229 --> 00:00:30,229
+DNS name is available. There's no conflict. There shouldn't be, there aren't that many Goatee instances out on Azure.
+
+6
+00:00:30,229 --> 00:00:35,229
+And then I'm going to spin up my Azure resource group. That one takes just a second to run.
+
+7
+00:00:35,229 --> 00:00:39,229
+That's good. And just like that, I created a New-AzureRmResourceGroup.
+
+8
+00:00:39,229 --> 00:00:45,229
+Now I'm just going to define a couple parameters, which are mostly variables already done here, I want to
+
+9
+00:00:45,229 --> 00:00:53,229
+go ahead and run those and now the big line right here, New-AzureRmResourceGroupDeployment.
+
+10
+00:00:53,229 --> 00:01:00,229
+I'm just passing in the splat of parameters and let's go ahead and run that line as well.
+
+11
+00:01:00,229 --> 00:01:08,229
+This is the part, alright, it's going to ask me for my password, make sure I remember this, powershell5 thing.
+
+12
+00:01:08,229 --> 00:01:21,229
+Alright, password, got it. What? Man oh man. Provided value east us for the template parameter.
+
+13
+00:01:21,229 --> 00:01:29,229
+Guys, I have done this a million times and the only reason it's failing is because I'm in front of all of you right now.
+
+14
+00:01:29,229 --> 00:01:38,229
+Alright, what's going on here? (Audience question) Yeah, it is, but it's all lowercase.
+
+15
+00:01:38,229 --> 00:01:48,229
+Well, that one particular piece, yeah, you know what I've run this a million times just like it is.
+
+16
+00:01:48,229 --> 00:02:02,229
+Oh, okay, yep, it is because I did change one last thing last night after I ran my demo, east, East US.
+
+17
+00:02:02,229 --> 00:02:06,229
+You're right. I did change that little spot after my demo practice last night.
+
+18
+00:02:06,229 --> 00:02:12,229
+That was a bad thing on my part. Now let's try it again. There we go.
+
+19
+00:02:12,229 --> 00:02:20,229
+Alright. Come on, baby. Got the -Verbose in there, so it gives me the play by play.
+
+20
+00:02:20,229 --> 00:02:25,229
+Alright. So what's happening now is I'm actually spinning up. I've got a new Azure resource group that I created.
+
+21
+00:02:25,229 --> 00:02:31,229
+Now I'm actually deploying to that Azure resource group a single domain controller, all the storage and
+
+22
+00:02:31,229 --> 00:02:38,229
+network and everything that goes with it and it's going to have a DSC configuration that I designed that was
+
+23
+00:02:38,229 --> 00:02:43,229
+custom for Active Directory and for my domain controller, the data that I wanted to go in there and that's
+
+24
+00:02:43,229 --> 00:02:56,229
+what I'm going to show you now is how that works. There we go. Get my prompt here.
+
+25
+00:02:56,229 --> 00:03:01,229
+I want to make sure this gets off and running because---okay, now we're good.
+
+26
+00:03:01,229 --> 00:03:05,229
+So we're creating a template deployment now for AlpineSkiHouseForest.
+
+27
+00:03:05,229 --> 00:03:12,229
+I'm tired of using Contoso.com. Anybody else? Alpine Ski House is one of the other legal approved Microsoft
+
+28
+00:03:12,229 --> 00:03:17,229
+fictitious company names. So Alpine Ski House sounds like a lot more fun than Contoso.
+
+29
+00:03:17,229 --> 00:03:24,229
+So let's get back to the presentation. We'll come back and see this in a minute.
+
+30
+00:03:24,229 --> 00:03:32,229
+So you came to talk about Active Directory in DSC. This is the xActiveDirectory resource module that you
+
+31
+00:03:32,229 --> 00:03:36,229
+can get at PowerShell gallery or you can go look at it on GitHub.
+
+32
+00:03:36,229 --> 00:03:44,229
+And in that module, there are a number of resources. Now how many have used this in DSC already?
+
+33
+00:03:44,229 --> 00:03:48,229
+Anybody? Just a couple hands, okay. So the main thing to understand here is the difference between
+
+34
+00:03:48,229 --> 00:03:55,229
+xADDomain and xADDomainController. XADDomain is going to be the first DC in the environment.
+
+35
+00:03:55,229 --> 00:03:59,229
+Every other DC after that in the same domain is going to be a xADDomainController.
+
+36
+00:03:59,229 --> 00:04:06,229
+Alright. And then xWaitForADDomain says once I've done the install, I need to make sure that it's come up
+
+37
+00:04:06,229 --> 00:04:12,229
+and it's responding, so that's the wait. And then once that wait is successful, I can contact the domain,
+
+38
+00:04:12,229 --> 00:04:21,229
+then I can go ahead and do my other resources here like DomainTrust, organizational units, users, groups, and so forth.
+
+39
+00:04:21,229 --> 00:04:27,229
+So those are the resources we have today in that module. It's bare minimum at this point.
+
+40
+00:04:27,229 --> 00:04:33,229
+It's been out there for a year and a half or so. We've got a little bit of traction out there, but there are
+
+41
+00:04:33,229 --> 00:04:34,229
+some other things in process.
+
+42
+00:04:34,229 --> 00:04:41,229
+The last I checked on GitHub, there's a default domain policy out there that's getting ready to be released soon.
+
+43
+00:04:41,229 --> 00:04:48,229
+Also, we're actually looking for people to help build this out. So if you do some AD PowerShell and you'd
+
+44
+00:04:48,229 --> 00:04:54,229
+like to help us add some resources here, we'd like to do a resource for just a generic Active Directory object
+
+45
+00:04:54,229 --> 00:04:59,229
+or setting permissions on something in Active Directory, tons of things we can add to this, you know,
+
+46
+00:04:59,229 --> 00:05:01,229
+sites and subnets, all that stuff.
+
+47
+00:05:01,229 --> 00:05:09,229
+So feel free to go out there to GitHub, take a look at it, and see where you can jump in and help.
+
+48
+00:05:09,229 --> 00:05:12,229
+So there's one person I would really like to thank and that's Iain Brighton.
+
+49
+00:05:12,229 --> 00:05:20,229
+This is the stats off of GitHub. Iain has done the most work on this module in the community.
+
+50
+00:05:20,229 --> 00:05:27,229
+So a big shout out to Iain for all of his work helping us move forward with the xActiveDirectory resource module.
+
+51
+00:05:27,229 --> 00:05:34,229
+So what we're doing today is deploying a domain controller using what's called Azure Resource Manager templates.
+
+52
+00:05:34,229 --> 00:05:37,229
+How many have heard of that before?
+
+53
+00:05:37,229 --> 00:05:43,229
+Okay. Now basically, instead of going and clicking through the Azure portal to do your resource deployment,
+
+54
+00:05:43,229 --> 00:05:50,229
+your---you've got to spin up, compute, and storage, and unicorns, and fairies, and all that in Azure to make
+
+55
+00:05:50,229 --> 00:05:56,229
+everything work right, and you can do that with code obviously because we're all PowerShell people in here.
+
+56
+00:05:56,229 --> 00:06:02,229
+But it's really easy now with Azure templates. You just say give me one of these and it just gives you all that stuff.
+
+57
+00:06:02,229 --> 00:06:07,229
+It just does automatically all the storage, and the compute, and the network, and all that, just builds it
+
+58
+00:06:07,229 --> 00:06:12,229
+all up for you and that's what I've been waiting on. See, now we're there, so I don't have to worry about
+
+59
+00:06:12,229 --> 00:06:20,229
+knowing all the 1s and 0s of everything I have to set up. So we've got that we're using and I used---I cheated
+
+60
+00:06:20,229 --> 00:06:24,229
+like everybody else. Hey, you know, when you write a script, you go look on the internet, find somebody else
+
+61
+00:06:24,229 --> 00:06:27,229
+that did it, and then you start with that, right? So I just went out to GitHub.
+
+62
+00:06:27,229 --> 00:06:29,229
+There's an AzureRM
+
+63
+00:06:29,229 --> 00:06:34,229
+section out on GitHub where we've published these resource templates, and sure enough, there's one there for
+
+64
+00:06:34,229 --> 00:06:42,229
+a domain controller, so I started with that. And then I snagged the latest Active Directory module here,
+
+65
+00:06:42,229 --> 00:06:50,229
+xActiveDirectory from the PowerShell gallery, and then I went out and watched Trevor Sullivan's video on
+
+66
+00:06:50,229 --> 00:06:55,229
+doing Azure Template deployments with PowerShell, some presentation he did over in Europe.
+
+67
+00:06:55,229 --> 00:06:57,229
+Everybody know Trevor Sullivan?
+
+68
+00:06:57,229 --> 00:07:03,229
+MVP? Yep, alright. So he did a really good job on that video. And then I did the
+
+69
+00:07:03,229 --> 00:59:59,999
+phone-a-friend thing and all that and talked to some of my buddies and kind of put this, hacked this thing together.
+

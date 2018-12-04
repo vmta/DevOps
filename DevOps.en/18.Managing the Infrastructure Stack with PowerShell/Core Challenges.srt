@@ -1,0 +1,132 @@
+1
+00:00:00,0 --> 00:00:04,832
+Alright, I was kidding. We're not going to talk about cmdlets. I was just kidding.
+
+2
+00:00:04,832 --> 00:00:07,832
+We're going to talk about some challenges.
+
+3
+00:00:07,832 --> 00:00:12,832
+So here's some core challenges that you have to deal with. Yeah, I got problems.
+
+4
+00:00:12,832 --> 00:00:18,832
+So a lot of the core challenges that you have to deal with are how to manage the different modules and tools,
+
+5
+00:00:18,832 --> 00:00:24,832
+and the snap-ins that are made available. The relationship mapping, which I've touched on, I want to get
+
+6
+00:00:24,832 --> 00:00:28,832
+into a lot more detail about, and then dealing with problems that are associated with scale.
+
+7
+00:00:28,832 --> 00:00:32,832
+So we're going to talk about like as you go to implement some of this stuff, these are some of the pitfalls
+
+8
+00:00:32,832 --> 00:00:33,832
+that you're going to run into.
+
+9
+00:00:33,832 --> 00:00:42,832
+So we'll start with multiple providers. Now there are two types of ways that companies will provide PowerShell capability.
+
+10
+00:00:42,832 --> 00:00:47,832
+Right. Traditionally, it's been PowerShell snap-ins. Well because that was the only way they could do it,
+
+11
+00:00:47,832 --> 00:00:54,832
+right, that was the only real option. Fortunately, most providers have moved over to delivering a module.
+
+12
+00:00:54,832 --> 00:01:00,832
+Now it's still developed in Visual Studio, still developed with C# .NET, it's compiled and it's provided out
+
+13
+00:01:00,832 --> 00:01:05,832
+to you, so it's kind of locked. You can't get into it, but it is a module, right, that you can load.
+
+14
+00:01:05,832 --> 00:01:08,832
+And
+
+15
+00:01:08,832 --> 00:01:17,832
+the thing that's really important to remember there is that with a module it can be transported, right, it's transferrable.
+
+16
+00:01:17,832 --> 00:01:25,832
+You can put that on any system, any system that runs PowerShell that needs to perform a task, right, so if you
+
+17
+00:01:25,832 --> 00:01:31,832
+have multiple layers of the stack, you can extract these modules, put them in a central location, or add them
+
+18
+00:01:31,832 --> 00:01:38,832
+as I describe here to the PS module path so that when the session loads, that module is available, right,
+
+19
+00:01:38,832 --> 00:01:42,832
+and you can then leverage it along with others at the same time.
+
+20
+00:01:42,832 --> 00:01:49,832
+So if you're looking at managing VMware in Cisco UCS, and SolidFire, or Pure or whatever, you can have all of those
+
+21
+00:01:49,832 --> 00:01:56,832
+in the same spot. Well this is really, really handy because it's transportable, you can put that on any
+
+22
+00:01:56,832 --> 00:02:05,832
+system and you can now do a level of reporting, right, an execution that you wouldn't have been able to do otherwise.
+
+23
+00:02:05,832 --> 00:02:11,832
+Because if you're having to deal with multiple tools in Windows, yeah everybody likes to talk about the
+
+24
+00:02:11,832 --> 00:02:15,832
+single pane in class. I think PowerShell's like the ultimate single pane, right.
+
+25
+00:02:15,832 --> 00:02:20,832
+It's the single pane of kick ass. I'm quoting that. It's going on a t-shirt.
+
+26
+00:02:20,832 --> 00:02:24,832
+PowerShell single pane of kick ass, right. So I'll show you an example of
+
+27
+00:02:24,832 --> 00:02:32,832
+that, right, so you have your storage and you're wanting to query for that information like we talked about,
+
+28
+00:02:32,832 --> 00:02:41,832
+and for this one, like with the VLAN MTU, your common piece of information is the MAC address, the MAC address
+
+29
+00:02:41,832 --> 00:02:50,832
+that goes from the Cisco UCS port that's being delivered to the ESXi host, you go out and get that, and as I
+
+30
+00:02:50,832 --> 00:02:57,832
+show it here, and I'd thought I had shown the full cmdlet, but you can go in and that information is
+
+31
+00:02:57,832 --> 00:03:02,832
+accessible, right, that's neat, it's straightforward, but you end up doing
+
+32
+00:03:02,832 --> 00:03:06,832
+what I had mentioned here, you collect it all, you filter, and then you grab the piece that you really want.
+
+33
+00:03:06,832 --> 00:59:59,999
+This is wildly inefficient, right. So the concept I wanted to share today, and I've talked way faster than I thought I would.
+

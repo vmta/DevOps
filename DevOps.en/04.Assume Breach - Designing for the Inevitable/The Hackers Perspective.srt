@@ -1,0 +1,368 @@
+1
+00:00:00,5 --> 00:00:04,452
+Now this is the fun part. You get to think about the system from the eyes of an attacker.
+
+2
+00:00:04,452 --> 00:00:11,452
+So we've identified a bunch of hosts, a bunch of data stores, now you take a look at a host and you think
+
+3
+00:00:11,452 --> 00:00:18,452
+okay so I've got the web front-end. What's the worst that could happen if this thing got compromised,
+
+4
+00:00:18,452 --> 00:00:26,452
+like just let your spin for a while, half of threat modeling is brainstorming and creating new things.
+
+5
+00:00:26,452 --> 00:00:33,452
+Now here are some good things to get you started, right. So people will sometimes use that host as
+
+6
+00:00:33,452 --> 00:00:40,452
+a way to exfiltrate data. Maybe if sometimes that host is being used as a bridge between two things and they
+
+7
+00:00:40,452 --> 00:00:49,452
+can embed some stuff that intercepts that bridging capability. Maybe this host is now interacting with some
+
+8
+00:00:49,452 --> 00:00:54,452
+other custom infrastructure, like maybe this is a place where you're bridging two networks and they can use
+
+9
+00:00:54,452 --> 00:01:01,452
+this as a jumping point into another network. So just kind of thinking creatively about if I was an attacker,
+
+10
+00:01:01,452 --> 00:01:05,452
+what would I do with this host?
+
+11
+00:01:05,452 --> 00:01:12,452
+Data. We talked about some of the data attacks from the Verizon Data Breach report.
+
+12
+00:01:12,452 --> 00:01:17,452
+When you have data, people like to do things like hold it for ransom.
+
+13
+00:01:17,452 --> 00:01:23,452
+You've got a database that's storing your backups in an infrastructure that you created, what happens if an
+
+14
+00:01:23,452 --> 00:01:28,452
+attacker takes that over, encrypts everything, and then tells you I'll give you back the key after you give
+
+15
+00:01:28,452 --> 00:01:30,452
+me a million dollars.
+
+16
+00:01:30,452 --> 00:01:36,452
+You don't need to necessarily defend against everything, but thinking through the attacks, what would happen,
+
+17
+00:01:36,452 --> 00:01:41,452
+and as you're going through these things, you're just writing them down, putting them on the whiteboard,
+
+18
+00:01:41,452 --> 00:01:49,452
+bit better if you put them into a document to this thing. Now the thing here that's interesting about value
+
+19
+00:01:49,452 --> 00:01:57,452
+of data is sometimes it can be used to leverage other things. So this is the situation I was talking about
+
+20
+00:01:57,452 --> 00:02:11,452
+where people were taking the RSA seeds in the key seeds, then potentially able to use those for other attacks.
+
+21
+00:02:11,452 --> 00:02:16,452
+Then when you get into there, you start talking about mitigations.
+
+22
+00:02:16,452 --> 00:02:23,452
+So for all these attacks, what are some of the things that you can do to mitigate the attacks?
+
+23
+00:02:23,452 --> 00:02:29,452
+Now the mitigations, you're not always going to have a very clean answer.
+
+24
+00:02:29,452 --> 00:02:35,452
+Sometimes you go, you know what if somebody steals all this data like I'm literally losing my business.
+
+25
+00:02:35,452 --> 00:02:42,452
+If this data goes away, that is an end of business event. That's not a situation you want to be in.
+
+26
+00:02:42,452 --> 00:02:48,452
+This is a very quick thing. These threat models when you sit down and think through in this sort of structure
+
+27
+00:02:48,452 --> 00:02:56,452
+a lot of times, you get the majority of the innovative, interesting ideas in an hour discussion.
+
+28
+00:02:56,452 --> 00:03:02,452
+If you can't spend an hour on your security discussion, you're probably wasting your time on other things.
+
+29
+00:03:02,452 --> 00:03:08,452
+This is a very, very important thing to do.
+
+30
+00:03:08,452 --> 00:03:15,452
+Then you get to detection and response. So the mitigations. If you found a situation where if this breach
+
+31
+00:03:15,452 --> 00:03:22,452
+happens, it's a business ending disaster. Even just acknowledging that this happened would be complete loss
+
+32
+00:03:22,452 --> 00:03:30,452
+of trust or something like that. That's when you set it upon yourselves to change the design in such a way
+
+33
+00:03:30,452 --> 00:03:39,452
+that you no longer have that vulnerability. So there's an interesting distinction between threat and vulnerability.
+
+34
+00:03:39,452 --> 00:03:46,452
+So a threat is kind of a danger of a bad thing happening, and so there's a threat, for example,
+
+35
+00:03:46,452 --> 00:03:53,452
+of somebody compromising your database and stealing all of the data and selling it on the black market.
+
+36
+00:03:53,452 --> 00:03:55,452
+That's a threat.
+
+37
+00:03:55,452 --> 00:04:01,452
+A mitigation would be well that's fine, it's all encrypted. The customers have all the keys.
+
+38
+00:04:01,452 --> 00:04:06,452
+I don't even know what's in there. So there's your mitigation is encryption.
+
+39
+00:04:06,452 --> 00:04:13,452
+So when you have a threat with the mitigation, it's no longer a vulnerability.
+
+40
+00:04:13,452 --> 00:04:24,452
+If you have threats that you think are concerning and you don't have a mitigation, then now you have a vulnerability.
+
+41
+00:04:24,452 --> 00:04:33,452
+Now sometimes, you're not going to be able to completely mitigate all your threats.
+
+42
+00:04:33,452 --> 00:04:40,452
+You're going to have a situation where hey this bad thing, I'm really worried about maybe this server being
+
+43
+00:04:40,452 --> 00:04:48,452
+compromised, maybe it's going to be abused to do some other attacks against this other thing.
+
+44
+00:04:48,452 --> 00:04:54,452
+Now sometimes these things you can solve by just doing some detection.
+
+45
+00:04:54,452 --> 00:05:01,452
+So for example, if one of your servers is making REST calls into another server and you know that it's
+
+46
+00:05:01,452 --> 00:05:07,452
+always going to be the same two calls and you know, you can start to know which maybe accounts are being used
+
+47
+00:05:07,452 --> 00:05:14,452
+or which storage account ids, something like that. If you can figure out a good pattern that these are going for,
+
+48
+00:05:14,452 --> 00:05:20,452
+you don't necessarily need to write massive, massive remediations for these, you can just say that's fine.
+
+49
+00:05:20,452 --> 00:05:25,452
+What we'll do is we're going to start setting up auditing and logging on the way that these communications
+
+50
+00:05:25,452 --> 00:05:32,452
+are happening and we'll create a rule that detects anything that's outside of what we consider normal.
+
+51
+00:05:32,452 --> 00:05:39,452
+That's a valid way to operationally get around some of these threats you might have.
+
+52
+00:05:39,452 --> 00:05:47,452
+But some of the mitigations, they're not going to be there unless you're designing your infrastructure to help,
+
+53
+00:05:47,452 --> 00:05:55,452
+especially when it comes to the detections. We're kind of accustomed to Windows how it's got such great
+
+54
+00:05:55,452 --> 00:06:01,452
+event logging, you know you can see which processes are launching, what were the command-lines,
+
+55
+00:06:01,452 --> 00:06:06,452
+what PowerShell was being used, what was the ScriptBlocks being used.
+
+56
+00:06:06,452 --> 00:06:12,452
+That didn't come for free, right, this was everybody in the infrastructure that we're using said what
+
+57
+00:06:12,452 --> 00:06:19,452
+additional detail would people like to know operationally about how this system is working.
+
+58
+00:06:19,452 --> 00:06:27,452
+Now if we're the ones in charge of writing new software, creating new systems, doing the DevOps thing,
+
+59
+00:06:27,452 --> 00:06:33,452
+we also want to make sure that our systems are equally as security transparent.
+
+60
+00:06:33,452 --> 00:06:39,452
+So you should be able to set up rules that say when somebody is connecting over here to this system using
+
+61
+00:06:39,452 --> 00:06:47,452
+this application, whoa hey let your application or your service start generating event logs and audit logs
+
+62
+00:06:47,452 --> 00:06:52,452
+based on the things that you think are interesting in your application.
+
+63
+00:06:52,452 --> 00:07:03,452
+When you use PowerShell or where they use the ETW events built into Windows, Windows makes it very, very easy to
+
+64
+00:07:03,452 --> 00:07:09,452
+write structured logs into the event log. You can create your own event log channel, just do all this kind of
+
+65
+00:07:09,452 --> 00:07:18,452
+cool, cool stuff. If you were doing custom logs like a text file somewhere, you want to make sure that thing
+
+66
+00:07:18,452 --> 00:07:21,452
+is parsable by machines. You don't want
+
+67
+00:07:21,452 --> 00:07:28,452
+to say hey Joe, when you're trying to detect a breach here, read through every line of this text file and hope
+
+68
+00:07:28,452 --> 00:07:34,452
+you just happen to be awake and an attack happens. You want to use the machines to help you, make it machine
+
+69
+00:07:34,452 --> 00:07:41,452
+parsable, and be very explicit about what that format is. If you need to, write your own parser so that
+
+70
+00:07:41,452 --> 00:07:48,452
+these things now you can go off and write the splunk alerts or whatever you want to do for when some of these
+
+71
+00:07:48,452 --> 00:07:56,452
+events are happening that you want to start detecting. Now for each of these components too it's important
+
+72
+00:07:56,452 --> 00:08:03,452
+to think through, as hard as you try, there will probably be a system where, there'll probably be a situation
+
+73
+00:08:03,452 --> 00:08:10,452
+where you're going to get breached. You did all this assume breach work, this defensive work, there'll be a
+
+74
+00:08:10,452 --> 00:08:18,452
+situation where you get a call from a government agency and they say just thought you'd like to know we saw
+
+75
+00:08:18,452 --> 00:08:25,452
+one of your web servers involved in attacking another customer. That's generally how people find out that
+
+76
+00:08:25,452 --> 00:08:34,452
+they've been compromised. Now absolutely, if you don't have in-house incident response staff, you'll end up
+
+77
+00:08:34,452 --> 00:08:38,452
+calling a company to help out. There's a bunch that do a great job.
+
+78
+00:08:38,452 --> 00:08:44,452
+What you don't want to do is to say I don't know actually how you recover from this.
+
+79
+00:08:44,452 --> 00:08:48,452
+They'll help do a great job of like scoping the breach and everything else, but they're not going to know
+
+80
+00:08:48,452 --> 00:08:55,452
+your application internals. So if you know that one of your hosts have been compromised, they'll help you
+
+81
+00:08:55,452 --> 00:09:01,452
+detect one of these hosts have been compromised. There'll come a point where you say, they'll say
+
+82
+00:09:01,452 --> 00:09:09,452
+this thing needs to get remediated. What does that mean? How do you actually clean the breach off of that system?
+
+83
+00:09:09,452 --> 00:09:16,452
+Sometimes it means, well if it's DFC, fine, I'll just nuke the machine, reapply the configuration,
+
+84
+00:09:16,452 --> 00:09:22,452
+figure out how they got in, make sure that it wasn't from the software I put on, but sometimes it means,
+
+85
+00:09:22,452 --> 00:09:30,452
+oh actually this system is storing a lot of live data, so what we're going to have to do is capture the data,
+
+86
+00:09:30,452 --> 00:09:35,452
+take it off, maybe create an offline image, then bring it back on.
+
+87
+00:09:35,452 --> 00:09:41,452
+You might have a more complicated remediation story. Sitting in front of the whiteboard and talking through
+
+88
+00:09:41,452 --> 00:09:52,452
+these situations helps you be a lot more clear when the situation is actually happening, instead of when you're
+
+89
+00:09:52,452 --> 00:09:58,452
+paying some consultants however many dollars an hour to figure it out on the fly with you.
+
+90
+00:09:58,452 --> 00:10:01,452
+You don't want to sit there and go I don't know how to remediate this.
+
+91
+00:10:01,452 --> 00:10:07,452
+There's an attacker here, our business is down, we don't know how to actually recover it, and then they'll
+
+92
+00:10:07,452 --> 00:59:59,999
+help you talk about data stores. So proactively thinking through the remediation story is very, very, very useful.
+

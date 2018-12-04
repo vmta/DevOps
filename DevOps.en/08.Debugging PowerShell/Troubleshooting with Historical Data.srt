@@ -1,0 +1,572 @@
+1
+00:00:00,0 --> 00:00:08,142
+There's a lot of error management and error troubleshooting that happens without necessarily dealing with
+
+2
+00:00:08,142 --> 00:00:11,142
+running through a debugger and putting breakpoints and stepping through code.
+
+3
+00:00:11,142 --> 00:00:17,142
+A lot of stuff could happen just from using tooling to do work for you.
+
+4
+00:00:17,142 --> 00:00:21,142
+So dealing with historical information. I mean I put this in here just kind of as a joke.
+
+5
+00:00:21,142 --> 00:00:26,142
+This isn't really, this is just from my TypePX module where I can do all sorts of interesting things on numbers
+
+6
+00:00:26,142 --> 00:00:33,142
+and relative dates and what not, it's one of the modules I work on, but the module I'm talking about for
+
+7
+00:00:33,142 --> 00:00:40,142
+debugging purposes is HistoryPX. So let me make sure I don't have it loaded.
+
+8
+00:00:40,142 --> 00:00:45,142
+No, I don't. Good. So historical information. I've read a lot of commands inside this session here and I
+
+9
+00:00:45,142 --> 00:00:52,142
+can hit h, actually let me do with the latest 10. So there's the 10 most recent messages, which just shows
+
+10
+00:00:52,142 --> 00:00:57,142
+me what I ran and not even fully because it's truncated with … and it gives me some id numbers so if I want to
+
+11
+00:00:57,142 --> 00:01:08,142
+re-run something, but that's not really that useful, so let me just, I'm going to give you an example here.
+
+12
+00:01:08,142 --> 00:01:13,142
+Let me clear the history, no leave the history that's there because I want to go to number three soon.
+
+13
+00:01:13,142 --> 00:01:18,142
+I'm just going to prime the pump here and I want to throw a few things in that are interesting about historical commands.
+
+14
+00:01:18,142 --> 00:01:25,142
+So this code does the same thing twice, right? The first thing is it calls, it does 1 divided by 0,
+
+15
+00:01:25,142 --> 00:01:31,142
+which is divided by 0 error, it's going to throw an exception, and then it calls just put some string will it blend.
+
+16
+00:01:31,142 --> 00:01:36,142
+And on the second part, which is the try/catch block, does the exact same thing inside of a try/catch handler
+
+17
+00:01:36,142 --> 00:01:44,142
+and it's an important detail to follow when you're dealing with error handling because if you look at the way
+
+18
+00:01:44,142 --> 00:01:49,142
+those two things ran, so the codes all up at the top there and then you see the first error shows up and you
+
+19
+00:01:49,142 --> 00:01:56,142
+see will it blend the text because that text still ran. So even though, 1 divided by 0 resulted in an exception,
+
+20
+00:01:56,142 --> 00:02:03,142
+when I ran it, everything that happened afterwards after my semicolon still ran and went through.
+
+21
+00:02:03,142 --> 00:02:08,142
+But then look at the second example. So after the will it blend, then there's an attempt to divide by 0
+
+22
+00:02:08,142 --> 00:02:18,142
+exception and there's no string. Why not? Anybody know? (Audience Answer)
+
+23
+00:02:18,142 --> 00:02:26,142
+Exactly. So divide by 0 is a terminating exception, unless you don't put it inside of a try/catch block,
+
+24
+00:02:26,142 --> 00:02:33,142
+which is a gotcha in PowerShell because there a lot of places where an exception terminates and it's meant
+
+25
+00:02:33,142 --> 00:02:38,142
+to terminate, it's an exception basically saying hold on, you're doing something really wrong here, but if you
+
+26
+00:02:38,142 --> 00:02:46,142
+don't wrap it in try/catch, then it's not going to terminate. So if you write functions that have an
+
+27
+00:02:46,142 --> 00:02:54,142
+exception that is terminating exception, but you don't wrap it in try/catch, it'll do everything afterwards
+
+28
+00:02:54,142 --> 00:03:00,142
+and it'll just continue running. It won't stop your function from executing the rest of the code,
+
+29
+00:03:00,142 --> 00:03:04,142
+which may have unexpected consequences depending on what it does.
+
+30
+00:03:04,142 --> 00:03:12,142
+So as a rule of thumb, even though I might sound cumbersome, I try/catch everything.
+
+31
+00:03:12,142 --> 00:03:18,142
+Every begin process and end block in my functions have a try/catch at the top-level.
+
+32
+00:03:18,142 --> 00:03:24,142
+Every single one. Every script I write, try/catch. Absolutely everything because that's the only way when
+
+33
+00:03:24,142 --> 00:03:30,142
+you're writing PowerShell that you can guarantee that you get the same behavior every single time.
+
+34
+00:03:30,142 --> 00:03:36,142
+If you don't, somebody else may put try/catch around it calling your function or your script and get different
+
+35
+00:03:36,142 --> 00:03:41,142
+behavior because theirs is going to stop on an exception that yours let go through and just generate an
+
+36
+00:03:41,142 --> 00:03:44,142
+error, which you may think is just benign and you think, okay, well that's fine.
+
+37
+00:03:44,142 --> 00:03:48,142
+It's generates an error, but still does all this other stuff, except that other stuff doesn't run because
+
+38
+00:03:48,142 --> 00:03:54,142
+they called it inside a try/catch block, which is a bit of a challenge, and so it's better to write your
+
+39
+00:03:54,142 --> 00:04:00,142
+code so that it is robust and runs the same way every single time, so I try/catch absolutely everything.
+
+40
+00:04:00,142 --> 00:04:05,142
+But when you do that, and I go, so I just ran that and I got you different examples, now I'm going to look
+
+41
+00:04:05,142 --> 00:04:10,142
+at this history and this time I'm going to pipe it to from that table.
+
+42
+00:04:10,142 --> 00:04:17,142
+So if you look at the last two entries here 41 to 42, they're doing the same piece of code right?
+
+43
+00:04:17,142 --> 00:04:25,142
+Starting at 41 and 42, oh that's right, wait a second. Because I ran it as a block, it treats it as one command.
+
+44
+00:04:25,142 --> 00:04:32,142
+So I'm going to run it twice, each piece by itself. So I'll run that and then I'll run the other one.
+
+45
+00:04:32,142 --> 00:04:49,142
+Now when I look at the history, there, so 44 and 45, and pipe that to FormatTable, this tells me,
+
+46
+00:04:49,142 --> 00:04:54,142
+it gives me a better example of what actually happened, right. So 44 completed, even though it was a
+
+47
+00:04:54,142 --> 00:04:58,142
+terminating exception that completed because it kept on running versus 45 failed.
+
+48
+00:04:58,142 --> 00:05:05,142
+So by using try/catch, it will also be detectable in your history to see where something actually had a
+
+49
+00:05:05,142 --> 00:05:07,142
+terminating exception versus not.
+
+50
+00:05:07,142 --> 00:05:10,142
+Even though these commands completed, they may have generated errors.
+
+51
+00:05:10,142 --> 00:05:15,142
+You can't see that from this. This is the built-in history. So the only thing you can get here is
+
+52
+00:05:15,142 --> 00:05:18,142
+terminated with error or not from the execution
+
+53
+00:05:18,142 --> 00:05:25,142
+status state, but I've come up with a solution to help work around that.
+
+54
+00:05:25,142 --> 00:05:36,142
+So I'm going to import HistoryPX, that's also in the gallery, and now I'm going to just create a bunch of errors.
+
+55
+00:05:36,142 --> 00:05:41,142
+I think I can run all these together. Yeah, we'll run those ones.
+
+56
+00:05:41,142 --> 00:05:47,142
+So there I just generated a bunch of different error messages and now let me show you the count of the most
+
+57
+00:05:47,142 --> 00:05:56,142
+recent commands I've ran. So now, actually sorry again because I ran them all at once, I've got to do this
+
+58
+00:05:56,142 --> 00:06:01,142
+one at a time. It's one of the hard parts about when you're just demonstrating debugging and you want to run
+
+59
+00:06:01,142 --> 00:06:10,142
+commands one at a time is you have to do it one off. So now that he did that, there.
+
+60
+00:06:10,142 --> 00:06:18,142
+So, HistoryPX takes history and extends it. It will calculate the duration, so if you're doing any kind of
+
+61
+00:06:18,142 --> 00:06:23,142
+benchmarking around your scripts and your commands and you want to see how long one run had verses another and
+
+62
+00:06:23,142 --> 00:06:28,142
+you tweak your code here and there and you want to automatically detract things, well you can just have version
+
+63
+00:06:28,142 --> 00:06:32,142
+A, B, C of a script, for example, and run each one and then look at the durations and figure out which one
+
+64
+00:06:32,142 --> 00:06:38,142
+took the longest. It'll show you success or failure. It'll show you the number of errors.
+
+65
+00:06:38,142 --> 00:06:42,142
+It gives you output, so if you had a command that you ran that generated certain amount of output, how many objects
+
+66
+00:06:42,142 --> 00:06:51,142
+were output, so the number assign at output. The number of signs source is how many commands, how many lines
+
+67
+00:06:51,142 --> 00:06:56,142
+in that command that I ran generated output, and I'll get to that one in a minute.
+
+68
+00:06:56,142 --> 00:07:01,142
+It can be really useful because sometimes you run a command that's unexpecting, so that generates unexpected output.
+
+69
+00:07:01,142 --> 00:07:08,142
+So here's an example. Look at this function, New-ArrayListWithOneItem.
+
+70
+00:07:08,142 --> 00:07:14,142
+It's pretty straightforward, right. I just go in and create a new array list, add integer and value to it,
+
+71
+00:07:14,142 --> 00:07:24,142
+and return the array list to the caller. So I'll load that, and now I'm going to run it, and now when I look
+
+72
+00:07:24,142 --> 00:07:30,142
+at the results, I get two records.
+
+73
+00:07:30,142 --> 00:07:38,142
+Anybody know why? Nope. (Audience comment) Yes. So
+
+74
+00:07:38,142 --> 00:07:47,142
+ArrayList.Add returns the index of the value that was added to the array list and there are methods like this
+
+75
+00:07:47,142 --> 00:07:48,142
+all over .NET.
+
+76
+00:07:48,142 --> 00:07:55,142
+You call into some method and it does the work you want and returns a value that you don't need,
+
+77
+00:07:55,142 --> 00:08:00,142
+but you might not know that unless you look at the method signature and when you're dealing with this kind of
+
+78
+00:08:00,142 --> 00:08:08,142
+a thing in a very large command that you run and goes and gets, maybe it pulls the list of the virtual
+
+79
+00:08:08,142 --> 00:08:13,142
+machines from all of your Hyper-V servers and your infrastructure and outputs one and you're trying to figure
+
+80
+00:08:13,142 --> 00:08:17,142
+out where that comes from, that can be really challenging.
+
+81
+00:08:17,142 --> 00:08:26,142
+so that's where the number of sources is useful because I can run that same command,
+
+82
+00:08:26,142 --> 00:08:29,142
+New-ArrayListWithOneItem. I get the two results back and then I can take a look at the history.
+
+83
+00:08:29,142 --> 00:08:36,142
+So if I, well actually yeah, I'll show you the properties I'm working with first.
+
+84
+00:08:36,142 --> 00:08:43,142
+So inside of my history extension from HistoryPX, there are errors and error counts so you can go and look at
+
+85
+00:08:43,142 --> 00:08:46,142
+those collections in the default output. You only see the counts, but you could actually look at the errors
+
+86
+00:08:46,142 --> 00:08:51,142
+for any particular command after it ran. You can look at the output after it ran.
+
+87
+00:08:51,142 --> 00:08:57,142
+So you ran a command, you forgot to capture the output and it went across the wire and did something,
+
+88
+00:08:57,142 --> 00:09:02,142
+it took a while, and you think oh shoot, I meant to put that in a variable, it's got it for you.
+
+89
+00:09:02,142 --> 00:09:08,142
+Output sources and output sources count. That's what I wanted to talk about with respect to this particular command.
+
+90
+00:09:08,142 --> 00:09:15,142
+So I already ran it, so now I can look at, actually going to do it again here because I want to have it in
+
+91
+00:09:15,142 --> 00:09:24,142
+the right sequence, so I'm going to get the most recent history entry, Get-History-Count1 and look at the output source.
+
+92
+00:09:24,142 --> 00:09:32,142
+And so look at the top one in the text property, al.Add 1 returns something, so it tells me what line
+
+93
+00:09:32,142 --> 00:09:37,142
+returned it, the line number, the starting column number, and so that's all the metrics about where it was
+
+94
+00:09:37,142 --> 00:09:40,142
+inside of my command that I ran, what was actually returned, which is
+
+95
+00:09:40,142 --> 00:09:45,142
+really cool when you're trying to find these kind of issues because it just can be a challenge when you have
+
+96
+00:09:45,142 --> 00:09:50,142
+that needle in the haystack returning something that you didn't expect and you don't want to do a lot of
+
+97
+00:09:50,142 --> 00:09:59,142
+commenting and uncommenting of code to figure it out and try to figure out where that particular piece is.
+
+98
+00:09:59,142 --> 00:10:03,142
+And you don't have to think about turning it on. I mean, as long as you have HistoryPX loaded, which by the
+
+99
+00:10:03,142 --> 00:10:07,142
+way, you have to load manually because HistoryPX contains a lot of commands that are proxies for existing
+
+100
+00:10:07,142 --> 00:10:12,142
+commands, so natively is not going to, when you're on Get-History it's not going to say oh you want to load
+
+101
+00:10:12,142 --> 00:10:18,142
+HistoryPX because Get-History is on the box. So if you want to use HistoryPX and you like this,
+
+102
+00:10:18,142 --> 00:10:22,142
+then download install the module and put import module HistoryPX in your profile and you're good,
+
+103
+00:10:22,142 --> 00:10:28,142
+and it'll always track the data for you.
+
+104
+00:10:28,142 --> 00:10:36,142
+Let's see. Oh, so you can also manage the configuration, so if I run this command.
+
+105
+00:10:36,142 --> 00:10:42,142
+So one of the concerns with HistoryPX that I have heard in the past is that what about if I go and get thousands
+
+106
+00:10:42,142 --> 00:10:45,142
+and thousands and thousands of records. I don't want you storing that all on my session inside of the history
+
+107
+00:10:45,142 --> 00:10:51,142
+variable so that you're building up my memory in my PowerShell session and consuming my resources on my system.
+
+108
+00:10:51,142 --> 00:11:00,142
+So it, by default, takes a fairly light tactic for memory, yeah, for making sure it doesn't consume too much
+
+109
+00:11:00,142 --> 00:11:07,142
+memory, so it'll only store the extended history information for the last 200 commands you ran and a maximum
+
+110
+00:11:07,142 --> 00:11:13,142
+of 1,000 output items per command so that you don't end up having too much of a huge memory footprint,
+
+111
+00:11:13,142 --> 00:11:17,142
+but you can call Set-ExtendedHistoryConfiguration and change this.
+
+112
+00:11:17,142 --> 00:11:22,142
+So it's up to you to figure out how much you want to store, if you want to store more and you can do that,
+
+113
+00:11:22,142 --> 00:11:30,142
+as well, in your profile. Another thing I put in, and this is kind of experimental this one, so when you're
+
+114
+00:11:30,142 --> 00:11:35,142
+dealing with history and you have commands that you ran and you forgot to get results, and it's great that it
+
+115
+00:11:35,142 --> 00:11:42,142
+captures it for you, but there's also, you may have seen Lee Holmes put out a I think it was Tweet or a blog
+
+116
+00:11:42,142 --> 00:11:47,142
+post talking about something about variable for capturing output automatically and that works some of the time,
+
+117
+00:11:47,142 --> 00:11:52,142
+but not in every case, and so HistoryPX takes that a bit further and builds it in.
+
+118
+00:11:52,142 --> 00:12:01,142
+So if I run this command, Get-Service, now I can do $__ because we didn't have enough $__.
+
+119
+00:12:01,142 --> 00:12:08,142
+$__ basically says take the last collection of stuff that you got and show it to me again,
+
+120
+00:12:08,142 --> 00:12:14,142
+which is really cool when you're doing interactive, I'm in the command-line running commands,
+
+121
+00:12:14,142 --> 00:12:18,142
+figuring out where properties are, and modifying my script at the same time, back to the command-line doing
+
+122
+00:12:18,142 --> 00:12:26,142
+some more work, back to my script adding the code because I can do things like look at the values in $__,
+
+123
+00:12:26,142 --> 00:12:32,142
+so I can look at the names and notice that the $__ doesn't change.
+
+124
+00:12:32,142 --> 00:12:39,142
+I'm still working with the same collection of services, but when I'm referencing properties in $__,
+
+125
+00:12:39,142 --> 00:12:44,142
+HistoryPX is smart enough to think well you're just digging around, so I'm not going to take those values
+
+126
+00:12:44,142 --> 00:12:50,142
+and overwrite what I stored, I'll just let you dig around and go on your way.
+
+127
+00:12:50,142 --> 00:12:57,142
+If I call Get-Help, it's not going to store that because who wants to store Get-Help and $__.
+
+128
+00:12:57,142 --> 00:13:03,142
+So it has a collection of things that it tracks and other stuff that it says oh, I'm not going to worry with that.
+
+129
+00:13:03,142 --> 00:13:09,142
+And so, even after I run Get-Help, I still have that same collection I had from before keeping track of things.
+
+130
+00:13:09,142 --> 00:13:17,142
+And so the way that works is I have this Get-CaptureOutputConfiguration because it's all about capturing
+
+131
+00:13:17,142 --> 00:13:26,142
+output, and in capturing output, there is excluded types, oh and also there's capture value types and capture
+
+132
+00:13:26,142 --> 00:13:31,142
+null, so those are both turned off by default because value types are things like ints and strings,
+
+133
+00:13:31,142 --> 00:13:37,142
+so it's just going to ignore those altogether and not store them because, again, it's not really saving any time.
+
+134
+00:13:37,142 --> 00:13:42,142
+But for collections and actual .NET objects that are rich, it'll store them, but you can configure that and
+
+135
+00:13:42,142 --> 00:13:49,142
+you can change how that works. So if I look at the ExcludedTypes, then I can see these are all the types that
+
+136
+00:13:49,142 --> 00:13:53,142
+it's going to ignore by default. It's a system of strings in there, helping if we're short,
+
+137
+00:13:53,142 --> 00:14:01,142
+MamlCommandHelpInfo. It's going to ignore results from Get-Member and Get-Command and Get-Variable
+
+138
+00:14:01,142 --> 00:14:05,142
+because those are things we very frequently call just to go and look stuff up that we don't necessarily want
+
+139
+00:14:05,142 --> 00:14:12,142
+to store and overwrite something that we're working in as I'm doing this rapid back and forth on the command-line
+
+140
+00:14:12,142 --> 00:14:15,142
+figuring out some properties and methods and then off on my script running the work.
+
+141
+00:14:15,142 --> 00:14:22,142
+So I like this a lot because it helps me switch back and forth without always having to think about putting
+
+142
+00:14:22,142 --> 00:14:26,142
+something into a variable to do the work I needed to do, and you can configure this, you can remove things
+
+143
+00:14:26,142 --> 00:59:59,999
+from this, exclude type lists, or add things if you want to, and it'll track or not track accordingly.
+

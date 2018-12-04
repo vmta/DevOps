@@ -1,0 +1,328 @@
+1
+00:00:00,0 --> 00:00:21,21
+I'm really glad you guys came. I'm glad there's a size crowd because this is a topic that I'm particularly passionate about.
+
+2
+00:00:21,21 --> 00:00:27,27
+I do a lot of, I'm very curious when it comes to PowerShell and programming languages in general,
+
+3
+00:00:27,27 --> 00:00:33,33
+and so I do a lot of deep dives when I start thinking about crazy ideas, I wonder how this works, I wonder if
+
+4
+00:00:33,33 --> 00:00:38,38
+I could do that, and I go down the rabbit hole, and I disappear for a few months or sometimes a few years, and
+
+5
+00:00:38,38 --> 00:00:43,43
+come back later on with something neat. And so this is one of those neat things because I've gone down the
+
+6
+00:00:43,43 --> 00:00:51,51
+rabbit hole a few times. And I've talked about this topic at some other events in the past where afterwards I
+
+7
+00:00:51,51 --> 00:00:56,56
+feel like I flew a plane over their head around 50,000 feet, but those weren't PowerShell-specific events,
+
+8
+00:00:56,56 --> 00:01:01,61
+so it wasn't necessarily the right target audience for this kind of presentation, so I'm really glad to bring it here.
+
+9
+00:01:01,61 --> 00:01:07,67
+I hope you brought your thinking caps. When I'm doing content at any session, it doesn't really matter if
+
+10
+00:01:07,67 --> 00:01:13,73
+it's PowerShell related or not, I take questions at any time and I'll try to do my best to answer those questions
+
+11
+00:01:13,73 --> 00:01:17,77
+during the session, and if I can't, I'll push it until the end or maybe do a sidebar outside of the session
+
+12
+00:01:17,77 --> 00:01:24,84
+and figure stuff out. So feel free to bring questions up at any time as I'm going through this content and
+
+13
+00:01:24,84 --> 00:01:27,87
+yeah, hopefully you guys have fun and it'll make you think a little bit.
+
+14
+00:01:27,87 --> 00:01:33,93
+So domain-specific languages are interesting to me because they offer a lot of value above and beyond what
+
+15
+00:01:33,93 --> 00:01:39,99
+you get from native PowerShell. And so I want to talk about I guess a bit of a history of DSLs in PowerShell,
+
+16
+00:01:39,99 --> 00:01:45,105
+which is relatively short, and a bit of an ongoing experiment.
+
+17
+00:01:45,105 --> 00:01:53,113
+First, for those of you who don't know me, who am I. My name's Kirk Munro, and back in well pre 2006, I used to
+
+18
+00:01:53,113 --> 00:01:58,118
+work on MAPE and LDAP layer programming inside of a product called Message _____ Quest
+
+19
+00:01:58,118 --> 00:02:02,122
+and then I went to an Exchange 12 conference here in Redmond where they started talking about this thing called
+
+20
+00:02:02,122 --> 00:02:07,127
+Monad and kind of got bit by the bug because all of a sudden I could make guesses and be right 80-90% of the
+
+21
+00:02:07,127 --> 00:02:15,135
+time and that never happens in MAPE or LDAP. So that really kind of peaked my interest and ever since then
+
+22
+00:02:15,135 --> 00:02:20,140
+I haven't looked back. I've had my career totally focused on PowerShell for going on 10 years now.
+
+23
+00:02:20,140 --> 00:02:25,145
+I grabbed the nickname years ago, Poshoholic. If you want to contact me for anything, that's my Twitter
+
+24
+00:02:25,145 --> 00:02:32,152
+handle, poshoholic@gmail.com, poshoholic@hotmail.com, poshoholic.com, anywhere that I'm around on the web,
+
+25
+00:02:32,152 --> 00:02:36,156
+that's typically the nickname that I use aside from a few places.
+
+26
+00:02:36,156 --> 00:02:41,161
+So on GitHub, you'll just look up Kirk Munro and just be careful of the spelling of Munro because it's not
+
+27
+00:02:41,161 --> 00:02:45,165
+one of the more common ones, and you'll find my content upon GitHub up there, but that's kind of how you can
+
+28
+00:02:45,165 --> 00:02:48,168
+reach out to me.
+
+29
+00:02:48,168 --> 00:02:51,171
+So I mentioned we're going to talk about domain-specific languages and I'm going to do a couple of different
+
+30
+00:02:51,171 --> 00:02:57,177
+demos showing you the kind of things you can do and I need to bring all this with a bit of a
+
+31
+00:02:57,177 --> 00:03:05,185
+caveat. So this is experimental because there is no official public domain-specific language support in
+
+32
+00:03:05,185 --> 00:03:08,188
+PowerShell today in version 5.
+
+33
+00:03:08,188 --> 00:03:14,194
+They started doing stuff under the covers with some public .NET interfaces in version 4.
+
+34
+00:03:14,194 --> 00:03:18,198
+That's where it first started to coming to light. Some domain-specific language work was done prior to
+
+35
+00:03:18,198 --> 00:03:23,203
+version 4 just using functions and what you could do with PowerShell commands, I've done that,
+
+36
+00:03:23,203 --> 00:03:28,208
+but experimental is key on this because it's not a fully-defined process.
+
+37
+00:03:28,208 --> 00:03:33,213
+So I wanted to bring this here to you to get you thinking about it and to start discussions, maybe make some
+
+38
+00:03:33,213 --> 00:03:38,218
+relationships that continue beyond this event that you guys can talk to me about stuff or collaborate on
+
+39
+00:03:38,218 --> 00:03:42,222
+different things on GitHub and what not and see where we can take it because I think it's really interesting
+
+40
+00:03:42,222 --> 00:03:44,224
+and very compelling with what you can do with it.
+
+41
+00:03:44,224 --> 00:03:50,230
+So even though it's experimental, it's worthwhile bringing to the table to talk about now.
+
+42
+00:03:50,230 --> 00:03:55,235
+So what is a domain-specific language? Excuse me. A domain-specific language, I mean this is just from
+
+43
+00:03:55,235 --> 00:04:03,243
+Wikipedia, it's specialized, so it's domain specific and it maybe an entire language.
+
+44
+00:04:03,243 --> 00:04:07,247
+You might have a domain-specific language that is off on its own and the only thing you can do is what is
+
+45
+00:04:07,247 --> 00:04:11,251
+defined for that domain, but it may also be embedded within another language in the case of PowerShell
+
+46
+00:04:11,251 --> 00:04:12,252
+because PowerShell
+
+47
+00:04:12,252 --> 00:04:17,257
+you have cmdlets, functions, aliases, and all of that goodness, but then you can also embed these little mini
+
+48
+00:04:17,257 --> 00:04:25,265
+languages that you can intersperse with regular PowerShell and that give you some benefits above and beyond
+
+49
+00:04:25,265 --> 00:04:32,272
+what you get from normal PowerShell commands, so that's what I'm going to be talking about is that kind of a integrated language.
+
+50
+00:04:32,272 --> 00:04:37,277
+Yeah, so they're not general purposed. They're very focused on a particular task.
+
+51
+00:04:37,277 --> 00:04:42,282
+Why are they important? They're important because well these four reasons, so simplicity.
+
+52
+00:04:42,282 --> 00:04:47,287
+Domain-specific languages can take something that would be very complicated to do normally and it might require
+
+53
+00:04:47,287 --> 00:04:53,293
+a whole lot of code otherwise and boil it down into a very simple presentation so that you can digest it and
+
+54
+00:04:53,293 --> 00:05:00,300
+consume it and do things with it. Familiarity is key because you're coming from often with a domain-specific
+
+55
+00:05:00,300 --> 00:05:05,305
+language, you're working with a certain set of concepts and features and keywords and different things that
+
+56
+00:05:05,305 --> 00:05:12,312
+you have in mind from what the area of topic that's being covered by the domain-specific language is,
+
+57
+00:05:12,312 --> 00:05:17,317
+and so you can bring those concepts in and use them in a familiar manner just so you can make intelligent
+
+58
+00:05:17,317 --> 00:05:24,324
+guesses and do the right thing. Power because you can, typically, they obscure a lot, a lot of code behind
+
+59
+00:05:24,324 --> 00:05:29,329
+the scenes with just a very small package and structure. Structure is an interesting one and it doesn't
+
+60
+00:05:29,329 --> 00:05:33,333
+apply to every domain-specific language, but it applies to a lot.
+
+61
+00:05:33,333 --> 00:05:39,339
+When you're dealing with structure, well key domain-specific languages in PowerShell today,
+
+62
+00:05:39,339 --> 00:05:43,343
+Desired State Configuration, you're dealing with structure that defines your network infrastructure and how
+
+63
+00:05:43,343 --> 00:05:48,348
+it's laid out, and so it applies very well. The concept of domain-specific language applies very well to DSC
+
+64
+00:05:48,348 --> 00:05:54,354
+and so DSC is a domain-specific language. And any place where you're dealing with structured output,
+
+65
+00:05:54,354 --> 00:06:01,361
+so certain documents have structure, or like I mentioned infrastructure itself, domain-specific language is
+
+66
+00:06:01,361 --> 00:06:05,365
+worth considering for those solutions and you'll see some of the reasons why
+
+67
+00:06:05,365 --> 00:06:08,368
+as I go on through the talk.
+
+68
+00:06:08,368 --> 00:06:12,372
+How can they be implemented? They can be implemented in a whole bunch of different ways.
+
+69
+00:06:12,372 --> 00:06:18,378
+So I started tinkering with domain-specific languages back in PowerShell v1, I think, about just using
+
+70
+00:06:18,378 --> 00:06:24,384
+functions and aliases and cmdlets and defining things on the fly and doing a lot of metadata programming,
+
+71
+00:06:24,384 --> 00:06:29,389
+but they also could be implemented using native functionality in PowerShell 4 or later, and so the key piece
+
+72
+00:06:29,389 --> 00:06:34,394
+to that is System.Management.Automation.Language.DynamicKeyword.
+
+73
+00:06:34,394 --> 00:06:39,399
+Dynamic keyword is a class that has a bunch of static methods and that's where all the magic is intended to
+
+74
+00:06:39,399 --> 00:06:44,404
+happen and that was added for the purpose of DSC, but
+
+75
+00:06:44,404 --> 00:06:48,408
+technically, when they added it, they didn't really talk about it a whole lot because it was only half baked
+
+76
+00:06:48,408 --> 00:06:53,413
+and they didn't really want anybody going into it and figuring it out and I ignored all that, went into it,
+
+77
+00:06:53,413 --> 00:06:58,418
+and figured it out and figured out what was missing and added stuff, and so I've done a lot of tinkering
+
+78
+00:06:58,418 --> 00:07:04,424
+around with dynamic keyword and my stuff is still in an in-progress state, so I'm going to show some things
+
+79
+00:07:04,424 --> 00:07:10,430
+that are not published on PowerShell gallery, but are only GitHub right now because it's still evolving and
+
+80
+00:07:10,430 --> 00:07:14,434
+until I get it to the point where I think yeah, okay, I can push it there more broadly, then I'll push it on
+
+81
+00:07:14,434 --> 00:07:19,439
+the gallery, but for now, it's still is a work in progress and experimental, as I mentioned before.
+
+82
+00:07:19,439 --> 00:59:59,999
+Questions so far? No.
+

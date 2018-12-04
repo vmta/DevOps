@@ -1,0 +1,264 @@
+1
+00:00:00,0 --> 00:00:05,935
+Alright, so the first demo is the forensically sound demo, so I'm going to walk through kind of how you would
+
+2
+00:00:05,935 --> 00:00:10,935
+actually parse NTFS and how PowerForensics handles it. So the first thing that we
+
+3
+00:00:10,935 --> 00:00:17,935
+need to do is read from a disk or volume directly, right. And this is where the only Windows API is used,
+
+4
+00:00:17,935 --> 00:00:24,935
+and so the Windows API that we're using here is the CreateFile API, which allows you to create a read or write
+
+5
+00:00:24,935 --> 00:00:26,935
+handle, in this case, we're doing read
+
+6
+00:00:26,935 --> 00:00:33,935
+only, read handle to a physical disk or a logical volume, so think physical disk 0 or logical volume like the
+
+7
+00:00:33,935 --> 00:00:36,935
+C drive, for instance. And then we're using the
+
+8
+00:00:36,935 --> 00:00:42,935
+FileStream Read method to read from that handle. This is an example of the PInvoke signature that I'm using
+
+9
+00:00:42,935 --> 00:00:46,935
+for CreateFile and I'll kind of show that
+
+10
+00:00:46,935 --> 00:00:51,935
+as we go. The first thing that you're going to run into when you start reading from the physical disk,
+
+11
+00:00:51,935 --> 00:00:56,935
+it's kind of an eye chart, but just to show is the master boot record and we'll actually show how the code parses
+
+12
+00:00:56,935 --> 00:01:01,935
+all this inside here. The Master Boot Record is the key there is actually this partition table, and so,
+
+13
+00:01:01,935 --> 00:01:07,935
+by default, the master boot record has up to four partitions. There's an alternate partitioning scheme
+
+14
+00:01:07,935 --> 00:01:11,935
+called the GUID partition table, which is going to allow more than four default partitions.
+
+15
+00:01:11,935 --> 00:01:14,935
+There's also ways that you can make master boot record have more than four.
+
+16
+00:01:14,935 --> 00:01:18,935
+Ultimately, what we're looking for are things like the partition type
+
+17
+00:01:18,935 --> 00:01:25,935
+NTFS or the status, which is 80 bootable, meaning that's the bootable drive or the operating system drive.
+
+18
+00:01:25,935 --> 00:01:30,935
+And then we're looking at the things like relative start sector and total sectors, which are going to tell us
+
+19
+00:01:30,935 --> 00:01:37,935
+how much or how many sectors, a sector is 512 bytes, are taken up by this logical volume, right, and so now we
+
+20
+00:01:37,935 --> 00:01:43,935
+know where, in this case, the C drive is or whatever your operating system drive is.
+
+21
+00:01:43,935 --> 00:01:47,935
+After that, we're going to look at, in the case of NTFS, we're going to look at the Volume Boot Record,
+
+22
+00:01:47,935 --> 00:01:53,935
+and so this is going to have tons of information about how you should understand
+
+23
+00:01:53,935 --> 00:01:58,935
+the layout of that particular file system or that volume. And so we have things like bytes per sector,
+
+24
+00:01:58,935 --> 00:02:06,935
+which in this case, 200 hex, which is 512 bytes per sector, then you have sectors per cluster, which are
+
+25
+00:02:06,935 --> 00:02:14,935
+8 times 200 hex, which is 4096 bytes per cluster. Those are just helping you understand the geometry of the volume.
+
+26
+00:02:14,935 --> 00:02:20,935
+And then when you have things like a pointer to the MFT, so MFT first cluster number, that blue one right there,
+
+27
+00:02:20,935 --> 00:02:24,935
+that's going to tell us where the master file table is. And so if we follow that pointer,
+
+28
+00:02:24,935 --> 00:02:30,935
+we then find the actual master file table, right, and this is an example of a single master file table record.
+
+29
+00:02:30,935 --> 00:02:36,935
+The master file table is a metadata file, so it is a file that keeps track of all other files on disk, right,
+
+30
+00:02:36,935 --> 00:02:40,935
+and so there's an individual record. Each record by default is 1024
+
+31
+00:02:40,935 --> 00:02:46,935
+bytes. If it's not going to be 1024 bytes, the volume boot record is going to tell you that.
+
+32
+00:02:46,935 --> 00:02:50,935
+Inside of that, it's going to have a number of different attributes.
+
+33
+00:02:50,935 --> 00:02:54,935
+So they're not really shown here, but we'll talk about them in a second.
+
+34
+00:02:54,935 --> 00:02:59,935
+Each attribute, like for instance, the file name attribute, I'll let you guess what that keeps track of, right,
+
+35
+00:02:59,935 --> 00:03:06,935
+it keeps track of the file's name. A file in this context is either a directory or an actual data file.
+
+36
+00:03:06,935 --> 00:03:13,935
+In this instance, in this image, we have a data file, so there's a data attribute, which has either contains
+
+37
+00:03:13,935 --> 00:03:19,935
+the data for the file, if it's a relatively small file or it contains pointers to the clusters that contain
+
+38
+00:03:19,935 --> 00:03:23,935
+the data for the file and we'll talk about that going forward. Alright, so this is what a
+
+39
+00:03:23,935 --> 00:03:27,935
+data attribute looks like. This is for a relatively small file.
+
+40
+00:03:27,935 --> 00:03:34,935
+We're talking because so there are two types of ways that the MFT record keeps track of data.
+
+41
+00:03:34,935 --> 00:03:42,935
+It can either be resident or non-resident. A resident data record is going to have the data within that 1024
+
+42
+00:03:42,935 --> 00:03:48,935
+bytes, and so as you can imagine, a file needs to be around like 600 bytes or less in order to be resident,
+
+43
+00:03:48,935 --> 00:03:54,935
+and so in this case, it just says Hello World, so the data's small enough it fit within there.
+
+44
+00:03:54,935 --> 00:03:57,935
+In other situations, there's going to be pointers that show you
+
+45
+00:03:57,935 --> 00:04:03,935
+where that data is, and so this is an example of a non-resident data attribute to where there's these data
+
+46
+00:04:03,935 --> 00:04:08,935
+runs, which it took me a really long time to figure out how those work, but ultimately, what they're telling
+
+47
+00:04:08,935 --> 00:04:18,935
+you is that hey I offset 68DC04 for 21CO hex clusters there's data that's relevant to this file and this is an
+
+48
+00:04:18,935 --> 00:04:23,935
+example of a fragmented file, meaning that there's the clusters are not sequential, so they're spread out
+
+49
+00:04:23,935 --> 00:04:28,935
+throughout the hard drive, so you have to understand that and then read them all in order.
+
+50
+00:04:28,935 --> 00:04:29,935
+Then you have this
+
+51
+00:04:29,935 --> 00:04:37,935
+guy, so instead of so directories don't have data per say, but they have information about files that are
+
+52
+00:04:37,935 --> 00:04:40,935
+contained within that directory, and so that's what this Index_Allocation attribute is telling you.
+
+53
+00:04:40,935 --> 00:04:48,935
+It's telling you, in this case, you have let's see HelloWorld.txt contained in there and a file named Test.
+
+54
+00:04:48,935 --> 00:04:52,935
+And then you would have to follow it back and figure out what the directory's name is,
+
+55
+00:04:52,935 --> 00:05:00,935
+things of that nature, so we'll show that here in a second. Okay, so now we'll actually start going through this.
+
+56
+00:05:00,935 --> 00:05:07,935
+Okay, so one thing that I wanted to show, I meant to show this a few seconds ago, so WinDD.exe is a pretty
+
+57
+00:05:07,935 --> 00:05:13,935
+well-known DD.exe is like or DD is the Linux capability for disk duplicator.
+
+58
+00:05:13,935 --> 00:05:17,935
+It's supposed to be able to make bit for bit copies. WinDD is a Windows implementation.
+
+59
+00:05:17,935 --> 00:05:22,935
+One of the things that I wanted to show is that when we actually run Get-PE, which is part of PowerShell's
+
+60
+00:05:22,935 --> 00:05:27,935
+arsenal, something Matt wrote, we can actually look at the import, the function imports, and so it uses
+
+61
+00:05:27,935 --> 00:05:31,935
+CreateFile in the same way that PowerForensics is using it. So the idea is that although we're using a
+
+62
+00:05:31,935 --> 00:05:36,935
+Windows API to get access to the actual drive itself, you have to do that at some point.
+
+63
+00:05:36,935 --> 00:05:42,935
+So if an attacker is going to attack you, attack PowerForensics, they're attacking WinDD the same way.
+
+64
+00:05:42,935 --> 00:05:48,935
+So that's the one place where I think an attacker could kind of take advantage of the process, but it affects
+
+65
+00:05:48,935 --> 00:05:56,935
+pretty much everybody equally. Let me just run this real quick.
+
+66
+00:05:56,935 --> 00:59:59,999
+Alright. I've been practicing all the little shortcuts and stuff that I forget.
+

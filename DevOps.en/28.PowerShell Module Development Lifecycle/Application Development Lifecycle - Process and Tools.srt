@@ -1,0 +1,268 @@
+1
+00:00:00,0 --> 00:00:05,767
+So why do we need an application, the development lifecycle, or module of the development lifecycle?
+
+2
+00:00:05,767 --> 00:00:10,767
+This is kind of like a classic software development cartoon that you always see around the place and it's
+
+3
+00:00:10,767 --> 00:00:16,767
+like kind of a hit on communication. The customer describes their swing as this like weird three-tiered
+
+4
+00:00:16,767 --> 00:00:21,767
+swing that doesn't really make too much sense, but it kind of gets the point across.
+
+5
+00:00:21,767 --> 00:00:26,767
+And my favorite one is how the programmer wrote it because it's this crappy little string swing hanging on
+
+6
+00:00:26,767 --> 00:00:32,767
+the ground, pretty much like all the code I write. And then business consultant obviously is this grand
+
+7
+00:00:32,767 --> 00:00:38,767
+chair hanging in the tree. I love how it's documented, it's just missing.
+
+8
+00:00:38,767 --> 00:00:43,767
+The customer was built like it was a rollercoaster. But in the end, what they really needed was a tire swing.
+
+9
+00:00:43,767 --> 00:00:48,767
+So because of that, we kind of have this iterative development process and it's been kind of a term that's
+
+10
+00:00:48,767 --> 00:00:54,767
+been around for a while in the application world and it applies directly to module development because
+
+11
+00:00:54,767 --> 00:01:00,767
+if you think about it, a module really just is a different type of application and it's circular in nature.
+
+12
+00:01:00,767 --> 00:01:07,767
+So you hear things like agile development processes and iterative development and everything.
+
+13
+00:01:07,767 --> 00:01:12,767
+This is a case for iterative development of an application. So you kind of start with requirements gathering
+
+14
+00:01:12,767 --> 00:01:14,767
+and this is where you go and talk to your key stakeholders,
+
+15
+00:01:14,767 --> 00:01:19,767
+and depending on what kind of module you're making, it might be yourself.
+
+16
+00:01:19,767 --> 00:01:24,767
+You might be the key stakeholder for that module, but it might be people in your company or people out on the
+
+17
+00:01:24,767 --> 00:01:29,767
+internet might find interest in this, so you want to go out and kind of pull those people, gather requirements,
+
+18
+00:01:29,767 --> 00:01:34,767
+and then get those requirements kind of documented, prioritized, and figure out what you need to get done first,
+
+19
+00:01:34,767 --> 00:01:35,767
+that kind of thing.
+
+20
+00:01:35,767 --> 00:01:40,767
+From there, you're going to kind of move on to a design step. A lot of people may think that you don't
+
+21
+00:01:40,767 --> 00:01:45,767
+actually do too much design. I don't do too many Visios or anything like that, but
+
+22
+00:01:45,767 --> 00:01:50,767
+there's a lot of design conversations that at least take place. You might be whiteboarding something or just
+
+23
+00:01:50,767 --> 00:01:56,767
+having a conversation on GitHub issues where you're dropping pictures or seeing why did you do it this way,
+
+24
+00:01:56,767 --> 00:01:59,767
+that kind of thing, so there's at least a conversation around design.
+
+25
+00:01:59,767 --> 00:02:04,767
+From there, we get to the fun part, which is development. So everybody loves writing code, turning it out in
+
+26
+00:02:04,767 --> 00:02:06,767
+your favorite editor,
+
+27
+00:02:06,767 --> 00:02:11,767
+but there's a lot of nuances that come with that. You want to be able to track your changes, you want to
+
+28
+00:02:11,767 --> 00:02:16,767
+integrate with other people developing on your module. You want to be able to roll back in case something
+
+29
+00:02:16,767 --> 00:02:18,767
+happens, that kind of thing.
+
+30
+00:02:18,767 --> 00:02:24,767
+And kind of integrated with development is testing. So there's a whole concept that you should be testing
+
+31
+00:02:24,767 --> 00:02:28,767
+while you're developing, so test-driven development or behavior-driven development.
+
+32
+00:02:28,767 --> 00:02:35,767
+Well there's kind of testing that takes place after the development has completed like user-acceptance testing.
+
+33
+00:02:35,767 --> 00:02:39,767
+So there's this tooling out there to help us manage that.
+
+34
+00:02:39,767 --> 00:02:44,767
+From there, we have to think about release. So it's great and all that we have all this code up in GitHub,
+
+35
+00:02:44,767 --> 00:02:48,767
+but historically, it's been kind of hard to get access to PowerShell modules.
+
+36
+00:02:48,767 --> 00:02:52,767
+You had to download a zip, you had to make sure the files were unblocked before it would load it and that
+
+37
+00:02:52,767 --> 00:02:53,767
+kind of thing,
+
+38
+00:02:53,767 --> 00:02:58,767
+but nowadays, we have the PowerShell Gallery, so we can manage our releases a little bit easier.
+
+39
+00:02:58,767 --> 00:03:04,767
+We can get it out to the general populace a lot quicker. But we have to think about things like breaking
+
+40
+00:03:04,767 --> 00:03:08,767
+changes, we have to think about version numbers and that kind of thing, so that's where the release
+
+41
+00:03:08,767 --> 00:03:10,767
+management comes into play.
+
+42
+00:03:10,767 --> 00:03:14,767
+And as you can see, then we move back into requirements gathering because you know after you release it,
+
+43
+00:03:14,767 --> 00:03:18,767
+the first thing that someone's going to respond to you is like this doesn't work, or why did you do it this
+
+44
+00:03:18,767 --> 00:03:23,767
+way, or I need this feature, so you just continue to work through this application lifecycle.
+
+45
+00:03:23,767 --> 00:03:28,767
+So when you see terms like ALM, that's Application Lifecycle Management and that's kind of what we're
+
+46
+00:03:28,767 --> 00:03:31,767
+thinking about in terms of module design.
+
+47
+00:03:31,767 --> 00:03:36,767
+So there's a bunch of tooling available out there for this kind of stuff, so you can use a lot of the same
+
+48
+00:03:36,767 --> 00:03:44,767
+tools that other software developers are using, so C# and .NET developers are using GitHub.
+
+49
+00:03:44,767 --> 00:03:49,767
+We can use GitHub for PowerShell modules, like I said, it's still just software development.
+
+50
+00:03:49,767 --> 00:03:55,767
+So you can use tools for requirements, design and gathering like GitHub issues, JIRA for tracking work items
+
+51
+00:03:55,767 --> 00:03:58,767
+or even like Visual Studio team services.
+
+52
+00:03:58,767 --> 00:04:05,767
+So a lot of these things are free for open source developers or small projects and stuff like that.
+
+53
+00:04:05,767 --> 00:04:08,767
+And then when you move into like the development phase, you can use things like your favorite editor,
+
+54
+00:04:08,767 --> 00:04:13,767
+you can check things into GitHub or Bitbucket or GitLab or whatever you want to use for that.
+
+55
+00:04:13,767 --> 00:04:18,767
+Testing in the PowerShell world, we have Pester, which is great for both kind of unit and integration testing.
+
+56
+00:04:18,767 --> 00:04:24,767
+It's really straightforward and it actually integrates really well with AppVeyor, which I'll show you later.
+
+57
+00:04:24,767 --> 00:04:28,767
+Finally, when we get to release management, you're can use things like GitHub where you can put your releases
+
+58
+00:04:28,767 --> 00:04:33,767
+up there, they have a release concept. But pretty much for PowerShell modules, you're going to want to start
+
+59
+00:04:33,767 --> 00:04:36,767
+using PowerShell Gallery, so people can easily install your module.
+
+60
+00:04:36,767 --> 00:04:40,767
+And then kind of managing the orchestration of all of this is our build system.
+
+61
+00:04:40,767 --> 00:04:45,767
+So what we're going to look at today is using AppVeyor. So AppVeyor, free for open source projects.
+
+62
+00:04:45,767 --> 00:04:49,767
+You can also get a paid tier. It gives you a few more bells and whistles.
+
+63
+00:04:49,767 --> 00:04:51,767
+And then there's things like Jenkins. If you go up to
+
+64
+00:04:51,767 --> 00:04:59,767
+powershell.org, they actually have free continuous integration systems running on Jenkins I think for open
+
+65
+00:04:59,767 --> 00:05:01,767
+source PowerShell projects.
+
+66
+00:05:01,767 --> 00:05:02,767
+I think it's TeamCity.
+
+67
+00:05:02,767 --> 00:59:59,999
+Is it TeamCity? Okay, alright. But yeah, that'll be another build system that can be in this list.
+

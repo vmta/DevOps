@@ -1,0 +1,296 @@
+1
+00:00:00,0 --> 00:00:02,779
+So here's the thing,
+
+2
+00:00:02,779 --> 00:00:08,779
+when you make a MOF out, so you wrote your config, you run your config, your config makes a MOF.
+
+3
+00:00:08,779 --> 00:00:12,779
+We need to change the name of this and there's two ways we can deal with this.
+
+4
+00:00:12,779 --> 00:00:18,779
+First of all, I'm going to show you the old fashioned way, which Morawski and I actually still really like this way.
+
+5
+00:00:18,779 --> 00:00:20,779
+Yeah, what?
+
+6
+00:00:20,779 --> 00:00:21,779
+I like it too.
+
+7
+00:00:21,779 --> 00:00:26,779
+Oh, you like it too. Okay, good, good. We're on the same page because this way works.
+
+8
+00:00:26,779 --> 00:00:32,779
+Oh, this is not a good thing. So we need to change the name of this and here's what we're going to change it to.
+
+9
+00:00:32,779 --> 00:00:41,779
+We're going to change it to a GUID, a GUID, that really long ugly number and we're going to then tell the nodes
+
+10
+00:00:41,779 --> 00:00:49,779
+that we, the ones that we want to use that config, we're going to tell the nodes in their LCM what GUID
+
+11
+00:00:49,779 --> 00:00:55,779
+number they're supposed to look for. So what this means is on your pull server, you're going to have 6,000 GUIDs
+
+12
+00:00:55,779 --> 00:01:00,779
+out there for whatever configs you have. Now the cool part to this is it's really easy to manage.
+
+13
+00:01:00,779 --> 00:01:05,779
+If I have 50 machines that need the same config, guess what I'm going to tell 50 machines LCMs?
+
+14
+00:01:05,779 --> 00:01:06,779
+(Audience comment)
+
+15
+00:01:06,779 --> 00:01:12,779
+Same GUID number. So I just have to have one out there and I can manage 50 machines with it, but it can be a
+
+16
+00:01:12,779 --> 00:01:14,779
+little bit confusing, so let's go ahead and take a look here.
+
+17
+00:01:14,779 --> 00:01:20,779
+First of all, the order or sequence I'm going to do this in is I'm going to start with the LCM of a
+
+18
+00:01:20,779 --> 00:01:28,779
+particular machine, so let's do this. Here's what I need. The LCM configuration, let me drop this down a
+
+19
+00:01:28,779 --> 00:01:34,779
+little bit, I need a GUID, so I've just got a parameter here where I'm going to pass the GUID.
+
+20
+00:01:34,779 --> 00:01:39,779
+Now I'm just going to generate one and pass it into the LCM. I also need something else.
+
+21
+00:01:39,779 --> 00:01:48,779
+I'm using a secured pull server and so I need the thumbprint for the certificate on that secured pull server.
+
+22
+00:01:48,779 --> 00:01:55,779
+So there's two things I need for this. Now down here in the settings, I'm going to do ApplyAndAutoCorrect.
+
+23
+00:01:55,779 --> 00:02:02,779
+I need to set the refresh mode to pull because by default it's push and this is where I'll put in the
+
+24
+00:02:02,779 --> 00:02:05,779
+ConfigurationID and here's the interesting part.
+
+25
+00:02:05,779 --> 00:02:12,779
+ConfigurationRepositoryWeb, this is how I tell it what web server to go to that's the pull server.
+
+26
+00:02:12,779 --> 00:02:19,779
+So take a look. The server URL is the URL of your pull server and you need to put in the thumbprint for the
+
+27
+00:02:19,779 --> 00:02:23,779
+CertificateID and set AllowUnsecureConnection to false.
+
+28
+00:02:23,779 --> 00:02:29,779
+Pretty simple, right? Not that hard. Not that hard. So I'm going to run this.
+
+29
+00:02:29,779 --> 00:02:35,779
+Oh let me show you down here. Now I got yelled at on Sunday. Here's how I make my GUID.
+
+30
+00:02:35,779 --> 00:02:39,779
+Who wants to yell at me? Who was here earlier that wants to yell at me?
+
+31
+00:02:39,779 --> 00:02:41,779
+Good because don't yell at me because I'm not going to. This is how I make my GUID.
+
+32
+00:02:41,779 --> 00:02:50,779
+There's apparently, I never looked, there's a new cmdlet in v5 called New-GUID.
+
+33
+00:02:50,779 --> 00:02:57,779
+So and here's how I get my thumbprint. I'm actually going to go to the pull server and this is kind of useful.
+
+34
+00:02:57,779 --> 00:03:01,779
+I'm going to look at the pull server certificate store and where the FriendlyName is,
+
+35
+00:03:01,779 --> 00:03:06,779
+whatever you FriendlyNamed your certificate, and then select ExpandProperty's Thumbprint.
+
+36
+00:03:06,779 --> 00:03:10,779
+That grabs the thumbprint for me, so it's real easy. Kind of cool, kind of cool, kind of cool, kind of cool.
+
+37
+00:03:10,779 --> 00:03:18,779
+So I'll run this. Woo! And theoretically, I'll get a MOF and there's the MOF.
+
+38
+00:03:18,779 --> 00:03:20,779
+I could show you the MOF, but we don't care what's inside the MOF.
+
+39
+00:03:20,779 --> 00:03:25,779
+It's a meta MOF, meta, meta, meta MOF. So I'm going to set server1.
+
+40
+00:03:25,779 --> 00:03:30,779
+I've got two servers that we're going to play with. Server-1, I'm going to set his LCM.
+
+41
+00:03:30,779 --> 00:03:38,779
+Now just to let you see here and I'll bring this up a little bit, you can get the information for the LCM and
+
+42
+00:03:38,779 --> 00:03:43,779
+look at all this. It doesn't open up your configuration stuff, so when you're trying to troubleshoot stuff
+
+43
+00:03:43,779 --> 00:03:51,779
+and you want to see what's in there, just expand property on that and it'll show you what's inside so you can
+
+44
+00:03:51,779 --> 00:03:56,779
+troubleshoot including the thumbprint and all that kind of stuff if you run into issues with it registering.
+
+45
+00:03:56,779 --> 00:03:58,779
+We good so far?
+
+46
+00:03:58,779 --> 00:04:06,779
+Okay, so I have a node that has now been told here's the GUID I want you to look for when you go to the pull
+
+47
+00:04:06,779 --> 00:04:15,779
+server I told you to go to. Are you with me so far? Now I need to make a config and name it with that GUID number.
+
+48
+00:04:15,779 --> 00:04:18,779
+So I got a simple config. This is just going to install the SNMP service.
+
+49
+00:04:18,779 --> 00:04:25,779
+It's not a, I'll show it to you, it's not a real big deal. So just something really simple.
+
+50
+00:04:25,779 --> 00:04:32,779
+I'll run that. I want you to notice the name of it is S1.mof. We don't want it to stay that way, so I'm going
+
+51
+00:04:32,779 --> 00:04:38,779
+to put it on a pull server. First of all, I'm going to get the GUID and a variable from one of the nodes
+
+52
+00:04:38,779 --> 00:04:44,779
+that I had set. Boink. And now I'm just going to rename that file to that GUID.
+
+53
+00:04:44,779 --> 00:04:51,779
+Boink. And I'm going to put it on the pull server, but before I do, I need you to understand something.
+
+54
+00:04:51,779 --> 00:04:55,779
+This is tricky. This is also something that throws off people when they're trying to troubleshoot this when
+
+55
+00:04:55,779 --> 00:04:57,779
+it doesn't work.
+
+56
+00:04:57,779 --> 00:05:00,779
+What's going to happen is the first time it's going to work just fine, but at some point, you're going to
+
+57
+00:05:00,779 --> 00:05:08,779
+modify the config, run the config again, rename it to the GUID, and copy it back out to the pull server and
+
+58
+00:05:08,779 --> 00:05:14,779
+then you're going to wonder why your changes never go to the node. Got it.
+
+59
+00:05:14,779 --> 00:05:20,779
+Here's the thing, we need a checksum file. So this will make a hash and no it's not Shaw256.
+
+60
+00:05:20,779 --> 00:05:27,779
+I don't care what Steve says. We're going to make a hash and so you always have to make sure that every time
+
+61
+00:05:27,779 --> 00:05:34,779
+you modify your configs, you make a new checksum for it and you put both of them up there.
+
+62
+00:05:34,779 --> 00:05:39,779
+The LCM will know that there's been a change to the configuration by checking that checksum, so that's the
+
+63
+00:05:39,779 --> 00:05:46,779
+thing that really throws people off when they do this. Now at that point, I'm just going to copy it up there
+
+64
+00:05:46,779 --> 00:05:53,779
+to my pull server. I only have one, but I'm just going to copy up the GUID stuff or all that stuff and I just
+
+65
+00:05:53,779 --> 00:05:58,779
+want to show you that it's on the pull server. Now this is the location where you put your configurations is
+
+66
+00:05:58,779 --> 00:06:10,779
+WindowsPowerShell\DscService\Configuration. You're not impressed, but okay fine, be that way here.
+
+67
+00:06:10,779 --> 00:06:19,779
+See them. See them? Oh, let me pull this up. Ahh. Okay, great you're applauding that.
+
+68
+00:06:19,779 --> 00:06:26,779
+All I did was copy a file, right. Now I could sit here and wait and the LCM will eventually pick this sucker
+
+69
+00:06:26,779 --> 00:06:30,779
+up or I can just kick him in the pants and that's what I'm going to do, so we don't have to sit here and wait
+
+70
+00:06:30,779 --> 00:06:38,779
+all day, well at least 15 minutes. So I'm going to update that configuration.
+
+71
+00:06:38,779 --> 00:06:45,779
+Nah, nah, nah, nah, nah, nah, nah. Now I can't that stupid thing out of my head.
+
+72
+00:06:45,779 --> 00:06:48,779
+I hate that. Oh and by the way, right now he's running the config.
+
+73
+00:06:48,779 --> 00:06:54,414
+Isn't that cool? So the node actually-- yeah. Yeah, okay you're not that impressed.
+
+74
+00:06:54,414 --> 00:59:59,999
+Okay, but you should be.
+

@@ -1,0 +1,276 @@
+1
+00:00:01,152 --> 00:00:09,152
+Now I mentioned it earlier, the vSphere Inventory tree is quite complex and this is partially because
+
+2
+00:00:09,152 --> 00:00:17,152
+historically it grew like that and they added new types of resources that they had to fit somewhere in their inventory tree.
+
+3
+00:00:17,152 --> 00:00:24,152
+What I did here and most of you ever use the vSphere classical client, they will know this view.
+
+4
+00:00:24,152 --> 00:00:31,152
+There are four types at the moment that you can look at. Top left, you have the one where you have the view,
+
+5
+00:00:31,152 --> 00:00:37,152
+what VMware calls the host cluster view. So there you see what they also call their yellow folders.
+
+6
+00:00:37,152 --> 00:00:42,152
+You see the data center's clusters and your hypervisors in there.
+
+7
+00:00:42,152 --> 00:00:50,152
+Top right you see the VM template view. That's the one where you will actually be able to set your VMs in
+
+8
+00:00:50,152 --> 00:00:58,152
+specific folders and on these folders you can then apply permissions which will allow you to delegate certain
+
+9
+00:00:58,152 --> 00:01:04,152
+parts of your environment to specific groups of users. What is newer and that appears later on, at the bottom
+
+10
+00:01:04,152 --> 00:01:12,152
+left, you have the one for data storage. They have introduced the concept of data store cluster some time ago.
+
+11
+00:01:12,152 --> 00:01:18,152
+That is the hierarchy that you find under there. And then the last one, the fourth one, is where your
+
+12
+00:01:18,152 --> 00:01:23,152
+network configuration is stored in the hierarchy. Again, we have two types of network objects.
+
+13
+00:01:23,152 --> 00:01:29,152
+Basically, you have the standard classical switch is the VSS as they call them and you have to distribute the
+
+14
+00:01:29,152 --> 00:01:36,152
+switches, which is VDS. In these screenshots, what you see the yellow and the blue folders are the ones that
+
+15
+00:01:36,152 --> 00:01:45,152
+you actually define. If you create for example, in the bottom right, if you create or distribute a switch VDS1,
+
+16
+00:01:45,152 --> 00:01:50,152
+it will create a number of port groups by default. Uplinks, for example, will always be there.
+
+17
+00:01:50,152 --> 00:01:57,152
+And then, as you add additional port groups through that specific switch, they will start appearing under this
+
+18
+00:01:57,152 --> 00:02:08,152
+node in the hierarchy tree, so just to make it clear that there are different ways of viewing objects in your vSphere environment.
+
+19
+00:02:08,152 --> 00:02:12,152
+So the path is quite important. Now if you want to make an inventory.
+
+20
+00:02:12,152 --> 00:02:20,152
+So the ultimate goal that we want to achieve is we want to have an inventory of our existing vSphere environment.
+
+21
+00:02:20,152 --> 00:02:26,152
+We're not going to start from scratch. Once these DSC resources are available, we all or most of us have a
+
+22
+00:02:26,152 --> 00:02:31,152
+running vSphere environment, which we want to be able to convert to DSC configuration.
+
+23
+00:02:31,152 --> 00:02:39,152
+So what is important is that we get a complete inventory of the environment to start creating your configuration files.
+
+24
+00:02:39,152 --> 00:02:46,152
+So the obvious one, if you look at the cmdlets that are available in PowerCLI, for those of you who don't
+
+25
+00:02:46,152 --> 00:02:51,152
+know what PowerCLI, PowerCLI is an at all. It used to be PS snap-in.
+
+26
+00:02:51,152 --> 00:02:56,152
+Now it's converting to a module. There are a few PS Snap-ins left.
+
+27
+00:02:56,152 --> 00:03:06,152
+What allows you to configure and manage your vSphere environment, so it's on top of your PowerShell tool.
+
+28
+00:03:06,152 --> 00:03:12,152
+Now the obvious one would be there is a cmdlet Get-Inventory. When you run this, we see a lot.
+
+29
+00:03:12,152 --> 00:03:18,152
+This comes from a test environment, which I kept obviously very small to make it manageable in one
+
+30
+00:03:18,152 --> 00:03:25,152
+screenshot, in fact. What we see here, we see most of our elements, components of our vSphere environment
+
+31
+00:03:25,152 --> 00:03:32,152
+coming back, but we are missing some. Remember we had screenshots of distributed switches, of datastore
+
+32
+00:03:32,152 --> 00:03:39,152
+clusters, these are not in there unfortunately. So I did a count so we can compare it with something that I
+
+33
+00:03:39,152 --> 00:03:46,152
+will do later. We have 22 objects returned from your vSphere environment, but it's not complete obviously.
+
+34
+00:03:46,152 --> 00:03:47,227
+So
+
+35
+00:03:47,227 --> 00:03:53,152
+what do we do? And this is a guideline that I give all of the people.
+
+36
+00:03:53,152 --> 00:03:58,238
+If the cmdlets don't do what you want to do, you have to go through the API.
+
+37
+00:03:58,238 --> 00:04:00,240
+Now luckily,
+
+38
+00:04:00,240 --> 00:04:08,152
+PowerCLI from day one first of all the cmdlet Get-Few in this case to easily tap into all the API
+
+39
+00:04:08,152 --> 00:04:14,152
+methods and properties. So if you're missing something or you want the very specific configuration that is
+
+40
+00:04:14,152 --> 00:04:18,152
+not provided by your standard cmdlet, go through the API.
+
+41
+00:04:18,152 --> 00:04:26,152
+The API is not the most obvious environment to code in. There's the API reference, there's an extract screenshot
+
+42
+00:04:26,152 --> 00:04:34,152
+at the top right here and setting up or making goals through those APIs or obtaining those properties in there
+
+43
+00:04:34,152 --> 00:04:43,152
+is not always too obvious. Now in this case, we're lucky. There is a basic concept, a managed object,
+
+44
+00:04:43,152 --> 00:04:50,152
+which they use internally to retrieve inventories from a vSphere environment and that's what we are doing here.
+
+45
+00:04:50,152 --> 00:04:56,152
+First of all, everything in vSphere and vSphere API starts from your service instance.
+
+46
+00:04:56,152 --> 00:05:01,152
+This is so to say your base object from where everything else is starting.
+
+47
+00:05:01,152 --> 00:05:10,152
+You even find, and that's what we will be using later on, you even find your root folder of your complete vSphere environment.
+
+48
+00:05:10,152 --> 00:05:16,152
+One thing that is quite interesting with the service instance, you can use this against the vCenter.
+
+49
+00:05:16,152 --> 00:05:24,152
+VCenter is the management layer on top of all your hypervisors, or you can use this exactly same API directly
+
+50
+00:05:24,152 --> 00:05:32,152
+against your hypervisor, the ESXi node, in this case. So you use the same scripts to inventorize all of vCenter
+
+51
+00:05:32,152 --> 00:05:40,152
+or an individual hypervisor if you want to configure an individual one.
+
+52
+00:05:40,152 --> 00:05:45,152
+Now what we did here, there is like I said one method.
+
+53
+00:05:45,152 --> 00:05:53,152
+We just called CreateContainerView. We used that one to get us a more complete listing of what is in your vSphere environment.
+
+54
+00:05:53,152 --> 00:05:59,152
+Very straightforward. I'm not going to go in too much details. It requires a number of parameters where
+
+55
+00:05:59,152 --> 00:06:06,152
+you start, in this case, we use, like I said, the root folder, which is also available in that service instance.
+
+56
+00:06:06,152 --> 00:06:12,152
+You can specify what kind of types you want to return and types that will be things like data center, cluster,
+
+57
+00:06:12,152 --> 00:06:19,152
+and virtual machines. And this also explains why with our cmdlet Get-Inventory, we don't get everything
+
+58
+00:06:19,152 --> 00:06:27,152
+because they only retrieve, because it was written in the early days, they only retrieve the things that we saw,
+
+59
+00:06:27,152 --> 00:06:34,152
+folders, virtual machines, clusters, host, and so on, but they skipped datastore clusters and network objects
+
+60
+00:06:34,152 --> 00:06:36,152
+like virtual distributed switches.
+
+61
+00:06:36,152 --> 00:06:40,152
+So what I'm doing in this goal, I'm just passing it null. I'm not passing any types.
+
+62
+00:06:40,152 --> 00:06:45,152
+And then by default, it will give you all of the types that are available.
+
+63
+00:06:45,152 --> 00:06:53,152
+And the last, the recursive on this is an obvious parameter. In this case, you just want to run through the complete tree.
+
+64
+00:06:53,152 --> 00:06:57,152
+It's as simple as that. If we run this,
+
+65
+00:06:57,152 --> 00:07:03,152
+we get this kind of inventory. So most of the stuff that we saw in the Get-Inventory cmdlet, we will see back,
+
+66
+00:07:03,152 --> 00:07:09,152
+but we now have a complete view. Remember it was 22 in the previous 1 with the cmdlet, now we have what is
+
+67
+00:07:09,152 --> 00:07:19,152
+it 28 of those, and we also see stuff appearing in there like dvs, dvportgroups, datastore clusters, and so on.
+
+68
+00:07:19,152 --> 00:07:27,152
+So we have now a complete view of our vSphere environment, but there's too much in there.
+
+69
+00:07:27,152 --> 00:59:59,999
+There are things in there that are normally hidden and that you don't see in the GUI or the WebClient interfaces.
+

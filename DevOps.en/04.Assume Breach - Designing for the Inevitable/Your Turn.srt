@@ -1,0 +1,216 @@
+1
+00:00:01,749 --> 00:00:07,749
+So now it's our turn. We're actually the ones who are sitting up here defining new infrastructures,
+
+2
+00:00:07,749 --> 00:00:10,749
+creating new software, defining new networks. This is us, right.
+
+3
+00:00:10,749 --> 00:00:17,749
+It's our job to figure out how we defend against these attacks.
+
+4
+00:00:17,749 --> 00:00:24,749
+Now what's the solution? Is it going to RSA and going shopping at the vendor floor?
+
+5
+00:00:24,749 --> 00:00:25,749
+You could try
+
+6
+00:00:25,749 --> 00:00:31,749
+it. Everyone loves to sell their genie in a bottle that solves all your problems.
+
+7
+00:00:31,749 --> 00:00:36,749
+The answer is hard work. Just get out there, put in some elbow grease, and think.
+
+8
+00:00:36,749 --> 00:00:41,749
+That's my daughter welding, by the way.
+
+9
+00:00:41,749 --> 00:00:48,749
+Now the key is to realize that breach, it's not a binary state. You don't go from like happy, happy days,
+
+10
+00:00:48,749 --> 00:00:55,749
+the suns out, the suns shining to like oh I'm breached, it's all over, things happen in stages.
+
+11
+00:00:55,749 --> 00:00:58,749
+You have, for example here, let's talk through one. You've got an initial attack.
+
+12
+00:00:58,749 --> 00:01:02,749
+Somebody gets a suspicious email, they double-click it, they open it.
+
+13
+00:01:02,749 --> 00:01:08,749
+A regular phishing attack. They're just brutally, brutally effective.
+
+14
+00:01:08,749 --> 00:01:15,749
+Maybe they have some access to some test infrastructure, so this is they take the attacker now who's got
+
+15
+00:01:15,749 --> 00:01:23,749
+control of the account that they just phished, takes those credentials, and accesses some test infrastructure you have.
+
+16
+00:01:23,749 --> 00:01:28,749
+Now maybe that infrastructure once they've compromised that, they've got administrative access to this test
+
+17
+00:01:28,749 --> 00:01:37,749
+infrastructure, maybe somebody else coming into this infrastructure has administrative credentials to the production infrastructure.
+
+18
+00:01:37,749 --> 00:01:42,749
+So now they steal those credentials, start to deal with the production infrastructure.
+
+19
+00:01:42,749 --> 00:01:46,749
+So now they transition to production off of those stolen credentials, right.
+
+20
+00:01:46,749 --> 00:01:50,749
+Now they're into production. This is where they're starting to get close to their endgame.
+
+21
+00:01:50,749 --> 00:01:55,749
+Now they start stealing data, they have to collect it, zip it up, do whatever.
+
+22
+00:01:55,749 --> 00:01:59,749
+They're searching through your infrastructure for sensitive things.
+
+23
+00:01:59,749 --> 00:02:05,749
+Exfiltration. They're finally taking that data, sending it to somewhere that's important, maybe they're doing
+
+24
+00:02:05,749 --> 00:02:11,749
+this through, you see a bunch of outgoing web traffic from a host that's never done it before, they've got to
+
+25
+00:02:11,749 --> 00:02:19,749
+get the data out of your system somehow. And then finally, even still, once they have the data, it's not game over.
+
+26
+00:02:19,749 --> 00:02:24,749
+They do have an endgame. The data that they steal, maybe they're going to use this for intellectual
+
+27
+00:02:24,749 --> 00:02:31,749
+property rights, maybe it's a patent that you're about to file and then they can beat you to market with it,
+
+28
+00:02:31,749 --> 00:02:36,749
+maybe it's a user database, maybe it's some other sensitive information.
+
+29
+00:02:36,749 --> 00:02:41,749
+So you see here that the breach goes from a very, very early stage.
+
+30
+00:02:41,749 --> 00:02:53,749
+You have the ability to write software and architecture that can very, very, very much slow these down at all phases.
+
+31
+00:02:53,749 --> 00:03:00,749
+Now when you're starting to take a look at how do I design my systems to be protective against these kind of issues,
+
+32
+00:03:00,749 --> 00:03:09,749
+you see a couple common themes. Now successful architectures, they follow the principles of least privilege,
+
+33
+00:03:09,749 --> 00:03:16,749
+least capability, so only let your systems do what they should do.
+
+34
+00:03:16,749 --> 00:03:22,749
+Data that you store is a liability, really, like when you start taking a bunch of data.
+
+35
+00:03:22,749 --> 00:03:28,749
+If you don't need it, don't store it. And the other thing is don't let success be your downfall.
+
+36
+00:03:28,749 --> 00:03:33,749
+Now if you think about what are some situations where what if everybody was doing it?
+
+37
+00:03:33,749 --> 00:03:41,749
+That's a good thing to put what if every host had this or what if every company in the world had this.
+
+38
+00:03:41,749 --> 00:03:49,749
+People tend to when they're creating their own unique snowflakes not think that this at scale could be a very,
+
+39
+00:03:49,749 --> 00:03:52,749
+very big danger.
+
+40
+00:03:52,749 --> 00:04:00,749
+So least privilege and least capacity. The idea here is that these attacks as we showed in that kind of
+
+41
+00:04:00,749 --> 00:04:06,749
+breach diagram, people aren't just running through and like get in, do one thing.
+
+42
+00:04:06,749 --> 00:04:12,749
+They're compromising some bit of your infrastructure, then they get that, then there's kind of checking other
+
+43
+00:04:12,749 --> 00:04:18,749
+parts of your infrastructure and they're getting that. They're taking this and they're snaking their way through everything.
+
+44
+00:04:18,749 --> 00:04:22,749
+They could only do what your infrastructure is capable of doing.
+
+45
+00:04:22,749 --> 00:04:29,749
+If your infrastructure, if you've, for example, set up network lockdowns that prevent your web server from
+
+46
+00:04:29,749 --> 00:04:36,749
+ever hitting your back-end databases, you know if that needs to go through a malware layer, then an attacker
+
+47
+00:04:36,749 --> 00:04:41,749
+can't take over your back-end databases from the web server. If you're limiting your own functionality,
+
+48
+00:04:41,749 --> 00:04:46,749
+they can't do what your architecture can't do, what your systems can't do.
+
+49
+00:04:46,749 --> 00:04:52,749
+Now we're well aware in the kind of PowerShell community of just enough administration.
+
+50
+00:04:52,749 --> 00:04:59,749
+That's another great example here. When you're having systems talking to other systems, don't do it over
+
+51
+00:04:59,749 --> 00:05:07,749
+unconstrained protocols like straight raw WMI or anything else, do it over just enough administration
+
+52
+00:05:07,749 --> 00:05:13,749
+endpoints where your system's connecting to other systems can only do the commands that they're supposed to do.
+
+53
+00:05:13,749 --> 00:05:18,749
+Now an attacker takes over any of those systems and then they've got a restricted set of things that only
+
+54
+00:05:18,749 --> 00:59:59,999
+that service was supposed to be able to do anyways.
+

@@ -1,0 +1,196 @@
+1
+00:00:00,0 --> 00:00:18,5
+I want to tell you a story. So I go help customers. That's what I do.
+
+2
+00:00:18,5 --> 00:00:23,5
+Some people call premier field engineers, they're like ninjas jumping out of helicopters.
+
+3
+00:00:23,5 --> 00:00:29,5
+So it was a Friday evening and I should speak to the microphone over here.
+
+4
+00:00:29,5 --> 00:00:38,5
+So it was a Friday evening and I had just logged off for the day, getting ready to have dinner with the family
+
+5
+00:00:38,5 --> 00:00:44,5
+and I'd worked it out where I had two weeks at home to do some remote project work so I didn't have to be on the road.
+
+6
+00:00:44,5 --> 00:00:50,5
+I was really looking forward to the next two weeks. Friday evening, I sit back in my recliner, I've got my
+
+7
+00:00:50,5 --> 00:01:02,5
+comfy clothes on and my phone rings. We have somebody called the on-duty critsit manager, and a critsit is
+
+8
+00:01:02,5 --> 00:01:11,5
+kind of like you guys are on call for your company, right, but we're on call for every company in the world.
+
+9
+00:01:11,5 --> 00:01:18,5
+Alright, and I don't get those calls very often, but I got the call and the manager says we need you.
+
+10
+00:01:18,5 --> 00:01:25,5
+Have you seen the news? I said no I haven't looked at the news.
+
+11
+00:01:25,5 --> 00:01:33,5
+He said turn on your TV or look at the internet, whatever. And so I look at the news and I oh no.
+
+12
+00:01:33,5 --> 00:01:41,5
+So I, he says we need you, this was Friday evening, he said we need you on site Monday morning with the customer.
+
+13
+00:01:41,5 --> 00:01:45,5
+Now this customer will be unnamed. I'm not going to tell you what industry, what geography, anything about this
+
+14
+00:01:45,5 --> 00:01:55,5
+customer, alright, because we do this on a regular basis. So I get to the customer site, I show up to the
+
+15
+00:01:55,5 --> 00:02:00,5
+standard security check-in where they give you your badge and all that with the security people, right.
+
+16
+00:02:00,5 --> 00:02:06,5
+They don't have any computer. Their computers are turned off. They're handwriting nametags and writing them
+
+17
+00:02:06,5 --> 00:02:12,5
+on a clipboard. This is the security check-in at the front desk at the company.
+
+18
+00:02:12,5 --> 00:02:18,5
+I get off the elevator and there's a sign posted for all the employees that says do not turn on your computer
+
+19
+00:02:18,5 --> 00:02:28,5
+until further notice. And that week, the FBI was at the company briefing employees on identity theft
+
+20
+00:02:28,5 --> 00:02:36,5
+protection and how to guard themselves online. It was post-apocalyptic.
+
+21
+00:02:36,5 --> 00:02:48,5
+This IT environment was pretty much cratered by hackers and they call me to come in and say we need you to
+
+22
+00:02:48,5 --> 00:02:53,5
+look at the Active Directory and tell us if it's okay to bring back online.
+
+23
+00:02:53,5 --> 00:03:00,5
+When we realized that we were breached, we started shutting down domain controllers and we had two that were
+
+24
+00:03:00,5 --> 00:03:08,5
+offshore in other countries where we've got the VM captured and we've taken the time of a couple days to
+
+25
+00:03:08,5 --> 00:03:13,5
+transmit that VM over our high speed lines to get it in an isolated lab.
+
+26
+00:03:13,5 --> 00:03:20,5
+We want you to look at this DC and tell us if you can find any fingerprints of the hackers in the Active Directory
+
+27
+00:03:20,5 --> 00:03:27,5
+data so we know whether it's okay to reuse this domain environment because otherwise, we're building completely
+
+28
+00:03:27,5 --> 00:03:35,5
+from green field the entire company. That's kind of a big deal.
+
+29
+00:03:35,5 --> 00:03:37,5
+I wasn't ready for that.
+
+30
+00:03:37,5 --> 00:03:41,5
+So Active Directory Forensics. Here's our problem.
+
+31
+00:03:41,5 --> 00:03:51,5
+How do you track malicious activity in your domain environment when you didn't have the auditing turned on?
+
+32
+00:03:51,5 --> 00:03:57,5
+How many of you have auditing properly enabled in your Active Directory environment?
+
+33
+00:03:57,5 --> 00:04:06,5
+Right, properly, right. Alright, about two-thirds of you, so that's about, yeah, that's actually better than average.
+
+34
+00:04:06,5 --> 00:04:16,5
+So what our problem to solve is how do you find the footprints of what we call an actor in your environment
+
+35
+00:04:16,5 --> 00:04:23,5
+if they're tampering with your Active Directory data and you did not properly have auditing turned on.
+
+36
+00:04:23,5 --> 00:04:25,5
+It's a big deal.
+
+37
+00:04:25,5 --> 00:04:31,5
+What we're going to do is we're going to dive into just the single DC lab here and look at some things
+
+38
+00:04:31,5 --> 00:04:38,5
+and teach you some concepts, some ways that you can work with your Active Directory data and try to find some
+
+39
+00:04:38,5 --> 00:04:43,5
+of these things. So what we're going to imagine is that you create an account, you create a group,
+
+40
+00:04:43,5 --> 00:04:49,5
+you put the user in the group, you nest that group in domain admin somewhere to try to hide that it's not
+
+41
+00:04:49,5 --> 00:04:56,5
+an immediate member of domain admins, you grant that account control of an OU, then you delete the account,
+
+42
+00:04:56,5 --> 00:05:01,5
+delete the group, kind of what we would assume to be hacker activity is now.
+
+43
+00:05:01,5 --> 00:05:10,5
+The truth is, with targeted malware aimed at companies sponsored by nation states, they usually don't even
+
+44
+00:05:10,5 --> 00:05:14,5
+need to create accounts because they're going to find somebody on the network that's stored their password in
+
+45
+00:05:14,5 --> 00:05:21,5
+clear text and they'll just use their accounts. So sometimes we may not, and that was part of the case at
+
+46
+00:05:21,5 --> 00:05:28,5
+this one particular customer. The hackers didn't really need to create any extra accounts because they had
+
+47
+00:05:28,5 --> 00:05:33,5
+already found all the passwords in a spreadsheet in the network.
+
+48
+00:05:33,5 --> 00:05:38,5
+I know you guys don't do that though, that's okay. Alright. Don't be that company.
+
+49
+00:05:38,5 --> 00:59:59,999
+Don't be that company, alright.
+

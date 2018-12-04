@@ -1,0 +1,172 @@
+1
+00:00:00,0 --> 00:00:07,499
+So the point here is that people say that threat modeling doesn't work and they really get stuck on that
+
+2
+00:00:07,499 --> 00:00:13,499
+document-driven approach. It's structured thinking about security that works.
+
+3
+00:00:13,499 --> 00:00:20,499
+Go back, put these things on a whiteboard. We'll be releasing this as a threat modeling template to help you
+
+4
+00:00:20,499 --> 00:00:24,499
+think through the different aspects of your system. Think it through.
+
+5
+00:00:24,499 --> 00:00:29,499
+Think through the different dangers of your components and your data stores and what you can do to help
+
+6
+00:00:29,499 --> 00:00:34,499
+restrict these and prevent any issues in the future.
+
+7
+00:00:34,499 --> 00:00:40,499
+Now what I wanted to do is talk a little bit about if people have questions about hey I'm designing,
+
+8
+00:00:40,499 --> 00:00:46,499
+I've got this system, obviously make it generic or whatever, but I wanted to sort of talk here about what do
+
+9
+00:00:46,499 --> 00:00:52,499
+people, what challenges are they running into? What are some opportunities for restricting a thing that
+
+10
+00:00:52,499 --> 00:01:02,499
+you're nervous about? Any takers? Yes.
+
+11
+00:01:02,499 --> 00:01:09,499
+(Audience question) Yeah, so the question was when you start going down this path and somebody goes well
+
+12
+00:01:09,499 --> 00:01:16,499
+I'm like 14 layers in and if somebody abuses this API, bad stuff happens.
+
+13
+00:01:16,499 --> 00:01:21,499
+Ultimately, you're going to be constrained in the implementation effort.
+
+14
+00:01:21,499 --> 00:01:29,499
+And so, it's really important to be pragmatic about it. The way we like to focus it on what are your top five
+
+15
+00:01:29,499 --> 00:01:36,499
+worries and what are your top five unmitigated vulnerabilities, and then you just start prioritizing.
+
+16
+00:01:36,499 --> 00:01:43,499
+So you can say you know what, we've got like 10 issues that are way huger, let's not dig too much into this
+
+17
+00:01:43,499 --> 00:01:52,499
+first, let's start looking for things that we kind of in our guts know are higher priority, higher impact.
+
+18
+00:01:52,499 --> 00:01:57,499
+So that's kind of the way that I found it really helpful to just be pragmatic on the threat modeling,
+
+19
+00:01:57,499 --> 00:02:03,499
+rather than diving down to like kind of API levels and that kind of stuff.
+
+20
+00:02:03,499 --> 00:02:11,499
+Anything else? Yes. So the company that I was working for has had all there…
+
+21
+00:02:11,499 --> 00:02:16,499
+Yeah, so the question was, when you have two components that are communicating over PowerShell remoting,
+
+22
+00:02:16,499 --> 00:02:21,499
+should we be doing that over SSL? And that's a good example of somebody saying I've got two components
+
+23
+00:02:21,499 --> 00:02:27,499
+interacting, what is a danger, what are the information disclosure risks and everything.
+
+24
+00:02:27,499 --> 00:02:32,499
+On that perspective, we're actually working at releasing a PowerShell Remoting Whitepaper soon.
+
+25
+00:02:32,499 --> 00:02:38,499
+It's SSL is almost always better, it's almost always better. When it comes to PowerShell remoting,
+
+26
+00:02:38,499 --> 00:02:46,499
+we've taken enormous steps to ensure that PowerShell remoting, even without SSL, is a completely safe thing to do.
+
+27
+00:02:46,499 --> 00:02:54,499
+That's because PowerShell remoting uses Kerberos, which does the authentication mechanism in such a way that
+
+28
+00:02:54,499 --> 00:03:01,499
+you can't really snoop it or sniff or anything else. It's the same thing as talking to SMB shares or anything else.
+
+29
+00:03:01,499 --> 00:03:09,499
+From then on, everything else in PowerShell remoting is encrypted by the protocol itself, and so SSL is important
+
+30
+00:03:09,499 --> 00:03:17,499
+to enable when you're using a basic authentication, for example, connecting to a WinRM endpoint over HTTP,
+
+31
+00:03:17,499 --> 00:03:22,499
+like something off in Azure, that's a good example where you're not within a domain environment.
+
+32
+00:03:22,499 --> 00:03:25,499
+Yeah, that's what I thought. But they were under the impression that…
+
+33
+00:03:25,499 --> 00:03:32,499
+Correct. You notice when you're about to do a bad thing with PowerShell remoting, you get so many error
+
+34
+00:03:32,499 --> 00:03:37,499
+messages about allow unencrypted connections and all these kind of things.
+
+35
+00:03:37,499 --> 00:03:43,499
+But that said, they had a valid concern that we didn't have it documented well enough, and so we're working
+
+36
+00:03:43,499 --> 00:03:50,499
+on that to get that out there so that you can just give them a document for them to kind of geek out on it
+
+37
+00:03:50,499 --> 00:03:57,499
+and understand the context. (Audience question) Yeah, the whole thing has got just tons of subtly.
+
+38
+00:03:57,499 --> 00:04:04,499
+It's really hard to keep them all in mind, especially when you're talking to somebody who is completely
+
+39
+00:04:04,499 --> 00:04:11,499
+involved in the risk mitigation department, and so it's a thing that we're going to work on making sure that
+
+40
+00:04:11,499 --> 00:04:16,499
+there's just kind of a document that people can read through. We're going to put it up there on TechNet.
+
+41
+00:04:16,499 --> 00:04:21,499
+We're going to continue to tweak it and make sure that these kind of concerns can be addressed so that we
+
+42
+00:04:21,499 --> 00:04:28,499
+don't feel like we have to individually fight the good fight. Cool.
+
+43
+00:04:28,499 --> 00:59:59,999
+Well, thanks for your time. Go out and think about your systems and make them secure.
+

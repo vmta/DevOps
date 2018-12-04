@@ -1,0 +1,112 @@
+1
+00:00:00,5 --> 00:00:10,449
+So lastly,  I want to mention that we need volunteers for a usability study tomorrow at 4:30 PM, so this is right after
+
+2
+00:00:10,449 --> 00:00:17,449
+the lightning demo session. We need about 20 to 30 people to participate in a UI study for a possible new
+
+3
+00:00:17,449 --> 00:00:22,449
+feature for Windows Server. It's like a prototype that I've been working on.
+
+4
+00:00:22,449 --> 00:00:28,449
+We are looking mainly for beginner to intermediate people with PowerShell, but advanced users are welcome.
+
+5
+00:00:28,449 --> 00:00:33,449
+It doesn't if you're MVP or not. If you're not an MVP, well you can sign an NDA there.
+
+6
+00:00:33,449 --> 00:00:38,449
+If you're interested in joining, please talk to me or Mark Gray, who's a PM on the PowerShell team, to sign up
+
+7
+00:00:38,449 --> 00:00:44,449
+and we'll let you know more details tomorrow about what room it'll be in, that sort of thing.
+
+8
+00:00:44,449 --> 00:00:49,449
+So thank you very much for coming to my talk. Here is some details about myself on Twitter and GitHub and
+
+9
+00:00:49,449 --> 00:00:50,449
+also the link to
+
+10
+00:00:50,449 --> 00:00:56,449
+PowerShell Editor Services on GitHub as well. I think we have a little bit of time for questions if anybody
+
+11
+00:00:56,449 --> 00:01:12,449
+wants to ask questions. All good. (Audience question) It comes bundled with the VS code extension.
+
+12
+00:01:12,449 --> 00:01:18,449
+So whenever you installed the extension through VS code's extension installer, it has everything you need there.
+
+13
+00:01:18,449 --> 00:01:25,449
+So yeah. So basically, it's a dynamic application that is bundled and it just gets launched with the extension.
+
+14
+00:01:25,449 --> 00:01:30,449
+When did the interactive shell get derived? Last time I checked code out, it wasn't.
+
+15
+00:01:30,449 --> 00:01:36,449
+Yeah, so it's been there for maybe two or three releases. It's sort of hidden because you can't actually
+
+16
+00:01:36,449 --> 00:01:41,449
+type directly in it. It's actually an output pane where if you select some code and hit F8, it will run it
+
+17
+00:01:41,449 --> 00:01:49,449
+and show the output, (Audience comment) yeah, so the sort of hacky way to deal with that for now is to
+
+18
+00:01:49,449 --> 00:02:00,449
+just type something not Format-Volume obviously, but like Get-Process, and hit F8, and it will give you the output, but.
+
+19
+00:02:00,449 --> 00:02:04,449
+Will F8 just select the current line by default? F8 runs whatever you currently have selected.
+
+20
+00:02:04,449 --> 00:02:10,449
+I think somebody added the function where, this is not actually selected, it's just highlighted.
+
+21
+00:02:10,449 --> 00:02:12,449
+I think if you don't have a selection, it runs the current line.
+
+22
+00:02:12,449 --> 00:02:18,449
+Yeah, okay. I don't know why it failed at that point. (Audience comment)
+
+23
+00:02:18,449 --> 00:02:22,449
+Yeah, it runs up to where the cursor is. That's a little weird, but anyway.
+
+24
+00:02:22,449 --> 00:02:31,449
+Yeah so what we're waiting on is for VS code to add the console so that we can basically just wire this directly
+
+25
+00:02:31,449 --> 00:02:34,449
+into a console where you can type in commands, so that's coming.
+
+26
+00:02:34,449 --> 00:02:37,449
+I think that within the next couple of months it'll be there. Yeah, that would definitely change my whole
+
+27
+00:02:37,449 --> 00:02:43,449
+view on it. Yeah, that's like the one thing that's missing, I think, until this like way better.
+
+28
+00:02:43,449 --> 00:59:59,999
+But anyway, I think we're out of time, so thank you very much for coming.
+

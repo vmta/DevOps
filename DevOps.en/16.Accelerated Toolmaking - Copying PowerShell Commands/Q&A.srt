@@ -1,0 +1,356 @@
+1
+00:00:00,0 --> 00:00:03,081
+Question. Well, I'll just have to show you.
+
+2
+00:00:03,081 --> 00:00:09,081
+I was curious if you've ever seen this. Oh, you'd be surprised.
+
+3
+00:00:09,081 --> 00:00:19,081
+So one of the things that I tried to do a while ago is try to duplicate the behavior of the dir command you
+
+4
+00:00:19,081 --> 00:00:28,081
+see in .exe in PowerShell then a bunch of people who have absolutely not used PowerShell solely because they're
+
+5
+00:00:28,081 --> 00:00:39,081
+used to dir and all the weird-ass ways you could use it in a cdn.exe and of course that was just like an unending...
+
+6
+00:00:39,081 --> 00:00:44,081
+Is it because they wanted to use a slash instead of the dash? They wanted a slash.
+
+7
+00:00:44,081 --> 00:00:50,081
+They wanted to put a space between the slash between dir/. Yeah, there's no way you can to,
+
+8
+00:00:50,081 --> 00:01:00,081
+PowerShell's parameters are going to expect a dash, and so there's no way around that.
+
+9
+00:01:00,081 --> 00:01:06,081
+But I haven't seen anything that comes close like those people had.
+
+10
+00:01:06,081 --> 00:01:12,081
+I don't know. Has anyone else seen anything like that? One way to do it is to open up PowerShell and start
+
+11
+00:01:12,081 --> 00:01:32,081
+with the cmd. (Audience comments) Yeah, I thought that I had written some other directory.
+
+12
+00:01:32,081 --> 00:01:40,081
+I know I have a number of commands, scripts, and functions to get better results for the dir command,
+
+13
+00:01:40,081 --> 00:01:45,081
+not necessarily as a complete replacement, although I thought I had something.
+
+14
+00:01:45,081 --> 00:01:52,081
+I'll look. It was a case where we were finding ourselves having to write this in the scripts, intern developers
+
+15
+00:01:52,081 --> 00:02:01,081
+and both things were conceived DWDSC and PowerShell. They just need to get over it.
+
+16
+00:02:01,081 --> 00:02:06,081
+Sometimes is easier to fix the person.
+
+17
+00:02:06,081 --> 00:02:11,081
+Easy to say, harder to do. Other questions, yeah.
+
+18
+00:02:11,081 --> 00:02:18,081
+This is mainly more of a comment than a question. What you're doing here is really exciting, by the way.
+
+19
+00:02:18,081 --> 00:02:23,081
+It fits into the general category of code generation, right, to automatically generate code.
+
+20
+00:02:23,081 --> 00:02:30,081
+One of the knocks against code generation has always been that you've made this new copy of a bunch of code
+
+21
+00:02:30,081 --> 00:02:34,081
+and then you tweak it here, you tweak it there, but now you're sort of stuck.
+
+22
+00:02:34,081 --> 00:02:40,081
+So if the original mechanism by which you generated that copy changes like you showed how you could, erases
+
+23
+00:02:40,081 --> 00:02:45,081
+were made, so you're now stuck and you have to reapply all that stuff.
+
+24
+00:02:45,081 --> 00:02:53,081
+Yeah, if you build a command that's built on say a Microsoft cmdlet and Microsoft and the next version of
+
+25
+00:02:53,081 --> 00:02:59,081
+PowerShell introduces a breaking change, yeah, you may have to go back and absolutely.
+
+26
+00:02:59,081 --> 00:03:06,081
+The only note is that the more of these automatic tweaks you can build into your original script and the less
+
+27
+00:03:06,081 --> 00:03:11,081
+you have to tweak afterwards, the better off you are to have to rerun this thing later.
+
+28
+00:03:11,081 --> 00:03:21,081
+And that would be a situation where using a proxy command is maybe a better approach because you're not
+
+29
+00:03:21,081 --> 00:03:27,081
+relying so much on the command. You're going to just send it the parameters.
+
+30
+00:03:27,081 --> 00:03:37,081
+Your changes go in modifying that script CMD ScriptBlock. So if you are, if that is a concern, then a proxy
+
+31
+00:03:37,081 --> 00:03:45,081
+approach would probably be the better way to go. But certainly. And I write stuff like this primarily
+
+32
+00:03:45,081 --> 00:03:52,081
+because a lot of IT pros don't like to type, they're not very good at it, they know they should write a script,
+
+33
+00:03:52,081 --> 00:04:00,081
+but you guys are all crunched for time. You want, and this is from people that post in a forum, I need a
+
+34
+00:04:00,081 --> 00:04:06,081
+script to do X. Well we're not going to write a script for you, but let me give you something that will help
+
+35
+00:04:06,081 --> 00:04:14,081
+speed up the process. So I'm always trying to find shortcuts and ways to take the pain away and the grunt
+
+36
+00:04:14,081 --> 00:04:19,081
+work so that you will put in comment-based help because you don't have to do anything.
+
+37
+00:04:19,081 --> 00:04:24,081
+It's just going to copy. You just have to then edit what's already there and editing is a whole lot easier
+
+38
+00:04:24,081 --> 00:04:32,081
+than typing it from scratch, right? So I'm assuming everyone here's basically IT pros and you're crunched
+
+39
+00:04:32,081 --> 00:04:39,081
+for time, you needed this yesterday, and I don't have time to sit and write a complete thing from scratch,
+
+40
+00:04:39,081 --> 00:04:46,081
+I don't, I'm still learning. You still need to know PowerShell and understand some of the things, but you could
+
+41
+00:04:46,081 --> 00:04:54,081
+run my command to generate the new version of your wheel and hopefully then have enough information or if you
+
+42
+00:04:54,081 --> 00:05:00,081
+get stuck then you post in the forum and say I've got this version of my, I'm building this script that basically
+
+43
+00:05:00,081 --> 00:05:07,081
+is wrapped around Get-ADUser and I'm running into a problem. How can I get around that?
+
+44
+00:05:07,081 --> 00:05:14,081
+So then you just focus on the little pieces that you want to change and not worry about the rest of the stuff
+
+45
+00:05:14,081 --> 00:05:21,081
+that you need. There's another question over here. Somebody just stretching their arm.
+
+46
+00:05:21,081 --> 00:05:32,081
+Here. When you brought the dynamic parameters over, any logic associated with those dynamic parameters was maintained there?
+
+47
+00:05:32,081 --> 00:05:40,081
+Oh, that's a good question. Because if you've got something like Get-ADUser, it doesn't have any parameters
+
+48
+00:05:40,081 --> 00:05:50,081
+associated with that. No, that's a good point. The and I'll have to test that, for example, the dir command
+
+49
+00:05:50,081 --> 00:05:58,081
+has dynamic parameters for a file and directory. If you're in the file system, you get those parameters,
+
+50
+00:05:58,081 --> 00:06:09,081
+but not if you're in say the registry. So if I were to build a well let's just ah, how much time do we have here?
+
+51
+00:06:09,081 --> 00:06:16,081
+I'll work on that. The include dynamic parameters is at least getting the name.
+
+52
+00:06:16,081 --> 00:06:25,081
+It's not actually building a true dynamic parameter, which a true dynamic parameter has logic, has some sort
+
+53
+00:06:25,081 --> 00:06:33,081
+of code to say if this condition is met, then bring this along. The main reason I had the include dynamic
+
+54
+00:06:33,081 --> 00:06:41,081
+was to get around the Active Directory issues because for whatever reason those cmdlets are, and I don't know
+
+55
+00:06:41,081 --> 00:06:49,081
+why, well because I know what they're doing, but I don't know what logic is saying make this dynamic because
+
+56
+00:06:49,081 --> 00:06:54,081
+it's not dynamic in the way like I'm in the file system, so make this parameter available.
+
+57
+00:06:54,081 --> 00:07:00,081
+They've decided that all of their parameters were just going to be defined as dynamic, which is a little bit different.
+
+58
+00:07:00,081 --> 00:07:09,081
+But you're right. I don't know if my copy command, I know it doesn't make a true dynamic parameter, it just gets
+
+59
+00:07:09,081 --> 00:07:16,081
+the name, identifies it. So you could still make it dynamic if you need to.
+
+60
+00:07:16,081 --> 00:07:23,081
+You'd have to go back and add that piece back in. That's a very good point.
+
+61
+00:07:23,081 --> 00:07:37,081
+Other questions? Is any of this useful or magical?
+
+62
+00:07:37,081 --> 00:07:43,081
+As I said I do all my writing and pretty much at petri or on my blog.
+
+63
+00:07:43,081 --> 00:07:49,081
+PowerShell in Depth, 2nd Edition. Oh we know, I guess people brought books, which is kind of a good thing
+
+64
+00:07:49,081 --> 00:08:00,081
+because this is one of the few times that Don, and Richard, and myself are all in the same time zone and the same location.
+
+65
+00:08:00,081 --> 00:08:07,081
+So if you've brought books for people to sign, I meant to tweet that out, do it because this is the time.
+
+66
+00:08:07,081 --> 00:08:12,081
+And this is you know other people should've told them like bring your Mark books and he'll sign.
+
+67
+00:08:12,081 --> 00:08:18,081
+I see some books down here. So this is a great time. So
+
+68
+00:08:18,081 --> 00:08:21,081
+PowerShell Deep Dives, I've going to give a plug here for this book.
+
+69
+00:08:21,081 --> 00:08:30,081
+This is also published by Manning. I was the editor, which I will never do again, a variety of PowerShell MVPs,
+
+70
+00:08:30,081 --> 00:08:34,081
+Microsoft people, people very active in the PowerShell community.
+
+71
+00:08:34,081 --> 00:08:40,081
+This book grew out of some of the original PowerShell deep dives in summits.
+
+72
+00:08:40,081 --> 00:08:45,081
+This is a book that is basically this conference, but in a book.
+
+73
+00:08:45,081 --> 00:08:49,081
+So the chapters are all written by someone active in PowerShell.
+
+74
+00:08:49,081 --> 00:08:57,081
+They're all little niche topics. You will not find that information anywhere else and what made this kind of
+
+75
+00:08:57,081 --> 00:09:04,081
+special is no one got paid for this. All the proceeds for this book go to charity, so you should buy two copies.
+
+76
+00:09:04,081 --> 00:09:10,081
+If you go to Manning and order and buy the book there on the Manning website, you can get the, I believe,
+
+77
+00:09:10,081 --> 00:09:18,081
+you get all the eBook versions for free. So don't go to Amazon if you want the eBook versions.
+
+78
+00:09:18,081 --> 00:09:29,081
+Anyway, so a plug for that because it's for charity and you will stuff about PowerShell that you won't learn anywhere else.
+
+79
+00:09:29,081 --> 00:09:36,081
+And then my contact information. If you need me, I'll be here the rest of the day and all day tomorrow.
+
+80
+00:09:36,081 --> 00:09:43,081
+That's where I blog. You're welcome to email me. I have some business cards if you need that sort of thing.
+
+81
+00:09:43,081 --> 00:09:50,081
+I'm pretty active on Twitter. You can kind of find me on Google+ every other day or something.
+
+82
+00:09:50,081 --> 00:09:53,081
+On Twitter, let me also mention this,
+
+83
+00:09:53,081 --> 00:10:04,081
+Adam Bertram and I on the first Friday of every month host, "host" kind of a PowerShell chat on Twitter.
+
+84
+00:10:04,081 --> 00:10:09,081
+That's first Friday of every month 1pm Eastern time to 2pm, for about an hour.
+
+85
+00:10:09,081 --> 00:10:16,081
+So we just get online. We use the PS Tweet chat hashtag and we just kind of answer questions or chat and
+
+86
+00:10:16,081 --> 00:10:19,081
+find out what people are working on.
+
+87
+00:10:19,081 --> 00:10:24,081
+So if you want to hand out or even just kind of lurk and see what people are working first Friday of every month.
+
+88
+00:10:24,081 --> 00:10:31,081
+I try to send out some tweets before that to remind people, but something else to think about.
+
+89
+00:10:31,081 --> 00:59:59,999
+Alright. Thank you very much.
+

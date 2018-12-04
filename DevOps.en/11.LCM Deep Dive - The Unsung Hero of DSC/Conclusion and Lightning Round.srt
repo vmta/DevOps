@@ -1,0 +1,472 @@
+1
+00:00:00,0 --> 00:00:04,583
+The more I thought about it, the more I realized that doing a deep dive on the LCM was almost the same as
+
+2
+00:00:04,583 --> 00:00:11,083
+doing a deep dive on DSC itself. The LCM does so much of the work.
+
+3
+00:00:11,083 --> 00:00:13,983
+Also, make sure you know the cmdlets. There's a
+
+4
+00:00:13,983 --> 00:00:20,583
+lot available and you can do a lot of different things with them and they're going to help you get by very well.
+
+5
+00:00:20,583 --> 00:00:26,583
+Also, get used to the LCMs capabilities, how you can configure it, and what you can do with it.
+
+6
+00:00:26,583 --> 00:00:34,583
+It's going to help you be more creative when you have to design solutions in different scenarios.
+
+7
+00:00:34,583 --> 00:00:38,583
+And lastly, between v4 and v5, we know that a lot of things have changed.
+
+8
+00:00:38,583 --> 00:00:45,583
+It's important to be aware what features are available to you based on what version you're running in your environment.
+
+9
+00:00:45,583 --> 00:00:50,583
+I still have environments where we're running v2, so I don't even get to use DSC a lot of the time, but it's a
+
+10
+00:00:50,583 --> 00:00:56,583
+very important thing to keep in mind and one other kind of, I guess it's kind of a speculation, but with all
+
+11
+00:00:56,583 --> 00:00:58,583
+the change that's happened just between these two versions,
+
+12
+00:00:58,583 --> 00:01:03,583
+I would definitely expect this evolution to continue. The report server, for example, is cool, but there's no
+
+13
+00:01:03,583 --> 00:01:08,583
+actual front-end for it. You have to design, you have to build the HTTP request yourself to get the reports
+
+14
+00:01:08,583 --> 00:01:13,583
+out of the nodes. I don't know what we're going to see come out of that, but I would bet you dollars to
+
+15
+00:01:13,583 --> 00:01:21,583
+donuts that something is going to change. Things are going to continue to evolve and it's only going to benefit us.
+
+16
+00:01:21,583 --> 00:01:27,583
+We also are celebrating 10 years of PowerShell. It's kind of hard to believe and especially as somebody who
+
+17
+00:01:27,583 --> 00:01:32,583
+really only, I only started working with PowerShell about three years ago, so it's been incredible,
+
+18
+00:01:32,583 --> 00:01:38,583
+even just these past three years and it's great to be up here in front of everyone helping celebrate these
+
+19
+00:01:38,583 --> 00:01:42,583
+10 years with all the people who have been involved throughout the whole ride.
+
+20
+00:01:42,583 --> 00:01:45,583
+I've got some links to the references that I used to gather the data.
+
+21
+00:01:45,583 --> 00:01:51,583
+You guys copied all that down right? Those don't matter because you can go to this link.
+
+22
+00:01:51,583 --> 00:01:58,583
+This is the one you would write down and this is a link to this PowerPoint and it's on OneDrive, so any updates
+
+23
+00:01:58,583 --> 00:02:04,583
+I make to it, such as correcting my CIM story should be available immediately.
+
+24
+00:02:04,583 --> 00:02:11,583
+Anybody have any questions? You want to move onto the Lightning Round?
+
+25
+00:02:11,583 --> 00:02:14,583
+Yeah.
+
+26
+00:02:14,583 --> 00:02:20,583
+I collected a couple of the strangest cases that I've seen and I put them together a little bit like a game show.
+
+27
+00:02:20,583 --> 00:02:28,583
+So I've got eight quick questions. If you push a Meta Configuration to a pull mode node that changes the
+
+28
+00:02:28,583 --> 00:02:34,583
+configuration assigned to the node, what will happen if the configuration mode timer fires immediately after
+
+29
+00:02:34,583 --> 00:02:42,583
+that Meta Configuration is applied? Is it A, the node pulls the new configuration from the repository and
+
+30
+00:02:42,583 --> 00:02:48,583
+applies it, or B, the node performs a configuration mode action against the existing configuration.
+
+31
+00:02:48,583 --> 00:02:56,583
+Who thinks A? No. Everybody thinks B? What's your refresh mode?
+
+32
+00:02:56,583 --> 00:03:04,583
+Pull. No, no, is it applying longer or? That's the configuration mode.
+
+33
+00:03:04,583 --> 00:03:14,583
+Set. What's that? That'll change the experience. That is true, but in this case, it wouldn't matter
+
+34
+00:03:14,583 --> 00:03:18,583
+because we're just saying it's going to apply the configuration mode action, but whatever that result is,
+
+35
+00:03:18,583 --> 00:03:25,583
+could be different, but that's what it would do. So the correct answer is B, is that if you tell a node to
+
+36
+00:03:25,583 --> 00:03:31,583
+say your pull node, get a new config. Until that new config is pulled by the refresh mode action,
+
+37
+00:03:31,583 --> 00:03:35,583
+configuration mode is going to continue to look at whatever it's got locally and whatever that action,
+
+38
+00:03:35,583 --> 00:03:38,583
+however you've configured it, that's how it's going to continue to work.
+
+39
+00:03:38,583 --> 00:03:45,583
+The question doesn't define why it changes it to pull or push. Yeah, the assumption is that it's in pull
+
+40
+00:03:45,583 --> 00:03:50,583
+mode the whole time and you just switch the configuration that it's pointed at.
+
+41
+00:03:50,583 --> 00:03:56,583
+That's my bad. I'm not going to be writing test questions for the SATs anytime soon.
+
+42
+00:03:56,583 --> 00:04:05,583
+But again, you could write them for Microsoft. Question three, TBD.
+
+43
+00:04:05,583 --> 00:04:11,583
+Let's say you have a node configured for partial configurations in mixed mode, but you haven't pushed any
+
+44
+00:04:11,583 --> 00:04:17,583
+of the push mode partial configurations. What's going to happen when the refresh mode timer fires?
+
+45
+00:04:17,583 --> 00:04:22,583
+So let's say you've got three partial configurations, two of them are pull, one of them is push.
+
+46
+00:04:22,583 --> 00:04:26,583
+You haven't pushed anything. Refresh mode timer fires, so what's it going to do?
+
+47
+00:04:26,583 --> 00:04:34,583
+Who think A? Okay. Who thinks B? The correct answer
+
+48
+00:04:34,583 --> 00:04:41,583
+is A. And actually, I just learned this earlier today, unless you use DependsOn in your Meta Configuration,
+
+49
+00:04:41,583 --> 00:04:48,583
+that might change the game a little bit, but if all of your partial configurations are just out there,
+
+50
+00:04:48,583 --> 00:04:54,583
+the node will pull whatever it can, whatever it's set to pull and apply it and eventually when you get around
+
+51
+00:04:54,583 --> 00:05:00,583
+to pushing the push ones, then it will apply that one too. Unless there's a merge error.
+
+52
+00:05:00,583 --> 00:05:06,583
+Unless there's a merge error, which you won't know until it tries to apply on the node.
+
+53
+00:05:06,583 --> 00:05:12,583
+Oh, this is a great one! If your configuration mode is applying autocorrect, will the LCM send a report to
+
+54
+00:05:12,583 --> 00:05:18,583
+the report server before or after it fixes any non-compliant resources it finds?
+
+55
+00:05:18,583 --> 00:05:27,583
+(Audience comment) Does it? Just because it's not set to autocorrect, it's…
+
+56
+00:05:27,583 --> 00:05:39,583
+It is set to autocorrect. Ah, sorry. Well the data's not complete until it goes through the cap so…
+
+57
+00:05:39,583 --> 00:05:44,583
+I had to go test this one. It actually, I messed up my configuration.
+
+58
+00:05:44,583 --> 00:05:48,583
+I messed up the state and let it run. It reported all resources in compliance.
+
+59
+00:05:48,583 --> 00:05:53,583
+So the correct answer is B. It actually sends a report after correcting the non-compliant resources,
+
+60
+00:05:53,583 --> 00:05:58,583
+which I guess in a way is good, but at the same time, you don't get any visibility on the drifts happening on
+
+61
+00:05:58,583 --> 00:06:03,583
+your nodes, so that's kind of a good thing to be aware of.
+
+62
+00:06:03,583 --> 00:06:13,583
+Question 4. Can you use Start-DscConfiguration -UseExisting to trigger a consistency check on a node's current configuration?
+
+63
+00:06:13,583 --> 00:06:22,583
+True or False? (Audience Comment) Correct answer is B false. This is kind of a trick question.
+
+64
+00:06:22,583 --> 00:06:27,583
+The use existing flag on Start-DscConfiguration will cause the current configuration to be applied fresh,
+
+65
+00:06:27,583 --> 00:06:33,583
+as though it just came to the node. If your configuration mode is apply only, that's a very different thing
+
+66
+00:06:33,583 --> 00:06:39,583
+than doing a consistency check and you can also see in the output in the logs, in the event log that when
+
+67
+00:06:39,583 --> 00:06:44,583
+it does a consistency check, it is noted as a consistency check, and when it's applied fresh, it will be
+
+68
+00:06:44,583 --> 00:06:51,583
+noted as apply. So again, like a lot of things in DSC, they're similar, but different.
+
+69
+00:06:51,583 --> 00:06:58,583
+Question 5. A node is configured for three partial configurations one, two, and three.
+
+70
+00:06:58,583 --> 00:07:03,583
+I'm just going to go ahead and say Start-DscConfiguration and try to push and apply a completely separate
+
+71
+00:07:03,583 --> 00:07:12,583
+configuration to the node. What's it going to do? Error. That is the right line of thought.
+
+72
+00:07:12,583 --> 00:07:20,583
+It does not let you do that. The command is going to error because you cannot use Start-DscConfiguration
+
+73
+00:07:20,583 --> 00:07:27,583
+at all with a node with partial configurations, unless you're using the use existing flag.
+
+74
+00:07:27,583 --> 00:07:34,583
+So even if I tried to push and apply immediately, one of those three partial configurations, I get the same error.
+
+75
+00:07:34,583 --> 00:07:42,583
+Just a couple more. These get more complicated, I swear. So we have a node using partial configurations,
+
+76
+00:07:42,583 --> 00:07:51,583
+so it's got one in pull, one in push, and another in pull. The LCM is set, the refresh mode pull.
+
+77
+00:07:51,583 --> 00:07:59,583
+What happens if you use Publish-DscConfiguration to send partial two to the node?
+
+78
+00:07:59,583 --> 00:08:04,583
+Now this was a question for me because normally when you set the refresh mode of the overall LCM to pull,
+
+79
+00:08:04,583 --> 00:08:11,583
+it won't let you do anything that's like a push or a publish. So I had to test this one out.
+
+80
+00:08:11,583 --> 00:08:18,583
+Now who do we, do we think A? No. Who thinks B? You're all right.
+
+81
+00:08:18,583 --> 00:08:26,583
+It will accept it and it won't say boo. Another node, partial configuration is complicated in that.
+
+82
+00:08:26,583 --> 00:08:35,583
+It threw a lot of curveballs at me. (Audience comment) It's tricky and I think we may see some evolution
+
+83
+00:08:35,583 --> 00:08:39,583
+of it before it really comes into standard use or we may… It should make sense though that you can combine
+
+84
+00:08:39,583 --> 00:08:43,583
+configurations because then you're basically testing a new configuration before you're setting it anyways.
+
+85
+00:08:43,583 --> 00:08:52,583
+Exactly. Yeah, it does make a lot of sense. So we have again our node with three partials, two in pull, one push.
+
+86
+00:08:52,583 --> 00:08:58,583
+Refresh mode property. Oh, it's still set to pull on the LCM. What happens when you use
+
+87
+00:08:58,583 --> 00:09:04,583
+Publish-DscConfiguration with the force parameter to send a modified version of the first partial
+
+88
+00:09:04,583 --> 00:09:09,583
+configuration to the node. This was a really weird one this morning.
+
+89
+00:09:09,583 --> 00:09:14,583
+So A, even though you use the force parameter, you still get an error because that specific partial
+
+90
+00:09:14,583 --> 00:09:19,583
+configuration is in pull mode, right, partial one is configured in pull when I'm trying to publish it.
+
+91
+00:09:19,583 --> 00:09:26,583
+B, the node takes the configuration, but then the next time refresh mode fires, it's in pull mode so it's going
+
+92
+00:09:26,583 --> 00:09:33,583
+to go not matching checksums and pull the other version back down from the pull server, or C, it takes my
+
+93
+00:09:33,583 --> 00:09:38,583
+configuration and actually updates the settings on that partial configuration to be push.
+
+94
+00:09:38,583 --> 00:09:44,583
+I had no idea what to expect with this one. You say A? Who else thinks A?
+
+95
+00:09:44,583 --> 00:09:53,583
+Anybody for B? Wow. And C? Nobody thinks C. Well that's too bad because it's C.
+
+96
+00:09:53,583 --> 00:09:59,583
+Why does it change into push? Because I just pushed the configuration to it I suppose.
+
+97
+00:09:59,583 --> 00:10:05,583
+I honestly, I just tried that this morning. I had a thought in the shower, I said what if I do that?
+
+98
+00:10:05,583 --> 00:10:10,583
+And when I checked the LCM settings, boom, all a sudden that configuration is now in push.
+
+99
+00:10:10,583 --> 00:10:14,583
+It could be to keep the older version from getting pulled back down and overriding what you just push, so I'm not sure.
+
+100
+00:10:14,583 --> 00:10:18,583
+Yeah. So you had an earlier question about Start-DscConfiguration?
+
+101
+00:10:18,583 --> 00:10:24,583
+Yep. And what it would do if with pull mode. If you use that source, it will reset the push button also.
+
+102
+00:10:24,583 --> 00:10:31,583
+Really? Yes, it will. Oh, you know why, I bet my example was different because I had partial configurations,
+
+103
+00:10:31,583 --> 00:10:37,583
+but if it's just one configuration and it's in pull mode, you can push to it with force and it will slop it to push?
+
+104
+00:10:37,583 --> 00:10:43,583
+Yes, it will. That would have been question nine. This is my last one.
+
+105
+00:10:43,583 --> 00:10:47,583
+Sorry I'm keeping you guys so long, but I hope you're enjoying it a little bit.
+
+106
+00:10:47,583 --> 00:10:53,583
+So if I've got a push mode node and I publish a configuration to it, so it's in a pending state,
+
+107
+00:10:53,583 --> 00:10:59,583
+then I change the refresh mode to disabled, what happens to that pending configuration?
+
+108
+00:10:59,583 --> 00:11:06,583
+Does it sit there in the pending state or does the LCM say no you disabled me, it's gone?
+
+109
+00:11:06,583 --> 00:11:12,583
+(Audience comment) Yeah, people say B that is removed? Anybody for A?
+
+110
+00:11:12,583 --> 00:11:20,583
+Okay. Who's for B just to see? About half and half. The actual answer is A.
+
+111
+00:11:20,583 --> 00:11:22,583
+I did a test with it this morning. It sat there in the pending state.
+
+112
+00:11:22,583 --> 00:11:28,583
+Now when refresh mode is set to disabled, you can't do Get-DscConfigurationStatus, you can't get a lot of
+
+113
+00:11:28,583 --> 00:11:37,583
+information out of the thing, but once I re-enabled it and I fired the CIM method to do a refresh timer command,
+
+114
+00:11:37,583 --> 00:11:43,583
+it took the pending configuration and applied it. So it sat there the whole time just waiting for DSC to be re-enabled.
+
+115
+00:11:43,583 --> 00:11:50,583
+Those are all the questions I have for you. If there's any additional questions for me, I'm happy to answer them.
+
+116
+00:11:50,583 --> 00:11:55,583
+If you think of any scenarios that I haven't covered and you'd like to see, I have my whole little domain
+
+117
+00:11:55,583 --> 00:11:59,083
+environment that I'm still very proud of building right here on my laptop.
+
+118
+00:11:59,083 --> 00:59:59,999
+Feel free to come find me, we'll test them out. I hope you guys enjoyed it.
+

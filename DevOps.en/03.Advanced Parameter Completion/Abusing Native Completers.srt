@@ -1,0 +1,308 @@
+1
+00:00:00,75 --> 00:00:04,925
+But instead of going through that, I want to actually show you a way that you can, I call it abusing native
+
+2
+00:00:04,925 --> 00:00:10,925
+completers, I doubt, I mean it may be the case that native completers were intended to be able to do this.
+
+3
+00:00:10,925 --> 00:00:17,925
+It may also not be the case, so results may vary. But I think is kind of cool and in my session on Wednesday
+
+4
+00:00:17,925 --> 00:00:27,925
+I show kind of an actual use for it. So I've got a real simple, very rudimentary function that I wouldn't
+
+5
+00:00:27,925 --> 00:00:33,925
+trust outside of this demo that goes through the AST that's passed and tries to do like some fake parameter
+
+6
+00:00:33,925 --> 00:00:40,925
+binding like what the user actually passed in, right, and it will allow, it will look at the command metadata
+
+7
+00:00:40,925 --> 00:00:48,925
+if it's available, but it will also allow like a parameter that doesn't exist in that metadata to kind of be bound.
+
+8
+00:00:48,925 --> 00:01:01,925
+We do this---we're going to set up a little log over here and then what we're going to do is I'm creating a
+
+9
+00:01:01,925 --> 00:01:08,925
+command that has, it's just show native completer extra info. It's going to have two parameters and down here,
+
+10
+00:01:08,925 --> 00:01:15,925
+this is the important part, we're going to register our native completer for it and inside the native
+
+11
+00:01:15,925 --> 00:01:21,925
+completer, we are going to, you see command name is not available, remember that in the ParamBlock it's only
+
+12
+00:01:21,925 --> 00:01:26,925
+going to get three parameters passed to it, so the CommandName like in a normal completer is not available,
+
+13
+00:01:26,925 --> 00:01:29,925
+but we'll get that from the CommandAst.
+
+14
+00:01:29,925 --> 00:01:35,925
+And one thing to note about this, native parameters, so with a normal completer, you could register if an alias
+
+15
+00:01:35,925 --> 00:01:40,925
+is called, the normal completion engine will be smart to know like you called this alias, but you were
+
+16
+00:01:40,925 --> 00:01:46,925
+actually looking for this command and it will pull the right completer essentially.
+
+17
+00:01:46,925 --> 00:01:51,925
+With a native ArgumentCompleter, you're kind of stuck. If you make an alias after the fact, it's not going to
+
+18
+00:01:51,925 --> 00:01:56,925
+get called here. It's literally looking for whatever command you just typed, it checks the dictionary,
+
+19
+00:01:56,925 --> 00:01:59,925
+so it checks for the alias name and if it's not there, it doesn't run the completer.
+
+20
+00:01:59,925 --> 00:02:04,925
+You can register your alias if you'd like, but...
+
+21
+00:02:04,925 --> 00:02:09,925
+Next, it goes through and calls that Helper function, the parse parameters, and it takes the cursor position
+
+22
+00:02:09,925 --> 00:02:14,925
+into account because it needs to know what the current parameter name is as well.
+
+23
+00:02:14,925 --> 00:02:20,925
+Then we get the ParameterName from that and it's just what the helper function output, we get the fake bound
+
+24
+00:02:20,925 --> 00:02:24,925
+parameters, and then we're just going to output all that information.
+
+25
+00:02:24,925 --> 00:02:38,925
+So this thing doesn't do anything, except output information, so Show-NativeCompleter, extra in, did I not,
+
+26
+00:02:38,925 --> 00:02:48,925
+maybe I did not define that. Hold on. Alright, so we can come in and we can type -Parameter1 and you can see,
+
+27
+00:02:48,925 --> 00:02:54,925
+so we have that information, we have the CommandName up top, we have the ParameterName, the words are complete,
+
+28
+00:02:54,925 --> 00:03:02,925
+I can type that in. You could see earlier this is just for that little helper function, you see that it's
+
+29
+00:03:02,925 --> 00:03:07,925
+bound, it's true. It's treating it like a switch statement because it saw that there's a parameter name,
+
+30
+00:03:07,925 --> 00:03:14,925
+but there's no corresponding, no value that matches that, but what's neat, so you can do that, right,
+
+31
+00:03:14,925 --> 00:03:18,925
+we can come in and say Parameter2, which was something else so you can now see in the fake bound parameters
+
+32
+00:03:18,925 --> 00:03:24,925
+at the bottom that it knows something's there for Parameter1 and for Parameter2 and the logic could be changed
+
+33
+00:03:24,925 --> 00:03:29,925
+so that it, if it knows where the cursor is and nothing's been provided yet, it could just not put that in
+
+34
+00:03:29,925 --> 00:03:36,925
+the bound parameters. What's neat though, is you could say something like -fakeparameter and you can do that,
+
+35
+00:03:36,925 --> 00:03:46,925
+and so it'll do there and another one. And so you can see in the very bottom where it's treating though as
+
+36
+00:03:46,925 --> 00:03:51,925
+you're typing them, you could actually have your
+
+37
+00:03:51,925 --> 00:03:58,925
+completer go through and check for… Got a question. (Audience Question)
+
+38
+00:03:58,925 --> 00:04:00,925
+Oh, so that's just all I'm doing there is I create at
+
+39
+00:04:00,925 --> 00:04:10,925
+the very top here, I just create a file and then I do Get-Content -wait and I'm just doing it in a separate
+
+40
+00:04:10,925 --> 00:04:23,925
+process right here. But yeah, that's kind of neat. We're running, let's see what time we've got.
+
+41
+00:04:23,925 --> 00:04:29,925
+We've got a couple more minutes, so any questions about this? I actually do have kind of a use case for this
+
+42
+00:04:29,925 --> 00:04:33,925
+in my session on Wednesday and if anyone's curious about other stuff with this, you can use it.
+
+43
+00:04:33,925 --> 00:04:39,925
+And again, it might not be the best idea. I do a lot of stuff that's just playing around at first and then
+
+44
+00:04:39,925 --> 00:04:49,925
+hopefully good ideas come from that. Sure. Do you have any suggestions on how to parse the arguments for native commands?
+
+45
+00:04:49,925 --> 00:04:53,925
+Not really. So yeah, I'm not super familiar with doing with that stuff.
+
+46
+00:04:53,925 --> 00:04:59,925
+What I would say, the TabExpansionPlusPlus module. If you look into that, they have and it's on GitHub,
+
+47
+00:04:59,925 --> 00:05:05,925
+I've seen other completers that other people have made, so there's a ton of native command completers.
+
+48
+00:05:05,925 --> 00:05:12,925
+So yeah, I actually originally wasn't even going to cover native command completers and I was like well I
+
+49
+00:05:12,925 --> 00:05:15,925
+kind of need to do that and then playing around with it was when I discovered this.
+
+50
+00:05:15,925 --> 00:05:19,925
+This was like two weeks ago and I was like, oh that's pretty neat, I need to put that in.
+
+51
+00:05:19,925 --> 00:05:25,925
+And I was able to take it and apply it to something else I was working on, but unfortunately, I'm not---
+
+52
+00:05:25,925 --> 00:05:33,925
+it's just going to be---the CommandAst will tell you, you can easily---let's see.
+
+53
+00:05:33,925 --> 00:05:52,925
+Let's come in and modify this guy to, so we have access to that Ast outside of the completer.
+
+54
+00:05:52,925 --> 00:06:00,925
+So with any luck, so if we do what was it, Show-NativeCompleterExtraInfo, we'll treat this like it's net stop
+
+55
+00:06:00,925 --> 00:06:10,925
+wauserv, right, so when we do that, with any luck, yeah, so we have the CommandAst there.
+
+56
+00:06:10,925 --> 00:06:18,925
+So this is what we would have had access to inside that completer, so you can see that it's, GetType somewhere,
+
+57
+00:06:18,925 --> 00:06:26,925
+it's a CommandAst, and so on a CommandAst, you have there's a Get-CommandName, but you also could just take
+
+58
+00:06:26,925 --> 00:06:35,925
+this CommandElements, so you can see that there are three elements and that's right because we said CommandName,
+
+59
+00:06:35,925 --> 00:06:41,925
+the word stop, and then a ServiceName. So you could always say that the first CommandElement should be the
+
+60
+00:06:41,925 --> 00:06:49,925
+CommandName, the next one, if you were doing one for like for net.exe, you could check the next one and you
+
+61
+00:06:49,925 --> 00:06:54,925
+could see alright it stopped or it start, so I need to go in and start doing stuff.
+
+62
+00:06:54,925 --> 00:06:56,925
+I need to get a list of services
+
+63
+00:06:56,925 --> 00:07:02,925
+and you could say it stopped, so let me go get a list of services that are running, and you can get as
+
+64
+00:07:02,925 --> 00:07:08,925
+complicated as you want with that. The one thing you want to be careful of, anything that's expensive,
+
+65
+00:07:08,925 --> 00:07:14,925
+IntelliSense will time out after, I don't know, it's like a couple hundred milliseconds, so you don't want to
+
+66
+00:07:14,925 --> 00:07:18,925
+be the cause of it like hanging. Sometimes it times out and it's super quick and everything's responsive
+
+67
+00:07:18,925 --> 00:07:23,925
+again, other times it kind of hangs and has trouble stopping. So if you're doing something like expensive
+
+68
+00:07:23,925 --> 00:07:29,925
+that's going to take a little while to get results for, you may want to try to cache that somewhere.
+
+69
+00:07:29,925 --> 00:07:34,925
+What we didn't get into was how to tuck this away into a module scope.
+
+70
+00:07:34,925 --> 00:07:39,925
+If you have a module and you register your completers all inside of it, that part's easy, it should just work
+
+71
+00:07:39,925 --> 00:07:44,925
+if you want to do that after the fact. And also, if you want to use it with TabExpansionPlusPlus and this
+
+72
+00:07:44,925 --> 00:07:50,925
+is kind of in the notes on that last demo script. It'll explain that TabExpansionPlusPlus, will strip off,
+
+73
+00:07:50,925 --> 00:07:55,925
+if you're bound to a module, it will strip that binding and then bind it to its own module, so you have
+
+74
+00:07:55,925 --> 00:07:59,925
+access to its helper functions like New-CompletionResult, stuff like that.
+
+75
+00:07:59,925 --> 00:08:04,925
+So it kind of covers a way that you could, you can just call Get-Command, you can get the current command's
+
+76
+00:08:04,925 --> 00:08:10,925
+info and get its module scope and execute stuff in that. So I think that's about it.
+
+77
+00:08:10,925 --> 00:59:59,999
+Any questions? Alright, well thanks everybody. I really appreciate it.
+

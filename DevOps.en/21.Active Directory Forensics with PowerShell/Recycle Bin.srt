@@ -1,0 +1,152 @@
+1
+00:00:00,0 --> 00:00:05,67
+So back in the day before the recycle bin, you delete an object,
+
+2
+00:00:05,67 --> 00:00:07,67
+it gets tombstoned, and then there
+
+3
+00:00:07,67 --> 00:00:13,67
+was Mark Savage's tool that you could put the object back and it looks really beat up when it comes back,
+
+4
+00:00:13,67 --> 00:00:19,67
+but it's just got the SID enough to really preserve the identity, so you don't have to go reset all the permissions,
+
+5
+00:00:19,67 --> 00:00:23,67
+but it loses everything else essentially. Now we've got the recycle bin.
+
+6
+00:00:23,67 --> 00:00:31,67
+We don't have that concern because now we have the recycle bin. Depending on what interval of your tombstone
+
+7
+00:00:31,67 --> 00:00:37,67
+lifetime was set when you implemented it determines how many, usually it's modern system it's 180 days,
+
+8
+00:00:37,67 --> 00:00:43,67
+you've got the recycle bin, then after that, you've got a tombstone for another 180 days, so potentially a year
+
+9
+00:00:43,67 --> 00:00:46,67
+theoretically to get an object back.
+
+10
+00:00:46,67 --> 00:00:52,67
+So the problem is when you query in Active Directory in the deleted objects container, so if I look at the
+
+11
+00:00:52,67 --> 00:01:01,67
+Get-ADDomain, there's a property on Get-ADDomain that tells me where the deleted objects container is.
+
+12
+00:01:01,67 --> 00:01:08,67
+I find that exact property here. Deleted objects here and CohoVineyard is my sample domain today.
+
+13
+00:01:08,67 --> 00:01:15,67
+So I'm going to pick that deleted objects container. So the other thing I was thinking was hey what if the
+
+14
+00:01:15,67 --> 00:01:22,67
+hackers deleted some accounts or deleted some data in Active Directory that I want to go inspect.
+
+15
+00:01:22,67 --> 00:01:28,67
+So let's take a look. I'm going to look at that deleted objects container here and I'm going to set that as
+
+16
+00:01:28,67 --> 00:01:33,67
+the search base for my query. That's where I'm going to start my query, but when you're querying deleted objects,
+
+17
+00:01:33,67 --> 00:01:40,67
+you have to include this parameter IncludeDeletedObjects because normally those are hidden by default.
+
+18
+00:01:40,67 --> 00:01:46,67
+So I'm going to view those deleted objects and grab those under a variable called DeletedObjects and then I'm
+
+19
+00:01:46,67 --> 00:01:55,67
+going to sort them by modified, but the problem I had here and let's see, there we go, and so you get the Dell
+
+20
+00:01:55,67 --> 00:02:05,67
+thing in the name and all that. There's a last known parent attribute as well in here that gets populated
+
+21
+00:02:05,67 --> 00:02:11,67
+when they're deleted. The problem is that basically there are some date fields in here, but there's no good
+
+22
+00:02:11,67 --> 00:02:20,67
+date field to tell me when it was deleted, when or where that delete originated.
+
+23
+00:02:20,67 --> 00:02:27,67
+So what I want to do then is look at the metadata just like we've looked at everything else, now I can see
+
+24
+00:02:27,67 --> 00:02:33,67
+which domain controller initiated that delete putting it in the recycle bin and then go look at the logs on
+
+25
+00:02:33,67 --> 00:02:39,67
+that DC for that time period to see who was making the change.
+
+26
+00:02:39,67 --> 00:02:46,67
+Alright, so that's the way we track it back. We use the replication metadata to find which DC originated
+
+27
+00:02:46,67 --> 00:02:51,67
+change, then we go look at the security log on that DC to see where it was.
+
+28
+00:02:51,67 --> 00:02:57,67
+Now most likely these security logs are rolling pretty frequently, so you would have to have some type of event
+
+29
+00:02:57,67 --> 00:03:03,67
+log collection forwarding something going on in your environment to be able to search those historically.
+
+30
+00:03:03,67 --> 00:03:17,67
+So what I could do here would be to run through and let's take a look at with the metadata here, put that in the GridView.
+
+31
+00:03:17,67 --> 00:03:23,67
+And so now I've got deleted objects, whenCreated, and whenDeleted right here.
+
+32
+00:03:23,67 --> 00:03:29,67
+Alright, so that shows me when the object was deleted and what that's pulling back is it's a calculated value
+
+33
+00:03:29,67 --> 00:03:37,67
+based on that metadata for the change date on the object. It says this is the last change was putting it in
+
+34
+00:03:37,67 --> 00:03:44,67
+the recycle bin, so I know that's the date it was deleted. And so I can now see a dated list of what things
+
+35
+00:03:44,67 --> 00:03:51,67
+were deleted in descending order from today and then go look at the event window, those date ranges that are
+
+36
+00:03:51,67 --> 00:03:58,67
+suspect and see were there things that were wholesale deleted by the hackers in that window.
+
+37
+00:03:58,67 --> 00:04:12,67
+Anecdotally, while I was surfing through this company's directory data, I found an actual account with the name Hacker.
+
+38
+00:04:12,67 --> 00:59:59,999
+It turns out there's a user in Europe with the last name of Hacker.  So they were legit.
+

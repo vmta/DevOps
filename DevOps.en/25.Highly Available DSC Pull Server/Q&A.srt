@@ -1,0 +1,380 @@
+1
+00:00:00,0 --> 00:00:04,5
+So what questions do you have?
+
+2
+00:00:04,5 --> 00:00:07,5
+Come on, anything.
+
+3
+00:00:07,5 --> 00:00:08,365
+Partial configurations.
+
+4
+00:00:08,365 --> 00:00:12,365
+No, we're not talking about partial configurations. Next question.
+
+5
+00:00:12,365 --> 00:00:14,365
+No, go ahead.
+
+6
+00:00:14,365 --> 00:00:19,365
+Because with a partial configuration in pull mode, you have to use the friendly name and a configuration number,
+
+7
+00:00:19,365 --> 00:00:26,365
+so are you stuck using the friendly names in that case? As far as I've seen, there's no way to do it using
+
+8
+00:00:26,365 --> 00:00:27,365
+the pull mode right now.
+
+9
+00:00:27,365 --> 00:00:31,365
+No, you're right. You need both of them right now. So I'll be honest with you, I'd stick with GUIDs if you're
+
+10
+00:00:31,365 --> 00:00:36,365
+doing partials right now altogether and not use any config names.
+
+11
+00:00:36,365 --> 00:00:37,365
+(Audience comment)
+
+12
+00:00:37,365 --> 00:00:42,365
+And if I were you, and I was just about to say, if I were you, we have this whole big thing, matter of fact,
+
+13
+00:00:42,365 --> 00:00:50,365
+I was just, you all know who Bruce Payette is? The great god of the linguistics in PowerShell?
+
+14
+00:00:50,365 --> 00:00:57,365
+Okay, what we've been saying for days, we keep telling, we tell this to customers on it, don't do partial configs.
+
+15
+00:00:57,365 --> 00:01:02,365
+There's only one case scenario for it and it's because you don't have an HR department capable of firing people.
+
+16
+00:01:02,365 --> 00:01:10,365
+Don't use partial configs. They will hurt you. The right way is to use a composite config.
+
+17
+00:01:10,365 --> 00:01:14,365
+That also goes through your build pipeline correctly and doesn't screw everything up.
+
+18
+00:01:14,365 --> 00:01:22,365
+Partial configs, you will die a 1,000 cuts. So I was talking to Bruce Payette last night and I said what's the
+
+19
+00:01:22,365 --> 00:01:31,365
+real, what's your view on partial configs and he just turned to me and went we shouldn't have done that.
+
+20
+00:01:31,365 --> 00:01:38,365
+Thanks, Bruce. That's exactly what I wanted to hear. But yeah, so I know that there are case scenarios for
+
+21
+00:01:38,365 --> 00:01:41,365
+partial configs, but please avoid those. Use a composite config.
+
+22
+00:01:41,365 --> 00:01:47,365
+It just makes your life easier than running partials. What else you got?
+
+23
+00:01:47,365 --> 00:02:00,365
+(Audience comment)
+
+24
+00:02:00,365 --> 00:02:04,365
+Yeah, and you know what's funny is that is exactly the answer I was going to get.
+
+25
+00:02:04,365 --> 00:02:09,365
+Your MOFs have to be versioned control by a version control source. They're not putting version control numbers
+
+26
+00:02:09,365 --> 00:02:18,365
+in the MOF, so what you want to do is whatever your source control is going to be like Get, whatever in GitHub,
+
+27
+00:02:18,365 --> 00:02:23,365
+that's where that versioning gets done. And I would dare say that you do the same process with your resources.
+
+28
+00:02:23,365 --> 00:02:29,365
+That's going to be in version control. You just have to make the name of the resource follow that,
+
+29
+00:02:29,365 --> 00:02:34,365
+you have to understand that versioning for those. That's a really good question.
+
+30
+00:02:34,365 --> 00:02:38,365
+Are you guys going to use pull servers or are you guys going to come up with your own way of doing it?
+
+31
+00:02:38,365 --> 00:02:42,365
+(Audience comment)
+
+32
+00:02:42,365 --> 00:02:43,365
+It has.
+
+33
+00:02:43,365 --> 00:02:48,365
+Right now, I feel like it either has to be both or I need to…
+
+34
+00:02:48,365 --> 00:02:54,365
+Okay, so there's a lot of companies that do push, they build their own push environments.
+
+35
+00:02:54,365 --> 00:02:59,365
+You're one of those. There you go and there's nothing wrong with that.
+
+36
+00:02:59,365 --> 00:03:03,365
+They are working on this pull server. I don't know if you've looked at the Azure automation stuff.
+
+37
+00:03:03,365 --> 00:03:09,365
+An Azure automation DSC pull server is a little bit more refined than our current on-prem pull server and
+
+38
+00:03:09,365 --> 00:03:14,365
+they're going to make a concerted effort to get the on-prem pull server, they've just been focusing on Azure.
+
+39
+00:03:14,365 --> 00:03:20,365
+Are you with me? You can use an Azure based pull server and let me tell you one of the benefits is we've got
+
+40
+00:03:20,365 --> 00:03:27,365
+encrypted MOFs on the nodes. These MOFs aren't encrypted on your on-premise one.
+
+41
+00:03:27,365 --> 00:03:34,365
+So somebody could just go hack the, just look at the ones on your and see things like if you forgot to secure
+
+42
+00:03:34,365 --> 00:03:41,365
+your credentials and that kind of stuff. On the Azure automation one, that pull server has encrypted MOFs on both sides.
+
+43
+00:03:41,365 --> 00:03:46,365
+It automatically encrypts the MOFs on the pull server and on the node, so that's kind of a benefit.
+
+44
+00:03:46,365 --> 00:03:52,365
+If you can have that hybrid approach, that's a really good pull server option right now to use.
+
+45
+00:03:52,365 --> 00:03:58,365
+This one, I use this in production all the time. While I'm not using config names this week,
+
+46
+00:03:58,365 --> 00:04:06,365
+that was supposed to be a joke, but I use this all the time and they're working on improving it really rapidly, so.
+
+47
+00:04:06,365 --> 00:04:12,365
+Also because, and I just want to tell you this, in the process of fixing some of this stuff, they've changed the
+
+48
+00:04:12,365 --> 00:04:18,365
+database type from JET to ESENT. Does anybody know what ESENT is?
+
+49
+00:04:18,365 --> 00:04:20,365
+Do I have any Exchange people in here?
+
+50
+00:04:20,365 --> 00:04:22,365
+(Audience comment)
+
+51
+00:04:22,365 --> 00:04:28,365
+It went from an MDB to an EDB. And now here's the funny part because I was asking one of the team members
+
+52
+00:04:28,365 --> 00:04:29,365
+yesterday about
+
+53
+00:04:29,365 --> 00:04:39,365
+this. I asked them, I said any Exchange guy that goes out and looks at this folder, let me just, is going to freak.
+
+54
+00:04:39,365 --> 00:04:54,365
+Where do I have it? Dc\C$, Program Files, Windows PowerShell, DSC.
+
+55
+00:04:54,365 --> 00:04:59,365
+Notice the old MDB is still out there because when they made this change last week, they didn't want to kill
+
+56
+00:04:59,365 --> 00:05:08,365
+your database, existing one, but they made a new one. Yeah. Yeah, it's why you didn't notice it and I just needed
+
+57
+00:05:08,365 --> 00:05:11,365
+see those things called .logs,
+
+58
+00:05:11,365 --> 00:05:16,365
+here's what I don't know. Any Exchange guy looks at this, the first thing they go is
+
+59
+00:05:16,365 --> 00:05:21,365
+Oh my God. And I said to the team member yesterday, here's the first question that should have popped out of
+
+60
+00:05:21,365 --> 00:05:27,365
+somebody's mouth as soon as it, because mine did, was are you using circular logging?
+
+61
+00:05:27,365 --> 00:05:32,365
+If not, how do I truncate these because there's no backup for this that's going to truncate these logs and
+
+62
+00:05:32,365 --> 00:05:37,365
+every Exchange guy knows your Exchange Server crashes because your backups aren't working and wouldn't truncate
+
+63
+00:05:37,365 --> 00:05:42,365
+the logs and it filled up all the disk space and it's going to do it in a heartbeat.
+
+64
+00:05:42,365 --> 00:05:47,365
+So I'm trying to find that information out and I'll put that up on powershell.org when we have some more
+
+65
+00:05:47,365 --> 00:05:55,365
+details on ESENT and how they intend to use this. I don't know if it's circular logging or not and I.
+
+66
+00:05:55,365 --> 00:05:58,365
+(Audience comment)
+
+67
+00:05:58,365 --> 00:06:04,365
+Well they could set it for whatever they wanted, so and that's what I don't know, so I'm trying to find that out.
+
+68
+00:06:04,365 --> 00:06:11,365
+But this change has just occurred, so don't be surprised when you go out there and see.
+
+69
+00:06:11,365 --> 00:06:13,365
+Oh, come on somebody had to watch Buck Rogers.
+
+70
+00:06:13,365 --> 00:06:15,365
+Yeah.
+
+71
+00:06:15,365 --> 00:06:21,365
+It's stage data. Oh, it was funny. Alright. What else?
+
+72
+00:06:21,365 --> 00:06:23,365
+Have you tried exploring the contents of that?
+
+73
+00:06:23,365 --> 00:06:29,365
+Not yet. I haven't had a chance. Because believe me I'm going to next week, but I haven't had a chance.
+
+74
+00:06:29,365 --> 00:06:35,365
+Because this literally just happened last week and I went oh, I wonder if any of my demos are now going to work.
+
+75
+00:06:35,365 --> 00:06:46,365
+(Audience comment)
+
+76
+00:06:46,365 --> 00:06:50,365
+Yeah, that's another thing. Yeah, that's probably something else that we probably should get around to fixing
+
+77
+00:06:50,365 --> 00:06:54,365
+at some point, yeah, or at least telling everybody that they need to make sure they delete that stuff.
+
+78
+00:06:54,365 --> 00:06:57,365
+Yeah, that's really good.
+
+79
+00:06:57,365 --> 00:07:02,365
+So pull servers. They're great, but we need some more work on them, so have patience.
+
+80
+00:07:02,365 --> 00:07:07,365
+Play with it in your lab environment. Yeah.
+
+81
+00:07:07,365 --> 00:07:08,365
+(Audience comment)
+
+82
+00:07:08,365 --> 00:07:15,365
+I know. So was mine. Well because the engineer told me make sure that your web.config says ESENT instead
+
+83
+00:07:15,365 --> 00:07:22,5
+of JET and I'm like what? What just happened? (laughs)
+
+84
+00:07:22,5 --> 00:07:24,365
+Yeah, and I don't have many details on this.
+
+85
+00:07:24,365 --> 00:07:28,5
+I think it's going to be really cool, but I don't have any details on this.
+
+86
+00:07:28,5 --> 00:07:34,5
+The other thing is this makes high availability just a little bit more challenging because--
+
+87
+00:07:34,5 --> 00:07:39,5
+I don't think they have any block replication capabilities like a DAG set up for this. (laughs)
+
+88
+00:07:39,5 --> 00:07:41,5
+That's my other question too.
+
+89
+00:07:41,5 --> 00:07:48,365
+(Audience comment)
+
+90
+00:07:48,365 --> 00:07:54,474
+Yeah, yeah. I think this is, from my initial set, I think this is probably a really good idea and those are
+
+91
+00:07:54,474 --> 00:08:00,480
+really smart people on the team, so they don't do things haphazard, so I'm thinking this is a really good idea.
+
+92
+00:08:00,480 --> 00:08:05,485
+I just thought it was funny because my Exchange eyes just went--wahahaha!
+
+93
+00:08:05,485 --> 00:08:08,488
+Alright, guys. Well thanks. I'll stand up here if you want to ask any questions.
+
+94
+00:08:08,488 --> 00:08:11,365
+Other than that, go to lunch, have fun, and enjoy the rest of your day.
+
+95
+00:08:11,365 --> 00:59:59,999
+Thank you!
+

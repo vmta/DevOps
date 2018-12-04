@@ -1,0 +1,100 @@
+1
+00:00:00,0 --> 00:00:06,051
+This is not for everyone. There are some of you in this room and there are people in the room every time I
+
+2
+00:00:06,051 --> 00:00:11,051
+talk about this who are going to think to yourself, you know, this makes sense.
+
+3
+00:00:11,051 --> 00:00:17,051
+I'd like to work in this type of organization. Our organization will just absolutely never do this.
+
+4
+00:00:17,051 --> 00:00:24,051
+You need to recognize if that's the case so that you do not start just banging your head into a wall.
+
+5
+00:00:24,051 --> 00:00:29,051
+I get into a lot of conversation with folks. I had a great one with a young lady who works for a company that
+
+6
+00:00:29,051 --> 00:00:33,051
+they do not have any internal software developers, and that's fine, lots of us don't.
+
+7
+00:00:33,051 --> 00:00:39,051
+It's a smaller company. But how do I do this DevOps stuff with my vendors?
+
+8
+00:00:39,051 --> 00:00:46,051
+You can't. They're not going to be complicit in this and she kind of got into this loop of no how can I make it work?
+
+9
+00:00:46,051 --> 00:00:51,051
+You can't. You can't make it work, right. That's like saying I really, really want to drive this car on the
+
+10
+00:00:51,051 --> 00:00:58,051
+ceiling upside down, so how do I make that. No, you don't. It's not what it's for, that's not how it works.
+
+11
+00:00:58,051 --> 00:01:03,051
+So this isn't for everybody. You can definitely, even if it's not for you, there might be some nice pieces
+
+12
+00:01:03,051 --> 00:01:11,051
+you can take from it. And maybe for certain projects it's for you, but recognize when this is not the right tool.
+
+13
+00:01:11,051 --> 00:01:19,051
+So speaking of that, DevOps is not a collection of tools. You will need tools to do this.
+
+14
+00:01:19,051 --> 00:01:26,051
+But DevOps is not something that you can go buy. DevOps is an approach to managing IT.
+
+15
+00:01:26,051 --> 00:01:34,051
+It is an approach to software delivery. You guys know where this kind of came from, this whole DevOps movement?
+
+16
+00:01:34,051 --> 00:01:41,051
+It came from Agile. Software developers started adopting these project management methodologies like Agile
+
+17
+00:01:41,051 --> 00:01:47,051
+where they could really iterate very quickly and produce new builds of software every day, every week,
+
+18
+00:01:47,051 --> 00:01:51,051
+whatever their cycle was and then they would hand it off to ops and we're like maintenance window not scheduled
+
+19
+00:01:51,051 --> 00:01:57,051
+until next Tuesday when the moon is full, and so they would have this huge pipeline of software that they
+
+20
+00:01:57,051 --> 00:02:04,051
+were ready to deploy and we're off over here implementing ITIL which is essentially about stopping all movement
+
+21
+00:02:04,051 --> 00:02:12,051
+in all molecules ever, right. Who works in an ITIL shop? Yep, right.
+
+22
+00:02:12,051 --> 00:02:24,051
+And everybody goes. Yes, we went to the DMV and said how should we run our shop.
+
+23
+00:02:24,051 --> 00:02:33,051
+It's essentially what we did. So DevOps came as kind of a reaction to that, which is, we need to make ops more
+
+24
+00:02:33,051 --> 00:02:39,051
+agile and you'll actually hear it taught. You'll hear about Agile ops or Agile IT and you'll kind of hear
+
+25
+00:02:39,051 --> 00:59:59,999
+those terms thrown around as well. DevOps has become a little bit more popular.
+

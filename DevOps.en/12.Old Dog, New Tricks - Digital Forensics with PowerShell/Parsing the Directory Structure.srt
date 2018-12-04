@@ -1,0 +1,328 @@
+1
+00:00:00,0 --> 00:00:02,763
+So what? What does this all do for me, right?
+
+2
+00:00:02,763 --> 00:00:10,763
+Hey, got another demo. So there's a weird bug that I just found that one of these things doesn't work with
+
+3
+00:00:10,763 --> 00:00:17,763
+the ISE, so we're going to go through the actual shell. So what we're doing here is Get-ForensicChildItem,
+
+4
+00:00:17,763 --> 00:00:23,763
+so functions similarly to Get-ChildItem, but we're doing it in a forensically sound manner,
+
+5
+00:00:23,763 --> 00:00:27,763
+so we're using all that stuff that I just showed you behind the scenes, we're parsing all of it,
+
+6
+00:00:27,763 --> 00:00:34,763
+in this case, we're going to show the children of the C drive. And so in this case, we have, for instance,
+
+7
+00:00:34,763 --> 00:00:41,763
+Program Files, Program Files x86, Users, temp, Windows, but we also have the hidden files that you don't see
+
+8
+00:00:41,763 --> 00:00:48,763
+when you just use Get-ChildItem, right, so we add our $AttrDef, which is record number 4, and so remember we
+
+9
+00:00:48,763 --> 00:00:56,763
+had that $MFT variable that has everything. If we do $MFT and then look at the item adds or the object at Index
+
+10
+00:00:56,763 --> 00:01:05,763
+number 4, we would see the AttrDef file, so we can actually show that real quick.
+
+11
+00:01:05,763 --> 00:01:10,763
+And there it is, so C AttrDef, right. So now we're starting to kind of understand what's going on here.
+
+12
+00:01:10,763 --> 00:01:13,763
+Alright. This is my first time using this little fancy demo thing.
+
+13
+00:01:13,763 --> 00:01:18,763
+I just didn't want to type all this out, so bear with me. Okay, and so now we have
+
+14
+00:01:18,763 --> 00:01:23,763
+Get-ForensicFileRecordIndex and we're giving it a path, right, and it's going to do a lookup and determine
+
+15
+00:01:23,763 --> 00:01:25,763
+what that index is, right, and so,
+
+16
+00:01:25,763 --> 00:01:31,763
+I don't use this very often, but just to kind of show that we can take a path and determine what its index in
+
+17
+00:01:31,763 --> 00:01:34,763
+the MFT is. Alright, and then
+
+18
+00:01:34,763 --> 00:01:39,763
+so yeah, I'm going to kind of speed through this, but Get-ForensicContent is similar to GetContent,
+
+19
+00:01:39,763 --> 00:01:43,763
+but it does it in a forensically sound manner and we're going to basically read the contents and then encode
+
+20
+00:01:43,763 --> 00:01:50,763
+it in Unicode of the AttrDef file, right. Again, this we can kind of make out some strings here,
+
+21
+00:01:50,763 --> 00:01:55,763
+so $ATTRIBUTE_LIST, $STANDARD_INFORMATION, so on and so forth, but there's a lot of stuff going on that we
+
+22
+00:01:55,763 --> 00:01:59,763
+don't know what it is, right? And so
+
+23
+00:01:59,763 --> 00:02:05,763
+luckily, there's Get-ForensicAttrDef and we give it a VolumeName of C and it's going to parse it out and tell
+
+24
+00:02:05,763 --> 00:02:11,763
+us all the information, interpret the information for us. So the AttrDef file contains different attributes
+
+25
+00:02:11,763 --> 00:02:17,763
+that you're able to use within an MFT record, so things like Standard_Information or File_Name or Data, so on,
+
+26
+00:02:17,763 --> 00:02:19,763
+and so forth and there's a bunch of other ones that
+
+27
+00:02:19,763 --> 00:02:26,763
+aren't used very frequently, but they're allowed or defined. Alright, what is this doing?
+
+28
+00:02:26,763 --> 00:02:32,763
+Alright, so now we're going to do Get-ForensicFileRecordIndex for System32\config\SAM, right.
+
+29
+00:02:32,763 --> 00:02:39,763
+So we know the SAM has an offset into the MFT of 278072. Yes.
+
+30
+00:02:39,763 --> 00:02:46,763
+What is the SAM? Yeah, so the SAM is the SAM Hive, it's the registry hive that contains all the information
+
+31
+00:02:46,763 --> 00:02:51,763
+about users and passwords and all that kind of stuff. So I'm going to show in a second that it's a locked
+
+32
+00:02:51,763 --> 00:02:56,763
+file and you can't just randomly go and say hey I want to read the contents of the SAM Hive, but we're going
+
+33
+00:02:56,763 --> 00:03:03,763
+to then do that basically. Alright, so
+
+34
+00:03:03,763 --> 00:03:10,763
+oh this is kind of weirdly out of order, but Lee really liked this, so you can take Get-ChildItem and do like
+
+35
+00:03:10,763 --> 00:03:13,763
+the C drive, so we're listing out all the children in the C drive
+
+36
+00:03:13,763 --> 00:03:20,763
+and then pipe it into Get-ForensicFileRecord, and it will give you the MFT record for each one of those files
+
+37
+00:03:20,763 --> 00:03:26,763
+so it's kind of a cool thing to show how this functions correctly with typical PowerShell cmdlets.
+
+38
+00:03:26,763 --> 00:03:33,763
+Did you have a question? Okay. Alright, so oh I jumped ahead of myself, so right now what we're doing is we
+
+39
+00:03:33,763 --> 00:03:37,763
+want to get the MFT record for the SAM Hive and we're measuring how long that takes.
+
+40
+00:03:37,763 --> 00:03:42,763
+This is following kind of the directory structure, so that we only have to parse out the things that we need
+
+41
+00:03:42,763 --> 00:03:50,763
+to parse and that took 587 ms, so less than a second, about half a second.
+
+42
+00:03:50,763 --> 00:03:55,763
+And then we're going to do the long way, which is basically get every single file record and then we're going
+
+43
+00:03:55,763 --> 00:03:58,763
+to do Where object and it took 5 seconds,
+
+44
+00:03:58,763 --> 00:04:03,763
+so we're talking, I'm not a good math person, but 10 times as long to parse that out.
+
+45
+00:04:03,763 --> 00:04:07,763
+So if you're not actually following the directory structure, then it's going to take much longer to get to
+
+46
+00:04:07,763 --> 00:04:13,763
+where you need to go and this is using like the .where in PowerShell 5, which is significantly faster than
+
+47
+00:04:13,763 --> 00:04:17,763
+where object through the pipeline. Alright, so
+
+48
+00:04:17,763 --> 00:04:23,763
+now what we're going to do is use the built-in Get-Content to try to read the contents of the SAM Hive and
+
+49
+00:04:23,763 --> 00:04:27,763
+not surprisingly, it says hey this is being used by another process, you can't do that.
+
+50
+00:04:27,763 --> 00:04:30,763
+Okay, well if we can't do that, then we'll just do it a different way.
+
+51
+00:04:30,763 --> 00:04:35,763
+And so we'll use Get-ForensicsContent and read the SAM and there's the contents of the SAM hive.
+
+52
+00:04:35,763 --> 00:04:42,763
+Again, this might not mean very much to you, but things like if you're parsing, nk is like the header for the named
+
+53
+00:04:42,763 --> 00:04:52,763
+key property or like the vk is the value key. And so you have these, if you're familiar with the registry structure,
+
+54
+00:04:52,763 --> 00:04:59,763
+you at least see that this is representative of a registry file, so we're in the right track, we're on the right track.
+
+55
+00:04:59,763 --> 00:05:00,763
+So then we can do things like
+
+56
+00:05:00,763 --> 00:05:05,763
+we're trying to copy item. Well hey, same problem, you can't copy it, but what we can do here is
+
+57
+00:05:05,763 --> 00:05:12,763
+Copy-ForensicFile, just kind of showing that concept, and then if I Get-ChildItem, we've copied the SAM out to,
+
+58
+00:05:12,763 --> 00:05:19,763
+whoops I did get ChildItem on the wrong directory. Oh, come on. Oh, no, never mind.
+
+59
+00:05:19,763 --> 00:05:29,763
+So I showing that the SAM file is 65,536 bytes, the copy that we created was 65,536 bytes as well,
+
+60
+00:05:29,763 --> 00:05:33,763
+so we're copying the same size. I would do a hash, but you can't actually hash this in because it's
+
+61
+00:05:33,763 --> 00:05:42,763
+locked, right. So alright, so now building on top of that, we can do something like Get-ForensicRegistryKey
+
+62
+00:05:42,763 --> 00:05:49,763
+right, so now we had that whole blob of registry data, which doesn't mean anything to anybody, but we're able
+
+63
+00:05:49,763 --> 00:05:55,763
+start reading the content. So in this case, we wanted to look in a software hive, right, and this is the
+
+64
+00:05:55,763 --> 00:06:03,763
+root of the software hive, every key in the root of the software hive.
+
+65
+00:06:03,763 --> 00:06:09,763
+Then we can do things like interpreting a specific registry key to understand what it means, so a lot of people
+
+66
+00:06:09,763 --> 00:06:10,763
+are familiar with like
+
+67
+00:06:10,763 --> 00:06:17,763
+the run keys that autostart programs when you set them, and so we have Get-ForensicRunKey, which is going to parse
+
+68
+00:06:17,763 --> 00:06:25,763
+the MFT, determine where the software hive is, or the NTUser.DatHive, which is the HKCU hive or well,
+
+69
+00:06:25,763 --> 00:06:30,763
+there's one, there's a NTUser.DatHive for every user on the system that currently log in users
+
+70
+00:06:30,763 --> 00:06:37,763
+NTUser.DatHive is the HKCU Hive. But we're going to basically go through all of those and find any autoruns
+
+71
+00:06:37,763 --> 00:06:46,763
+set to autostart in the run or run once keys. This takes a little while because it's looking through,
+
+72
+00:06:46,763 --> 00:06:47,763
+oh, never mind,
+
+73
+00:06:47,763 --> 00:06:54,763
+it's looking through like seven different hives to get this data, but here we see, in this case, like I have
+
+74
+00:06:54,763 --> 00:06:59,763
+VMware user process set to autorun, so on and so forth. So now we've taken that and we're starting to
+
+75
+00:06:59,763 --> 00:07:08,763
+actually understand data on the hard drive that we can analyze and determine whether something's going on.
+
+76
+00:07:08,763 --> 00:07:15,763
+Okay, yep so just again showing the fact that everything that's being output is a proper .NET object where
+
+77
+00:07:15,763 --> 00:07:20,763
+we can manipulate house properties and methods, so on and so forth.
+
+78
+00:07:20,763 --> 00:07:26,763
+We also have like, for instance, there's a bunch of timestamps and those timestamps aren't just like strings,
+
+79
+00:07:26,763 --> 00:07:33,763
+they're actually DateTime objects, and so in this case, I'm showing the BornTime of the record for
+
+80
+00:07:33,763 --> 00:07:39,763
+the MFT record for the MFT itself and it's an actual DateTime object that you can manipulate the same way you
+
+81
+00:07:39,763 --> 00:07:42,763
+would manipulate any DateTime object, so that's the
+
+82
+00:07:42,763 --> 00:59:59,999
+end of that one. Alright, so.
+

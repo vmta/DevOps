@@ -1,0 +1,468 @@
+1
+00:00:00,0 --> 00:00:03,677
+Now data is a liability. You might be thinking what does that mean?
+
+2
+00:00:03,677 --> 00:00:09,677
+So there was a very recent breach, a very interesting breach from the Ashley Madison website.
+
+3
+00:00:09,677 --> 00:00:17,677
+So they're an adultery website. They probably thought that their most precious resource, their most precious commodity
+
+4
+00:00:17,677 --> 00:00:25,677
+was like the PayPal information that was inside their databases, credit card information, but realistically,
+
+5
+00:00:25,677 --> 00:00:29,677
+people are used to those things getting breached and they get their notifications and they're like oh that
+
+6
+00:00:29,677 --> 00:00:35,677
+sucks, I've got to change these things again. Their most precious commodity was trust.
+
+7
+00:00:35,677 --> 00:00:43,677
+When you're doing a website that's all about flying under the radar, the minute you lose trust, you're done.
+
+8
+00:00:43,677 --> 00:00:50,677
+The Ashley Madison site got breached. All of that sensitive data that really was not crucial to the Ashley
+
+9
+00:00:50,677 --> 00:00:59,677
+Madison business then became a liability that leaked and within 6 months, they had lost 80% of their business.
+
+10
+00:00:59,677 --> 00:01:00,677
+I checked again
+
+11
+00:01:00,677 --> 00:01:05,677
+a couple days ago and it's gone down again, so their now down to more like 90% of their business.
+
+12
+00:01:05,677 --> 00:01:11,677
+The 10% that remains, if you take a look at the web traffic, is from countries that don't speak English.
+
+13
+00:01:11,677 --> 00:01:14,677
+They just weren't part of the news cycle.
+
+14
+00:01:14,677 --> 00:01:21,677
+So data is clearly a liability. If you don't need the data, then you shouldn't store it, right.
+
+15
+00:01:21,677 --> 00:01:30,677
+This comes true when you talk about storing customer data. If you don't actually need access to this data, encrypt it.
+
+16
+00:01:30,677 --> 00:01:32,677
+Let the customers be the only people who have
+
+17
+00:01:32,677 --> 00:01:39,677
+access to the data. That solves you from the dangers of an attacker coming and stealing a bunch of personal
+
+18
+00:01:39,677 --> 00:01:47,677
+information that you don't actually need access to. A perfect example of this is just the way that's appropriate
+
+19
+00:01:47,677 --> 00:01:53,677
+to do with passwords. When people create login systems for websites, well you don't store literally the
+
+20
+00:01:53,677 --> 00:02:03,677
+usernames and passwords, you used to, but if that database gets breached, now you have everybody's usernames and passwords.
+
+21
+00:02:03,677 --> 00:02:10,677
+So that the technique there is instead to store their username or whatever and then a hash of their passwords.
+
+22
+00:02:10,677 --> 00:02:17,677
+Now the hash of their passwords that you prove that they knew the password without ever storing the password itself.
+
+23
+00:02:17,677 --> 00:02:22,677
+So there's an example of treating data as a liability.
+
+24
+00:02:22,677 --> 00:02:27,677
+Now success. Don't let success be your downfall. Some interesting things to ask yourself, right.
+
+25
+00:02:27,677 --> 00:02:33,677
+So what if every host in my entire network had this bit of software?
+
+26
+00:02:33,677 --> 00:02:42,677
+What if every person in the world was connected to my service and was subject to the same rules or whatever else.
+
+27
+00:02:42,677 --> 00:02:50,677
+A good example would be think about some obscure Android distribution that has a picture taking application to
+
+28
+00:02:50,677 --> 00:02:52,677
+share it up to Twitter
+
+29
+00:02:52,677 --> 00:02:59,677
+and maybe they hit a bug that was including the GPS information of where the person was when they took the picture.
+
+30
+00:02:59,677 --> 00:03:05,677
+That person might be like, that distribution might be like, well that kind of sucks, we'll send out Apache at one point.
+
+31
+00:03:05,677 --> 00:03:12,677
+If this was Instagram on iPhone, and if all you had to do was go to Instagram and you could find out the GPS
+
+32
+00:03:12,677 --> 00:03:19,677
+coordinates of everybody and everybody's picture, that would be a recall class vulnerability.
+
+33
+00:03:19,677 --> 00:03:23,677
+The only difference there is success. Don't let success be your downfall.
+
+34
+00:03:23,677 --> 00:03:27,677
+Design your systems in such a way. A great example is cryptography, right.
+
+35
+00:03:27,677 --> 00:03:34,677
+So cryptography, everybody assumes that everybody knows the algorithm.
+
+36
+00:03:34,677 --> 00:03:40,677
+If you're writing something that requires some secrets like ooh, if this DLL ever got into the public or this
+
+37
+00:03:40,677 --> 00:03:47,677
+implementation ever got into the public, it'd be game over. You need to design systems that don't have that issue
+
+38
+00:03:47,677 --> 00:03:52,677
+and that's kind of what drives things like cryptography.
+
+39
+00:03:52,677 --> 00:03:58,677
+Now that's been a lot of like here don't do this, don't do this.
+
+40
+00:03:58,677 --> 00:04:01,677
+People talk about the way to get around these things is threat modeling.
+
+41
+00:04:01,677 --> 00:04:08,677
+So they kind of look like this. You've got dashed lines for trust boundaries and boxes for servers and that
+
+42
+00:04:08,677 --> 00:04:17,677
+kind of stuff. What a threat model is not is a big effort that you spend in Visio.
+
+43
+00:04:17,677 --> 00:04:23,677
+That's not the benefit of threat modeling. Threat modeling is talking through your architecture,
+
+44
+00:04:23,677 --> 00:04:28,677
+talking through your design. A lot of times, this is what they look like.
+
+45
+00:04:28,677 --> 00:04:34,677
+You sit in front of a whiteboard, but the important part is that you have structured discussion with peers
+
+46
+00:04:34,677 --> 00:04:39,677
+about, well what happens if this thing gets popped, what happens if this thing gets popped,
+
+47
+00:04:39,677 --> 00:04:46,677
+thinking through those is what helps you create a secure design.
+
+48
+00:04:46,677 --> 00:04:53,677
+So the threat model template itself, what does it look like when you actually sit down and start doing threat modeling?
+
+49
+00:04:53,677 --> 00:04:59,677
+This is the thing that everybody can do, it just takes directing your thoughts.
+
+50
+00:04:59,677 --> 00:05:04,677
+So the first thing you start off with is just a diagram. This can be in Visio.
+
+51
+00:05:04,677 --> 00:05:11,677
+It kind of feels like you've made an official corporate document once it's done in Visio, but it can be absolutely
+
+52
+00:05:11,677 --> 00:05:18,677
+on a whiteboard. The important point is that you've identified the components, the hosts, the data stores,
+
+53
+00:05:18,677 --> 00:05:23,677
+being able to talk to these things and talk about them one at a time.
+
+54
+00:05:23,677 --> 00:05:26,677
+The one thing I would point out there is
+
+55
+00:05:26,677 --> 00:05:32,677
+in this ideal threat model, the traditional approach is called a stride model.
+
+56
+00:05:32,677 --> 00:05:38,677
+So for each one of these little arrows, you talk about spoofing, what happens if the person isn't who they
+
+57
+00:05:38,677 --> 00:05:43,677
+say they are. Tampering, what happens if somebody changes his data in transit?
+
+58
+00:05:43,677 --> 00:05:49,677
+Repudiation, so what happens if they say didn't do it. Information disclosure, which is what happens if
+
+59
+00:05:49,677 --> 00:05:56,677
+this connection is sniffed on or whatever. D, denial of service.
+
+60
+00:05:56,677 --> 00:06:00,677
+What would happen if somebody killed this connection or made it impossible to use?
+
+61
+00:06:00,677 --> 00:06:08,677
+And elevation of privilege or what would happen if somebody stole credentials and managed to become not the
+
+62
+00:06:08,677 --> 00:06:15,677
+user we thought they were. Wouldn't you start taking that systematic stride model over every one of these things?
+
+63
+00:06:15,677 --> 00:06:18,677
+You just feel like you're caught in a hamster cage
+
+64
+00:06:18,677 --> 00:06:24,677
+And there's a much more structured way. So we talked about take a diagram, talk through the components,
+
+65
+00:06:24,677 --> 00:06:31,677
+what do they do? Now this is a thing that you if you're at all involved in the infrastructure,
+
+66
+00:06:31,677 --> 00:06:36,677
+you're able to do this, right. So somebody points you at this web server here.
+
+67
+00:06:36,677 --> 00:06:43,677
+I come up to you, I sit at your desk or your cube or whatever and I point at that web server, I go what does that do?
+
+68
+00:06:43,677 --> 00:06:47,677
+You don't need to be a security expert to say well, that's our web server.
+
+69
+00:06:47,677 --> 00:06:55,677
+It serves up pages for the campus website. People can enter their course descriptions and search for things.
+
+70
+00:06:55,677 --> 00:06:59,677
+Like this doesn't need to be a terribly complicated engineering exercise.
+
+71
+00:06:59,677 --> 00:07:05,677
+This is you talking to a peer, but just taking a security aspect to it.
+
+72
+00:07:05,677 --> 00:07:12,677
+Now the data stores are very important. We talked about all those dangers of when people are compromising
+
+73
+00:07:12,677 --> 00:07:18,677
+infrastructures, usually, they're after some potentially of gold at the end of the rainbow.
+
+74
+00:07:18,677 --> 00:07:28,677
+A great example is a data store of when people a little while ago breached RSA, company RSA to make all those
+
+75
+00:07:28,677 --> 00:07:35,677
+secure ids, it's likely that they worked. Their end goal wasn't to breach RSA itself.
+
+76
+00:07:35,677 --> 00:07:43,677
+They wanted to use basically the token generation seeds to then breach Lockheed Martin and then steal real
+
+77
+00:07:43,677 --> 00:07:49,677
+IP because Lockheed Martin was using these two-factor authentication codes.
+
+78
+00:07:49,677 --> 00:07:56,677
+They wanted to breach Lockheed Martin so that they could get access to crazy fighter jet stuff.
+
+79
+00:07:56,677 --> 00:08:01,677
+So the data stores. You take a look through your diagrams and you go okay this is a data store.
+
+80
+00:08:01,677 --> 00:08:09,677
+What's in it? If there's some things as you're talking through your data stores and you say this is a
+
+81
+00:08:09,677 --> 00:08:17,677
+combination of people's favorite colors and their dog's names and the day of the week, and also their social
+
+82
+00:08:17,677 --> 00:08:23,677
+security numbers and credit card numbers, maybe you have a good opportunity there to start splitting your
+
+83
+00:08:23,677 --> 00:08:29,677
+data stores where one, you realize that it's incredibly sensitive, you can protect that differently than you
+
+84
+00:08:29,677 --> 00:08:39,677
+might protect something that's less sensitive. Now so you've got the components, you've got the data stores,
+
+85
+00:08:39,677 --> 00:08:44,677
+then you starting talking through, how do they actually interact among each other?
+
+86
+00:08:44,677 --> 00:08:51,677
+So this is what an attacker does, right. They say okay I got the web server, what do I have connections to?
+
+87
+00:08:51,677 --> 00:08:56,677
+What things can I start to go off and so these connections, so they talk to each other.
+
+88
+00:08:56,677 --> 00:09:01,677
+How do they do it? This is a thing that we can all answer. Well it uses PowerShell.
+
+89
+00:09:01,677 --> 00:09:07,677
+Well what's the identity being used during that connection? Did I hardcode a credential somewhere?
+
+90
+00:09:07,677 --> 00:09:14,677
+Is it like a service account? These are things where you can help decide, you know what it turns out that
+
+91
+00:09:14,677 --> 00:09:20,677
+this connection is being done as an account that's trusted across the entire domain.
+
+92
+00:09:20,677 --> 00:09:27,677
+So if somebody steals one of these credentials, now they're able to steal it and use it across my entire infrastructure.
+
+93
+00:09:27,677 --> 00:09:33,677
+So that's a bad idea. You can start to see what happens when these things are breached.
+
+94
+00:09:33,677 --> 00:09:37,677
+So there's identity, right. That's a very, very important thing.
+
+95
+00:09:37,677 --> 00:09:47,677
+Windows has a lot of great options for proving identity that aren't necessarily a danger when those things are stolen.
+
+96
+00:09:47,677 --> 00:09:50,677
+So a great example is group manage service accounts.
+
+97
+00:09:50,677 --> 00:09:57,677
+Those are domain identities that you can register in AD that make the identity only work from a specific
+
+98
+00:09:57,677 --> 00:10:04,677
+machine that you've declared as trusted. So that machine can go off and fetch the current identity of this
+
+99
+00:10:04,677 --> 00:10:10,677
+group manage service account. It can be that domain user across your whole network.
+
+100
+00:10:10,677 --> 00:10:17,677
+Somebody steals that credential. The minute that one machine is done with the credential, the password is just rotated.
+
+101
+00:10:17,677 --> 00:10:22,677
+So somebody steals that credential. It's no longer useful across the rest of your infrastructure.
+
+102
+00:10:22,677 --> 00:10:27,677
+So there's a great example of how you can compartmentalize identity.
+
+103
+00:10:27,677 --> 00:10:34,677
+You start talking about protocols, so when I've got one node talking to another, if you're doing anything
+
+104
+00:10:34,677 --> 00:10:40,677
+fancy, if you're doing a custom binary protocol blah, blah, blah, blah, blah, that's where you start having
+
+105
+00:10:40,677 --> 00:10:45,677
+some things you've got to really be concerned about. If you've implemented a protocol parser on one side of
+
+106
+00:10:45,677 --> 00:10:51,677
+the fence, well then an attacker might just start chucking bad data down that protocol.
+
+107
+00:10:51,677 --> 00:10:59,677
+If you're doing something regular like I'm just using PowerShell or I'm just using HTTP over SSL and that
+
+108
+00:10:59,677 --> 00:11:03,677
+SSL is like real SSL. I went off and got a good cert from a PKI.
+
+109
+00:11:03,677 --> 00:11:11,677
+It's not like homegrown self-signed certificates. The danger with self-signed certificates, if some people
+
+110
+00:11:11,677 --> 00:11:18,677
+will do this in their infrastructures as they'll set up some SSL communication with self-signed certificates
+
+111
+00:11:18,677 --> 00:11:26,677
+and then they'll set all these flags on the one side that says just ignore SSL errors because I know this is self-signed.
+
+112
+00:11:26,677 --> 00:11:31,677
+So it turns out, that's not a security boundary anymore. It's not a security prevention because an attacker
+
+113
+00:11:31,677 --> 00:11:37,677
+doing this interception can absolutely just give it a new self-signed certificate and they have complete access
+
+114
+00:11:37,677 --> 00:11:45,677
+to that entire communication. So if you're doing regular stuff like regular protocols, you don't need to
+
+115
+00:11:45,677 --> 00:11:50,677
+spend much time here. But when you're talking through your design and if you start, people say oh yeah we've
+
+116
+00:11:50,677 --> 00:11:57,677
+got this custom, that's when you know your questions should start rising up where you know you need to start
+
+117
+00:11:57,677 --> 00:59:59,999
+dialing into that a lot more.
+

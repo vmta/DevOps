@@ -1,0 +1,72 @@
+1
+00:00:00,0 --> 00:00:09,083
+It's not marketing. It really is about dev, developers, and ops, operations, working together for a common
+
+2
+00:00:09,083 --> 00:00:18,083
+goal and that goal is to smooth out the path between the coder and whoever's consuming that code whether that's
+
+3
+00:00:18,083 --> 00:00:24,083
+users or it's a service or something else. That is a really, really, really, really important statement that
+
+4
+00:00:24,083 --> 00:00:28,083
+you almost can't go any further until you embrace that.
+
+5
+00:00:28,083 --> 00:00:35,083
+Let's look at what's involved in getting an application or a service from a coder out to its user.
+
+6
+00:00:35,083 --> 00:00:44,083
+For one, you have to start by coding it, right, and about the only way to code is to push your fingers against buttons.
+
+7
+00:00:44,083 --> 00:00:49,083
+That is a creative process. It's an artistic process. We can put a lot of tools in place to help make developers
+
+8
+00:00:49,083 --> 00:00:54,083
+more efficient, but at the end of the day, code comes from the human mind.
+
+9
+00:00:54,083 --> 00:01:00,083
+And so you can only do so much to smooth that part of it out. So now the coder has finished, the coder has
+
+10
+00:01:00,083 --> 00:01:06,083
+hit compile, a miracle has occurred and now we have code. That's when ops traditionally takes over to get
+
+11
+00:01:06,083 --> 00:01:10,083
+the code wherever it's going to be. We're deploying it to a server, we're deploying it out to client
+
+12
+00:01:10,083 --> 00:01:21,083
+computers wherever it is. We are almost nothing but a hurdle, right, any effort that is greater than 0 means
+
+13
+00:01:21,083 --> 00:01:27,083
+we are slowing things down. In an ideal world, the coder would just be able to close his eyes and squint
+
+14
+00:01:27,083 --> 00:01:31,083
+really hard and then the code would appear wherever it was supposed to be, right, that's ideal.
+
+15
+00:01:31,083 --> 00:01:38,083
+That's impossible because developers don't have the psychic deployment powers like we do.
+
+16
+00:01:38,083 --> 00:01:45,083
+So anytime we get involved, we are automatically creating a barrier, so our goal is to work with the devs to
+
+17
+00:01:45,083 --> 00:01:52,083
+lower that barrier as much as possible given some reasonable things like we don't want the universe to blow
+
+18
+00:01:52,083 --> 00:59:59,999
+up every time this happens. So, that's kindof what that is.
+

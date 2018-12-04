@@ -1,0 +1,272 @@
+1
+00:00:00,0 --> 00:00:02,579
+But I want to talk about high availability.
+
+2
+00:00:02,579 --> 00:00:05,579
+This pull server, as you'll see he'll come up, he'll be a working pull server.
+
+3
+00:00:05,579 --> 00:00:14,579
+It'll be nice. Is this machine critical? Yes. This pull server is going to hold all of the configurations
+
+4
+00:00:14,579 --> 00:00:22,579
+for all your nodes. Is it mission critical? It might not be because…
+
+5
+00:00:22,579 --> 00:00:26,579
+Well that's a way to split in the middle and not have a viewpoint.
+
+6
+00:00:26,579 --> 00:00:30,579
+If the pull server's not available, it won't get updates to the config, but it's already got a cache puppy if
+
+7
+00:00:30,579 --> 00:00:34,579
+the _____ node. Here's the thing. You're absolutely correct. All the nodes, when they get a config,
+
+8
+00:00:34,579 --> 00:00:39,579
+they copy that config to themselves. They run that configuration.
+
+9
+00:00:39,579 --> 00:00:46,579
+The only time they actually pull anything down from the pull server again is if you made a change up here.
+
+10
+00:00:46,579 --> 00:00:51,579
+So I want you to think about it. If this pull server dies, everybody is still doing what they're supposed to do,
+
+11
+00:00:51,579 --> 00:00:55,579
+you just can't get any changes out. So is this mission critical?
+
+12
+00:00:55,579 --> 00:00:59,579
+Absolutely not. So how many pull servers do you actually need?
+
+13
+00:00:59,579 --> 00:01:02,579
+Yeah, thanks for putting up the right finger on that one. I appreciate it.
+
+14
+00:01:02,579 --> 00:01:14,579
+Now here's the thing. In production, not lab, in production, I'm a high availability freak, so I'm going to
+
+15
+00:01:14,579 --> 00:01:19,579
+set up another pull server and make it highly available and let me tell you why.
+
+16
+00:01:19,579 --> 00:01:24,579
+It's not for performance. It's not because it's mission critical.
+
+17
+00:01:24,579 --> 00:01:33,579
+It's because of two things. I'm lazy and it's cheap. So since it's cheap, if one pull server dies, I don't want
+
+18
+00:01:33,579 --> 00:01:40,579
+to have to care at that moment. I might be out drinking, I might be having fun, and I don't want to care about it.
+
+19
+00:01:40,579 --> 00:01:52,579
+It's so cheap, it's free. Yeah. Anybody here ever set up a load balancer?
+
+20
+00:01:52,579 --> 00:01:58,579
+Yes. Load balancer website. That's all you're doing. So what you do is you bring up another pull server,
+
+21
+00:01:58,579 --> 00:02:01,579
+you put a load balancer. Now what kind of load balancers can you use?
+
+22
+00:02:01,579 --> 00:02:06,579
+Well first of all, how many of you have heard of Microsoft Network Load Balancing?
+
+23
+00:02:06,579 --> 00:02:13,579
+How many of you like to use NLB? Well that's a sorry site. NLB doesn't suck?
+
+24
+00:02:13,579 --> 00:02:19,579
+NLB is actually a great load balancer, but it's a layer three load balancer, which means the entire nick has
+
+25
+00:02:19,579 --> 00:02:26,579
+to die before it fails over. When I come to the websites, I want, if the app pull dies, I want it to be able
+
+26
+00:02:26,579 --> 00:02:31,579
+to failover, so I need a layer seven load balancer. I need a big IPF5.
+
+27
+00:02:31,579 --> 00:02:39,579
+Yes. Yes! So I'm going to spend a 100 grand on two of those because you want to load balance the load balancer
+
+28
+00:02:39,579 --> 00:02:45,579
+for a cheap, dirty pull server. That kind of sucks, doesn't it? Now look, if you've got a spare hardware
+
+29
+00:02:45,579 --> 00:02:48,579
+load balancer lying around that you're not using, go ahead, and use it.
+
+30
+00:02:48,579 --> 00:02:52,579
+There's nothing wrong with that, but I'm thinking it's kind of overkill.
+
+31
+00:02:52,579 --> 00:02:56,579
+This isn't a commerce site for my customers. This is my internal pull server.
+
+32
+00:02:56,579 --> 00:03:00,579
+So I'm going to give you a free piece of software. How much did I say it cost?
+
+33
+00:03:00,579 --> 00:03:10,579
+Free. That works as well as a big IPF5 and here's the deal, I use this in production on commercial websites.
+
+34
+00:03:10,579 --> 00:03:16,579
+I see confused looks. Okay, here's what I need you to do. Stand up.
+
+35
+00:03:16,579 --> 00:03:18,579
+How much time do I have? Stand up! I don't have a lot of time.
+
+36
+00:03:18,579 --> 00:03:25,579
+Come on! Come on! You sit all damn day! Get up! Richard Siddoway is, of course, he's too much of an
+
+37
+00:03:25,579 --> 00:03:29,579
+English gentleman to participate in all of this. I want you to do me a favor.
+
+38
+00:03:29,579 --> 00:03:34,579
+I want you to put your foot upon your chair. I want you to go like this.
+
+39
+00:03:34,579 --> 00:03:47,579
+Put your hand on over one eye, oh come on, put your hand over one eye, and go arr.
+
+40
+00:03:47,579 --> 00:03:56,579
+Arr. Arr. Arr. Alright fine. Now sit back down. Now you'll never forget it.
+
+41
+00:03:56,579 --> 00:04:04,579
+ARR. A-R-R, Application Request Router. ARR is one of the greatest load balancing products in the history
+
+42
+00:04:04,579 --> 00:04:08,579
+of the world and you don't even know that it exists and I'll tell you why.
+
+43
+00:04:08,579 --> 00:04:11,579
+You're going to yell at me too when I tell you why it exists and who it exists from.
+
+44
+00:04:11,579 --> 00:04:18,579
+It Microsoft made it. Was it the IIS team that made it? Yes.
+
+45
+00:04:18,579 --> 00:04:22,579
+It was the IIS team that made that. I'm very, yeah, we're not going to talk about that, okay.
+
+46
+00:04:22,579 --> 00:04:24,579
+We're not going to go through that whole scenario because I'll say the wrong thing again.
+
+47
+00:04:24,579 --> 00:04:29,579
+You know what's going to happen. There'll be tweets and it will be bad.
+
+48
+00:04:29,579 --> 00:04:36,579
+Application Request Router. Here's how you get it. You go into the iNet Config Manager, you go out to the
+
+49
+00:04:36,579 --> 00:04:43,579
+web platform installer, you search for ARR, you install it, you get a new icon or a new folder in your web
+
+50
+00:04:43,579 --> 00:04:48,579
+management tools and you drop servers in there, and it'll load balance them just like that.
+
+51
+00:04:48,579 --> 00:04:52,579
+You can change the algorithms, all that if you want to play with that stuff or you can just drop servers in there
+
+52
+00:04:52,579 --> 00:04:59,579
+and it'll automatically load balance them and it's faster than gas and it works perfectly.
+
+53
+00:04:59,579 --> 00:05:01,579
+I can't believe it was written by Microsoft. No, that's a joke!
+
+54
+00:05:01,579 --> 00:05:07,579
+That's a joke! I was just lightening up. So a free load balancer that doesn't cost you money, that's the one
+
+55
+00:05:07,579 --> 00:05:13,579
+to go through. So to make this highly available, bring up two pull servers, easy to do
+
+56
+00:05:13,579 --> 00:05:21,579
+with this config, and then give it a shot. I'm going to show you how to test the pull server, what it looks like.
+
+57
+00:05:21,579 --> 00:05:26,579
+Now I might need to reboot this because I was removing software in my config.
+
+58
+00:05:26,579 --> 00:05:31,579
+Oh, it worked. Okay, fine. Yes. When you install
+
+59
+00:05:31,579 --> 00:05:35,579
+ARR, ARR, would you install it on one of the pull servers or would you keep that on a…
+
+60
+00:05:35,579 --> 00:05:41,579
+Great question. No, great question. I'm glad, I should've, so let me answer your question.
+
+61
+00:05:41,579 --> 00:05:47,579
+This is a great question. Where do you put ARR? You treat it like you need a box that you're going to treat
+
+62
+00:05:47,579 --> 00:05:53,579
+like a load balancer, so what you do is you have a separate Windows VM or whatever with IIS on it,
+
+63
+00:05:53,579 --> 00:05:59,579
+that's where you install ARR. That becomes your load balancer. The pull servers are behind that.
+
+64
+00:05:59,579 --> 00:06:05,579
+Those are the things you put into the little folder, their names, and your DNS address points to this guy.
+
+65
+00:06:05,579 --> 00:06:10,579
+Now some people will get ridiculous like me and go well I need to load balance the load balancer.
+
+66
+00:06:10,579 --> 00:06:18,579
+You put in a second ARR box and then use NLB between them is the best way to go.
+
+67
+00:06:18,579 --> 00:06:26,579
+Then it's free, it's awesome, and it works. Yes, sir. (Audience Question)
+
+68
+00:06:26,579 --> 00:59:59,999
+Yeah, you'll change the IP address to the IP address of the ARR box, you got it.
+

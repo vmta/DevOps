@@ -1,0 +1,512 @@
+1
+00:00:00,0 --> 00:00:04,255
+we can look at all this data and start interpreting it, but what's that actually
+
+2
+00:00:04,255 --> 00:00:06,255
+matter if we can't perform an investigation.
+
+3
+00:00:06,255 --> 00:00:13,255
+So let's look at a situation. So there's a guy on Twitter, he goes by BinaryZone and he lives in the Middle East,
+
+4
+00:00:13,255 --> 00:00:20,255
+but he's produced a bunch of forensic challenges to where we has basically, had somebody come in and hack his
+
+5
+00:00:20,255 --> 00:00:26,255
+system, steal data, or do whatever they do, and then he puts them out there on his website, you can download them,
+
+6
+00:00:26,255 --> 00:00:36,255
+and then perform forensics or an investigation, kind of practice your skills, and so we're using one of his images.
+
+7
+00:00:36,255 --> 00:00:39,255
+And so, in this case, it's not technically a live system, but the same concepts would be able to be used
+
+8
+00:00:39,255 --> 00:00:45,255
+against the live system. For the demo purpose, I want it to be static so that stuff wasn't changing and my
+
+9
+00:00:45,255 --> 00:00:46,255
+code wouldn't get
+
+10
+00:00:46,255 --> 00:00:49,255
+jacked up. So in this case, the client does not provide us much information.
+
+11
+00:00:49,255 --> 00:00:53,255
+They believe a web server has been compromised and that's great.
+
+12
+00:00:53,255 --> 00:00:57,255
+That's probably more than you'll really get in real life. And they provide a forensic image.
+
+13
+00:00:57,255 --> 00:01:02,255
+The investigator must find a temporal starting point, so where do we think that the investigation needs to
+
+14
+00:01:02,255 --> 00:01:08,255
+start on a timeline and then determine whether the web server has in fact been compromised, and if compromised,
+
+15
+00:01:08,255 --> 00:01:10,255
+provide leads to incident responders.
+
+16
+00:01:10,255 --> 00:01:11,255
+Whoops,
+
+17
+00:01:11,255 --> 00:01:12,255
+oh that that's the findings.
+
+18
+00:01:12,255 --> 00:01:21,255
+Okay, so going back, that first demo with Start-Demo actually went okay.
+
+19
+00:01:21,255 --> 00:01:28,255
+Let me clear this out here. Alright, so one thing I like to do, so right now it's mounted as H.
+
+20
+00:01:28,255 --> 00:01:31,255
+We're just kind of showing that there's a bunch of stuff in the H drive.
+
+21
+00:01:31,255 --> 00:01:38,255
+One thing I would key in on in this, I didn't have this when I started, but the xampp directory is the like
+
+22
+00:01:38,255 --> 00:01:44,255
+directory that contains like an Apache server, so I might be particularly interested in since the web server
+
+23
+00:01:44,255 --> 00:01:50,255
+might be compromised and I'd be particularly interested in files in that directory.
+
+24
+00:01:50,255 --> 00:01:51,255
+Alright,
+
+25
+00:01:51,255 --> 00:01:59,255
+so we're going to basically store the MFT, there we go. So this is for volume H now, in particular, and then what
+
+26
+00:01:59,255 --> 00:02:08,255
+I'm doing now is I'm storing all MFT records that are in the xampp directory, right.
+
+27
+00:02:08,255 --> 00:02:18,255
+And so now that the MFT is a relatively small file system, but it has 62,400 files, and within xampp,
+
+28
+00:02:18,255 --> 00:02:20,255
+it has 19,473, so we already reduced
+
+29
+00:02:20,255 --> 00:02:27,255
+the scope of our investigation by 50,000 or so, right, so now we're kind of narrowing in because we have,
+
+30
+00:02:27,255 --> 00:02:32,255
+in the case of my VM, we had 305,000 records. I don't want to look through 305,000 records.
+
+31
+00:02:32,255 --> 00:02:37,255
+I want to look through like 100 records at the most, and so we need to start kind of narrowing in to figure
+
+32
+00:02:37,255 --> 00:02:43,255
+out where we're looking. Alright, so one thing we could do is we could take the items, all of the files that
+
+33
+00:02:43,255 --> 00:02:47,255
+are in the xampp directory and we could group them based on their DateTime, right.
+
+34
+00:02:47,255 --> 00:02:51,255
+So when I install an Apache server, a lot of times I'll install everything
+
+35
+00:02:51,255 --> 00:02:56,255
+at the same time and so we can look for files that were installed kind of out of order or at a different time.
+
+36
+00:02:56,255 --> 00:02:58,255
+And in this case, we see that 17,000 of those
+
+37
+00:02:58,255 --> 00:03:06,255
+files were installed on August 23rd and then we have on September 2nd and September 3rd, a bunch of other
+
+38
+00:03:06,255 --> 00:03:13,255
+files that were created, right, and so in this case, I'm going to store those in a variable real quick and
+
+39
+00:03:13,255 --> 00:03:21,255
+now I can start referencing like groups 1 is going to reference all files that were created on September 2nd,
+
+40
+00:03:21,255 --> 00:03:28,255
+in this case. I'm going to sort them by their FMModifiedTime, and so that's the modification time of the MFT record
+
+41
+00:03:28,255 --> 00:03:34,255
+itself, which is one of the more true indicators of when a file is created.
+
+42
+00:03:34,255 --> 00:03:39,255
+And then, so as you can see there's a bunch of session files. So a quick Google will tell you that every time
+
+43
+00:03:39,255 --> 00:03:43,255
+a session is established with that server, a session file is created, right.
+
+44
+00:03:43,255 --> 00:03:50,255
+And like if you look at the times, it depends on if this is like Amazon's web server, but if this is
+
+45
+00:03:50,255 --> 00:03:55,255
+just like an internal web server, people probably aren't connecting to this 200 times in 1 second, right,
+
+46
+00:03:55,255 --> 00:03:59,255
+and so that's kind of strange. Let's see what they did on the third.
+
+47
+00:03:59,255 --> 00:04:10,255
+So we see one last session and then we see stuff like webshells.php and c99.php, phpshell2.php.
+
+48
+00:04:10,255 --> 00:04:15,255
+In the incident response field, if you see webshell, that's probably a really bad thing, right.
+
+49
+00:04:15,255 --> 00:04:24,255
+So let's look at some of that stuff. So we're going to look at the session.
+
+50
+00:04:24,255 --> 00:04:30,255
+This is the session that happened right before all those files were created, and so we see that
+
+51
+00:04:30,255 --> 00:04:36,255
+the username here was admin, which might be interesting, and then we're going to read phpshell2.php,
+
+52
+00:04:36,255 --> 00:04:40,255
+so just for time sake, we're going to look at one of them. There's some weird stuff going on.
+
+53
+00:04:40,255 --> 00:04:45,255
+We see an IP 192.168.56.102, which might be something interesting.
+
+54
+00:04:45,255 --> 00:04:50,255
+We see port 4545. Kind of going on, let's go see what else is happening.
+
+55
+00:04:50,255 --> 00:04:52,255
+So we found an initial pivot.
+
+56
+00:04:52,255 --> 00:04:58,255
+Looks like something happened on the 3rd of September, so we're going to start building kind of a date window
+
+57
+00:04:58,255 --> 00:05:00,255
+around the 3rd of September, so
+
+58
+00:05:00,255 --> 00:05:07,255
+$start now represents the 3rd of September at basically 12:00:00 AM
+
+59
+00:05:07,255 --> 00:05:12,255
+and then we're going to create an endpoint, which is 1 day ahead of start.
+
+60
+00:05:12,255 --> 00:05:17,255
+And so this is really cool like one of the cool things about PowerForensics is that everything that's already in PowerShell,
+
+61
+00:05:17,255 --> 00:05:23,255
+you could leverage, right, so in this case, Get-Date, I'm just building a date window and then I'm able to
+
+62
+00:05:23,255 --> 00:05:29,255
+take the MFT, oh we already have that saved, but apparently we've got it again, and then I'm able to filter
+
+63
+00:05:29,255 --> 00:05:38,255
+down and say hey show me files that were, in this case, modified, oh boy, we've got to hurry up, around that time.
+
+64
+00:05:38,255 --> 00:05:44,255
+And so, in this case, we started with 62,000 and we went down to 22 files, right.
+
+65
+00:05:44,255 --> 00:05:48,255
+That's a lot better. So there were 22 files, which were created on that day.
+
+66
+00:05:48,255 --> 00:05:54,255
+So let's specifically look at those files, and so again, we basically don't see anything super new, but we see
+
+67
+00:05:54,255 --> 00:05:59,255
+that session was created and then we see some temporary internet files that have a reference to that IP address
+
+68
+00:05:59,255 --> 00:06:06,255
+that we saw. We again see webshells so on and so forth. I'm going to kind of speed through because there's
+
+69
+00:06:06,255 --> 00:06:10,255
+some cool stuff at the end. Another thing that we are parsing is the UsnJrnl.
+
+70
+00:06:10,255 --> 00:06:14,255
+So the UsnJrnl is the update sequence number journal, which keeps track of all changes on hard drive.
+
+71
+00:06:14,255 --> 00:06:19,255
+A lot of times this can be leveraged like by backup software to see what files have changed since the last
+
+72
+00:06:19,255 --> 00:06:24,255
+time you backed up or an antivirus to make sure that it doesn't waste time scanning everything and it only
+
+73
+00:06:24,255 --> 00:06:28,255
+_____scans files that were changed since the last time you scanned with antivirus.
+
+74
+00:06:28,255 --> 00:06:34,255
+But this gives us information about every file that was changed, or modified, or deleted, so on and so forth
+
+75
+00:06:34,255 --> 00:06:39,255
+over the past X period of time. Usually, a UsnJrnl will keep about three weeks of information,
+
+76
+00:06:39,255 --> 00:06:44,255
+so we've got to kind of be agile, but we have a little bit of leeway there.
+
+77
+00:06:44,255 --> 00:06:51,255
+Alright, so the UsnJrnl by default had 12,000 and we got it down in that window to 8,000.
+
+78
+00:06:51,255 --> 00:06:56,255
+Usually, it's a much more drastic number, but because this is some sort of group forcing going on, there's a lot
+
+79
+00:06:56,255 --> 00:07:02,255
+of files that are created within our window. Alright, so what we're doing is we're going to look at all the different files.
+
+80
+00:07:02,255 --> 00:07:07,255
+We're grouping by file name, so we see a lot of activity was associated with ServerManager.log,
+
+81
+00:07:07,255 --> 00:07:12,255
+so we might want to look at that at some point. We see these weird name files,
+
+82
+00:07:12,255 --> 00:07:19,255
+tmpudvfh.php. We can see all the phpshell stuff. One thing that I'm interested in because I haven't seen it
+
+83
+00:07:19,255 --> 00:07:26,255
+before is this guy, php3331.tmp, alright. I see that it's, I just happen to know this, I would show this,
+
+84
+00:07:26,255 --> 00:07:33,255
+but we're running short on time. This is the MFT record number for that file, so let's go check it out.
+
+85
+00:07:33,255 --> 00:07:40,255
+Alright, so I just read the contents of that file and its php script that does system and then takes a
+
+86
+00:07:40,255 --> 00:07:46,255
+variable and runs the command, right. Like that's the most simplistic web shell possible, alright.
+
+87
+00:07:46,255 --> 00:07:51,255
+It's just going to run any command that licensed to it. Alright, so this is something that I just added.
+
+88
+00:07:51,255 --> 00:07:52,255
+So there's
+
+89
+00:07:52,255 --> 00:07:57,255
+not a cmdlet associated with it yet because I've been super busy recently, but basically what we're doing is
+
+90
+00:07:57,255 --> 00:07:59,255
+we're taking the Apache access log
+
+91
+00:07:59,255 --> 00:08:04,255
+and we're parsing that out. So we're going to look at every time that somebody tried to connect to the Apache server.
+
+92
+00:08:04,255 --> 00:08:09,255
+And so this is what an Apache access log looks like. We have things like the timestamp, the method that was
+
+93
+00:08:09,255 --> 00:08:17,255
+used in the HTTP method, the status that was returned, you get the referrer, so on and so forth, the username.
+
+94
+00:08:17,255 --> 00:08:21,255
+That one's not a very good example, but. Alright, so now we're going to group them by HttpMethod,
+
+95
+00:08:21,255 --> 00:08:28,255
+and so in this case, post requests or the Post method is how you put data up onto the server, and so I might be
+
+96
+00:08:28,255 --> 00:08:34,255
+interested in looking at what data was added to the server, and so this is all the information.
+
+97
+00:08:34,255 --> 00:08:41,255
+So just down at the bottom, you see c99.php and then act=cmd. That might be worth looking into.
+
+98
+00:08:41,255 --> 00:08:52,255
+Kind of a cleaner way to look at this is, so we're just going to show just that request there, and so instead
+
+99
+00:08:52,255 --> 00:08:57,255
+of getting all of the entire object, we're just looking at the request and again we see like the cmd,
+
+100
+00:08:57,255 --> 00:09:01,255
+which means that somebody might have been executing something on a webshell.
+
+101
+00:09:01,255 --> 00:09:06,255
+So then kind of the crux of the whole thing, so I've been doing all that analysis kind of in a vacuum,
+
+102
+00:09:06,255 --> 00:09:11,255
+but I'm really interested in being able to, oh we're not there yet, sorry.
+
+103
+00:09:11,255 --> 00:09:17,255
+I really want to be able to like look at everything at the same time, right, and so I'm building a timeline
+
+104
+00:09:17,255 --> 00:09:21,255
+that includes all the different inputs, UsnJrnl, MFT, Registry, so on and so forth.
+
+105
+00:09:21,255 --> 00:09:24,255
+So what I do is I, in this case, I stored a file record object for
+
+106
+00:09:24,255 --> 00:09:33,255
+that c99.php and it's just in $record, right, but what I'm able to do is convert to ForensicTimeline and it
+
+107
+00:09:33,255 --> 00:09:38,255
+takes because there's two different timestamps that are up here, it's going to create two different timeline
+
+108
+00:09:38,255 --> 00:09:42,255
+objects representative of each timestamp that's associated and it's going to tell me, in this case,
+
+109
+00:09:42,255 --> 00:09:47,255
+it was modified and changed, in this case it was accessed and born, and so, we can kind of start to get
+
+110
+00:09:47,255 --> 00:09:54,255
+context around what's going on. So now, what we do is get ForensicTimeline.
+
+111
+00:09:54,255 --> 00:09:59,255
+Everything's been building to this point. And so, now we're building a timeline.
+
+112
+00:09:59,255 --> 00:10:05,255
+Right now, it's parsing the registry. It's parsing the MFT of the UsnJrnl, the pre-fetch,
+
+113
+00:10:05,255 --> 00:10:11,255
+something else that I can't think of, the scheduled jobs. I haven't added the Apache access log, but that would
+
+114
+00:10:11,255 --> 00:10:17,255
+be really nice to add into this. And then so like this is just going to show the different source types that we're getting.
+
+115
+00:10:17,255 --> 00:10:18,255
+So in this case,
+
+116
+00:10:18,255 --> 00:10:24,255
+like lnk files, which are those ShellLink or like shortcut files, MFT entries, USNJFNL entries,
+
+117
+00:10:24,255 --> 00:10:30,255
+REGISTRY entries were on this guy, and so now we're going to filter them down on based on that window that
+
+118
+00:10:30,255 --> 00:10:39,255
+we're looking at. Okay just showing how many timeline entries there were 244,000.
+
+119
+00:10:39,255 --> 00:10:43,255
+We filtered it down to 8,731, so that's a really nice thing.
+
+120
+00:10:43,255 --> 00:10:52,255
+And then I was just in New York at a conference and Doug Fink showed his import Excel module and so I thought
+
+121
+00:10:52,255 --> 00:11:00,255
+that was pretty cool. So timelines like 8,700 objects you're not going to be able to just go through like
+
+122
+00:11:00,255 --> 00:11:06,255
+on the console, so it exports Excel if you use the -shell option, it's going to, hopefully I tested this,
+
+123
+00:11:06,255 --> 00:11:12,255
+there we go, it's going to pop up Excel for you and now you can like start going through, you could sort
+
+124
+00:11:12,255 --> 00:11:13,255
+based on the
+
+125
+00:11:13,255 --> 00:11:17,255
+timestamp and then start going through and look at what happened in chronological order and start to build
+
+126
+00:11:17,255 --> 00:11:21,255
+context around that situation. You can see what registry items were changed.
+
+127
+00:11:21,255 --> 00:11:28,255
+So the, I think that's the end of this demo, yeah, okay.
+
+128
+00:11:28,255 --> 00:59:59,999
+So quickly,
+

@@ -1,0 +1,96 @@
+1
+00:00:00,0 --> 00:00:02,603
+It's not a good example when it's not working, is it.
+
+2
+00:00:02,603 --> 00:00:08,603
+Alright, well let me show you the PowerAction stuff as well while we're talking about that.
+
+3
+00:00:08,603 --> 00:00:12,603
+So this is PowerActions as I was describing earlier, so I'll go to Home screen real quick.
+
+4
+00:00:12,603 --> 00:00:21,603
+Once you install it, it allows you to create these scripts that can be accessed
+
+5
+00:00:21,603 --> 00:00:28,603
+directly through the VStore WebClient, and so I've got several of them that I see on a regular basis.
+
+6
+00:00:28,603 --> 00:00:35,603
+Now I'm not a big fan of storage, but I work in storage company, so I talked to a lot of people about storage.
+
+7
+00:00:35,603 --> 00:00:42,603
+So a few things that we run into are like changing queue depth and changing naming,
+
+8
+00:00:42,603 --> 00:00:48,603
+changing performance characteristics, and in order to do that successfully without reaching across silos,
+
+9
+00:00:48,603 --> 00:00:54,603
+if you will, going into a storage team, you have to make that relationship and to do that query.
+
+10
+00:00:54,603 --> 00:01:00,603
+And currently, it works fine. It just takes longer to actually get all these.
+
+11
+00:01:00,603 --> 00:01:04,603
+And since my other script didn't run, I can't actually show them in action, but I
+
+12
+00:01:04,603 --> 00:01:08,603
+can show you how it works. Here's a PowerCLI Console that I mentioned.
+
+13
+00:01:08,603 --> 00:01:18,603
+It's, well I'm not connected, but it's PowerShell like it just runs.
+
+14
+00:01:18,603 --> 00:01:34,603
+Alright, let's go to this and so when you right-click, say Execute script, and it will tell you what's there.
+
+15
+00:01:34,603 --> 00:01:39,603
+You select which one that you want to run and it will prompt you.
+
+16
+00:01:39,603 --> 00:01:46,603
+I don't think I can run any of those because the storage is disconnected, but yeah, and what
+
+17
+00:01:46,603 --> 00:01:54,603
+it allows you to do then is to be able to identify or execute things or report back and identify how this
+
+18
+00:01:54,603 --> 00:02:00,603
+relates to other things like you could have a report that says give me all the snapshot information, give me all
+
+19
+00:02:00,603 --> 00:02:07,603
+the VLANs that are being used that are associated with this host on the Cisco UCS or something like that,
+
+20
+00:02:07,603 --> 00:02:14,603
+make sure that those two match up. Alright, so we've got some customers that are working on doing that.
+
+21
+00:02:14,603 --> 00:02:22,603
+That make sense? I wish I could run it, but I can do the local Datastore.
+
+22
+00:02:22,603 --> 00:02:29,603
+I guess my PowerShell Server is broken. I'm sorry. That's what I get for updating it to version 5 and not
+
+23
+00:02:29,603 --> 00:02:33,603
+testing before the conference.
+
+24
+00:02:33,603 --> 00:59:59,999
+Sorry about that.
+

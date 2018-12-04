@@ -1,0 +1,220 @@
+1
+00:00:12,12 --> 00:00:16,16
+So here's the thing. We're DSC is for configuration management.
+
+2
+00:00:16,16 --> 00:00:21,21
+I've got two sessions during this week. This is on how to make a pull server for your infrastructure where
+
+3
+00:00:21,21 --> 00:00:25,25
+you will put your configurations and your resources.
+
+4
+00:00:25,25 --> 00:00:29,29
+The next session that I'm doing is how to package your configurations and your resources.
+
+5
+00:00:29,29 --> 00:00:32,32
+These sessions have nothing to do with writing configurations in your resources.
+
+6
+00:00:32,32 --> 00:00:39,39
+That was yesterday. Now do you want the good news or the bad news?
+
+7
+00:00:39,39 --> 00:00:46,46
+Bad news. Oh, pessimist. Bad news is this, if you don't know anything about DSC, this is the deep end of
+
+8
+00:00:46,46 --> 00:00:55,55
+the pool, sorry. Now do you want the good news? Yes. Good news is this, you want the code from yesterday?
+
+9
+00:00:55,55 --> 00:01:05,65
+Yes. I'm going to give you the code from yesterday. Yay! Which includes the code that I'm using today and
+
+10
+00:01:05,65 --> 00:01:09,69
+the code that I'm using later in the week and all of the code that we did yesterday, which could show you how
+
+11
+00:01:09,69 --> 00:01:11,71
+to do DSC.
+
+12
+00:01:11,71 --> 00:01:18,78
+So first of all, guys, when this thing decides to come back on, look 10 years of PowerShell, yeah!
+
+13
+00:01:18,78 --> 00:01:23,83
+You're going to see some of these people walking around here and there's going to be Microsoft blue badges
+
+14
+00:01:23,83 --> 00:01:29,89
+everywhere, so say hi and talk to people. Alright, look fast for when it blinks,
+
+15
+00:01:29,89 --> 00:01:35,95
+what's going to come is there's the link to the code. It's GitHub at the powershell.org.
+
+16
+00:01:35,95 --> 00:01:41,101
+There it is, get it quick. Use your camera. Also, you want Steven Murawski's reading list on DevOps.
+
+17
+00:01:41,101 --> 00:01:45,105
+It's an excellent reading list.
+
+18
+00:01:45,105 --> 00:01:50,110
+Okay, you don't look impressed. Alright, let's talk about pull servers.
+
+19
+00:01:50,110 --> 00:01:55,115
+Here's what we want to do. We want to have a configuration that we want to be able to send out to other
+
+20
+00:01:55,115 --> 00:01:59,119
+nodes that are going to automatically configure our boxes for us.
+
+21
+00:01:59,119 --> 00:02:02,122
+We do not want to push this to them because that means I have to manage that.
+
+22
+00:02:02,122 --> 00:02:07,127
+I don't want to manage anything. I want to sit at home in my underwear and drink coffee or whatever and I
+
+23
+00:02:07,127 --> 00:02:14,134
+want it managing itself. So we want to bring up a server that we can put our configs on that all of our nodes
+
+24
+00:02:14,134 --> 00:02:20,140
+that are using DSC can go to grab the config for them and automatically do it themselves.
+
+25
+00:02:20,140 --> 00:02:26,146
+Are you with me so far? Yes. Good. Give me feedback just like that, so I know that you're alive and well.
+
+26
+00:02:26,146 --> 00:02:29,149
+And don't worry about the flickering screen. We'll get through it all.
+
+27
+00:02:29,149 --> 00:02:32,152
+So does that kind of make sense? I want to have this pull server.
+
+28
+00:02:32,152 --> 00:02:36,156
+Now there's three kinds of pull servers that you're allowed to have.
+
+29
+00:02:36,156 --> 00:02:39,159
+Three kinds.
+
+30
+00:02:39,159 --> 00:02:46,166
+I only got three more slides, guys, and then we'll… So you can have an SMB pull server.
+
+31
+00:02:46,166 --> 00:02:49,169
+Here's what an SMB pull server is.
+
+32
+00:02:49,169 --> 00:02:56,176
+Hey, you know what? You guys ever build a file server? Yeah. Do you guys ever create a share on a file server?
+
+33
+00:02:56,176 --> 00:03:05,185
+That's an SMB pull server. Oh, come on. That's all it is. It's a server with a share.
+
+34
+00:03:05,185 --> 00:03:13,193
+So you use though the PowerShell command New-SMBShare to create the share and assign the permissions to it.
+
+35
+00:03:13,193 --> 00:03:19,199
+You can configure the client LCM, which is the local configuration manager to go to that share for the configs,
+
+36
+00:03:19,199 --> 00:03:23,203
+then delete it and do the right thing. Do not use an SMB pull server.
+
+37
+00:03:23,203 --> 00:03:26,206
+You don't have all the features that you need.
+
+38
+00:03:26,206 --> 00:03:29,209
+There's another type of pull server called an HTTP pull server.
+
+39
+00:03:29,209 --> 00:03:38,218
+This is a web server. Yeah. It's an HTTP web server, which means all communications go across the wire like what?
+
+40
+00:03:38,218 --> 00:03:44,224
+Plaintext. Plaintext. Not good. Here's why not good. You don't want somebody sniffing those configs
+
+41
+00:03:44,224 --> 00:03:48,228
+and understanding how you're configuring your boxes. That's not good.
+
+42
+00:03:48,228 --> 00:03:51,231
+So you can configure an HTTP
+
+43
+00:03:51,231 --> 00:03:55,235
+pull server, but then delete it and do the right thing.
+
+44
+00:03:55,235 --> 00:04:00,240
+Are you ready for the right thing? You only have one right option.
+
+45
+00:04:00,240 --> 00:04:02,242
+HTTPS. There you go! Oh, man
+
+46
+00:04:02,242 --> 00:04:07,247
+I love it when you play along. So what this means is, has anybody here ever set up
+
+47
+00:04:07,247 --> 00:04:14,254
+a website with a certificate on it. Awesome! That's all we're going to do.
+
+48
+00:04:14,254 --> 00:04:20,260
+Now, the cool part about this is, you have some help in making this work and we're going to go to code here
+
+49
+00:04:20,260 --> 00:04:25,265
+in a minute and I'm going to show you how this sets up. It's not difficult and I'm giving you all the code,
+
+50
+00:04:25,265 --> 00:04:30,270
+so there's no reason why you can't do this at home. Here's what I recommend and I recommend this all the
+
+51
+00:04:30,270 --> 00:04:38,278
+time when we talk about DSC. I do not develop DSC by pushing it those configurations to machines.
+
+52
+00:04:38,278 --> 00:04:44,284
+The reason is that I need to see the whole process. If you come to my next session on this, it gets complicated
+
+53
+00:04:44,284 --> 00:04:53,293
+fast, and so I always, even in a lab environment, set up a pull server, an HTTPS pull server because it's free,
+
+54
+00:04:53,293 --> 00:04:58,298
+and in my lab environment, I go through the whole process of development, so it's always correct.
+
+55
+00:04:58,298 --> 00:59:59,999
+So I'm going to give you how to build this pull server. It's really easy.
+

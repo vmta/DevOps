@@ -1,0 +1,724 @@
+1
+00:00:00,0 --> 00:00:07,824
+Now that I've gone through that class itself, I want to talk about how that class and how work I've done with
+
+2
+00:00:07,824 --> 00:00:13,824
+that class allows me to redefine how DSLs are created. So I work on a whole bunch of modules and these days
+
+3
+00:00:13,824 --> 00:00:21,824
+all the modules I work on I put the suffix of Px at the end, which Px kind of looks at a glance, maybe if I squint,
+
+4
+00:00:21,824 --> 00:00:28,824
+like Rx, kind of like remedies or prescriptive solutions and that what these are, so a lot of the modules I create,
+
+5
+00:00:28,824 --> 00:00:34,824
+actually all the modules I create, so you'll find if you do a search for StartPx on the PowerShell gallery,
+
+6
+00:00:34,824 --> 00:00:39,824
+you'll find a lot of content from me and on GitHub some things are not on the gallery yet like LanguagePx,
+
+7
+00:00:39,824 --> 00:00:49,824
+that's my solution. So I create this module, LanguagePx and I want to show you what that allows me to do.
+
+8
+00:00:49,824 --> 00:00:53,824
+Who here knows about Doug Fink's ImportExcel module? Have you guys seen that?
+
+9
+00:00:53,824 --> 00:00:58,824
+A good number of people. So ImportExcel is cool because ImportExcel is also about doc creation.
+
+10
+00:00:58,824 --> 00:01:02,824
+You've got content and you want to push that into an Excel spreadsheet and maybe have some pivot tables and
+
+11
+00:01:02,824 --> 00:01:07,824
+some charts associated with that and do an automated way, and so Doug's been investing time and effort in
+
+12
+00:01:07,824 --> 00:01:11,824
+there and that's been quite popular and people really like it. And so, when he first started showing that
+
+13
+00:01:11,824 --> 00:01:16,824
+content and showing the commands that are available, I immediately thought of the DSL work because of the work
+
+14
+00:01:16,824 --> 00:01:24,824
+I've done in that space. So let me just load that module up and I'll show you what the command set looks like.
+
+15
+00:01:24,824 --> 00:01:29,824
+So it's got a whole bunch of commands in there, stuff dealing with ranges and stuff dealing with conditional
+
+16
+00:01:29,824 --> 00:01:34,824
+tests and Excel charts and plots and pie charts and all these different things.
+
+17
+00:01:34,824 --> 00:01:39,824
+And that's the functionality that's available in module, but when he first released this, the key thing that
+
+18
+00:01:39,824 --> 00:01:45,824
+he was showing was one particular command. He was showing the command Export-Excel and some demos that he
+
+19
+00:01:45,824 --> 00:01:52,824
+threw up quick videos on Twitter. So Export-Excel allows you to take content and export it from PowerShell
+
+20
+00:01:52,824 --> 00:01:57,824
+into an Excel document much like Export-CSV, you can export to a CSV file.
+
+21
+00:01:57,824 --> 00:02:02,824
+And if you look at it, right now it's got a lot of parameters and more being added over time as he adds more
+
+22
+00:02:02,824 --> 00:02:09,824
+and more features to this. And so that's interesting because it allows me to do what I want to do, but I really
+
+23
+00:02:09,824 --> 00:02:18,824
+don't personally I don't love the dash this, dash that, so on, having to use a splatting to get the work done.
+
+24
+00:02:18,824 --> 00:02:24,824
+With all these different parameters, I prefer thinking about Excel documents in structure, in the structure
+
+25
+00:02:24,824 --> 00:02:32,824
+that I'm creating them in. So yeah, so here's an example showing you the pipeline approach to creating an
+
+26
+00:02:32,824 --> 00:02:40,824
+Excel document, so I'm just going to call Get-Process and then I'm going to export that into an Excel document
+
+27
+00:02:40,824 --> 00:02:47,824
+with pivot data showing the pivoting on the working set size, pivoting on rows, I'll have the name for the
+
+28
+00:02:47,824 --> 00:02:53,824
+rows in my pivot table, it's going to include a chart, and so and I run this.
+
+29
+00:02:53,824 --> 00:03:07,824
+It's going to take a second. While that's running, I'll close down my Visio because I don't need that anymore.
+
+30
+00:03:07,824 --> 00:03:13,824
+So this is going out and just getting the process on my system and then using a .NET library that's inside
+
+31
+00:03:13,824 --> 00:03:25,824
+of this module and oh hang on a second. There we go. That's interesting.
+
+32
+00:03:25,824 --> 00:03:32,824
+I just updated this module like yesterday and I wonder if that's why.
+
+33
+00:03:32,824 --> 00:03:34,824
+I should not have updated it before the demo. I didn't really update this one.
+
+34
+00:03:34,824 --> 00:03:42,824
+I did update -module and it got all of them. So okay, so plan B.
+
+35
+00:03:42,824 --> 00:03:45,824
+So I don't want to troubleshoot this right now. I mean I did a debugging session yesterday and that might
+
+36
+00:03:45,824 --> 00:03:50,824
+have been appropriate for doing some of this content, going through these errors.
+
+37
+00:03:50,824 --> 00:03:54,824
+So I'm not going to troubleshoot that just this second. I'm going to keep to talking about the structure
+
+38
+00:03:54,824 --> 00:04:01,824
+and the language and how I think that I've been able to improve on it.
+
+39
+00:04:01,824 --> 00:04:06,824
+Oh, you know what? I wonder if it's because I've got the document on my system.
+
+40
+00:04:06,824 --> 00:04:27,824
+Where's my path? Mydocuments test.xls. (Typing) Okay. Let's try it one more time.
+
+41
+00:04:27,824 --> 00:04:40,824
+That may have very well been why. Whoops. Try again. By the way, I don't know if you noticed when I just
+
+42
+00:04:40,824 --> 00:04:47,824
+made that shift to there back to this. So PowerShell drives are crazy powerful and if you are finding yourself
+
+43
+00:04:47,824 --> 00:04:51,824
+jumping back and forth in locations inside of PowerShell a lot, I recommend that you go into your profile and
+
+44
+00:04:51,824 --> 00:04:56,824
+create PS drives because they allow things to be done much more easily than usual.
+
+45
+00:04:56,824 --> 00:05:05,824
+So I have, there we go, so I have inside of PowerShell this documents drive for my documents, I have modules
+
+46
+00:05:05,824 --> 00:05:12,824
+for my modules folder, all modules goes to ProgramFiles\WindowsPowershell\Modules and so on.
+
+47
+00:05:12,824 --> 00:05:18,824
+And so I use these to jump around my file system a whole lot and feel free to email me or ask questions about
+
+48
+00:05:18,824 --> 00:05:21,824
+that if you want to know how to set that up because it's a big timesaver.
+
+49
+00:05:21,824 --> 00:05:25,824
+So there, that was why because I had the file already on disk. So it creates this document right,
+
+50
+00:05:25,824 --> 00:05:32,824
+which is kind of interesting, so it's got a big table here showing a bunch of processes on my system.
+
+51
+00:05:32,824 --> 00:05:38,824
+I mean the data is not really interesting because it's an ugly pie chart and it's not really that meaningful,
+
+52
+00:05:38,824 --> 00:05:44,824
+but I wanted a simple example. So that works today and I'm not going to save it.
+
+53
+00:05:44,824 --> 00:05:54,824
+And I want to make sure that doesn't exist anymore. So that kind of shows you the process working just inside
+
+54
+00:05:54,824 --> 00:06:00,824
+of a regular PowerShell-like syntax and then you can switch, right?
+
+55
+00:06:00,824 --> 00:06:04,824
+And so you can switch to splatting and so splatting is interesting because all of a sudden what you're dealing
+
+56
+00:06:04,824 --> 00:06:09,824
+with large command sets, you can boil that up into this nice little hash table, so you see params and then I've
+
+57
+00:06:09,824 --> 00:06:16,824
+got a bunch of values and if you don't know the way splatting works, when you see on the Line 26 right there,
+
+58
+00:06:16,824 --> 00:06:24,824
+Get-Process | Export-Excel @params, @params tells PowerShell take that hash table and anything that are
+
+59
+00:06:24,824 --> 00:06:29,824
+keys are parameters names and anything that are values are the values that I'm going to use for those parameters.
+
+60
+00:06:29,824 --> 00:06:36,824
+And so it makes it nice to be able to take something long like what you see on Line 14 that runs off my screen
+
+61
+00:06:36,824 --> 00:06:42,824
+and shorten it up in a format that you can see in a document, so I use splatting all the time for that reason.
+
+62
+00:06:42,824 --> 00:06:48,824
+And so, anyway, this is the exact same command just moving to a splatting format, which I'm not going to run
+
+63
+00:06:48,824 --> 00:06:54,824
+because you saw the output, but this is better because here I can see path and I can see some properties like
+
+64
+00:06:54,824 --> 00:07:00,824
+show and auto size and so it's a bit more structural, but it's still not quite where I want it to go yet.
+
+65
+00:07:00,824 --> 00:07:08,824
+And so, I've got this LanguagePx module, so let me load that and I'll show you want it contains.
+
+66
+00:07:08,824 --> 00:07:17,824
+It doesn't contain a whole lot. It contains invoke keyword and so the invoke keyword piece is the command
+
+67
+00:07:17,824 --> 00:07:26,824
+that gets invoked by aliases. So trying to explain this. When I create a DSL, all the commands in the DSL
+
+68
+00:07:26,824 --> 00:07:31,824
+technically, they show up in PowerShell as aliases. Those aliases are all mapped to invoke keyword,
+
+69
+00:07:31,824 --> 00:07:35,824
+which in turn looks and checks what was the alias name used to call me?
+
+70
+00:07:35,824 --> 00:07:40,824
+Oh, that's the keyword you want to invoke, and so that's how that maps between the alias and the actual
+
+71
+00:07:40,824 --> 00:07:47,824
+internal dynamic keyword that is going to be found and run. New-DomainSpecificLanguage allows me to define
+
+72
+00:07:47,824 --> 00:07:53,824
+a domain-specific language because I didn't want to just create domain-specific languages, I wanted to create
+
+73
+00:07:53,824 --> 00:07:59,824
+a domain-specific language that allows me to create domain-specific languages, so up one more level,
+
+74
+00:07:59,824 --> 00:08:04,824
+which is really cool and powerful. And so, I've got this New-DomainSpecificLanguage command and then there's
+
+75
+00:08:04,824 --> 00:08:11,824
+Register-DslKeywordEvent. So as a keyword is being run, there are two different types of events that can
+
+76
+00:08:11,824 --> 00:08:16,824
+happen and those events are associated with script blocks through Register-DslKeywordEvent and I'll show you
+
+77
+00:08:16,824 --> 00:08:23,824
+that, and then Remove if I want to take a domain-specific language back out again.
+
+78
+00:08:23,824 --> 00:08:33,824
+Now here's an example of when I saw what Doug had done what it might look like to do the same thing using a
+
+79
+00:08:33,824 --> 00:08:39,824
+domain-specific language, well technically using this domain-specific language to create a domain-specific language.
+
+80
+00:08:39,824 --> 00:08:47,824
+So I can define with New-DomainSpecificLanguage, which is part of LanguagePx, a language called ExcelPx,
+
+81
+00:08:47,824 --> 00:08:53,824
+and inside of that, I've got ExcelDocMagic and these are just arbitrary values I pick, right.
+
+82
+00:08:53,824 --> 00:08:57,824
+So ExcelDocMagic is what it's going to be, it's the name that I gave for this language.
+
+83
+00:08:57,824 --> 00:09:02,824
+It takes a name, that name filed is actually the name of the document that it's going to create,
+
+84
+00:09:02,824 --> 00:09:07,824
+and then it's got some properties that are general document-specific properties like do I want to show it or not,
+
+85
+00:09:07,824 --> 00:09:11,824
+do I want it to auto size or not, and then it's got the data, so PivotData.
+
+86
+00:09:11,824 --> 00:09:15,824
+And inside of PivotData, I've got row properties and the aggregate value for the PivotData and whether or not
+
+87
+00:09:15,824 --> 00:09:21,824
+I want to include a chart and which is kind of fun because when you look at this versus the other syntax,
+
+88
+00:09:21,824 --> 00:09:28,824
+the command syntax, including a chart only applies if you're also including a pivot table and you learn that
+
+89
+00:09:28,824 --> 00:09:34,824
+by looking at the documentation for Doug's commands for ExportExcel and you can figure okay well I can't
+
+90
+00:09:34,824 --> 00:09:42,824
+do -IncludeChart unless I'm doing -IncludePivotTable, but a syntax like this makes that implicit because you
+
+91
+00:09:42,824 --> 00:09:45,824
+have the structure because you can't define IncludeChart unless you're inside of the PivotData and if you're
+
+92
+00:09:45,824 --> 00:09:51,824
+inside of PivotData, that's because you have a pivot table. So this allows you to make sure that the pieces
+
+93
+00:09:51,824 --> 00:09:56,824
+are lined up the right way, especially when you're dealing with commands that have very large sets of parameters.
+
+94
+00:09:56,824 --> 00:10:01,824
+This allows you to kind of wrap it up in a bundle and make it look better.
+
+95
+00:10:01,824 --> 00:10:06,824
+And then so here's the event handler. So Register-DslKeywordEvent and so I'll show you this.
+
+96
+00:10:06,824 --> 00:10:11,824
+It's actually really straightforward. So Line 51 down to the end of the curly brace on 62.
+
+97
+00:10:11,824 --> 00:10:20,824
+So DSL name is ExcelPx and the keyword path is ExcelDocMagic. So this is me telling PowerShell that whenever
+
+98
+00:10:20,824 --> 00:10:25,824
+ExcelDocMagic is invoked, I want it to fire this event and there's two different types of events that I have
+
+99
+00:10:25,824 --> 00:10:31,824
+support for right now, OnInvoking and OnInvoked. So you might have some stuff that you want to have happen
+
+100
+00:10:31,824 --> 00:10:36,824
+as the command's being invoked and you might have some stuff that you want to have happen after the entire
+
+101
+00:10:36,824 --> 00:10:45,824
+thing's been invoked, which is important because if I scroll back up a little, I told you I was going to
+
+102
+00:10:45,824 --> 00:10:51,824
+hoping you guys were going to bring your thinking caps. I get a feeling I'm making some heads hurt, but that's okay.
+
+103
+00:10:51,824 --> 00:10:55,824
+So you see ExcelDocMagic at the top and then inside there's properties and pivot data and what not and
+
+104
+00:10:55,824 --> 00:11:00,824
+there's no events down here below associated with those guys because that's just structure.
+
+105
+00:11:00,824 --> 00:11:06,824
+I could create a language where individual keywords have things that happen, have code that executes behind
+
+106
+00:11:06,824 --> 00:11:12,824
+the scenes each step along the way, but I might also create one where really all I'm defining a structure and
+
+107
+00:11:12,824 --> 00:11:16,824
+then at the end, I want to take that structure, which is just a hash table of hash tables, I could just step
+
+108
+00:11:16,824 --> 00:11:22,824
+through it and get information from it and then do things with it, so that's what this scenario is, OnInvoked.
+
+109
+00:11:22,824 --> 00:11:29,824
+After the entire thing is done, this ExcelDocMagic command runs, I'm going to invoke this action and the action
+
+110
+00:11:29,824 --> 00:11:37,824
+all I'm doing again is the splat table I showed you earlier? This is just building a new hash table to splat
+
+111
+00:11:37,824 --> 00:11:43,824
+in to import Excel. Question. Within your structure, which level are the keywords?
+
+112
+00:11:43,824 --> 00:11:50,824
+Is ExcelDocMagic the keyword? That's the first one, yes. Okay, but then properties and PivotData are also keywords?
+
+113
+00:11:50,824 --> 00:11:57,824
+Correct. And so that's because of this nested structure, that's where, that's why I was happy to see that
+
+114
+00:11:57,824 --> 00:12:02,824
+they push and pull or push and pop to the dynamic keyword object
+
+115
+00:12:02,824 --> 00:12:06,824
+because you have to deal with the fact that you're dealing, the different scopes as you go down deeper and
+
+116
+00:12:06,824 --> 00:12:10,824
+then come back up again, and so that's exactly how that is defined.
+
+117
+00:12:10,824 --> 00:12:16,824
+I create internally a large table that has paths and then based on where you are in the path, I take keywords
+
+118
+00:12:16,824 --> 00:12:20,824
+like properties and I say okay well properties is available now.
+
+119
+00:12:20,824 --> 00:12:25,824
+So this comes with, sorry one more question, so PowerShell doesn't store that as ExcelDocMagic.properties.
+
+120
+00:12:25,824 --> 00:12:28,824
+No. It just stores properties. Correct.
+
+121
+00:12:28,824 --> 00:12:35,824
+Yep. And then ExcelDocMagic is actually a type. No, it's actually a keyword.
+
+122
+00:12:35,824 --> 00:12:42,824
+It's not a type. It is a keyword. Yeah, so all the ExcelDocMagic and Properties and then Show and AutoSize,
+
+123
+00:12:42,824 --> 00:12:48,824
+so the difference here, some of these are properties, so where you see I have, I'm following a syntax
+
+124
+00:12:48,824 --> 00:12:54,824
+that looks like C#, right? So Boolean and then some values or strings and some values and so I support some
+
+125
+00:12:54,824 --> 00:13:00,824
+very common, yet primitive data types for associating values in property bags, so property is defining a
+
+126
+00:13:00,824 --> 00:13:07,824
+property bag, it will have .Show and .AutoSize on it, and if you look below where I have my hash table,
+
+127
+00:13:07,824 --> 00:13:16,824
+Show = $_.Properties.Show. Right. I'm all good with that. Name follows ExcelDocMagic?
+
+128
+00:13:16,824 --> 00:13:24,824
+Yes. So what I'm wondering is so all of that is the value of name?
+
+129
+00:13:24,824 --> 00:13:30,824
+What is name? Oh, so if looked, go down a little further. So, let me.
+
+130
+00:13:30,824 --> 00:13:37,824
+I'm stuck on name here. That's okay. So ExcelDocMagic, here's the execution of that syntax up top.
+
+131
+00:13:37,824 --> 00:13:45,824
+So name is just my path to my xls file, so I'm just giving it an identifier and then internally I can refer to
+
+132
+00:13:45,824 --> 00:13:50,824
+that and actually do stuff, so in my code. But when you go, can you keep up scrolling to that function and
+
+133
+00:13:50,824 --> 00:13:55,824
+I'll tell you why I was, I might not be the only person. I might, but I might not be the only person.
+
+134
+00:13:55,824 --> 00:14:02,824
+In all other cases when you have something like RowPropertyName, it's type is string, and string proceeds it
+
+135
+00:14:02,824 --> 00:14:08,824
+on the line, right, so the pattern here is the name and then the value.
+
+136
+00:14:08,824 --> 00:14:14,824
+Correct. So it's, sorry, type, the type or the type of the property and then the value.
+
+137
+00:14:14,824 --> 00:14:19,824
+Yes. And ExcelDocMagic receives name, so I'm thinking that that's a type.
+
+138
+00:14:19,824 --> 00:14:23,824
+Right. I get what you're saying. It is actually a definition of the keyword.
+
+139
+00:14:23,824 --> 00:14:29,824
+Well it's actually a property of the keyword. So when you have a keyword, so this is again all new
+
+140
+00:14:29,824 --> 00:14:35,824
+experimental stuff and so these are great points. So ExcelDocMagic is a keyword.
+
+141
+00:14:35,824 --> 00:14:40,824
+It has a property called name, which is just arbitrarily a string because that's the way that I've figured
+
+142
+00:14:40,824 --> 00:14:45,824
+out how to do things internally, and then inside of ExcelDocMagic, it creates two other keywords,
+
+143
+00:14:45,824 --> 00:14:52,824
+properties and pivot data, and each of those keywords are just property bags that have values that are type
+
+144
+00:14:52,824 --> 00:14:57,824
+associated with them, but the actually properties or parameters, they're almost like parameters,
+
+145
+00:14:57,824 --> 00:15:03,824
+for keywords like ExcelDocMagic, those are just a string, they're just arbitrary, so don't think about having
+
+146
+00:15:03,824 --> 00:15:07,824
+to type those. The way this works right now, I only use types in property bag.
+
+147
+00:15:07,824 --> 00:15:15,824
+I could probably update this to have more of a bracket structure with types and values if that would work.
+
+148
+00:15:15,824 --> 00:15:18,824
+I have to think about that. That's good feedback, but does that answer your question?
+
+149
+00:15:18,824 --> 00:15:22,824
+Make sense? It does. Okay. I think some of the confusion might be that maybe we didn't realize that new
+
+150
+00:15:22,824 --> 00:15:29,824
+domain-specific languages use LanguagePx, not part of the system automation language .NET.
+
+151
+00:15:29,824 --> 00:15:36,824
+I mean, it's not built into these. No, it's part of LanguagePx and internally it implements and uses the
+
+152
+00:15:36,824 --> 00:15:41,824
+dynamic language keyword, right? So that's how I'm doing all of my magic to make this happen, and so yeah
+
+153
+00:15:41,824 --> 00:15:46,824
+down here I register the event handler to do work, which is just calling the same code I had up top and then
+
+154
+00:15:46,824 --> 00:15:54,824
+the bottom you can see the syntax to actually go through and run that, so it could just call ExcelDocMagic.
+
+155
+00:15:54,824 --> 00:15:59,824
+In name, I give it the name of the file that I want it to actually work with and then I just set my properties,
+
+156
+00:15:59,824 --> 00:16:06,824
+and go, and it's done. Which I like the syntax. I mean, how many people see the value in a domain-specific
+
+157
+00:16:06,824 --> 00:16:12,824
+language syntax versus just having verb-noun commands? Yeah? Okay.
+
+158
+00:16:12,824 --> 00:16:17,824
+I mean, it's a preference thing. A lot of people think well yeah but you really get verb-noun, that makes more
+
+159
+00:16:17,824 --> 00:16:23,824
+sense to me and they can use that, which is great and it still works especially if you wrap those in your DSL
+
+160
+00:16:23,824 --> 00:16:29,824
+so that you can use either/or, which you can here, but I like the DSL syntax.
+
+161
+00:16:29,824 --> 00:16:33,824
+I think it makes a lot more sense when you're dealing with structured information.
+
+162
+00:16:33,824 --> 00:16:41,824
+It allows me to separate getting my values and getting my content for my structured document from the details
+
+163
+00:16:41,824 --> 00:16:47,824
+describing the document itself. Sorry, one more question. Are these your, is where PowerShell is concerned,
+
+164
+00:16:47,824 --> 00:16:52,824
+the things inside of the curly braces are ScriptBlocks, right? Yes.
+
+165
+00:16:52,824 --> 00:16:56,824
+I mean, it's the same deal like Pester or… Yep. And you had a question.
+
+166
+00:16:56,824 --> 00:17:00,824
+Yeah. I notice when you registered the DSL, you actually have Get-Process.
+
+167
+00:17:00,824 --> 00:17:06,824
+Do you ever abstract that or would you create specific keywords for particular actions?
+
+168
+00:17:06,824 --> 00:17:14,824
+Oh, yeah so I could. This is right now, you're right, this was a simple example, kind of a proof of concept
+
+169
+00:17:14,824 --> 00:17:19,824
+that I threw this together when I saw Doug's work just kind of showing what you can do, but you're right,
+
+170
+00:17:19,824 --> 00:17:25,824
+ideally, Get-Process should happen external to this because you don't want to bake your data into the DSL itself,
+
+171
+00:17:25,824 --> 00:17:31,824
+so it's lockdown. You're right. So can you put parameters into the action ScriptBlock?
+
+172
+00:17:31,824 --> 00:17:35,824
+Well yes, so you could have more than just name or I could have,
+
+173
+00:17:35,824 --> 00:17:42,824
+I could modify the DSL itself so that inside of my, inside of PivotData that I define a data set and that the
+
+174
+00:17:42,824 --> 00:17:51,824
+data set goes there, right, so inside of there I could have some PivotData and then define my data value and
+
+175
+00:17:51,824 --> 00:17:54,824
+have that equal to Get-Property, so it's pulled outside of the DSL itself.
+
+176
+00:17:54,824 --> 00:17:57,824
+Yeah, yeah, so there's different ways. It depends on how you structure it.
+
+177
+00:17:57,824 --> 00:18:03,824
+I think the fundamental question there might have been can you have parameters in an event handler?
+
+178
+00:18:03,824 --> 00:18:09,824
+So, no. Right now you can't. Yeah, your event handler is taking the data that you get from the structure
+
+179
+00:18:09,824 --> 00:18:15,824
+of the DSL itself, so the way you would parameterize that is by having the DSL have some argument or some
+
+180
+00:18:15,824 --> 00:18:23,824
+value that it can work with and then internally, your event handler is going to know to take any data source,
+
+181
+00:18:23,824 --> 00:59:59,999
+any data type and do the job.
+

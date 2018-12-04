@@ -1,0 +1,160 @@
+1
+00:00:00,0 --> 00:00:03,398
+So ask whatever questions you want to ask in the few minutes that we have remaining
+
+2
+00:00:03,398 --> 00:00:09,398
+before you get fed. Well, in there just when you all were setting up the modules on the pull server,
+
+3
+00:00:09,398 --> 00:00:14,398
+the pull server actually went out and got the modules off the internet themselves.
+
+4
+00:00:14,398 --> 00:00:20,398
+Well in my company, IIS servers, unless their customer facing, cannot be web connected.
+
+5
+00:00:20,398 --> 00:00:28,398
+Yep, absolutely. So what you do is you take your workstation, you bring the modules down, and then you just copy them.
+
+6
+00:00:28,398 --> 00:00:30,398
+So I can just pick a folder off of my workstation and drop them in.
+
+7
+00:00:30,398 --> 00:00:33,398
+I work with a lot of government agencies that are in the same way, right.
+
+8
+00:00:33,398 --> 00:00:35,398
+They can't have their machines can't directly access the internet.
+
+9
+00:00:35,398 --> 00:00:42,398
+So all you need to do is bring down your copy and you copy it out the program files modules folder on that pull server.
+
+10
+00:00:42,398 --> 00:00:45,398
+Now I don't want you guys thinking you're going to be deploying resources all the time.
+
+11
+00:00:45,398 --> 00:00:50,398
+The whole point to this pull server is going forward with all your nodes, you're going to put all of your
+
+12
+00:00:50,398 --> 00:00:54,398
+resources, custom resources, all that onto that pull server, those nodes will then pull them down from the
+
+13
+00:00:54,398 --> 00:01:01,398
+pull server, so the nodes don't need internet access. It's just this initial set you'll need to go out and
+
+14
+00:01:01,398 --> 00:01:05,398
+grab, right, and then put them up there yourself. You can just manually copy them.
+
+15
+00:01:05,398 --> 00:01:11,398
+I've got a script that does that for a customer, just updates versions and boom, boom, boom, so because they
+
+16
+00:01:11,398 --> 00:01:21,398
+have that situation. What else? Oh, come on. Do you want to do Desired State stuff?
+
+17
+00:01:21,398 --> 00:01:26,398
+Do you want to do configuration in Azure? Did you gloss over the certificate that uses certificates on the box?
+
+18
+00:01:26,398 --> 00:01:31,398
+Yeah, in this situation, the certificates on the box; however, I did give you code to do the certificate request
+
+19
+00:01:31,398 --> 00:01:41,398
+from your PKI if you wanted to. If you have ADCS set up and you have the policy stuff set up on your ADCS,
+
+20
+00:01:41,398 --> 00:01:46,398
+I gave you the code, it's commented out, but you can actually just run code to go request the certificate
+
+21
+00:01:46,398 --> 00:01:51,398
+automatically and put it on the box. A lot of people manage their certificates, though, a different way,
+
+22
+00:01:51,398 --> 00:01:56,398
+so I don't usually automate that for a customer because they have some other piece in place.
+
+23
+00:01:56,398 --> 00:02:02,398
+Their security team does it a different way. The idea is to get a certificate on the box and then we can
+
+24
+00:02:02,398 --> 00:02:12,398
+pull its thumbprint and go. In your other talk, don't you have the ability to encrypt the configurations themselves?
+
+25
+00:02:12,398 --> 00:02:17,398
+Are you going to cover that in here? We actually did that yesterday and it was about credentials.
+
+26
+00:02:17,398 --> 00:02:22,398
+I missed it. You missed it; however, you got the code for it if you download it.
+
+27
+00:02:22,398 --> 00:02:26,398
+And if you want to ask me questions about it offline, I'm happy to talk to you about it.
+
+28
+00:02:26,398 --> 00:02:32,398
+The code takes you through, don't do this because here's your result, plaintext password, don't do this like
+
+29
+00:02:32,398 --> 00:02:35,398
+they say on the internet because here's your plaintext password.
+
+30
+00:02:35,398 --> 00:02:39,398
+Then it says here's how you encrypt it. You're never going to find this on the internet because they changed
+
+31
+00:02:39,398 --> 00:02:45,398
+how to do it. They added in a document encryption type, you have to make a new certificate, you have to add
+
+32
+00:02:45,398 --> 00:02:51,398
+a new EKU for the document encryption type. If you don't do exactly what I have in there, it never going to work.
+
+33
+00:02:51,398 --> 00:02:57,398
+But I wrote it out all for you, so and I'm happy to talk to you about it and take you through it, that kind of thing.
+
+34
+00:02:57,398 --> 00:03:02,398
+It's changed in WMF5 than what we had in WMF4, so if you see older stuff, I did a lot of older stuff on
+
+35
+00:03:02,398 --> 00:03:06,398
+credentials and all that kind of stuff. It just doesn't work the same way.
+
+36
+00:03:06,398 --> 00:03:09,398
+The process is the same, but you've got to make a change to the certificate.
+
+37
+00:03:09,398 --> 00:03:17,398
+Yeah, but yeah, we do all the credential stuff. Alright guys. Well, you know, I'll hang here and answer
+
+38
+00:03:17,398 --> 00:03:23,398
+questions, but if you want to go potty, pee, or lunch or something like that, please feel free, but I'll stand
+
+39
+00:03:23,398 --> 00:03:32,398
+here for 15 minutes and chit-chat. So you're officially done. Go.
+
+40
+00:03:32,398 --> 00:59:59,999
+Thank you.
+

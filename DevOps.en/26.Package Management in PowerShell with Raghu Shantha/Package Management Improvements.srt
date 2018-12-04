@@ -1,0 +1,288 @@
+1
+00:00:00,0 --> 00:00:05,5
+And yes, I'm running through this kind of quick and my apologies.
+
+2
+00:00:05,5 --> 00:00:11,11
+Package management improvements. Main things that we've added. Support for containers.
+
+3
+00:00:11,11 --> 00:00:20,5
+Nano Server optional packages are coming in TP5. Windows Server packages, again, coming in TP5.
+
+4
+00:00:20,5 --> 00:00:27,27
+The ability to deploy something onto the Nano box when TP5 ships in the next couple of months, you should be
+
+5
+00:00:27,27 --> 00:00:32,5
+able to try this out. We are very much looking forward to your feedback on how well that works.
+
+6
+00:00:32,5 --> 00:00:39,39
+Multiple package provider versions side-by-side. This is something that will start to count more as you write
+
+7
+00:00:39,39 --> 00:00:51,51
+your own package providers. A package provider is I'm going to take a blob of goo that is going to be put
+
+8
+00:00:51,51 --> 00:01:00,60
+onto my box, unpacked somehow, and run through some process at the end of which it's installed, right.
+
+9
+00:01:00,60 --> 00:01:06,66
+Blob of goo gets put on my box package, blob of goo. Alright, fine.
+
+10
+00:01:06,66 --> 00:01:15,75
+I can have multiple versions of a package provider that I use for different things and I do this with my own
+
+11
+00:01:15,75 --> 00:01:22,82
+PowerShellGet package provider because I have the internal gallery and I have the external gallery and I have
+
+12
+00:01:22,82 --> 00:01:27,87
+both of them registered and both of them tested locally so that I can work back and forth between them,
+
+13
+00:01:27,87 --> 00:01:31,91
+between the dev environment and the production environment.
+
+14
+00:01:31,91 --> 00:01:33,93
+Event Log Support.
+
+15
+00:01:33,93 --> 00:01:36,96
+Well if you're going to do something on a machine, it would be nice to know that you can
+
+16
+00:01:36,96 --> 00:01:42,102
+actually see what happened and we've also again we've gotten rid of this nasty -version thing.
+
+17
+00:01:42,102 --> 00:01:47,107
+We've created the ability to install the NuGet provider locally
+
+18
+00:01:47,107 --> 00:01:52,112
+and we've added credential support. So let's
+
+19
+00:01:52,112 --> 00:02:03,123
+here's the set of package providers that I've got on my local box and you can see that I've got MSI, MSU,
+
+20
+00:02:03,123 --> 00:02:08,128
+NuGet, a bunch of things that are present there and different package sources and this is where you start to
+
+21
+00:02:08,128 --> 00:02:14,134
+see I've got two package sources, don't write that URL, but the point is,
+
+22
+00:02:14,134 --> 00:02:18,5
+those package sources are there and this is one of the tools you can take advantage of.
+
+23
+00:02:18,5 --> 00:02:25,145
+A lot of people are asking when I create my internal gallery, how do I control and make sure that the systems
+
+24
+00:02:25,145 --> 00:02:35,155
+only use that internal gallery. Well the way that I do that is I register the package source for
+
+25
+00:02:35,155 --> 00:02:44,5
+PowerShellGet to be the internal repository and I remove the default PowerShellGet registration for PowerShell Gallery.
+
+26
+00:02:44,5 --> 00:02:50,170
+Now when I use PowerShellGet, all those cmdlets will only go to your internal gallery.
+
+27
+00:02:50,170 --> 00:03:01,181
+So package source, Set-PackageSource, and Get-PackageSource, this allows you to manage where you're getting things from.
+
+28
+00:03:01,181 --> 00:03:07,5
+One of the other things that you need to be aware of is we're not the only people who are publishing package management providers.
+
+29
+00:03:07,5 --> 00:03:11,191
+It turns out that there's a few other people who are putting things on the gallery as well.
+
+30
+00:03:11,191 --> 00:03:19,199
+You'll notice that the GistProvider is out there, and we've got an example that I'll show you here in just a minute,
+
+31
+00:03:19,199 --> 00:03:25,205
+that'll walk you through how to create your package management providers.
+
+32
+00:03:25,205 --> 00:03:31,211
+JQuery is one of the NuGet packages that's available.
+
+33
+00:03:31,211 --> 00:03:34,5
+The problem with jQuery is that it's available on more than one location.
+
+34
+00:03:34,5 --> 00:03:39,219
+Okay, so there's something I want to show you here and I'm going to back this up just a little bit.
+
+35
+00:03:39,219 --> 00:03:47,227
+If I do a Find-Package jQuery, the first thing that happens is I check all of the package locations that are
+
+36
+00:03:47,227 --> 00:03:56,236
+available that are registered on my box, okay. If I want that to run a little bit faster, I either use
+
+37
+00:03:56,236 --> 00:04:05,5
+the source or the provider name in order to find the one that I'm after.
+
+38
+00:04:05,5 --> 00:04:10,250
+Then, I can go ahead and save it, install it, and manipulate it.
+
+39
+00:04:10,250 --> 00:04:21,261
+So one of the other elements that I can do is I can take advantage of the fact that I can handle all of the
+
+40
+00:04:21,261 --> 00:04:23,263
+installed versions of a module,
+
+41
+00:04:23,263 --> 00:04:30,270
+so I installed two versions of Desired State Configuration from the gallery, alright.
+
+42
+00:04:30,270 --> 00:04:34,274
+I want to be able to say
+
+43
+00:04:34,274 --> 00:04:43,283
+make sure that I only have the right version of my module present-- Oh that's right, version's gone.
+
+44
+00:04:43,283 --> 00:04:49,289
+Gee.
+
+45
+00:04:49,289 --> 00:04:55,295
+We got rid of version.
+
+46
+00:04:55,295 --> 00:05:00,300
+Alright, you guys are all going to make the same mistake I just did.
+
+47
+00:05:00,300 --> 00:05:07,307
+You're going to try to use version. The reason we got rid of version is because I've got two versions of X
+
+48
+00:05:07,307 --> 00:05:13,313
+Desired State Configuration there. Right. I don't want to have version, treat it like minimum version,
+
+49
+00:05:13,313 --> 00:05:18,318
+and delete everything off my box. Use required version when you want to use that parameter.
+
+50
+00:05:18,318 --> 00:05:19,319
+Okay.
+
+51
+00:05:19,319 --> 00:05:27,327
+Now one other thing that people have been asking us for is the ability, can you see that font there or do I
+
+52
+00:05:27,327 --> 00:05:28,328
+need to zoom it in.
+
+53
+00:05:28,328 --> 00:05:29,329
+It needs to be a bit bigger.
+
+54
+00:05:29,329 --> 00:05:32,5
+Okay. Visible?
+
+55
+00:05:32,5 --> 00:05:33,333
+Yeah.
+
+56
+00:05:33,333 --> 00:05:35,335
+Alright.
+
+57
+00:05:35,335 --> 00:05:41,341
+So get the PackageProviders available on this box.
+
+58
+00:05:41,341 --> 00:05:45,345
+Well it turns out this box isn't connected to the internet.
+
+59
+00:05:45,345 --> 00:05:50,350
+It's not connected to anything. It' a little VM that's local. One of the things that folks have asked us
+
+60
+00:05:50,350 --> 00:05:58,358
+for is the ability to say how do I deal with packages and with a NuGet installation.
+
+61
+00:05:58,358 --> 00:06:03,5
+Every time you use PowerShellGet, the first thing that happens is I get this you need to install NuGet warning.
+
+62
+00:06:03,5 --> 00:06:05,365
+You guys seen this?
+
+63
+00:06:05,365 --> 00:06:06,366
+Yes.
+
+64
+00:06:06,366 --> 00:06:11,371
+Yes, you have. Okay. So
+
+65
+00:06:11,371 --> 00:06:22,382
+I have a local copy of this thing available right here. As of the latest version of the package management,
+
+66
+00:06:22,382 --> 00:06:30,5
+I can do Install-PackageProvider and it will go ahead and update it and put it on the local machine.
+
+67
+00:06:30,5 --> 00:06:36,396
+You'll be able to get rid of those warnings forever. So in your sequences for your installations,
+
+68
+00:06:36,396 --> 00:06:45,405
+you're going to be able to get the NuGet provider that you want, put it on a local share, treat that as a local
+
+69
+00:06:45,405 --> 00:06:50,410
+source, install it, you get rid of that nasty message so that now
+
+70
+00:06:50,410 --> 00:07:01,421
+I have 1, no more funny warning messages such as you saw before, right, all those funny warning messages are gone,
+
+71
+00:07:01,421 --> 00:07:06,426
+and 2, I have the package, the NuGet package available.
+
+72
+00:07:06,426 --> 00:59:59,999
+Okay.
+

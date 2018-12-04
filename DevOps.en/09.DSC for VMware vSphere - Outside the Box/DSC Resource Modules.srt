@@ -1,0 +1,156 @@
+1
+00:00:00,0 --> 00:00:08,331
+Then the modules themselves. Remember I said that I wanted to go for class modules, class base resources,
+
+2
+00:00:08,331 --> 00:00:15,331
+so I started in 5, one of the early previews in fact already, I started converting what I had,
+
+3
+00:00:15,331 --> 00:00:23,331
+a scripted resource to a class. Some guidelines that I, but not only for my DSC resources, I use this for all
+
+4
+00:00:23,331 --> 00:00:26,331
+my modules and scripts.
+
+5
+00:00:26,331 --> 00:00:36,331
+I love this region, hash region keyword in your code. It allows you to collapse and expand code, makes it more,
+
+6
+00:00:36,331 --> 00:00:40,331
+you can have a look from a high level on your code, so that's what I did here.
+
+7
+00:00:40,331 --> 00:00:47,331
+You see, for example, for my class folder, C, okay and I know that the C at the beginning is also under discussion.
+
+8
+00:00:47,331 --> 00:00:54,331
+I'm going to review that as well. That one I can understand that is perhaps a bit surpassed and that I should
+
+9
+00:00:54,331 --> 00:01:02,331
+just call it VmwFolder in this case. But what you see is that I have three distinct regions in each class.
+
+10
+00:01:02,331 --> 00:01:05,331
+First of all, we have the properties. We will open it on the next slide.
+
+11
+00:01:05,331 --> 00:01:10,331
+Then you have the standard DSC functions your classical Get, Set, and Test.
+
+12
+00:01:10,331 --> 00:01:17,331
+And then, what I try to do and you will see also that in the next slide is the Get, Set, and Test should be rather simple.
+
+13
+00:01:17,331 --> 00:01:22,331
+So a lot of the functionality I packaged in helper functions. That's the start region.
+
+14
+00:01:22,331 --> 00:01:26,331
+We'll have a closer look at those now.
+
+15
+00:01:26,331 --> 00:01:34,331
+Okay, I hope this is somewhat visible, but just because, okay the first part that's approximately to the line
+
+16
+00:01:34,331 --> 00:01:41,331
+no, it's to the Line 28, that's my attributes, my properties, parameters that I want, no the properties of
+
+17
+00:01:41,331 --> 00:01:50,331
+the class, in this case, for the Forward class. There's a number in there that you absolutely need that
+
+18
+00:01:50,331 --> 00:01:59,331
+ensure the path, the name, and so on. There's the hidden one. Everybody knows what a hidden property is in a class.
+
+19
+00:01:59,331 --> 00:02:07,331
+You won't see it if you use the IntelliSense thing. The intention of that one is remember I wanted to use
+
+20
+00:02:07,331 --> 00:02:10,331
+this corrected sessions. That's the one where the session id would go, in fact.
+
+21
+00:02:10,331 --> 00:02:16,331
+So for the moment, since it's not working, I'm not using it, but that was the intention.
+
+22
+00:02:16,331 --> 00:02:21,331
+Also notice that there are credentials in there and I know that
+
+23
+00:02:21,331 --> 00:02:29,331
+we should be at a good session earlier, no first session this afternoon on the encrypting your complete MOF.
+
+24
+00:02:29,331 --> 00:02:34,331
+This is definitely something that I should be looking at. I haven't done it yet, but we should start
+
+25
+00:02:34,331 --> 00:02:37,331
+encrypting this stuff because there's quite a lot of security in there.
+
+26
+00:02:37,331 --> 00:02:44,331
+You have your connectivity to your vSphere server, which you don't want to be seen in public or on the
+
+27
+00:02:44,331 --> 00:02:47,331
+network where everybody can snoop.
+
+28
+00:02:47,331 --> 00:02:52,331
+Then the next region is like I said, the Set, Test, and Get functions.
+
+29
+00:02:52,331 --> 00:02:58,331
+They are quite simple in this case. In fact, they only contain the functionality to return the correct result,
+
+30
+00:02:58,331 --> 00:03:03,331
+if they return the result at all. And then you have a number of helper functions at the bottom of the start
+
+31
+00:03:03,331 --> 00:03:11,331
+region that I used.
+
+32
+00:03:11,331 --> 00:03:20,331
+Okay, this is the part where I will set back, quite recently in fact, I had the multiple psm1 files that
+
+33
+00:03:20,331 --> 00:03:26,331
+didn't work out, so I had to go back and start using the RootModule in the manifest and put everything,
+
+34
+00:03:26,331 --> 00:03:31,331
+all my resources, all my classes in one psm1 file unfortunately.
+
+35
+00:03:31,331 --> 00:03:37,331
+I hope this is a temporary issue and that it will get fixed at some point because for source control reasons,
+
+36
+00:03:37,331 --> 00:03:42,331
+it's a lot easier if I have it in separate files if I work on the folder class.
+
+37
+00:03:42,331 --> 00:03:48,331
+Now I have to import and commit everything again, then I would just be able to do it on the part that I'm
+
+38
+00:03:48,331 --> 00:03:56,331
+actually working with. So if you start using it or if you start writing it, remember at the moment you can
+
+39
+00:03:56,331 --> 00:59:59,999
+only do it in one psm1 file unfortunately.
+

@@ -1,0 +1,232 @@
+1
+00:00:00,0 --> 00:00:05,148
+Ed, do you want to talk about Operations Management Suite?
+
+2
+00:00:05,148 --> 00:00:15,148
+Absolutely. So this is showing Microsoft's IT management solution and if you look down here at the bottom,
+
+3
+00:00:15,148 --> 00:00:23,148
+we got System Center, and so system center has been around, it's very mature technology, and primarily it's
+
+4
+00:00:23,148 --> 00:00:28,148
+been used and focused for managing the on-premises servers, all those servers that are over their systems there
+
+5
+00:00:28,148 --> 00:00:33,148
+and talks to it and it helps to manage. And then a few years ago, Microsoft started getting into the cloud,
+
+6
+00:00:33,148 --> 00:00:41,148
+and so we've got Azure up there, and initially, the idea was hey we need to be able to provide the same kind of
+
+7
+00:00:41,148 --> 00:00:48,148
+management capabilities for the cloud that we've been able to have for our on-premises servers.
+
+8
+00:00:48,148 --> 00:00:55,148
+As we try to shift more of the load to the cloud, the need to manage it grows proportionally as well.
+
+9
+00:00:55,148 --> 00:01:01,148
+And so, that's kind of where Operations Management Suite, the idea for it came from is that we need to be
+
+10
+00:01:01,148 --> 00:01:07,148
+able to manage this up there on the top, but we're not in a total cloud world.
+
+11
+00:01:07,148 --> 00:01:15,148
+We're not a total on-prem world. It's a hybrid world, and so the need really is there for hybrid management.
+
+12
+00:01:15,148 --> 00:01:23,148
+We need to be able to manage both. And by the way, in case you don't know, Azure isn't the only cloud service.
+
+13
+00:01:23,148 --> 00:01:28,148
+There's also this little thing that's called AWS or something that some people use.
+
+14
+00:01:28,148 --> 00:01:37,148
+And so, we need to be able to manage that too. And not only that, as a lot of times, people have their stuff
+
+15
+00:01:37,148 --> 00:01:45,148
+in both places. They've got Azure, they've got AWS. So there are four pillars for Microsoft Operations
+
+16
+00:01:45,148 --> 00:01:49,148
+Management Suite and there's a suite, so you can think of these four things.
+
+17
+00:01:49,148 --> 00:01:54,148
+As we were putting the product together, we drew from different resources and we brought stuff together.
+
+18
+00:01:54,148 --> 00:02:05,148
+So a lot of people who have heard about OMS, they think it's all log analytics, analytics, monitoring,
+
+19
+00:02:05,148 --> 00:02:13,148
+and stuff like that, and that is a piece, but or people sometimes think yeah well it's automation and there
+
+20
+00:02:13,148 --> 00:02:21,148
+is a configuration and automation piece as well. On Monday, we talked about using the OMS automation in DCS
+
+21
+00:02:21,148 --> 00:02:27,148
+to solve a number of very real problems that we have with Desired State Configuration.
+
+22
+00:02:27,148 --> 00:02:32,148
+One of the simple ones to highlight out of that is setting up a pull server.
+
+23
+00:02:32,148 --> 00:02:40,148
+Setting up a pull server is kind of a pain. Setting up a pull server correctly is almost a shot in the dark.
+
+24
+00:02:40,148 --> 00:02:46,148
+We give that to you for free. As soon as you start doing OMS and automation, you've got that.
+
+25
+00:02:46,148 --> 00:02:51,148
+There's a backup in disaster recovery component. There is also a security and compliance component.
+
+26
+00:02:51,148 --> 00:02:57,148
+Some of the stuff that we have, we provide deep insights into your environment that allow you to pull this
+
+27
+00:02:57,148 --> 00:03:02,148
+information out and expose stuff that you might not have even known was there.
+
+28
+00:03:02,148 --> 00:03:11,148
+And so, all of this, so OMS sits right there in the middle where we're doing the cloud, we're also doing the
+
+29
+00:03:11,148 --> 00:03:20,148
+on-prem, and because of that, as we're initially looking at a lot of our customers or looking at stuff,
+
+30
+00:03:20,148 --> 00:03:26,148
+we've got system center and OMS and they actually wind up being better together, but
+
+31
+00:03:26,148 --> 00:03:34,148
+OMS is not a cloud-only solution. We can do cloud, we can also do the on-prem, we can do Linux, yeah we can
+
+32
+00:03:34,148 --> 00:03:39,148
+do the other things, it's not necessarily a lay on top of system center.
+
+33
+00:03:39,148 --> 00:03:44,148
+You can have OMS by itself or you can have system center with OMS on top.
+
+34
+00:03:44,148 --> 00:03:51,148
+So it is pretty much the kind of management that you need for your environment that allows you to take care
+
+35
+00:03:51,148 --> 00:03:53,148
+of these capabilities.
+
+36
+00:03:53,148 --> 00:03:54,148
+Great.
+
+37
+00:03:54,148 --> 00:03:57,148
+Yeah, so I think the area we're going to focus on today obviously is a configuration automation.
+
+38
+00:03:57,148 --> 00:04:03,148
+It's most tied with all the PowerShell capabilities around all your scripts belong to your DSC.
+
+39
+00:04:03,148 --> 00:04:08,148
+But the last slide before we kind of give you an overview of what's going on is I think everybody starts to
+
+40
+00:04:08,148 --> 00:04:13,148
+realize when they look at the kind of lifecycle of the infrastructure and the application that there's a
+
+41
+00:04:13,148 --> 00:04:18,148
+bunch of capabilities required when you're actually managing not just infrastructure in the application and
+
+42
+00:04:18,148 --> 00:04:23,148
+it goes all the way up from how do you do the bills to how do you configure that and all the way through the
+
+43
+00:04:23,148 --> 00:04:28,148
+monitoring backup and recovery, how do you make sure it's secure, the governance, all of that is going to be
+
+44
+00:04:28,148 --> 00:04:32,148
+required as you start to think about especially in an enterprise world, what does it mean to manage the
+
+45
+00:04:32,148 --> 00:04:33,148
+infrastructure and the application.
+
+46
+00:04:33,148 --> 00:04:38,148
+And it's been a real challenge. I think we've had a lot of good tooling in System Center to actually help
+
+47
+00:04:38,148 --> 00:04:42,148
+with that with PowerShell and all the other management tools, but as you start to expand that to the cloud,
+
+48
+00:04:42,148 --> 00:04:46,148
+how do you still have the same processes as your stuff moves to the cloud?
+
+49
+00:04:46,148 --> 00:04:51,148
+And I think at the core of this, a lot of core services will offer their own kind of built-in automation.
+
+50
+00:04:51,148 --> 00:04:55,148
+Like when you do backup, it backs it up for you, and you can say that's automation because it backs it up for me.
+
+51
+00:04:55,148 --> 00:05:00,148
+But a lot of times, you really need to connect systems together to really provide a solution and that's where
+
+52
+00:05:00,148 --> 00:05:06,148
+the configuration and automation servers can kind of he uses a core throughout your entire lifecycle,
+
+53
+00:05:06,148 --> 00:05:10,148
+not just the infrastructure and the application to make sure that the end-to-end works and at the core of
+
+54
+00:05:10,148 --> 00:05:15,148
+that is the PowerShell because of its ability to kind of connect into everything and deliver that service.
+
+55
+00:05:15,148 --> 00:05:20,148
+And so you'll see, as you start thinking about the whole lifecycle how automation configuration is actually
+
+56
+00:05:20,148 --> 00:05:24,148
+central to all of that. Obviously, when you do the configuration side and other things we have like built-in
+
+57
+00:05:24,148 --> 00:05:29,148
+capabilities itself like DSC that is required for that, when we think about the whole lifecycle,
+
+58
+00:05:29,148 --> 00:59:59,999
+I would also say at the root of it all, it is configuration and automation.
+

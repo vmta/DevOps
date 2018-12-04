@@ -1,0 +1,136 @@
+1
+00:00:01,1 --> 00:00:06,758
+Alright, so next I want to talk very, very briefly about a different type of completer.
+
+2
+00:00:06,758 --> 00:00:11,258
+Alright, so those were I'm going to call them normal completers or just completers.
+
+3
+00:00:11,258 --> 00:00:18,758
+There's also something called a native completer. Native completers are geared more towards external light executable applications.
+
+4
+00:00:18,758 --> 00:00:24,758
+So it's things that aren't PowerShell commands, but they still have arguments like the net.exe utility.
+
+5
+00:00:24,758 --> 00:00:30,758
+You can use it to start and stop services and to access shared drives and stuff like that.
+
+6
+00:00:30,758 --> 00:00:40,758
+So the big difference from the completion standpoint is it has different arguments that it receives.
+
+7
+00:00:40,758 --> 00:00:46,758
+So when you take a look, we'll do that thing again where we have a little debug log up, and this time we're
+
+8
+00:00:46,758 --> 00:00:54,758
+actually going to, so this is going to output to that debug log, but it's also going to output some completion results.
+
+9
+00:00:54,758 --> 00:00:59,758
+This is geared towards, this is for ipconfig. Its arguments are really, really simple, so I chose it.
+
+10
+00:00:59,758 --> 00:01:07,758
+But the way you tell it that it's a native completer, you call Register-ArgumentCompleter, you give it the
+
+11
+00:01:07,758 --> 00:01:11,758
+CommandName, and in this case, and then you give it a native switch.
+
+12
+00:01:11,758 --> 00:01:16,758
+So with normal completers, the ParameterName is what's required and the CommandName is optional,
+
+13
+00:01:16,758 --> 00:01:24,758
+so I did kind of skip over that. With normal completers, you can actually say anytime you come across a username
+
+14
+00:01:24,758 --> 00:01:31,758
+parameter, I want you to run this completer, and as long as there's not a completer registered for username
+
+15
+00:01:31,758 --> 00:01:36,758
+with a specific command, then that one will win out. It will end up, you can have it to where a certain
+
+16
+00:01:36,758 --> 00:01:41,758
+parameter is always, has a certain completer that gets executed with it.
+
+17
+00:01:41,758 --> 00:01:42,758
+Native completers, though,
+
+18
+00:01:42,758 --> 00:01:47,758
+they don't, it doesn't take parameter names into account, you register it to a command, and then you provide
+
+19
+00:01:47,758 --> 00:01:59,758
+this native switch. Let's take a look at, so now if we call ipconfig and I have to do Tab or Ctrl+Space,
+
+20
+00:01:59,758 --> 00:02:07,758
+but you can see over here, this time we got three arguments. So the first one is the word to complete,
+
+21
+00:02:07,758 --> 00:02:14,758
+which is useful, the second one is the CommandAst, and then the third one is the cursor position,
+
+22
+00:02:14,758 --> 00:02:15,758
+in this case, 17.
+
+23
+00:02:15,758 --> 00:02:21,758
+So you don't get the CommandName included there. You can grab it from the CommandAst.
+
+24
+00:02:21,758 --> 00:02:29,758
+You don't get the ParameterName, again you can determine that yourself, and you also don't get the fake bound parameters.
+
+25
+00:02:29,758 --> 00:02:33,758
+The CommandAst, like I said, if you want to take the time to look into that, you could get all that
+
+26
+00:02:33,758 --> 00:02:38,758
+information out of it.
+
+27
+00:02:38,758 --> 00:02:47,758
+So anyway, in this case, what I did was looking at the CommandAst and counting the number of elements that
+
+28
+00:02:47,758 --> 00:02:52,758
+were here and I don't want to spend too much time on this. Honestly and truly, if you're interested in these
+
+29
+00:02:52,758 --> 00:02:57,758
+native completers, the TabExpansionPlusPlus module, even if you have version 5, if you go take a look at it,
+
+30
+00:02:57,758 --> 00:03:03,758
+they have a lot of native ArgumentCompletion because it gets a little bit crazier because you have with
+
+31
+00:03:03,758 --> 00:03:09,758
+native commands you might have like for net.exe, you have the first parameter determines what your next set
+
+32
+00:03:09,758 --> 00:03:16,758
+of parameters is and you have all these trees of parameters that end up.
+
+33
+00:03:16,758 --> 00:03:21,758
+But I wanted to mention this because in just a second, we're going to use native completers for something
+
+34
+00:03:21,758 --> 00:59:59,999
+that they probably weren't intended for.
+

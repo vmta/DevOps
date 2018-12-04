@@ -1,0 +1,164 @@
+1
+00:00:00,0 --> 00:00:10,571
+So if we jump back to here, let's actually go into WindowsPowerShell Modules, this is a DSC resource for Hyper-V.
+
+2
+00:00:10,571 --> 00:00:17,571
+You can see that it has a DSCResources folder, under there it has more folders for the different types of resources.
+
+3
+00:00:17,571 --> 00:00:22,571
+Each one of the resources is made up of a MOF file, so now all of a sudden you're going to be in this MOF syntax
+
+4
+00:00:22,571 --> 00:00:28,571
+where you need to specify all these particular attributes, you have to extend from OMI_BaseResource,
+
+5
+00:00:28,571 --> 00:00:34,571
+it's just really hard syntax to kind of try to remember. And then when you want to implement the script,
+
+6
+00:00:34,571 --> 00:00:39,571
+the actual details of that particular DSC resource, what you need to do is actually create three particular
+
+7
+00:00:39,571 --> 00:00:45,571
+functions, you need to create Get-TargetResource, Set-TargetResource, and Test-TargetResource to be able to
+
+8
+00:00:45,571 --> 00:00:53,571
+actually work with that particular resource and our DSC configuration.
+
+9
+00:00:53,571 --> 00:01:02,571
+But with partial classes, they make it a lot easier. So I actually have a DSC resource I made with the new
+
+10
+00:01:02,571 --> 00:01:09,571
+PowerShell class syntax. So you can see here that the way that you do this is you actually, is that big enough,
+
+11
+00:01:09,571 --> 00:01:15,571
+okay, you use the same class keyword, and in this case, I have a light.
+
+12
+00:01:15,571 --> 00:01:21,571
+So I have some like special lights at my house that I can control from the internet, which is a horrible idea,
+
+13
+00:01:21,571 --> 00:01:33,571
+but you just put a DSC resource attribute on the top of it to signify that this is a DSC resource.
+
+14
+00:01:33,571 --> 00:01:41,571
+One thing that's required is a DSC property that is marked as a key, in this case, it's the name of the item
+
+15
+00:01:41,571 --> 00:01:45,571
+or the name of the light in the house and it can be a string or an integer.
+
+16
+00:01:45,571 --> 00:01:50,571
+From there you can add all the properties that you want. You can specify different types.
+
+17
+00:01:50,571 --> 00:01:57,571
+You can actually specify enum values and then you're required to implement three different methods.
+
+18
+00:01:57,571 --> 00:02:03,571
+The first method is set, so obviously that updates it through the state that you set it to,
+
+19
+00:02:03,571 --> 00:02:08,571
+test tests to see if it's in the state that you require it, and then Get just returns that particular
+
+20
+00:02:08,571 --> 00:02:18,571
+resource in light. So these signatures are required to be in this state for this to work and that is kind of
+
+21
+00:02:18,571 --> 00:02:23,571
+how that works. So like in this case, it's just going out to the internet and actually setting these things.
+
+22
+00:02:23,571 --> 00:02:31,571
+And then the other side of things is just the manifest file that you need to make sure that you actually
+
+23
+00:02:31,571 --> 00:02:38,571
+don't do that. When you create a new module manifest, there's a new property called DSCResources to explore,
+
+24
+00:02:38,571 --> 00:02:43,571
+which apparently is not in here. I've actually installed this DSC resource already.
+
+25
+00:02:43,571 --> 00:02:50,571
+I'll show you an example of how I use it. You know, let's actually open this one, something like that.
+
+26
+00:02:50,571 --> 00:02:54,571
+Alright, so just like you would create any other configuration, you create a configuration, in this case,
+
+27
+00:02:54,571 --> 00:02:59,571
+I'm just naming it Lights, and then you want to call Import-DscResource.
+
+28
+00:02:59,571 --> 00:03:01,571
+So Import-DscResource looks
+
+29
+00:03:01,571 --> 00:03:09,571
+in two places for your DscResource. It is going to look on a system-wide modules folder in system32 and MOF64
+
+30
+00:03:09,571 --> 00:03:13,571
+and it's going to look in program files for that particular resource.
+
+31
+00:03:13,571 --> 00:03:22,571
+It's not going to look in any of your user level resources because LCM runs as the system user.
+
+32
+00:03:22,571 --> 00:03:28,571
+And then you can see that I'm just using that resource as is. So in this case, I'm using my light resource
+
+33
+00:03:28,571 --> 00:03:34,571
+and I want to turn on the Basement Light, that's the key. This is the URL; it's going to turn Bill's
+
+34
+00:03:34,571 --> 00:03:39,571
+basement light on. And then I want to set it to ON sort of thing.
+
+35
+00:03:39,571 --> 00:03:45,571
+From there, we run lights and then we start the DscConfiguration, so I can run that, and you can see that it
+
+36
+00:03:45,571 --> 00:03:55,571
+is now running that DscResource that we just created. So we actually went out and okay, I want the lights,
+
+37
+00:03:55,571 --> 00:04:02,571
+you can see it created the mof file and we look in here you can see it looks like just any other DscResource.
+
+38
+00:04:02,571 --> 00:04:10,571
+It's actually using that Light resource to send a Url to state and that kind of thing.
+
+39
+00:04:10,571 --> 00:04:19,571
+Yeah, and I ran it on this computer. So that is how you kind of define DSC resources in PowerShell.
+
+40
+00:04:19,571 --> 00:04:25,571
+So it's a lot more straightforward than the actual MOF format that you saw previously.
+
+41
+00:04:25,571 --> 00:59:59,999
+Alright, I feel like I totally missed something.
+

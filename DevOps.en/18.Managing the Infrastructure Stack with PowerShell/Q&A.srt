@@ -1,0 +1,592 @@
+1
+00:00:00,0 --> 00:00:06,248
+Alright, so this is kind of near the end of the talk, but I'm going to log into a lab here in just a minute
+
+2
+00:00:06,248 --> 00:00:11,248
+assuming the internet connection and we can kind of walk through
+
+3
+00:00:11,248 --> 00:00:15,248
+some of these different integrations, kind of talk about this a little bit if you want to.
+
+4
+00:00:15,248 --> 00:00:24,248
+If you don't, then we don't have to. It's totally up to you. But any questions thus far?
+
+5
+00:00:24,248 --> 00:00:51,248
+Because you've been way too quiet. (Audience question) Yeah, so I'm still trying to sort out.
+
+6
+00:00:51,248 --> 00:00:55,248
+I wish I had a whiteboard because whiteboards and me get along really, really well.
+
+7
+00:00:55,248 --> 00:01:02,248
+So the question was how do you do updates? What's the plan for updating the JSON or updating the information
+
+8
+00:01:02,248 --> 00:01:09,248
+because there is this opportunity for the information to become stale if something changes in the environment
+
+9
+00:01:09,248 --> 00:01:18,248
+and so what I'm working on right now primarily is identifying the situations where a change would occur.
+
+10
+00:01:18,248 --> 00:01:25,248
+In a typical environment, what type of things would make a relationship map change?
+
+11
+00:01:25,248 --> 00:01:33,248
+And some of those would be like a VMotion, like a virtual machine moves over, you add additional resources
+
+12
+00:01:33,248 --> 00:01:39,248
+that are tied to something else, you add disk, you add new network, adding things like that.
+
+13
+00:01:39,248 --> 00:01:46,248
+Removing things obviously would make a change. So from a data integrity standpoint, it's really what we're
+
+14
+00:01:46,248 --> 00:01:52,248
+coming to, right. Is this data going to be stale? Is it still going to be useful?
+
+15
+00:01:52,248 --> 00:02:00,248
+I've thus far found that the number of changes are relatively small and I think if we look at what
+
+16
+00:02:00,248 --> 00:02:04,248
+information we're collecting because like let's go back to
+
+17
+00:02:04,248 --> 00:02:12,248
+when you think about what information that you need to collect all the way up the stack, I'm not sure how
+
+18
+00:02:12,248 --> 00:02:21,248
+much change we really would expect and it's one of those I'm kind of unsure about how I want to deal with that
+
+19
+00:02:21,248 --> 00:02:26,248
+because I've also looked at maybe using SQL Server and just create our relational database of all this stuff
+
+20
+00:02:26,248 --> 00:02:36,248
+because I treat, at present, I'm treating network, storage, compute separately and pulling and collecting that
+
+21
+00:02:36,248 --> 00:02:46,248
+information separately because they are relatively tied to each other, and identifying where you have things
+
+22
+00:02:46,248 --> 00:02:52,248
+that cross across those three stacks. Because at some point, you just
+
+23
+00:02:52,248 --> 00:02:58,248
+kind of have to draw the line of how you're going to be able to collect the information and when I'm doing
+
+24
+00:02:58,248 --> 00:03:00,248
+this, I'm really focused
+
+25
+00:03:00,248 --> 00:03:06,248
+on these, right, those points, so I'm building functions that collect those points.
+
+26
+00:03:06,248 --> 00:03:14,248
+And so the intent is that once I build these functions and have all those relationships mapped out,
+
+27
+00:03:14,248 --> 00:03:21,248
+you could then just pick the ones that matter to you, that are interesting, put it in there, and run those individually.
+
+28
+00:03:21,248 --> 00:03:29,248
+And so, they can run on their own in the background at whatever frequency you want and update that data as you go.
+
+29
+00:03:29,248 --> 00:03:36,248
+So this is why I really wanted to leave time to talk about this because I don't pretend that I have all the
+
+30
+00:03:36,248 --> 00:03:44,248
+answers and I certainly don't pretend that I know how to solve this problem, but I do know that especially
+
+31
+00:03:44,248 --> 00:03:48,248
+in environments where there's scale, this is a problem
+
+32
+00:03:48,248 --> 00:03:53,248
+and it's a problem a lot of us are going to face as we start getting more and more layers of PowerShell.
+
+33
+00:03:53,248 --> 00:04:02,248
+Right now, in my poll, they said 33% of the people polled of I think there was 40 votes, were managing 7 plus layers
+
+34
+00:04:02,248 --> 00:04:08,248
+or items in their stack. I'm sure somebody in here is doing that, right.
+
+35
+00:04:08,248 --> 00:04:19,248
+Anybody would classify themselves as seven plus layers? One, one, going twice, two.
+
+36
+00:04:19,248 --> 00:04:22,248
+Okay. Let's go back to the.
+
+37
+00:04:22,248 --> 00:04:27,248
+Alright, so when we look at this, alright so how many would say one to two?
+
+38
+00:04:27,248 --> 00:04:37,248
+Three to four? Five to six? And then we already established a couple people doing seven or more.
+
+39
+00:04:37,248 --> 00:04:42,248
+So what's going to happen to everybody that's only doing a couple?
+
+40
+00:04:42,248 --> 00:04:50,248
+Here's what's going to happen over the next few years. One, you're going to refresh cycles on things in your infrastructure.
+
+41
+00:04:50,248 --> 00:04:56,248
+You're going to buy new things. And as PowerShellers and people who have influenced their organization to
+
+42
+00:04:56,248 --> 00:05:01,248
+automate and use PowerShell and get value, you're going to have influence in that buying decision.
+
+43
+00:05:01,248 --> 00:05:09,248
+You should. You're going to look for things that have PowerShell integration as a capability.
+
+44
+00:05:09,248 --> 00:05:15,248
+It's going to become valuable for you. And in doing so, you're going to then say alright, I've got a new tool,
+
+45
+00:05:15,248 --> 00:05:21,248
+I want to go in, I'm going to PowerShell this bad boy, and then you're going to run into all these things
+
+46
+00:05:21,248 --> 00:05:29,248
+about figuring out like how does this connect to that? How do I get this to happen faster?
+
+47
+00:05:29,248 --> 00:05:34,248
+And that's one of the things I found challenging because I put this poll out because I'm just like is this a
+
+48
+00:05:34,248 --> 00:05:41,248
+problem that a lot of people are facing yet and I feel like there should be, but I don't hear a whole lot about it.
+
+49
+00:05:41,248 --> 00:05:46,248
+So I'm either way off the reservation with this, but I think what we're going to see is that we're going to
+
+50
+00:05:46,248 --> 00:05:52,248
+see this problem creep up more and more because that increase in extensibility is going to expose all of you
+
+51
+00:05:52,248 --> 00:06:00,248
+to more opportunities to automate because the other side effect of greater extensibility is that consumption
+
+52
+00:06:00,248 --> 00:06:04,248
+model change that I talked about earlier. Alright, the way that we're consuming the resources that we buy
+
+53
+00:06:04,248 --> 00:06:11,248
+today is very different than the way we did it 5 years ago and it's crazy different than what we were
+
+54
+00:06:11,248 --> 00:06:18,248
+doing 10 years ago and I suspect it's going to be crazy different 5 years from now.
+
+55
+00:06:18,248 --> 00:06:24,248
+And I get the question frequently they're like well Josh you talk about PowerShell and everything and all
+
+56
+00:06:24,248 --> 00:06:28,248
+this extensibility, isn't there just going to be other tools that's going to do all this work and we just
+
+57
+00:06:28,248 --> 00:06:35,248
+won't script anymore? Does anybody in this room believe that in five years we won't need to script anymore?
+
+58
+00:06:35,248 --> 00:06:40,248
+Alright. You got one. It's good to have one. There's always one.
+
+59
+00:06:40,248 --> 00:06:51,248
+I'm usually the one. So we're not going to see this major drop off of this need to script and execute in the environment.
+
+60
+00:06:51,248 --> 00:06:58,248
+You're still going to have to do tasks that even if you have this very robust management plan that can just
+
+61
+00:06:58,248 --> 00:07:04,248
+execute all these things, there's just some things it can't do. Because if it did do all of that,
+
+62
+00:07:04,248 --> 00:07:11,248
+nobody would want to use the tool. It would be too cumbersome, too complex.
+
+63
+00:07:11,248 --> 00:07:17,248
+You'd look at it and you're like there's just too much here and we see that with vSphere and System Center sometimes, right.
+
+64
+00:07:17,248 --> 00:07:21,248
+There's things that you wish were there and there's things that you just wish would go away because you don't
+
+65
+00:07:21,248 --> 00:07:27,248
+ever need them or use them. So you can't, nobody should ever expect that there's going to be one tool that's
+
+66
+00:07:27,248 --> 00:07:32,248
+going to change all of it. What is going to happen though is that as those tools grow and you start implementing
+
+67
+00:07:32,248 --> 00:07:40,248
+them in your environment, they are going to have hooks where you can execute PowerShell, especially once it
+
+68
+00:07:40,248 --> 00:07:43,248
+goes to Linux, if it ever does. I hope it does. That would be fun.
+
+69
+00:07:43,248 --> 00:07:49,248
+I would love to have PowerShell on my Mac because then I would know how to use my Mac.
+
+70
+00:07:49,248 --> 00:07:56,248
+And so, as you are looking at your environments and the things you're doing, you're going to start seeing
+
+71
+00:07:56,248 --> 00:08:01,248
+that you have more accessibility, more capability, you know those silos.
+
+72
+00:08:01,248 --> 00:08:08,248
+I wouldn't say they're disappearing, but the focus is much more on how can we help one another.
+
+73
+00:08:08,248 --> 00:08:15,248
+How can we leverage PowerShell to do something on this side of the stack and I think we're going to see that
+
+74
+00:08:15,248 --> 00:08:19,248
+those relationship mappings are going to be critically important.
+
+75
+00:08:19,248 --> 00:08:26,248
+So here in about the next two weeks, I will have on my GitHub repo, I'm going to have the App DNA repo where
+
+76
+00:08:26,248 --> 00:08:30,248
+I'm going to start putting these functions and I would really love and appreciate anybody that wanted to come
+
+77
+00:08:30,248 --> 00:08:37,248
+in and contribute to that and engage in this conversation some more because I think it's, unless SAPIEN makes
+
+78
+00:08:37,248 --> 00:08:48,248
+a tool for this or somebody, I think it's just something that we're going to continue to see pop up on a regular basis.
+
+79
+00:08:48,248 --> 00:08:55,248
+You said you had the time down from 22 hours. So I was just wondering, do you use…?
+
+80
+00:08:55,248 --> 00:09:00,248
+I didn't at the time. It wasn't an option. Yeah, that was four years ago.
+
+81
+00:09:00,248 --> 00:09:07,248
+Yeah, so and that's the other thing, right, some of this, we're getting a lot new capabilities and tools to
+
+82
+00:09:07,248 --> 00:09:13,248
+help solve some of these challenges and improve the way that we're executing.
+
+83
+00:09:13,248 --> 00:09:17,248
+I haven't used them because I don't have a big environment anymore.
+
+84
+00:09:17,248 --> 00:09:50,248
+So has anybody leverage, are you doing that? (Audience comment)
+
+85
+00:09:50,248 --> 00:09:55,248
+Right, and so what he was saying is leveraging workflows to go out and collect information from different
+
+86
+00:09:55,248 --> 00:10:01,248
+places into a single location to execute creating a virtual machine and getting that time down.
+
+87
+00:10:01,248 --> 00:10:26,248
+So yeah, absolutely something you can do. You have a question? (Audience question)
+
+88
+00:10:26,248 --> 00:10:33,248
+So to repeat what he said, like in their environment on the Linux side, complete automation up and down,
+
+89
+00:10:33,248 --> 00:10:41,248
+on the Windows side, nothing. So why do you think that is? I think it's mostly, started with the silos.
+
+90
+00:10:41,248 --> 00:11:09,248
+So silos. (Audience comment) Right, exactly. Well I guess, so what he was saying is just educating
+
+91
+00:11:09,248 --> 00:11:13,248
+people and making it a priority to do the automation. I mean, think that's fundamental.
+
+92
+00:11:13,248 --> 00:11:16,248
+I mean this is it right?
+
+93
+00:11:16,248 --> 00:11:19,248
+Let's just show everybody this. Let's just posh it real good.
+
+94
+00:11:19,248 --> 00:11:24,248
+You've probably seen the image that's got the two people that are pushing a cart that's got square wheels,
+
+95
+00:11:24,248 --> 00:11:30,248
+right, and there's two people right behind them that's got round wheels and it said the guy's pushing like no
+
+96
+00:11:30,248 --> 00:11:40,248
+we don't have time for that right now. Just show them that and be like and so when you think about that and
+
+97
+00:11:40,248 --> 00:11:47,248
+this is how do you make that change, like how do you elevate that conversation, get them started talking about it.
+
+98
+00:11:47,248 --> 00:11:53,248
+I primarily just say quick wins. Little bits here and there, right, and that's like when I look at that DNA
+
+99
+00:11:53,248 --> 00:11:58,248
+stuff, I really want it to be modular and extensible enough that you just grab the little bits that you need.
+
+100
+00:11:58,248 --> 00:12:02,248
+You don't have to use every bit of it. You can grab little bits to do small parts.
+
+101
+00:12:02,248 --> 00:12:07,248
+Maybe get that build time from 12 minutes to 10 minutes or down to 8 minutes.
+
+102
+00:12:07,248 --> 00:12:13,248
+Every bit that you do helps and just kind of feeds because now you've bought yourself more time and now you
+
+103
+00:12:13,248 --> 00:12:18,248
+you can start looking at more opportunities. Do you have a question?
+
+104
+00:12:18,248 --> 00:12:24,248
+I kind of have like a comment actually. I'm a contractor. I work for a client on a big environment
+
+105
+00:12:24,248 --> 00:12:30,248
+orchestration project and one of the reasons why I came to this was because I'm one of the seven plus and
+
+106
+00:12:30,248 --> 00:12:36,248
+what I find is like whenever we provision a server, like you said, there's a whole lot of layers like when we
+
+107
+00:12:36,248 --> 00:12:45,248
+say we want a new SQL Server, we send a call, we do things with SolarWinds or we put stuff in our automation
+
+108
+00:12:45,248 --> 00:12:50,248
+database, we provision the VM, we configure all these silo on an OS level, but and there's probably like five
+
+109
+00:12:50,248 --> 00:12:57,248
+or six different actual appliances that we put, insert new records into, or read records from, that sort of thing
+
+110
+00:12:57,248 --> 00:13:04,248
+and what the good thing about the whole DevOps mentality is all that is essentially just an API.
+
+111
+00:13:04,248 --> 00:13:12,248
+So we make an API call to SQL data that quote/unquote an API call to a SQL database, an API call to the IPM service,
+
+112
+00:13:12,248 --> 00:13:19,248
+or an API call to after all that stuff and PowerShell allowed us to it's essentially like the glue that glued
+
+113
+00:13:19,248 --> 00:13:27,248
+all of that stuff together that allowed us to just, you don't have to know what all these appliances do.
+
+114
+00:13:27,248 --> 00:13:35,248
+We just have to make a quick API call, bam, bam, bam and PowerShell orchestrates the whole thing.
+
+115
+00:13:35,248 --> 00:13:44,248
+And I highly recommend that and the funny thing is that when I think of what this concept like it's doing
+
+116
+00:13:44,248 --> 00:13:50,248
+exactly that, but trying to store in a stateful manner where you're not constantly making the queries.
+
+117
+00:13:50,248 --> 00:13:59,248
+I haven't been able to test it in a large enough environment to be able to say how much impact it's going to have.
+
+118
+00:13:59,248 --> 00:14:05,248
+So I'm hoping later this year people will be able tell me. Go ahead.
+
+119
+00:14:05,248 --> 00:14:12,248
+So you're talking about how the six-hour process to refresh that state data, and then you're considering
+
+120
+00:14:12,248 --> 00:14:18,248
+well how often do I need to refresh it to make sure that it doesn't go stale even though those relationships don't change.
+
+121
+00:14:18,248 --> 00:14:23,248
+My suggestion would be why not run that six-hour process every night and then you can have the scripts that
+
+122
+00:14:23,248 --> 00:14:28,248
+you need now if something changes. If an unexpected change happens, wouldn't you want to know about it?
+
+123
+00:14:28,248 --> 00:14:36,248
+Yeah. I think that makes sense. My intent would be a scheduled task that would go at some regular interval
+
+124
+00:14:36,248 --> 00:14:44,248
+and then also adding little bits of code to do a query if that doesn't match up.
+
+125
+00:14:44,248 --> 00:14:51,248
+because depending on what you're doing, it doesn't have to be and here's the thing, when you look at how
+
+126
+00:14:51,248 --> 00:14:58,248
+applications are being built and developed and put out into the world, they're much more modular.
+
+127
+00:14:58,248 --> 00:15:04,248
+The monolithic app is becoming less. They still exist. They're still going to exist for a long time,
+
+128
+00:15:04,248 --> 00:15:09,248
+but it's much more going into little bits and chunks that do their little bit, right.
+
+129
+00:15:09,248 --> 00:15:18,248
+What's that? Micro Services. Micro Services, exactly. And I think by enabling it with multiple functions
+
+130
+00:15:18,248 --> 00:15:29,248
+that do very specific things and storing it into a central data set, you could probably keep it fairly real time, right.
+
+131
+00:15:29,248 --> 00:15:33,248
+Or you just don't do those processes and only check when periodic.
+
+132
+00:15:33,248 --> 00:15:40,248
+Yeah, like there's and I think that there is no right answer. There is no this is the way you have to do it
+
+133
+00:15:40,248 --> 00:15:44,248
+because I think everybody's environment is going to be completely different because when you talk about the
+
+134
+00:15:44,248 --> 00:15:52,248
+different use cases here, like he's talking about implementation, right, like that's the Day 0 activity.
+
+135
+00:15:52,248 --> 00:15:58,248
+That is creating those relations like leveraging relationships and creating a new DNA, like a new app,
+
+136
+00:15:58,248 --> 00:16:04,248
+like it's coming into the world with nothing just like a child. You have to give it everything.
+
+137
+00:16:04,248 --> 00:16:14,248
+And so that is going to be one operation, but when you look at how do you turn and lifecycle it,
+
+138
+00:16:14,248 --> 00:16:20,248
+how much does it change? Like I wasn't born with a beard. I got a beard right.
+
+139
+00:16:20,248 --> 00:16:24,248
+Sometimes the beard my go away, not frequently because it gets itchy when it's not there.
+
+140
+00:16:24,248 --> 00:16:37,248
+It just feels awkward. But when you start thinking about Day 0 versus Day 720 or 730, completely different needs,
+
+141
+00:16:37,248 --> 00:16:47,248
+but the same information. So the refresh on that, not sure. We actually use a system just like this on one
+
+142
+00:16:47,248 --> 00:16:54,248
+of our large clients and we use a SQL database to store and what wound up doing we developed kind of transactional
+
+143
+00:16:54,248 --> 00:17:02,248
+model into that database, so now we can have training reports, so I can show you what's our trend on the end fields?
+
+144
+00:17:02,248 --> 00:17:06,248
+Are we starting to fill up on workstations and how is that looking at the time?
+
+145
+00:17:06,248 --> 00:17:11,248
+So it's, I think there's a lot of potential behind this and having a community-driven solution for this is a huge idea.
+
+146
+00:17:11,248 --> 00:17:16,248
+Awesome. Well I'm looking forward to you contributing based on what you guys are doing.
+
+147
+00:17:16,248 --> 00:17:24,248
+Absolutely. Alright, you haven't thrown things at me, so I feel confident that I wasn't absolutely crazy here.
+
+148
+00:17:24,248 --> 00:59:59,999
+I appreciate that. Anything else? Alright, let me see if I can get into the environment now.
+

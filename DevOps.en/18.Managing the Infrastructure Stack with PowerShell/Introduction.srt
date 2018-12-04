@@ -1,0 +1,200 @@
+1
+00:00:00,0 --> 00:00:19,19
+My name is Josh Atwell and I am here to talk to you about managing your infrastructure stack with PowerShell.
+
+2
+00:00:19,19 --> 00:00:26,26
+Little disclaimer, I'm not going to show you a bunch of code. I'm not going to teach you how to use a cmdlet.
+
+3
+00:00:26,26 --> 00:00:31,31
+I'm not going to show you clever little things that I've done with PowerShell.
+
+4
+00:00:31,31 --> 00:00:33,33
+That's not entirely true. I'll show you a couple of little things.
+
+5
+00:00:33,33 --> 00:00:40,40
+But what we're going to talk about today and this is something that I very much want you to be engaged with me,
+
+6
+00:00:40,40 --> 00:00:45,45
+point out where I have gaps, and expand on this. This is a conversation starter and we're going to talk
+
+7
+00:00:45,45 --> 00:00:51,51
+about a lot of the challenges and the capabilities of PowerShell when you look at the total infrastructure stack.
+
+8
+00:00:51,51 --> 00:00:56,56
+Okay? If you're on Twitter, I highly encourage you to use the PowerShell Summit hashtag.
+
+9
+00:00:56,56 --> 00:00:57,57
+You can mock
+
+10
+00:00:57,57 --> 00:01:01,61
+me and heckle me all you want. That's fine. I'm accustomed to that.
+
+11
+00:01:01,61 --> 00:01:08,68
+Throw it on Twitter and we'll have some fun with it and I just thought POSHit was just a fantastic hashtag
+
+12
+00:01:08,68 --> 00:01:11,71
+for so many reasons, so I threw it up there. You can use it or not.
+
+13
+00:01:11,71 --> 00:01:17,77
+I'm good either way. But as I said, I'm Josh Atwell. I'm a developer advocate at SolidFire, which is now
+
+14
+00:01:17,77 --> 00:01:19,79
+part of NetApp.
+
+15
+00:01:19,79 --> 00:01:27,87
+And we have the big thanks to people. How many people were using PowerShell right at the very beginning?
+
+16
+00:01:27,87 --> 00:01:33,93
+Throw your hands up. Alright, how many started with version 2? And how many of you do not like raising your
+
+17
+00:01:33,93 --> 00:01:39,99
+hands during presentations? Excellent. I like to _____ my audience and make sure that I don't count any
+
+18
+00:01:39,99 --> 00:01:44,104
+of your lack of votes. You guys are boring. I'm just kidding. I'm not name calling here.
+
+19
+00:01:44,104 --> 00:01:49,109
+So thanks to those folks. So a little bit about me and I have two hours, so I'm going to talk about myself
+
+20
+00:01:49,109 --> 00:01:55,115
+as much as possible. I'm kidding there too. But there's some things that I think are really important before
+
+21
+00:01:55,115 --> 00:02:03,123
+we get started so that we can level set on why this topic was something I submitted an I thought we should talk about.
+
+22
+00:02:03,123 --> 00:02:09,129
+I started out my career working for a small civil engineering firm where I did desktop support and then server
+
+23
+00:02:09,129 --> 00:02:13,133
+support and started virtualization. It's where I got started with PowerShell.
+
+24
+00:02:13,133 --> 00:02:19,139
+My intent was to automate some tasks. It started with Exchange and I think a lot of people who got started
+
+25
+00:02:19,139 --> 00:02:25,145
+early on, Exchange was that first integration that they worked with, right, I mean
+
+26
+00:02:25,145 --> 00:02:33,153
+can I get an Amen? Right. That was when Microsoft really legitimized PowerShell as a tool that you should invest
+
+27
+00:02:33,153 --> 00:02:39,159
+time and energy in and I did that. And VMware then released the vi toolkit and we're going to get into a lot
+
+28
+00:02:39,159 --> 00:02:44,164
+of these integrations here in a minute, but as part of this narrative, it's important to understand that
+
+29
+00:02:44,164 --> 00:02:50,170
+once the VI Toolkit became a thing, now there was this opportunity to do something much broader and much
+
+30
+00:02:50,170 --> 00:02:57,177
+more impactful in the environment than simply managing my mailboxes and accounts and all that stuff, right.
+
+31
+00:02:57,177 --> 00:03:06,186
+So that took me into CARQUEST general parts where I was responsible for basically rearchitecting the virtual
+
+32
+00:03:06,186 --> 00:03:11,191
+environment and enabling the development team, right. How do I speed up their efforts?
+
+33
+00:03:11,191 --> 00:03:15,195
+We have this really interesting thing we call today called DevOps, right.
+
+34
+00:03:15,195 --> 00:03:22,202
+This was something, and Luc and I've had a conversation on this, DevOps isn't something new.
+
+35
+00:03:22,202 --> 00:03:28,208
+It's something that we've kind of already done. It's just we have new tools and new methodologies to talk about it.
+
+36
+00:03:28,208 --> 00:03:31,211
+I'll talk about that a little bit more in a little bit.
+
+37
+00:03:31,211 --> 00:03:37,217
+Going into Cisco IT from General Parts, I went from managing hundreds of virtual machines to tens of thousands
+
+38
+00:03:37,217 --> 00:03:43,223
+of virtual machines and in that process, there was an element where
+
+39
+00:03:43,223 --> 00:03:52,232
+the manager says to me we need to automate, so we don't have to have extra headcount and we need you to do that, right.
+
+40
+00:03:52,232 --> 00:03:58,238
+And when you start looking at an environment that size, you have to take things into consideration that you
+
+41
+00:03:58,238 --> 00:04:03,243
+don't normally have to consider because you have time and we're going to talk about a lot of those things in
+
+42
+00:04:03,243 --> 00:04:07,247
+this session about how you can leverage PowerShell for multiple layers of the data center, some of the
+
+43
+00:04:07,247 --> 00:04:11,251
+challenges that are associated with that, and then how you address them.
+
+44
+00:04:11,251 --> 00:04:18,258
+And then now I'm at SolidFire. We were recently acquired my NetApp and in my role as developer advocate,
+
+45
+00:04:18,258 --> 00:04:24,264
+I still write a little bit of code from time to time, but I'm primarily focused on getting people together who
+
+46
+00:04:24,264 --> 00:04:30,270
+develop and work with our integrations and work in the infrastructure stack that are trying to solve problems
+
+47
+00:04:30,270 --> 00:04:34,274
+whether it's DevOps, whether it's just LeanOps and trying to improve your operations regardless of what they're
+
+48
+00:04:34,274 --> 00:04:39,279
+doing and try to help make them more successful. So I share the things that they do, I elevate the
+
+49
+00:04:39,279 --> 00:04:46,286
+conversation, and I try to get people engaged, which makes doing things like this fun, except for I'm like
+
+50
+00:04:46,286 --> 00:59:59,999
+oh crap, I need to write some more code.
+

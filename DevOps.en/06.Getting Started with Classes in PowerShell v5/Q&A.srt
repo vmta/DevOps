@@ -1,0 +1,100 @@
+1
+00:00:00,0 --> 00:00:04,626
+Let's slip back to the presentation. So that was kind of my demo and everything.
+
+2
+00:00:04,626 --> 00:00:07,626
+I want to kind of leave it open for questions. I know there were some in between.
+
+3
+00:00:07,626 --> 00:00:08,626
+Yep.
+
+4
+00:00:08,626 --> 00:00:13,626
+I was wondering about deriving like constructors. Can you do that as well?
+
+5
+00:00:13,626 --> 00:00:19,626
+So like say you had like your base class has got whatever kind of copy or something and a constructor for that,
+
+6
+00:00:19,626 --> 00:00:24,626
+that sets off my properties or whatever, then you want to basically like extend that and add another class
+
+7
+00:00:24,626 --> 00:00:32,626
+with a few more properties. Do you inherit that constructor? In terms of inherit, you would call it from
+
+8
+00:00:32,626 --> 00:00:38,626
+the other constructor. You wouldn't really inherit from it. So you had, just kind of like how I showed
+
+9
+00:00:38,626 --> 00:00:49,626
+before where you call it with that base keyword, so if you had Class2 and Class1, you would actually have
+
+10
+00:00:49,626 --> 00:00:57,626
+to call it with that base keyword where you'd say Class1 base and then call anything in there sort of thing,
+
+11
+00:00:57,626 --> 00:01:05,626
+if that makes sense. Yeah. But yeah. Any other questions?
+
+12
+00:01:05,626 --> 00:01:13,626
+Yep. Probably a great person to ask, do you know if there's ever going to be a merge in Visual Studio code
+
+13
+00:01:13,626 --> 00:01:20,626
+and the ISE? If you were in David Wilson's session earlier today, that's kind of his goal.
+
+14
+00:01:20,626 --> 00:01:26,626
+So I would definitely watch that session when it gets up on YouTube because that's what he talked about.
+
+15
+00:01:26,626 --> 00:01:31,626
+The PowerShell editor services are kind of where everything is heading, so hopefully we're going to have one
+
+16
+00:01:31,626 --> 00:01:37,626
+editor service to rule them all sort of thing. If you actually get the latest preview that's going to be
+
+17
+00:01:37,626 --> 00:01:43,626
+coming out soon, you'll actually be able to say File, instead of New PowerShell Tab, there's a new PowerShell
+
+18
+00:01:43,626 --> 00:01:45,626
+Experimental Tab and
+
+19
+00:01:45,626 --> 00:01:50,626
+that is actually using the new editor services, so that's a good way that the community can start to test
+
+20
+00:01:50,626 --> 00:01:53,626
+those editor services. Let me ask you answer your question more directly.
+
+21
+00:01:53,626 --> 00:01:55,626
+We're not merging the two editors, we're just going to share a lot of the…
+
+22
+00:01:55,626 --> 00:02:03,626
+Yeah, okay. Sorry. I didn't realize you were sitting right there.
+
+23
+00:02:03,626 --> 00:02:09,626
+Mission accomplished. Yeah, right. Cool.
+
+24
+00:02:09,626 --> 00:02:12,626
+Cool, well thanks for coming and I
+
+25
+00:02:12,626 --> 00:59:59,999
+hope you have a great rest of your conference.
+

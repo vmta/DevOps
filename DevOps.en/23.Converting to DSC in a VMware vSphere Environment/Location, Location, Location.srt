@@ -1,0 +1,408 @@
+1
+00:00:01,1 --> 00:00:07,947
+Okay. What we want to do and I explained that in the beginning, location, location is very important.
+
+2
+00:00:07,947 --> 00:00:13,947
+If we create a new object or want to create or configure a new object with DSC, we have to be able to exactly
+
+3
+00:00:13,947 --> 00:00:18,947
+tell them in which node we want to create that object.
+
+4
+00:00:18,947 --> 00:00:30,947
+So this is a funny location picture, but it stresses the fact that location can be quite important in some cases.
+
+5
+00:00:30,947 --> 00:00:41,947
+What I'm doing here, we're coding or trying to code in this case the part into which a specific object is located.
+
+6
+00:00:41,947 --> 00:00:45,947
+The code again is quite simple. There are a few basic concepts in this script.
+
+7
+00:00:45,947 --> 00:00:52,947
+We are again passing through a vSphere API method using the same CreateContainerView.
+
+8
+00:00:52,947 --> 00:01:00,947
+We limit what we want to see. This is an advice that you should always use when you start using this Get-View cmdlet.
+
+9
+00:01:00,947 --> 00:01:07,947
+These internal objects are quite big. There are tons of properties on there, so only retrieve what you actually need.
+
+10
+00:01:07,947 --> 00:01:11,947
+It will make your script a lot faster, especially if you're running in bigger environments.
+
+11
+00:01:11,947 --> 00:01:17,947
+You can imagine that creating something that has 100 properties and returning it takes a lot more time then,
+
+12
+00:01:17,947 --> 00:01:25,947
+in this case, we only need two properties and the property that is returned by default, the pointer to the object
+
+13
+00:01:25,947 --> 00:01:33,947
+is always in there. You don't have to explicitly specify it. Now if we use this code and we
+
+14
+00:01:33,947 --> 00:01:41,947
+run this, now we're getting somewhere. Now we are returning the name of our objects, the type in the second
+
+15
+00:01:41,947 --> 00:01:47,947
+column, and what you see on the right is the parent, so that is the node just above the one that you are
+
+16
+00:01:47,947 --> 00:01:56,947
+listing here in this inventory. It is represented as a pointer, so don't look at that exactly, but it's something
+
+17
+00:01:56,947 --> 00:02:04,947
+that we will use in the next step in our script.
+
+18
+00:02:04,947 --> 00:02:13,947
+What we're doing here and I'm showing something that I always try to use in my scripts and my functions that I write.
+
+19
+00:02:13,947 --> 00:02:20,947
+First of all, make it modular. If you have a specific functionality that you want to achieve, make it a separate function.
+
+20
+00:02:20,947 --> 00:02:25,947
+That's what I'm doing here with Get-ParentName. Secondly, what is also quite interesting, instead of writing
+
+21
+00:02:25,947 --> 00:02:35,947
+tons of lines of code, make your functions recursive. So traversing an object tree is ideal for a recursive function.
+
+22
+00:02:35,947 --> 00:02:42,947
+So we had the same code as we had before. We are now just creating or going to try to obtain the part to the
+
+23
+00:02:42,947 --> 00:02:52,947
+object that we're looking at and we do this recursively by calling that Get-ParentName function that you see over there.
+
+24
+00:02:52,947 --> 00:02:53,947
+And then,
+
+25
+00:02:53,947 --> 00:03:01,947
+we go a bit deeper in the function itself. We, in the end when we have the part, we just return that as a
+
+26
+00:03:01,947 --> 00:03:07,947
+property on an object that we create for each inventory object. So this is the ultimate goal we want to see
+
+27
+00:03:07,947 --> 00:03:13,947
+the object, the type of object, and the parent, the complete path, in fact.
+
+28
+00:03:13,947 --> 00:03:20,947
+And this is what we're having now. What you should be noticing that some of these things in the path,
+
+29
+00:03:20,947 --> 00:03:27,947
+some of the nodes in the path are not appearing. There is, for example, I'm not sure if it's on this one,
+
+30
+00:03:27,947 --> 00:03:33,947
+yeah it is, there are the ones in the first red box there. These are what they are called hidden folders.
+
+31
+00:03:33,947 --> 00:03:39,947
+In their inventory system, they made some hidden nodes in the which they can attach those four types of
+
+32
+00:03:39,947 --> 00:03:46,947
+object we mentioned in the beginning of this talk. We have the VM view, the host view, network view, storage view.
+
+33
+00:03:46,947 --> 00:03:52,947
+Those are the hidden folders. Those we don't want, in fact. We're never going to configure them ourselves,
+
+34
+00:03:52,947 --> 00:03:59,947
+so the next step in our script would be to just eliminate those from our script
+
+35
+00:03:59,947 --> 00:04:05,947
+and that is done quite easily with the WHERE clause where we can just say if you encounter an inventory node
+
+36
+00:04:05,947 --> 00:04:10,947
+with that specific name, don't show it to me. I don't want to know it.
+
+37
+00:04:10,947 --> 00:04:16,947
+And on top of that, in the function where we define or create a path to the object, we also skip those.
+
+38
+00:04:16,947 --> 00:04:23,947
+You don't want to have to specify those in the path of the object that you are inventorizing.
+
+39
+00:04:23,947 --> 00:04:29,947
+So this is all very straightforward PowerShell code, PowerCLI code, I guess there's nothing.
+
+40
+00:04:29,947 --> 00:04:36,947
+If there are questions, don't hesitate to ask. Don't start writing this down.
+
+41
+00:04:36,947 --> 00:04:42,947
+I will publish this when I get back home and you will find the complete function because it is a bit bigger
+
+42
+00:04:42,947 --> 00:04:47,947
+in the end. You will find it on my GitHub repository.
+
+43
+00:04:47,947 --> 00:04:52,947
+Okay, we are there. So this is now our inventory, the function that we started with originally.
+
+44
+00:04:52,947 --> 00:04:59,947
+We have all the information we need. We skipped the ones that we don't need, so this is quite complete.
+
+45
+00:04:59,947 --> 00:05:08,947
+It's better than the Get-Inventory cmdlet because we also see stuff like distributed switches, we see the datastore clusters.
+
+46
+00:05:08,947 --> 00:05:16,947
+Datastore clusters are called internally StoragePod, that's why you see it shown this way, but it's the same thing.
+
+47
+00:05:16,947 --> 00:05:26,947
+It's the internal name, which apparently is different from what cells in the end decided it should be named.
+
+48
+00:05:26,947 --> 00:05:32,947
+Now, what are we trying to go to. We want to create, that's our ultimate goal, we want to create these
+
+49
+00:05:32,947 --> 00:05:39,947
+configuration files automatically from an existing environment. So what you see in the red box there,
+
+50
+00:05:39,947 --> 00:05:43,947
+that's the stuff that I want to generate with the script in the end.
+
+51
+00:05:43,947 --> 00:05:50,947
+All the rest in my configuration file is rather static. I could use that in an inline string, code it once,
+
+52
+00:05:50,947 --> 00:06:02,947
+and just create the file, but this part is the part that really depends on what it discovers in your environment.
+
+53
+00:06:02,947 --> 00:06:08,947
+So what I'm doing here, I'm using an inline string and I just make a placeholder there.
+
+54
+00:06:08,947 --> 00:06:14,947
+That's the one that is marked and highlighted in yellow. That is the one that I will replace with text that
+
+55
+00:06:14,947 --> 00:06:18,947
+I generate based on the inventory we created with the function earlier.
+
+56
+00:06:18,947 --> 00:06:25,947
+So it's a very straightforward thing. All the stuff that is fixed or semi constant, you can do that in the
+
+57
+00:06:25,947 --> 00:06:32,947
+inline string and the stuff that is different or will change in your environment, that's the one that we will
+
+58
+00:06:32,947 --> 00:06:38,947
+insert in the text. How we do that is very straightforward. Everything is there, it's a string, you just do
+
+59
+00:06:38,947 --> 00:06:50,947
+a replace and place of that marker with the text you generated in the end.
+
+60
+00:06:50,947 --> 00:06:54,947
+Now there are a few properties on these resources that are quite important.
+
+61
+00:06:54,947 --> 00:06:59,947
+There is, for example, the one where you will tell it your specific node.
+
+62
+00:06:59,947 --> 00:07:05,947
+Imagine a folder, which is a subfolder of another folder, so we have Folder1, Folder2.
+
+63
+00:07:05,947 --> 00:07:13,947
+We want to define that dependency. So if we create Folder2, we have to find a way to say Folder1 should be there before.
+
+64
+00:07:13,947 --> 00:07:21,947
+So DSC allows you to do that with the DependsOn. Now we have to create depending on the path.
+
+65
+00:07:21,947 --> 00:07:28,947
+We have to construct that dependency dynamically from the inventory we are pulling.
+
+66
+00:07:28,947 --> 00:07:33,947
+Again, this is quite, can become quite complex because a folder can be located under a datacenter or it can
+
+67
+00:07:33,947 --> 00:07:40,947
+be located under another folder, so there's a bit of logic involved to find the correct dependency that we want
+
+68
+00:07:40,947 --> 00:07:48,947
+to use in our DSC configuration file. In the last lines at the bottom there I'm actually generating the specific
+
+69
+00:07:48,947 --> 00:07:54,947
+text for that specific invent. This is an example from the folder, but we have similar things for datacenter
+
+70
+00:07:54,947 --> 00:08:01,947
+clusters VM hosts. This is just to show you how I do it in the end.
+
+71
+00:08:01,947 --> 00:08:06,947
+There's a bit of logic, for example, for the folders where we decide if it's a blue or a yellow folder.
+
+72
+00:08:06,947 --> 00:08:12,947
+Remember yellow is the VM host cluster view. Blue is the VM template view.
+
+73
+00:08:12,947 --> 00:08:20,947
+And in the end, we will arrive with something that is actually usable in our DSC configuration file.
+
+74
+00:08:20,947 --> 00:08:24,947
+There are a few issues that you might encounter when you do this kind of inventory.
+
+75
+00:08:24,947 --> 00:08:30,947
+Suppose and vSphere allows you to do that, you have a folder with the same name, but in different locations
+
+76
+00:08:30,947 --> 00:08:38,947
+in your hierarchy. So you have to find a way to actually find the one that you want to look at.
+
+77
+00:08:38,947 --> 00:08:44,947
+Now I could have written quite some code, but luckily, and now I'm coming back to the point that I made at
+
+78
+00:08:44,947 --> 00:08:47,947
+the beginning, don't reinvent the wheel, just
+
+79
+00:08:47,947 --> 00:08:58,947
+steal the code. There is a guy who already wrote a function to do that, which happens to be someone I know.
+
+80
+00:08:58,947 --> 00:09:05,947
+He allows you to give the path to a folder, so he will follow that function, will follow the complete path
+
+81
+00:09:05,947 --> 00:09:13,947
+and give you the correct object. So no more issues if you have likewise names or folders with the same name.
+
+82
+00:09:13,947 --> 00:09:19,947
+You just give the complete path and he will return to you the correct object that you need in this case.
+
+83
+00:09:19,947 --> 00:09:24,947
+So we plug that in our script as well and then
+
+84
+00:09:24,947 --> 00:09:33,947
+if we run it ultimately, remember it was especially the where part that we were interested in the configuration variable.
+
+85
+00:09:33,947 --> 00:09:40,947
+This is the end result for folders in this case. I just re-include the two screenshots of those two views on
+
+86
+00:09:40,947 --> 00:09:45,947
+the inventory here to show you what we are actually doing there.
+
+87
+00:09:45,947 --> 00:09:51,947
+If you look, for example, at Folder4, that's the one at the bottom, the blue folder, you will see that there
+
+88
+00:09:51,947 --> 00:09:56,947
+is a dependency Folder3 should be there before Folder4 is created, which is obvious.
+
+89
+00:09:56,947 --> 00:10:02,947
+It's a subfolder on that one. But in a similar way, we have for Folder2, for example, which is a yellow
+
+90
+00:10:02,947 --> 00:10:11,947
+folder top view. That's a folder that is hosted, the parent of that folder is a datacenter so you then have a
+
+91
+00:10:11,947 --> 00:10:20,947
+dependency as we showed there in the DependsOn on that datacenter Homelab that we created earlier or in another line.
+
+92
+00:10:20,947 --> 00:10:26,947
+Now once you have these dependencies, the LCM will take care of it and he will do the right or do the right thing
+
+93
+00:10:26,947 --> 00:10:31,947
+to regenerate your complete environment.
+
+94
+00:10:31,947 --> 00:10:34,947
+Once you have this stuff, it's quite easy to put this in the source control.
+
+95
+00:10:34,947 --> 00:10:42,947
+You can use this to find drift in your environment. Somebody changes, somebody deletes a folder, this will discover.
+
+96
+00:10:42,947 --> 00:10:49,947
+Once you have this defined, in DSC it will find it and correct it, but you could also use this kind of stuff
+
+97
+00:10:49,947 --> 00:10:56,947
+to migrate your environment. Suppose you have a new vCenter, new version, an update, a new hardware, I don't know
+
+98
+00:10:56,947 --> 00:11:04,947
+what, you just want to transplant your complete environment. You could create that configuration file and then
+
+99
+00:11:04,947 --> 00:11:10,947
+just use the configuration file to recreate exactly the same structure on that other vCenter.
+
+100
+00:11:10,947 --> 00:11:17,947
+So the use case is for this kind of configuration files are quite interesting, so source control,
+
+101
+00:11:17,947 --> 00:11:25,947
+but also migration and recreation. You can use it in a DR environment where part of your environment would
+
+102
+00:11:25,947 --> 00:59:59,999
+by disaster disappear, you can recreate it quite easily that way.
+

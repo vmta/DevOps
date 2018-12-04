@@ -1,0 +1,56 @@
+1
+00:00:00,0 --> 00:00:02,186
+initial findings. There's some sort of brute forcing sqlmap.
+
+2
+00:00:02,186 --> 00:00:05,186
+If you look at the referrer, there's a bunch of sqlmap references.
+
+3
+00:00:05,186 --> 00:00:12,186
+These webshells were created. Probably didn't need to do that. One thing, another thing that I've found
+
+4
+00:00:12,186 --> 00:00:27,186
+that's kind of cool is this gourse is kind of a visualization tool, and so okay I've got to figure out where
+
+5
+00:00:27,186 --> 00:00:39,186
+that thing is, there we go. This is a pain in the butt. Anybody see where my mouse is, alright.
+
+6
+00:00:39,186 --> 00:00:44,186
+Alright, so gourse is a visualization, so basically, I took that timeline and created this visualization to
+
+7
+00:00:44,186 --> 00:00:50,186
+show us files that are being created, changes to the file system, and so as you can see, some stuff is happening
+
+8
+00:00:50,186 --> 00:00:55,186
+down there, right. Something happened that is probably not good.
+
+9
+00:00:55,186 --> 00:00:59,186
+That's that brute force with all the session files being created.
+
+10
+00:00:59,186 --> 00:01:03,186
+And then we see over here in this, we see like webshells.zip and c99.php.
+
+11
+00:01:03,186 --> 00:01:09,186
+It's just kind of a way to visualize the data as it's happening.
+
+12
+00:01:09,186 --> 00:01:15,186
+I've got to find my mouse again here. Hopefully, this
+
+13
+00:01:15,186 --> 00:01:18,186
+works. Oh, man. That's oh well.
+
+14
+00:01:18,186 --> 00:59:59,999
+We're going to do it from here just like this. Okay, so
+

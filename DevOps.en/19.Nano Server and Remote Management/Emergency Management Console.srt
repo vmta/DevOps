@@ -1,0 +1,136 @@
+1
+00:00:00,0 --> 00:00:07,024
+Okay, so some functionality that's been added in the past few releases is the EMC, the Emergency Management Console.
+
+2
+00:00:07,024 --> 00:00:13,024
+So we showed you remoting using RSMT. You know that you can remote in PowerShell, but what happens at the
+
+3
+00:00:13,024 --> 00:00:19,024
+local console, right, what happens at the keyboard and mouse you're on locally, if you're on bare metal, or
+
+4
+00:00:19,024 --> 00:00:24,024
+when you connect on Hyper-V. So we need to provide a way… Yeah.
+
+5
+00:00:24,024 --> 00:00:30,024
+The one thing that it doesn't do in TP4 is allow you to start the DNS service.
+
+6
+00:00:30,024 --> 00:00:37,024
+Is that changing? The one thing that the EMC doesn't do in TP4 with the DNS service?
+
+7
+00:00:37,024 --> 00:00:56,024
+(Audience comment) Okay. I'll take a note of that after it and if you want to sync up with me, we can make
+
+8
+00:00:56,024 --> 00:01:01,024
+sure that your feedback gets heard. I'm not sure of the latest status on that.
+
+9
+00:01:01,024 --> 00:01:08,024
+So EMC, like I was saying, is the local way to get access to your configuration settings and now most recently,
+
+10
+00:01:08,024 --> 00:01:14,024
+network configuration and firewall settings. And with that, we can jump into a demo.
+
+11
+00:01:14,024 --> 00:01:28,024
+A few minutes left, so here we go. Connect to this guy. So that's what it looks like.
+
+12
+00:01:28,024 --> 00:01:38,024
+So I'm just going to log in here and that's what you got with EMC.
+
+13
+00:01:38,024 --> 00:01:44,024
+So from the top, you can see you've got your computer name, your workgroup that you're a part of,
+
+14
+00:01:44,024 --> 00:01:50,024
+operating system, and then basic time/date info, and then network addresses.
+
+15
+00:01:50,024 --> 00:01:57,024
+I'm not connected to Hyper-V switch right now, so this one isn't network accessible and you can see your two
+
+16
+00:01:57,024 --> 00:02:07,024
+options down there. So this has actually changed since TP3 when you guys last saw it for those of you that did.
+
+17
+00:02:07,024 --> 00:02:12,024
+So just tab in and then you have these two options, networking and firewall, and you'll also notice along the
+
+18
+00:02:12,024 --> 00:02:21,024
+bottom, the Ctrl+F6 and the Ctrl+F12 for restart and shutdown. So this will list all of the network adapters
+
+19
+00:02:21,024 --> 00:02:25,024
+and this shows you the info you need to make sure that you're up and connected.
+
+20
+00:02:25,024 --> 00:02:34,024
+Link status. Whether you're connected or not, interface, and the driver info, so driver name, date, and version.
+
+21
+00:02:34,024 --> 00:02:42,024
+And then notice along the bottom there, F4 to toggle the network adapter, you can disable it and enable it like that.
+
+22
+00:02:42,024 --> 00:02:51,024
+If you do F10, you can get the routes table to configure ARP routes, add a route with F10.
+
+23
+00:02:51,024 --> 00:03:01,024
+And then, IPv4 settings, so if you want to that, you can specify all that stuff there.
+
+24
+00:03:01,024 --> 00:03:09,024
+And then, IPv6 settings. So it's all accessible to make sure that you can get your network interface up.
+
+25
+00:03:09,024 --> 00:03:16,024
+And then the next piece of the puzzle, firewall. So these are all the firewall rules that ship in the box.
+
+26
+00:03:16,024 --> 00:03:26,024
+For my debugging purposes, I add a global WINRM 5985 rule. That's really easy to do.
+
+27
+00:03:26,024 --> 00:03:31,024
+From here, you can enable it and disable it. And notice that it's state toggling between enable, no, and yes.
+
+28
+00:03:31,024 --> 00:03:38,024
+Is there a plan to allow you to change like the local address from the EMC, for example, like you could toggle
+
+29
+00:03:38,024 --> 00:03:44,024
+them on and off right with the firewall rules, but you can't actually alter firewall rules.
+
+30
+00:03:44,024 --> 00:03:48,024
+There are discussions within a server team of how to best achieve that.
+
+31
+00:03:48,024 --> 00:03:54,024
+There are ways you can do it now using PowerShell, right, if you remote in, but from the EMC currently,
+
+32
+00:03:54,024 --> 00:04:04,024
+you can't add in TP4. Okay, and then I think that's it. Yeah, and then you can just log out with Escape.
+
+33
+00:04:04,024 --> 00:04:09,024
+And this works great on domain connected environments as well. Within the company, I'm able to use my domain
+
+34
+00:04:09,024 --> 00:59:59,999
+credentials and hop into a fresh Nano server.
+

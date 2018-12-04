@@ -1,0 +1,344 @@
+1
+00:00:00,0 --> 00:00:05,838
+Alright, so now we have our module, it's fixed, it's tested, it's running.
+
+2
+00:00:05,838 --> 00:00:13,838
+I guess I could have showed what a green test looks like. So if it's successful, same thing, Pester output looks
+
+3
+00:00:13,838 --> 00:00:23,838
+green rather than red so, but now we have this test module that we want to have people use.
+
+4
+00:00:23,838 --> 00:00:26,838
+So what you're going to want to do is go to the PowerShell Gallery.
+
+5
+00:00:26,838 --> 00:00:32,838
+So if you haven't gone to the PowerShell Gallery yet, it's powershellgallery.com and what it is it's based
+
+6
+00:00:32,838 --> 00:00:38,838
+on a technology called NuGet, same thing that Chocolatey is based on and same thing that NuGet's based on
+
+7
+00:00:38,838 --> 00:00:45,838
+and it's a package management system, so you can upload packages, in this case modules and scripts, and then use
+
+8
+00:00:45,838 --> 00:00:56,838
+the built-in WMF5 cmdlets and I think they're WMF4 now as well, install module, install script, find module,
+
+9
+00:00:56,838 --> 00:01:01,838
+and it will actually go out to these repositories and find the modules that are available.
+
+10
+00:01:01,838 --> 00:01:08,838
+So it'd be great if our module was up here and available for people to easily use when they are just on the
+
+11
+00:01:08,838 --> 00:01:12,838
+command-line, so they could easily install our LoremIpsum module.
+
+12
+00:01:12,838 --> 00:01:17,838
+So what you're going to look at is this Publishing tab. So you'll notice that if you want to publish a module,
+
+13
+00:01:17,838 --> 00:01:21,838
+the thing you want to specify is and you're going to use the Publish-Module cmdlet and you can specify the
+
+14
+00:01:21,838 --> 00:01:30,838
+name of the module and then a NuGet API key. So a NuGet API key is more or less your identifier for your account.
+
+15
+00:01:30,838 --> 00:01:34,838
+So if I were to click on my account, you would actually see my NuGet API key, which I'm not going to do because
+
+16
+00:01:34,838 --> 00:01:39,838
+you've got to treat it like a password because if anyone gets that API key, technically, they could publish
+
+17
+00:01:39,838 --> 00:01:46,838
+modules as you. So I'm not going to click that, but that's where you'd put that.
+
+18
+00:01:46,838 --> 00:01:53,838
+So now let's actually go and update our appveyor.yml file to do this.
+
+19
+00:01:53,838 --> 00:02:03,838
+So if we go back here, run that, and go back here, you can see there's a lot more stuff going on.
+
+20
+00:02:03,838 --> 00:02:06,838
+The first thing that I'm doing is I'm changing the clone folder. So
+
+21
+00:02:06,838 --> 00:02:12,838
+I might just not be, I haven't used Publish-Module all that much, so I'm going to be doing something wrong,
+
+22
+00:02:12,838 --> 00:02:17,838
+but I actually had to mess with it a little bit to get it to work correctly with a path rather than a name.
+
+23
+00:02:17,838 --> 00:02:22,838
+So if you look at what I'm actually doing with Publish-Module down here, I'm specifying a path and that's
+
+24
+00:02:22,838 --> 00:02:27,838
+the clone folder that I'm specifying up here. So it'll automatically look in there.
+
+25
+00:02:27,838 --> 00:02:33,838
+That's what will have my psm1 and my psd1, so that'll all be in there.
+
+26
+00:02:33,838 --> 00:02:38,838
+The other thing that I added obviously was this deploy script. So the deploy script, the first thing that it
+
+27
+00:02:38,838 --> 00:02:44,838
+does is it installs a package provider for NuGet, which will also update it to the most recent version,
+
+28
+00:02:44,838 --> 00:02:50,838
+so it's a step that's required because we are using an image that does not have that in there automatically.
+
+29
+00:02:50,838 --> 00:02:56,838
+I guess I glossed over the fact that I did change the image, so by default the image is called Visual Studio 2015.
+
+30
+00:02:56,838 --> 00:03:02,838
+That does not have WMF5 on it. So we'd only actually have the Publish-Module cmdlet in that case.
+
+31
+00:03:02,838 --> 00:03:11,838
+So what I can do is switch over to the AppVeyor image called WMF5 and it has that available to us.
+
+32
+00:03:11,838 --> 00:03:17,838
+So then I'm calling Publish-Module. I'm specifying my NuGetApiKey, which is this ApiKey environment variable,
+
+33
+00:03:17,838 --> 00:03:19,838
+and then the path to my module. So
+
+34
+00:03:19,838 --> 00:03:22,838
+it's going to go out, it's going to discover that module manifest, it's going to look in there, upload all that
+
+35
+00:03:22,838 --> 00:03:27,838
+metadata to the gallery, and then make it available for people to install.
+
+36
+00:03:27,838 --> 00:03:35,838
+And what you're seeing down here is the actual definition of this environment variable.
+
+37
+00:03:35,838 --> 00:03:42,838
+So what you can do is you can specify an environment tag, the ApiKey, and in this case, I'm using a secure variable.
+
+38
+00:03:42,838 --> 00:03:46,838
+So this is not my ApiKey. This is an encrypted version of my ApiKey
+
+39
+00:03:46,838 --> 00:03:51,838
+because if you remember, when I was running my AppVeyor key or AppVeyor builds, you can see all the command-line
+
+40
+00:03:51,838 --> 00:03:55,838
+output, so we don't want to just dump our key on there for anyone to get access to.
+
+41
+00:03:55,838 --> 00:03:58,838
+What we want to do is actually use a
+
+42
+00:03:58,838 --> 00:04:03,838
+secure variable from AppVeyor. So the way that this works is this environment variable when it's actually
+
+43
+00:04:03,838 --> 00:04:08,838
+running inside AppVeyor, is decrypted. So technically, if I were to just dump that to the command-line and
+
+44
+00:04:08,838 --> 00:04:12,838
+it printed it out, it would be an unencrypted value.
+
+45
+00:04:12,838 --> 00:04:16,838
+But it only unencrypts it for builds that are not pull requests.
+
+46
+00:04:16,838 --> 00:04:24,838
+So if someone forked your repo, changed this script to dump out your API key, submitted a pull request,
+
+47
+00:04:24,838 --> 00:04:30,838
+which caused an AppVeyor build to run, it won't actually decrypt that key, so you can't have anyone
+
+48
+00:04:30,838 --> 00:04:35,838
+maliciously trying to get your key out sort of thing. So the only time that it would run would be when you
+
+49
+00:04:35,838 --> 00:04:41,838
+triggered a build either through a commit directly to master or pulling in that pull request because you've
+
+50
+00:04:41,838 --> 00:04:46,838
+validated the fact that someone didn't do something malicious with that key.
+
+51
+00:04:46,838 --> 00:04:51,838
+So to create secure variables, I'll just show you how to do that real quick.
+
+52
+00:04:51,838 --> 00:04:55,838
+Oh, our build failed. See there our tests failed. I wonder if it fixed them.
+
+53
+00:04:55,838 --> 00:05:02,838
+Oh yeah, fixing the test did not fix the test, so there's still something wrong there.
+
+54
+00:05:02,838 --> 00:05:07,838
+And to create an encrypted variable, you can just click on your name, click encrypted data, and just put it
+
+55
+00:05:07,838 --> 00:05:11,838
+wherever you want in here, click Encrypt, and it'll actually give you the value and what you need to put in
+
+56
+00:05:11,838 --> 00:05:15,838
+your AppVeyor YAML. So that's really important. I've actually, especially for deployment purposes,
+
+57
+00:05:15,838 --> 00:05:19,838
+there's lots of reasons that you'd want to do that. For PoshTools, I actually need to do that for the code
+
+58
+00:05:19,838 --> 00:05:25,838
+signing cert password and stuff like that, so you've got to be really careful because you can shoot yourself
+
+59
+00:05:25,838 --> 00:05:31,838
+in the foot. I had to rekey my code signing cert like four times because I kept messing this up and dumping
+
+60
+00:05:31,838 --> 00:05:38,838
+my public key to the AppVeyor log. I'm like ah. Alright, so now that we have that, we can actually check in
+
+61
+00:05:38,838 --> 00:05:44,838
+our publish, which isn't going to work because our tests are broken, but that's okay.
+
+62
+00:05:44,838 --> 00:05:53,838
+Publish module. Alright, so submit that. So now that's going to kick off a new build and it's going to take
+
+63
+00:05:53,838 --> 00:06:02,838
+that extra step of actually publishing it. So I don't know if I actually took a screenshot of that,
+
+64
+00:06:02,838 --> 00:06:05,838
+but that's okay because I don't want to wait for it to happen anyways.
+
+65
+00:06:05,838 --> 00:06:12,838
+But once you actually publish something to a gallery, what you'll see is something like this.
+
+66
+00:06:12,838 --> 00:06:18,838
+So here's our LoremIpsum module that gets published. You can see it got all that metadata from that module
+
+67
+00:06:18,838 --> 00:06:28,838
+that I generated automatically, so it generates the LoremIpsum text and you can see that now they have functions,
+
+68
+00:06:28,838 --> 00:06:35,838
+you can click on those, find out more information about that kind of stuff, and it actually has the ability
+
+69
+00:06:35,838 --> 00:06:38,838
+to copy and paste this and run it, install it, that kind of thing.
+
+70
+00:06:38,838 --> 00:06:42,838
+One thing you'll note about the PowerShell Gallery is that this module is unlisted.
+
+71
+00:06:42,838 --> 00:06:45,838
+So when I was making this demo,
+
+72
+00:06:45,838 --> 00:06:49,838
+I came to the realization that once I published this module, I couldn't delete it.
+
+73
+00:06:49,838 --> 00:06:54,838
+I was like why is that case. Do you guys remember that MPM thing that happened, or yeah, MPM thing that
+
+74
+00:06:54,838 --> 00:07:00,838
+happened where that guy unlisted his module from MPM. Did you hear about that?
+
+75
+00:07:00,838 --> 00:07:04,838
+Yeah, so that's why they do this. So that's why they do this. So you can't actually delete your module.
+
+76
+00:07:04,838 --> 00:07:07,838
+You can only unlist it, so people can't find it and install it manually.
+
+77
+00:07:07,838 --> 00:07:14,838
+So I can relist it, so now that makes it publicly available for people to download again.
+
+78
+00:07:14,838 --> 00:07:21,838
+So yeah, if you didn't hear about that MPM thing, some guy had like a 10-line MPM package that like thousands
+
+79
+00:07:21,838 --> 00:07:24,838
+of packages---what's that?
+
+80
+00:07:24,838 --> 00:07:25,838
+(Audience comment)
+
+81
+00:07:25,838 --> 00:07:34,838
+Seven, yeah. So he got like some guy he had some naming right, he had the naming rights to it pretty much
+
+82
+00:07:34,838 --> 00:07:41,838
+and some of other company wanted naming rights and what he pretty much said well yeah, if you give me $10,000,
+
+83
+00:07:41,838 --> 00:07:47,838
+I will let you have the name, and they're like no, and they took away the name from him or whatever, and so he
+
+84
+00:07:47,838 --> 00:07:51,838
+decided to unlist all his packages, which just broke the world of Linux for a while there.
+
+85
+00:07:51,838 --> 00:07:57,838
+So that's what we're trying to prevent, I guess, with this. So you can't actually unlist your module once it's
+
+86
+00:07:57,838 --> 00:59:59,999
+or delete it once it's published.
+

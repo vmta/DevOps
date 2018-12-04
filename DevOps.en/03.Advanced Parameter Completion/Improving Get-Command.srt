@@ -1,0 +1,480 @@
+1
+00:00:00,75 --> 00:00:05,974
+So let's take that kind of to the next level, alright. So now what we're going to do, I want to show that
+
+2
+00:00:05,974 --> 00:00:08,974
+you can actually
+
+3
+00:00:08,974 --> 00:00:14,974
+add argument completers to commands that you don't even own, to native commands if you want to.
+
+4
+00:00:14,974 --> 00:00:18,974
+I mean you want to be careful with that, but
+
+5
+00:00:18,974 --> 00:00:23,974
+so I picked Get-Command to kind of pick on. There's you know I---ignore the title, Improve_Get-Command.
+
+6
+00:00:23,974 --> 00:00:29,974
+It actually---Get-Command as what it does is amazing. Alright, there's nothing, I have no faults with that,
+
+7
+00:00:29,974 --> 00:00:37,974
+but it'd seem like it would be a command to kind of pick on to show how you could have completers that depend
+
+8
+00:00:37,974 --> 00:00:42,974
+on other parameters that are being passed in while you're typing on the command-line.
+
+9
+00:00:42,974 --> 00:00:49,974
+So Get-Command, you know, it obviously it has some completion that happens natively, right.
+
+10
+00:00:49,974 --> 00:00:58,974
+So if I type in module and bring this up, this takes a little while, it was able to complete that.
+
+11
+00:00:58,974 --> 00:01:05,974
+It knew the available modules. Now if I type in -Name and hit Space, now this one's kind of funny.
+
+12
+00:01:05,974 --> 00:01:11,974
+I had to hit Ctrl+Space to bring it up and if you look at that icon, that's not the parameter value icon.
+
+13
+00:01:11,974 --> 00:01:16,974
+But still, it provided completion for this and it is filtered on just that module.
+
+14
+00:01:16,974 --> 00:01:20,974
+If I didn't put any modules there, then it should have just had all the commands available.
+
+15
+00:01:20,974 --> 00:01:28,974
+I can do the same thing with -Noun. This time around it looks like its, the default completion isn't doing
+
+16
+00:01:28,974 --> 00:01:34,974
+parameter values, so again you have the blank there and I had to hit Ctrl+Space, but this is still filtered on module.
+
+17
+00:01:34,974 --> 00:01:39,974
+But you can't do something like -ParameterName and try to bring up completions for that.
+
+18
+00:01:39,974 --> 00:01:44,974
+That's not going to work. It doesn't provide ParameterName or ParameterType completions,
+
+19
+00:01:44,974 --> 00:01:51,974
+so we're going to try to fix that. Now we're going to skip over the one that's labeled First try.
+
+20
+00:01:51,974 --> 00:01:57,974
+You guys can look at that later and it's just going to be this exact same completer here, but just with not
+
+21
+00:01:57,974 --> 00:02:03,974
+quite as much. But what we're going to do, I want to, actually first, before I embarrass myself, we have some
+
+22
+00:02:03,974 --> 00:02:08,974
+helper functions, this wouldn't have worked earlier or later. We have one called ReregisterCompleter.
+
+23
+00:02:08,974 --> 00:02:09,974
+What this is going to do
+
+24
+00:02:09,974 --> 00:02:16,974
+every time we modify that completer ScriptBlock, this things job is to just go in and for every single
+
+25
+00:02:16,974 --> 00:02:22,974
+parameter or not every single parameter, but all of these parameters, it's going to register this completer
+
+26
+00:02:22,974 --> 00:02:27,974
+to the Get-Command command and to each one of these variables, so we'll be able to just, instead of having
+
+27
+00:02:27,974 --> 00:02:36,974
+this foreach, we'll just call Reregister, oops, command. NewCompletionResult, this is just going to be,
+
+28
+00:02:36,974 --> 00:02:39,974
+this is the helper function and you're going to want to do this
+
+29
+00:02:39,974 --> 00:02:43,974
+probably. Remember how that simple completer earlier turned into something that's not quite so simple,
+
+30
+00:02:43,974 --> 00:02:49,974
+it's got a whole bunch of lines. This makes it so that you can just take a string and send it to
+
+31
+00:02:49,974 --> 00:02:52,974
+New-CompletionResult. It'll figure out if it needs to be quoted.
+
+32
+00:02:52,974 --> 00:02:57,974
+In this case, this is mostly from the TabExpansionPlusPlus module.
+
+33
+00:02:57,974 --> 00:03:01,974
+I did that one thing. This isn't the best practice here. It saved a couple lives for the demo, but this is
+
+34
+00:03:01,974 --> 00:03:06,974
+actually going to take the word to complete into account from its parent scope, you know where it's being called.
+
+35
+00:03:06,974 --> 00:03:12,974
+Just be aware of that if you try to take this and use it somewhere else since you probably don't want to do
+
+36
+00:03:12,974 --> 00:03:19,974
+that in your real helper function, but we'll read that in. So now we're going to come down and here's kind of
+
+37
+00:03:19,974 --> 00:03:26,974
+the neat thing. Since the completer will know the command and the parameter it's working against,
+
+38
+00:03:26,974 --> 00:03:32,974
+you can do something like this where you use the exact same ArgumentCompleter code for something,
+
+39
+00:03:32,974 --> 00:03:38,974
+for one command you can just have the same completer code, and in this case, you know, we have a check in the
+
+40
+00:03:38,974 --> 00:03:43,974
+beginning, this isn't strictly necessary, but if this completer accidentally got registered to another
+
+41
+00:03:43,974 --> 00:03:49,974
+command, we do a little check to see whether or not we should just return without putting any results out.
+
+42
+00:03:49,974 --> 00:03:54,974
+If this accidentally got sent to another command, you don't want to confuse the output with completion
+
+43
+00:03:54,974 --> 00:03:59,974
+results that don't make sense. The next thing we're going to do, we're actually going to call Get-Command on
+
+44
+00:03:59,974 --> 00:04:05,974
+itself and we're just going to splat the fake bound parameters into it.
+
+45
+00:04:05,974 --> 00:04:11,974
+So one thing we're going to do though, whatever the current parameter that's being operated on is,
+
+46
+00:04:11,974 --> 00:04:14,974
+we're going to add a wildcard to that because otherwise, as we're typing a command,
+
+47
+00:04:14,974 --> 00:04:20,974
+if we type -Module and we type three letters of a module in, that's going to mess your completion results up
+
+48
+00:04:20,974 --> 00:04:24,974
+later when this gets splatted because that would actually splat those first three letters
+
+49
+00:04:24,974 --> 00:04:34,974
+to Get-Command. And then we're going to, depending on what the parameter is, we're going to do something,
+
+50
+00:04:34,974 --> 00:04:36,974
+depending on what the ParameterName is, we do something a little bit different.
+
+51
+00:04:36,974 --> 00:04:42,974
+So if the current parameter, remember Get-Command has a ParameterName parameter, if its ParameterName,
+
+52
+00:04:42,974 --> 00:04:48,974
+then we're going to figure out whether or not the ParameterType has been specified and if it has,
+
+53
+00:04:48,974 --> 00:04:52,974
+we'll filter on, I mean literally whatever Get-Command returned earlier is stored in this ValidCommands,
+
+54
+00:04:52,974 --> 00:04:59,974
+so we check the parameters dictionary for each one of those and then all the values, we filter them, we sort them
+
+55
+00:04:59,974 --> 00:05:05,974
+alphabetically and get them a unique value and then send it down the NewCompletionResult.
+
+56
+00:05:05,974 --> 00:05:11,974
+ParameterType is pretty similar. We're going to, just in that case, instead of getting the keys off those
+
+57
+00:05:11,974 --> 00:05:16,974
+parameter dictionaries, we're going to get the values and then take their types.
+
+58
+00:05:16,974 --> 00:05:22,974
+And then if it's any other parameter like verb or noun or name or module, we're going to take whatever those
+
+59
+00:05:22,974 --> 00:05:29,974
+ValidCommands results are, whatever the results from a call and Get-Command are, and we're just going to
+
+60
+00:05:29,974 --> 00:05:35,974
+select that property off of the commands. So what should happen…
+
+61
+00:05:35,974 --> 00:05:41,974
+Question. Sure. Do you have a recommendation or idea when you might want to do multiple completers inside
+
+62
+00:05:41,974 --> 00:05:47,974
+of one completer like you're doing versus first string multiple ArgumentCompleters?
+
+63
+00:05:47,974 --> 00:05:49,974
+Yeah, so the
+
+64
+00:05:49,974 --> 00:05:53,974
+question was do I have any recommendations on when to do separate completers.
+
+65
+00:05:53,974 --> 00:05:56,974
+In this case, we're taking the exact same one and registering. And it just depends.
+
+66
+00:05:56,974 --> 00:06:02,974
+You look at it by case by case basis. So in this case, if I were to make a separate one for each one,
+
+67
+00:06:02,974 --> 00:06:06,974
+there would be so much, all the code would be duplicated, except for this switch statement.
+
+68
+00:06:06,974 --> 00:06:11,974
+So in that case, it makes sense, they're all doing essentially the same thing.
+
+69
+00:06:11,974 --> 00:06:15,974
+They're going to call Get-Command with whatever else has been passed
+
+70
+00:06:15,974 --> 00:06:22,974
+and it's just if you look at it and it looks like you're reusing the exact same code over and over again,
+
+71
+00:06:22,974 --> 00:06:27,974
+I would put it into one completer. I don't think it would hurt anything to have a separate completer for each one.
+
+72
+00:06:27,974 --> 00:06:32,974
+I mean, in the grand scheme of things, this is putting everything in a global dictionary that it's not,
+
+73
+00:06:32,974 --> 00:06:37,974
+it's the same amount of work for the PowerShell engine when it goes to look up hey, alright, I've got this
+
+74
+00:06:37,974 --> 00:06:44,974
+command with this parameter, is there a completer available? So it wouldn't have hurt to do them separately,
+
+75
+00:06:44,974 --> 00:06:51,974
+but in this case because the amount of code reuse would be incredibly high, I just chose to throw them into one.
+
+76
+00:06:51,974 --> 00:06:59,974
+Sure. Another question? Is that okay? Yeah, absolutely. So what is that with
+
+77
+00:06:59,974 --> 00:07:05,974
+Microsoft.PowerShell.Core\Get-Command? So that's the fully-qualified command name.
+
+78
+00:07:05,974 --> 00:07:06,974
+I mean and
+
+79
+00:07:06,974 --> 00:07:12,974
+to be honest, it's probably, so Get-Command is something, so there's an order of operations or a precedence
+
+80
+00:07:12,974 --> 00:07:18,974
+for different commands, so if I were to make a function called Get-Command, that would actually kind of
+
+81
+00:07:18,974 --> 00:07:25,974
+shadow the real Get-Command because functions are looked up first and I think aliases are looked up before functions.
+
+82
+00:07:25,974 --> 00:07:31,974
+So in this case, this is just a way to say go to the real Get-Command cmdlet.
+
+83
+00:07:31,974 --> 00:07:37,974
+That Microsoft.PowerShell.Core, that's a way that you can access all the core _____?
+
+84
+00:07:37,974 --> 00:07:53,974
+Well so let's do Get-Command Get-Command and let's see somewhere in there, I guess we have to…
+
+85
+00:07:53,974 --> 00:08:03,974
+(Audience talking) Yeah, I see that. In the middle there. It may have been.
+
+86
+00:08:03,974 --> 00:08:11,974
+(Audience talking) I wonder if it would be, hold on. Nope. So it's available from Get-Command.
+
+87
+00:08:11,974 --> 00:08:17,974
+In a little bit right after here I'll show you how you can actually grab that information.
+
+88
+00:08:17,974 --> 00:08:23,974
+I don't want to embarrass myself anymore up here. So we'll take that completer ScriptBlock and we're going
+
+89
+00:08:23,974 --> 00:08:26,974
+to run the ReregisterCompleter, which took that ScriptBlock
+
+90
+00:08:26,974 --> 00:08:32,974
+and said for Get-Command register this to the Name parameter, to the Module parameter, all that stuff.
+
+91
+00:08:32,974 --> 00:08:39,974
+So now we should be able to come in and we can limit this to a module and we can do name.
+
+92
+00:08:39,974 --> 00:08:43,974
+Now remember earlier the name, this was coming back with command completions, that icon was a little bit
+
+93
+00:08:43,974 --> 00:08:50,974
+different, so this time the completion just popped right up so that shows that it is using our ArgumentCompleter.
+
+94
+00:08:50,974 --> 00:08:55,974
+Let's actually do like -Verb and Add. Now we can come over to ParameterName.
+
+95
+00:08:55,974 --> 00:09:03,974
+And so, if this is doing its job, any verb in the PowerShell access control module or any command that has
+
+96
+00:09:03,974 --> 00:09:09,974
+the Add verb in the PowerShell access control module, these are the parameters limited just to that.
+
+97
+00:09:09,974 --> 00:09:17,974
+And you can look, there's not that many of them. If we take this and change it and just do ParameterName,
+
+98
+00:09:17,974 --> 00:09:23,974
+you'll see that it took a little bit longer and there are a ton more that come up.
+
+99
+00:09:23,974 --> 00:09:30,974
+Same thing for ParameterType, so we can actually take ParameterName and let's say our Name -ParameterType
+
+100
+00:09:30,974 --> 00:09:36,974
+and you'll see that out of all the commands in PowerShell, again if this things doing its job, then if you're
+
+101
+00:09:36,974 --> 00:09:45,974
+looking at commands with the ParameterName name, then this says all the commands, there is a SwitchParameter,
+
+102
+00:09:45,974 --> 00:09:52,974
+at least one SwitchParameter that has the ParameterName, at least one scale or string parameter and at least
+
+103
+00:09:52,974 --> 00:09:58,974
+one Array String parameter. And actually let's get the counts. So I don't want to cover too much about
+
+104
+00:09:58,974 --> 00:10:06,974
+what's this is just a modified version we use group object under the ParameterName and ParameterType
+
+105
+00:10:06,974 --> 00:10:12,974
+conditions in the switch block, but for the sake of time, I'll just kind of demo what it does a little bit
+
+106
+00:10:12,974 --> 00:10:17,974
+more and you can take a look at it in a little while. But we're at, we're going to add counts to that.
+
+107
+00:10:17,974 --> 00:10:25,974
+So Get-Command -ParameterName, and so now it has counts in there and you know of course I didn't
+
+108
+00:10:25,974 --> 00:10:29,974
+show this, but when you press Enter, it didn't have the count information.
+
+109
+00:10:29,974 --> 00:10:31,974
+That was we could tell the list to show something different than
+
+110
+00:10:31,974 --> 00:10:38,974
+what was completed. And when you do look at this, it seems like it'd be kind of useful to be able to sort it
+
+111
+00:10:38,974 --> 00:10:43,974
+maybe on the count and you can do that. You can put whatever kind of logic you want in that completer.
+
+112
+00:10:43,974 --> 00:10:47,974
+So if I put logic in that said take a look at that word to complete.
+
+113
+00:10:47,974 --> 00:10:53,974
+Now I ended up doing an exclamation point here because if you do just the less sign, then the completer won't work.
+
+114
+00:10:53,974 --> 00:11:01,974
+But if I put that in, I told it to change the way you sort it, so now it's sorting by the count, the greatest number
+
+115
+00:11:01,974 --> 00:11:09,974
+of parameters versus the least number. So you can see that all these common parameters obviously show up the most.
+
+116
+00:11:09,974 --> 00:11:20,974
+And these counts should change as we add different things to filter on, -ParameterName and let's this time do
+
+117
+00:11:20,974 --> 00:11:28,974
+it from an ascending order, but you can see all the different parameters.
+
+118
+00:11:28,974 --> 00:11:33,474
+So instead of the 292 or whatever, it looks like we're down to like 24 that have that.
+
+119
+00:11:33,474 --> 00:11:40,474
+And that's just an example of a way to show completers that can take other parameters that are being typed
+
+120
+00:11:40,474 --> 00:59:59,999
+into account in real time.
+

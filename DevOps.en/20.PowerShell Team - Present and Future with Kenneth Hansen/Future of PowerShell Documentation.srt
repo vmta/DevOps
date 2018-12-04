@@ -1,0 +1,240 @@
+1
+00:00:00,0 --> 00:00:06,931
+So thanks for letting me swing by. I've been in PowerShell 14, 15 days.
+
+2
+00:00:06,931 --> 00:00:13,931
+Wahoo! Not bad. Thank you very much. So I've been at the company for about 17, I'm with Microsoft for about
+
+3
+00:00:13,931 --> 00:00:21,931
+17 years in a lot of different roles, everything from evangelism, to developer support to ultimately landing
+
+4
+00:00:21,931 --> 00:00:27,931
+in SQL Server and the data platform. Up until a couple weeks ago, I was the director of content publishing
+
+5
+00:00:27,931 --> 00:00:33,931
+for that whole shebang bang, so if it's analytics, if it's SQL Server, if it's machine learning, real time,
+
+6
+00:00:33,931 --> 00:00:39,931
+that was me and my group and we produced something like 18 billion topics on a yearly basis.
+
+7
+00:00:39,931 --> 00:00:47,931
+You were looking at 60,000 page views a month. On average, I get 18 million page views over on SQL Server.
+
+8
+00:00:47,931 --> 00:00:55,931
+So why would I leave there to come to this room? And if any of you have not seen Ed Wilson's blog.
+
+9
+00:00:55,931 --> 00:00:57,931
+Why would you ask that question? I don't understand that.
+
+10
+00:00:57,931 --> 00:00:58,931
+It's a lead.
+
+11
+00:00:58,931 --> 00:00:59,931
+I was confused.
+
+12
+00:00:59,931 --> 00:01:01,931
+It's a lead in.
+
+13
+00:01:01,931 --> 00:01:02,931
+Okay, just thought I'd make sure.
+
+14
+00:01:02,931 --> 00:01:03,931
+I mean, besides
+
+15
+00:01:03,931 --> 00:01:09,931
+the extra pay I mean always gets to work in PowerShell. So why would I leave that to come over here.
+
+16
+00:01:09,931 --> 00:01:12,931
+And here's the thing that is really motivating for me.
+
+17
+00:01:12,931 --> 00:01:18,931
+What am I more passionate about than a job title or a particular technology?
+
+18
+00:01:18,931 --> 00:01:26,931
+It's when I see a very active community that gives a crap about helping the person to their left,
+
+19
+00:01:26,931 --> 00:01:32,931
+that's willing to contribute their knowledge back to the betterment of the community as a whole.
+
+20
+00:01:32,931 --> 00:01:39,931
+Love that. I love it when we have a dev team that actually cares about the scenarios you're trying to do
+
+21
+00:01:39,931 --> 00:01:43,931
+and whether we can get them all done and do them cleanly. That's one thing.
+
+22
+00:01:43,931 --> 00:01:50,931
+It'll mature over time. But you put those two things together and you put all that goodness in an open framework
+
+23
+00:01:50,931 --> 00:01:54,931
+where you have the ability not just to help the person next to you,
+
+24
+00:01:54,931 --> 00:02:02,931
+but help the person across the country, help the person that's just getting started, help fix a problem up in open source.
+
+25
+00:02:02,931 --> 00:02:07,931
+That's where things get really, really interesting, and to be honest, you can't move something like the data
+
+26
+00:02:07,931 --> 00:02:16,931
+platform over to a system like that, but you can take a language and you can take that platform, and you can
+
+27
+00:02:16,931 --> 00:02:23,931
+take this community and enable it to support each other. So I would encourage everyone to take a look at Ed Wilson's
+
+28
+00:02:23,931 --> 00:02:28,931
+blog from yesterday. I was a guest blogger there and we're talking about what's
+
+29
+00:02:28,931 --> 00:02:33,931
+the future of PowerShell documentation. The future of PowerShell documentation is actually sitting in this
+
+30
+00:02:33,931 --> 00:02:39,931
+room and listening to this video ultimately long term. We're going to go completely open source with our
+
+31
+00:02:39,931 --> 00:02:45,931
+documentation, which means you have access. If you see something that's bugging you, you can go fix it.
+
+32
+00:02:45,931 --> 00:02:51,931
+If there's a better way of explaining some a hard concept, you can help us help the person to your left.
+
+33
+00:02:51,931 --> 00:03:00,931
+All of our documentation is going to be up on GitHub, very simple contribution requirements, but everything that
+
+34
+00:03:00,931 --> 00:03:05,931
+you do, you get credit for. Your names on that article, your picture's on that article.
+
+35
+00:03:05,931 --> 00:03:06,931
+If you're
+
+36
+00:03:06,931 --> 00:03:12,931
+promoting your personal portfolio and your persona, we're going to link out to your stuff all in an effort
+
+37
+00:03:12,931 --> 00:03:18,931
+to get us to a point where we take a look at some of the other open source languages like Python.
+
+38
+00:03:18,931 --> 00:03:24,931
+Now Python documentation is ugo. It is the way, it's like going back to 1985.
+
+39
+00:03:24,931 --> 00:03:31,931
+It looks horrible, but the content itself is exceptional. It's easy to discover.
+
+40
+00:03:31,931 --> 00:03:36,931
+They break the hard concepts down and there's not a bunch of paid writers sitting in a dark room somewhere
+
+41
+00:03:36,931 --> 00:03:40,931
+just cranking out words. It's the community going up there
+
+42
+00:03:40,931 --> 00:03:45,931
+hey there's a better way. Or don't forget you've got to remember these three things.
+
+43
+00:03:45,931 --> 00:03:49,931
+So we're kicking it off with DSC right now. There's a pilot going on.
+
+44
+00:03:49,931 --> 00:03:56,931
+JP who's one of my writers here. We've got another swath of content that's moving up into the open portfolio.
+
+45
+00:03:56,931 --> 00:04:01,931
+We're actually going to be bringing core PowerShell as a reference, so as we talk about the shifts that are
+
+46
+00:04:01,931 --> 00:04:03,931
+going on in engineering,
+
+47
+00:04:03,931 --> 00:04:04,931
+documentation
+
+48
+00:04:04,931 --> 00:04:09,931
+has been doing the same thing. If you look at how many product teams that we work with that are producing
+
+49
+00:04:09,931 --> 00:04:17,931
+PowerShell, it went from 2 or 3 to I think our last count was 380 development teams at Microsoft are
+
+50
+00:04:17,931 --> 00:04:22,931
+contributing to PowerShell in some way, whether through modules or extensions.
+
+51
+00:04:22,931 --> 00:04:26,931
+To be able to operate at that speed, it can't just be the PowerShell team.
+
+52
+00:04:26,931 --> 00:04:30,931
+And it can't be just the four or five writers that I have on my team.
+
+53
+00:04:30,931 --> 00:04:35,931
+It's going to take a community to make this actually work and we're going to start that by investing and
+
+54
+00:04:35,931 --> 00:04:41,931
+opening it up, getting it out of the way of you guys helping and supporting each other and sharing that guidance.
+
+55
+00:04:41,931 --> 00:04:48,931
+So my name is Don Gill, my email address is the easiest one ever, dongill@microsoft.com or Twitter, you can always
+
+56
+00:04:48,931 --> 00:04:53,931
+hit me up if there's something wrong, there's something we should be doing better, I'm the guy that's going
+
+57
+00:04:53,931 --> 00:05:00,931
+to help make it happen, whether it's on the online, whether it's in the shell itself, we can do this better.
+
+58
+00:05:00,931 --> 00:05:01,931
+Hit me up. Thank you.
+
+59
+00:05:01,931 --> 00:05:02,931
+Thank you.
+
+60
+00:05:02,931 --> 00:59:59,999
+Yah, thank you much.
+

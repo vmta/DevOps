@@ -1,0 +1,220 @@
+1
+00:00:00,0 --> 00:00:04,712
+Package management architecture. This is stuff that you all should be fairly familiar with.
+
+2
+00:00:04,712 --> 00:00:13,712
+There's a set of cmdlets. You can always use the install or the basic package management cmdlets to do this stuff,
+
+3
+00:00:13,712 --> 00:00:16,712
+you just have to supply more parameters. So you
+
+4
+00:00:16,712 --> 00:00:21,712
+can do the same thing that you can do in PowerShellGet, as long as you know all the stuff that we're feeding
+
+5
+00:00:21,712 --> 00:00:29,712
+into the parameter set or you can use PowerShellGet and say and go find DSC resource and not have to do the
+
+6
+00:00:29,712 --> 00:00:36,712
+filtering, but package management Install-Package will still accomplish the job for you.
+
+7
+00:00:36,712 --> 00:00:42,712
+The basic core. We do the discovery, go find stuff based on the sources that are registered on your local
+
+8
+00:00:42,712 --> 00:00:46,712
+box, then install or save it locally,
+
+9
+00:00:46,712 --> 00:00:51,712
+and allow you to do some kind of inventory so that when you say what are all the things that I've installed
+
+10
+00:00:51,712 --> 00:01:00,712
+from that type of installer, we can get a list of it for you. We have a set of package management providers already.
+
+11
+00:01:00,712 --> 00:01:05,712
+Windows Server apps, that's kind of like an appx package type, alright, kind of.
+
+12
+00:01:05,712 --> 00:01:12,712
+It's something that we need some differences from that in order to support Windows Server components,
+
+13
+00:01:12,712 --> 00:01:18,712
+PowerShellGet, Windows containers, NuGet, there's a bunch of them that are actually available for you.
+
+14
+00:01:18,712 --> 00:01:25,712
+And the package sources. Every one of those package types can support more than one package source and I'll
+
+15
+00:01:25,712 --> 00:01:28,712
+show you that in a minute. So
+
+16
+00:01:28,712 --> 00:01:35,712
+PowerShellGet. Is there anyone in here who has not used PowerShellGet?
+
+17
+00:01:35,712 --> 00:01:45,712
+Okay. We have developed the PowerShell Gallery in order to support people sharing stable code.
+
+18
+00:01:45,712 --> 00:01:50,712
+That's the goal behind it. It's not stuff where you put test stuff out there.
+
+19
+00:01:50,712 --> 00:01:54,712
+When you've got something that you're actually willing to share with the community, it's relatively stable,
+
+20
+00:01:54,712 --> 00:01:59,712
+we want it out in the gallery, but you don't actually download something directly from the gallery.
+
+21
+00:01:59,712 --> 00:02:07,712
+You use the gallery to go find things, to find out who did it, to find out information about the stuff that's there.
+
+22
+00:02:07,712 --> 00:02:15,712
+You use PowerShellGet and the cmdlets that are part of PowerShellGet to acquire that thing, you can also do
+
+23
+00:02:15,712 --> 00:02:20,712
+find, and we'll show you that in just a second, but you're going to acquire the package, you're going to put
+
+24
+00:02:20,712 --> 00:02:28,712
+it on your local box, save, take a quick look at it, always do a save first, investigate, in God we trust,
+
+25
+00:02:28,712 --> 00:02:36,712
+nobody else, then when you are comfortable that this is something that you want on your box, then you do an install module.
+
+26
+00:02:36,712 --> 00:02:42,712
+When you do an install module, we'll keep a list of the things that you've installed and we'll get rid of it for you.
+
+27
+00:02:42,712 --> 00:02:46,712
+This is all the PowerShellGet specific versions of
+
+28
+00:02:46,712 --> 00:02:58,712
+package management, and as a part of delivering this in Windows WMF5 and these previews, we made sure that we
+
+29
+00:02:58,712 --> 00:03:06,712
+supported side-by-side module versioning and dependencies, and those two go hand in hand.
+
+30
+00:03:06,712 --> 00:03:13,712
+Part of that is when I write a module and put it out on the PowerShell Gallery, and this gentleman here takes
+
+31
+00:03:13,712 --> 00:03:21,712
+a dependency on my module, he can build that into his module and say I want to be able to know that I can get
+
+32
+00:03:21,712 --> 00:03:37,712
+that version of that module to go with my code. And anybody see the article about MPM about two weeks ago?
+
+33
+00:03:37,712 --> 00:03:43,712
+When you put something out on the PowerShell Gallery, we don't let you delete it today and if you want to have
+
+34
+00:03:43,712 --> 00:03:52,712
+access to the article about MPM broke the internet, you can look that up.
+
+35
+00:03:52,712 --> 00:04:00,712
+People ask us about this. The point being, I can take a dependency and he can take a dependency on a specific
+
+36
+00:04:00,712 --> 00:04:05,712
+version of a module. But then what happens if I want the latest version of the module.
+
+37
+00:04:05,712 --> 00:04:09,712
+Well I have to be able to install the latest version side by side.
+
+38
+00:04:09,712 --> 00:04:11,712
+It's why we have support for both elements.
+
+39
+00:04:11,712 --> 00:04:16,712
+We've added script support, we've added support for internal galleries, which is what Raghu is going to show
+
+40
+00:04:16,712 --> 00:04:25,712
+you the ability to say I want to get all of this stuff from something I've tested and we've also made some other changes.
+
+41
+00:04:25,712 --> 00:04:35,712
+There was this comment out in the group that when you used PowerShellGet, we had a -version alias.
+
+42
+00:04:35,712 --> 00:04:43,712
+-Version works fine for install-package. Install-Package -version gets you at least the version
+
+43
+00:04:43,712 --> 00:04:51,712
+you specified it mapped to minimum version. The problem was that when you did the uninstall version,
+
+44
+00:04:51,712 --> 00:04:58,712
+it mapped to that as the minimum version, so it would also get rid of everything newer than that.
+
+45
+00:04:58,712 --> 00:05:05,712
+So we've made some changes, we've gotten rid of that alias, and now you get to specify minimum version,
+
+46
+00:05:05,712 --> 00:05:12,712
+maximum version, required version again. You guys told us this thing's evil, we fixed it.
+
+47
+00:05:12,712 --> 00:05:19,712
+We've added credential support, we've improved proxy support. People got to us, told us these things aren't
+
+48
+00:05:19,712 --> 00:05:24,712
+working, so we've make some changes in the system. Commands that are available in PowerShellGet,
+
+49
+00:05:24,712 --> 00:05:32,712
+well mostly it's about how you manipulate modules, how you manipulate repositories, and then also how you manipulate scripts.
+
+50
+00:05:32,712 --> 00:05:36,712
+There's a lot of concern about well we're going to open this door and everybody is going to put scripts out
+
+51
+00:05:36,712 --> 00:05:44,712
+there instead of modules. We're being very explicit, folks. We want you to put modules out there.
+
+52
+00:05:44,712 --> 00:05:52,712
+Why? Because modules include documentation, they include tests, they include examples, these are the best
+
+53
+00:05:52,712 --> 00:05:57,712
+practices for things that you need to put out into the PowerShell Gallery.
+
+54
+00:05:57,712 --> 00:06:04,712
+There is a place for putting scripts out there, we have support for it, but we prefer that you use modules.
+
+55
+00:06:04,712 --> 00:59:59,999
+Alright. So---
+

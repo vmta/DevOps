@@ -1,0 +1,176 @@
+1
+00:00:00,0 --> 00:00:06,2
+So basic PowerShellGet functions, and boy that's just in a bad spot.
+
+2
+00:00:06,2 --> 00:00:10,2
+Sorry, folks, I've got to figure out how to use the mouse with this thing sitting here.
+
+3
+00:00:10,2 --> 00:00:17,2
+So Get-Command, this is all the stuff that's available in PowerShellGet and I've already done this.
+
+4
+00:00:17,2 --> 00:00:26,2
+Now one of the things that you will see here is you can do some filtering in PowerShellGet in order to find
+
+5
+00:00:26,2 --> 00:00:30,2
+the things that you're looking for and a lot of people don't know how to go about this, so
+
+6
+00:00:30,2 --> 00:00:34,2
+I thought I would spend just a minute and show you how to do that.
+
+7
+00:00:34,2 --> 00:00:42,2
+Right now, we have a number of things that are out in the gallery that talk about the ISE, right.
+
+8
+00:00:42,2 --> 00:00:56,2
+So which one is actually the one that came from Microsoft? Well, looks like that one is, PowerShell ISE preview.
+
+9
+00:00:56,2 --> 00:01:01,2
+So if you go ahead and you have to do the filtering the way that you guys are familiar with, it's Where-Object
+
+10
+00:01:01,2 --> 00:01:06,2
+and author, and I'll publish all this stuff. You're going to see a lot more of our documentation increasing
+
+11
+00:01:06,2 --> 00:01:14,2
+here, but this is one of the most commonly asked questions, how do I find things in the gallery based on the author?
+
+12
+00:01:14,2 --> 00:01:19,2
+Okay. How do I find something in the gallery where the author is Amazon?
+
+13
+00:01:19,2 --> 00:01:27,2
+So the point being trust, you can go ahead and you can locate the things that you care about in the gallery
+
+14
+00:01:27,2 --> 00:01:31,2
+based on who it is and whether or not you can trust them.
+
+15
+00:01:31,2 --> 00:01:38,2
+One of the other elements of trust is, okay, what are the things that this depends on?
+
+16
+00:01:38,2 --> 00:01:45,2
+I already told you that I can take a dependency on your module. Well one of the things that this HistoryPX
+
+17
+00:01:45,2 --> 00:01:50,2
+module, which by the way, seems like a pretty good module. I skimmed through the code the other day.
+
+18
+00:01:50,2 --> 00:01:52,2
+Did anybody in here write that?
+
+19
+00:01:52,2 --> 00:01:53,2
+It's Kirk right?
+
+20
+00:01:53,2 --> 00:01:55,2
+It's Kirk's.
+
+21
+00:01:55,2 --> 00:02:02,2
+I didn't see Kirk so alright. So he's got a set of dependencies that are available on that module, right,
+
+22
+00:02:02,2 --> 00:02:08,2
+and what we talk about is you need to know what it is that you are installing on your system.
+
+23
+00:02:08,2 --> 00:02:15,2
+I can do a save module and all of those dependencies will get installed onto my box and you can read through
+
+24
+00:02:15,2 --> 00:02:22,2
+that here as the verbose commands go by, you see SnippetPX right there is one of the elements that was a
+
+25
+00:02:22,2 --> 00:02:29,2
+dependency, and we will install those dependencies, just like I said I can take a definite dependency on
+
+26
+00:02:29,2 --> 00:02:34,2
+something somebody else wrote and it'll get installed using PowerShellGet.
+
+27
+00:02:34,2 --> 00:02:43,2
+So again, these are all about what can I trust and that's the main focus that we have for the gallery, alright.
+
+28
+00:02:43,2 --> 00:02:48,2
+So now let's take a look at what's actually in the gallery.
+
+29
+00:02:48,2 --> 00:02:53,2
+One of the things that you saw a little bit of UI about is we've had a number of questions in the last little
+
+30
+00:02:53,2 --> 00:03:01,2
+bit about where, how do I find all of the modules that don't have DSC in them.
+
+31
+00:03:01,2 --> 00:03:04,2
+Did you all see the lightening demos yesterday?
+
+32
+00:03:04,2 --> 00:03:05,2
+(Audience comment)
+
+33
+00:03:05,2 --> 00:03:12,2
+Okay, well this is one of my favorite pieces of UI because it responds to, I've got 181 items in this test
+
+34
+00:03:12,2 --> 00:03:17,2
+gallery, and know I'm going to try hard not to show you that URL because that's our test gallery.
+
+35
+00:03:17,2 --> 00:03:24,2
+Yes, it's live. Don't use it if you discover it. It's there and we will blow up your stuff if you put it there.
+
+36
+00:03:24,2 --> 00:03:29,2
+But if I want to see just the cmdlets and just the functions, the things that contain just the cmdlets and
+
+37
+00:03:29,2 --> 00:03:35,2
+functions, this new filtering UI, which will be out in the next few weeks is something that you can go ahead
+
+38
+00:03:35,2 --> 00:03:42,2
+and take advantage of. And again, it's trying to make sure that you can find what you're after, alright.
+
+39
+00:03:42,2 --> 00:03:49,2
+The only piece of searching that you can do, or the only way you can do searching for owner, and owner is the
+
+40
+00:03:49,2 --> 00:03:58,2
+actual person who published a package, is by using this UI today, okay.
+
+41
+00:03:58,2 --> 00:04:07,2
+you can't find it in the search functions in and you'll find module or find DSC resource, so this is a quick tip.
+
+42
+00:04:07,2 --> 00:04:11,2
+It's the only one of the demos that I'm going to show here now in the interest of time.
+
+43
+00:04:11,2 --> 00:04:18,258
+But if you want to find out everything from PowerShell team, or from Kirk, or from anybody else, the best way
+
+44
+00:04:18,258 --> 00:59:59,999
+to do that is in the gallery, you search for owner and then the owner name, alright.
+

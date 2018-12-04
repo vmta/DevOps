@@ -1,0 +1,344 @@
+1
+00:00:00,0 --> 00:00:03,548
+So there's some things here that you would probably
+
+2
+00:00:03,548 --> 00:00:13,548
+want to get rid of or fix. For example, this is all just right now a script.
+
+3
+00:00:13,548 --> 00:00:23,548
+So let's say I was building, this is for a Get-Service, right, so I'm going to define my new function.
+
+4
+00:00:23,548 --> 00:00:37,548
+Let's call it Get-Myservice. Alright, so let's look at some things we would have to fix manually
+
+5
+00:00:37,548 --> 00:00:44,548
+and you're so welcome to kind of go through mam because maybe this will be mostly what you need.
+
+6
+00:00:44,548 --> 00:00:55,548
+Because this is going to be my version of Get-Service, I don't really want the help link for online to go to Microsoft.
+
+7
+00:00:55,548 --> 00:01:05,548
+You can, I suppose, but I'm going to delete that. I'm going to delete because I really don't need remoting
+
+8
+00:01:05,548 --> 00:01:13,548
+capability, but I do like that it gives me, if the command has parameter sets that it concludes all of that
+
+9
+00:01:13,548 --> 00:01:15,548
+parameter set information for me,
+
+10
+00:01:15,548 --> 00:01:22,548
+including the default. That's good. I may go and add additional parameters or parameter sets, but at least
+
+11
+00:01:22,548 --> 00:01:26,548
+what I'm starting with is good.
+
+12
+00:01:26,548 --> 00:01:38,548
+I can then come here and I'm a big, and this is just a personal preference, I would prefer this to look like $Name
+
+13
+00:01:38,548 --> 00:01:52,548
+without the curly braces. So you could go through and modify all of the parameters.
+
+14
+00:01:52,548 --> 00:02:00,548
+If I'm building this and let's say, you know what, I don't want to have the required services parameter,
+
+15
+00:02:00,548 --> 00:02:06,548
+I can just delete it. If I want to add a parameter, I can go through and add a parameter.
+
+16
+00:02:06,548 --> 00:02:11,548
+When we get to some of my before and after, you'll see how I do that.
+
+17
+00:02:11,548 --> 00:02:17,548
+I'm just going to kind of give you a feel for how this proxy function works.
+
+18
+00:02:17,548 --> 00:02:28,548
+The main part is here in the begin block. So this line here is basically going to build a wrapped command
+
+19
+00:02:28,548 --> 00:02:34,548
+that's going to call the underlying command. So the assumption is that wherever you're going to run this,
+
+20
+00:02:34,548 --> 00:02:41,548
+whatever that underlying command is, it exists on the machine where you're running this, right?
+
+21
+00:02:41,548 --> 00:02:44,548
+So we're going to take that wrapped command and this is basically just kind of
+
+22
+00:02:44,548 --> 00:02:52,548
+a ScriptBlock that we're going to build here with $ScriptCmd. This line here.
+
+23
+00:02:52,548 --> 00:03:02,548
+This ScriptBlock, it's really quite simple. All it's saying is take the underlying command, which is the wrapped
+
+24
+00:03:02,548 --> 00:03:11,548
+cmd, invoke it, and then splat whatever comes through PSBoundParameters, which is just a hash table.
+
+25
+00:03:11,548 --> 00:03:18,548
+You get that every time you have a parameter defined when they run the command.
+
+26
+00:03:18,548 --> 00:03:31,548
+So often what I will do, just for debugging purposes, is I might have here in the begin block, I add things like
+
+27
+00:03:31,548 --> 00:03:47,548
+write-verbose, (Typing) it has to be a string, so then when I run my cmdlet verbose, I can see
+
+28
+00:03:47,548 --> 00:03:52,548
+what the PSBoundParameters were. It helps me when I'm trying to debug to figure out okay how come this isn't
+
+29
+00:03:52,548 --> 00:04:00,548
+working because I want to be able to see what is going through. PSBoundParameters, are those just named parameters?
+
+30
+00:04:00,548 --> 00:04:07,548
+Yes. They are named parameters. That's where sometimes it can be a little tricky.
+
+31
+00:04:07,548 --> 00:04:09,548
+But that's why I do that, so I can see exactly
+
+32
+00:04:09,548 --> 00:04:18,548
+what is coming through because if I set some defaults sometimes that can work, sometimes not, so I need to,
+
+33
+00:04:18,548 --> 00:04:25,548
+I want to be able to see what is coming through the command, what's going to get passed to the command.
+
+34
+00:04:25,548 --> 00:04:31,548
+And then, hold on just a moment before I jump the train of thought here, and then I will also if I need to,
+
+35
+00:04:31,548 --> 00:04:45,548
+if I let's say I've added a new parameter and it's called $Test. I don't know what it's going to do, but I'm going
+
+36
+00:04:45,548 --> 00:04:56,548
+to add some. What I will need to do though does Get-Service know anything about the Test parameter?
+
+37
+00:04:56,548 --> 00:05:05,548
+No. So if I, but if I pass $Test into my new proxy command, it will fail because Get-Service says I don't
+
+38
+00:05:05,548 --> 00:05:12,548
+know what -Test is because remember all I'm doing is splatting. Now I can still use that parameter and you'll
+
+39
+00:05:12,548 --> 00:05:15,548
+see this in my, again my before and after
+
+40
+00:05:15,548 --> 00:05:26,548
+shots, but what I tend to do then, well actually in my tend to do, you have to do is remove that parameter.
+
+41
+00:05:26,548 --> 00:05:40,548
+There are things you can do to test it and if it exits and then remove it, I just get this to, I simply just do that.
+
+42
+00:05:40,548 --> 00:05:43,548
+If it's there, because when you remove it,
+
+43
+00:05:43,548 --> 00:05:48,548
+you get either true or false according to the pipeline, so I just do that.
+
+44
+00:05:48,548 --> 00:05:54,548
+I just say remove it. I don't really care if I get a message or not, just make sure it's gone.
+
+45
+00:05:54,548 --> 00:06:01,548
+I can still use $Test in my code later and what I typically will do is
+
+46
+00:06:01,548 --> 00:06:08,548
+modify the wrapped command. So instead of using wrap command PSBoundParameters, I'm probably going to expand
+
+47
+00:06:08,548 --> 00:06:18,548
+that or do whatever it is that I want to do. Most everything else will stay the same because at that point,
+
+48
+00:06:18,548 --> 00:06:21,548
+all I'm going to do is just pass the parameters to the underlying command.
+
+49
+00:06:21,548 --> 00:06:22,548
+Now there were some
+
+50
+00:06:22,548 --> 00:06:28,548
+questions over here. You in front. You mentioned when you debug, you sometimes put out PSBoundParameters,
+
+51
+00:06:28,548 --> 00:06:33,548
+but if you're actually using the debugger, PSBoundParameters still doesn't show up to that?
+
+52
+00:06:33,548 --> 00:06:38,548
+Well I do it with a verbose statement. So I just run the command with -verbose and I can see it.
+
+53
+00:06:38,548 --> 00:06:43,548
+I'm not, to be honest, I'm not a big, I rarely use -debug
+
+54
+00:06:43,548 --> 00:06:50,548
+because I'm doing stuff with write-verbose. I put all my verbose messaging in from the very beginning, so I can
+
+55
+00:06:50,548 --> 00:06:54,548
+see exactly what is going on.
+
+56
+00:06:54,548 --> 00:07:02,548
+And one of the reasons I do that is if I build a tool for someone and they report I'm having a problem,
+
+57
+00:07:02,548 --> 00:07:11,548
+it's not working, I can say start a transcript, run my command with -verbose, save the transcript, send it to me.
+
+58
+00:07:11,548 --> 00:07:20,548
+Then I can see exactly what's going on. And because one thing you have to remember when you're building PowerShell
+
+59
+00:07:20,548 --> 00:07:25,548
+scripts and tools is you always got to think about who is going to be running this.
+
+60
+00:07:25,548 --> 00:07:34,548
+Is it going to be you? Is it going to be someone who barely can type two letters without making a typo?
+
+61
+00:07:34,548 --> 00:07:40,548
+How will they use it? Will they assume to take something from one command and pipe it to your command?
+
+62
+00:07:40,548 --> 00:07:46,548
+So you have to take those things into account. Do I need, and I've done this in some of my commands,
+
+63
+00:07:46,548 --> 00:07:51,548
+well I'll have some verbose information at the very beginning that will also write out the computer name,
+
+64
+00:07:51,548 --> 00:07:59,548
+the operating system, the user account, other kind of meta command information, so that helps me figure out,
+
+65
+00:07:59,548 --> 00:08:07,548
+okay, why isn't this working for you. Oh, well you're running PowerShell v3 and for whatever reason this
+
+66
+00:08:07,548 --> 00:08:13,548
+isn't working on version 3 or whatever. So you include as much verbose information as you want that can help
+
+67
+00:08:13,548 --> 00:08:20,548
+you if you have to support or troubleshoot why your command is not working.
+
+68
+00:08:20,548 --> 00:08:25,548
+And there was another question there. Yeah, for the PSBoundParameters.Remove, do you have to use the string of
+
+69
+00:08:25,548 --> 00:08:39,548
+variable name? That is correct. PSBoundParameters is just a hash table, so you can use the dot method to test
+
+70
+00:08:39,548 --> 00:08:44,548
+there were some methods to test if keys exist or not, I just remove it.
+
+71
+00:08:44,548 --> 00:08:52,548
+And conversely, you can also, if you are splatting building another hash table, you can just add that.
+
+72
+00:08:52,548 --> 00:08:54,548
+But in this case, for the proxy function,
+
+73
+00:08:54,548 --> 00:09:01,548
+I need to remove anything that I add because the underlying command will have no concept of what that is.
+
+74
+00:09:01,548 --> 00:09:06,548
+I can still use $Test, that variable, that parameter anywhere else in my code.
+
+75
+00:09:06,548 --> 00:09:07,548
+It doesn't get rid
+
+76
+00:09:07,548 --> 00:09:12,548
+of the parameter, it just removes it from PSBoundParameters.
+
+77
+00:09:12,548 --> 00:09:18,548
+Oh and then the last thing with the proxy command, by default, and this is one of the, for me, one of the downsides,
+
+78
+00:09:18,548 --> 00:09:23,548
+of creating a simple proxy command with the steps I just showed you is all I
+
+79
+00:09:23,548 --> 00:09:28,548
+get is forwarded help. Ah, that's not going to help me a whole lot.
+
+80
+00:09:28,548 --> 00:09:32,548
+Now I've got to go back and copy and paste and get the help and paste it in.
+
+81
+00:09:32,548 --> 00:09:42,548
+That's too much work for me. I'm lazy. I don't want to have to work very hard.
+
+82
+00:09:42,548 --> 00:09:54,548
+But that's what the kind of the layout of a proxy function. Before we get to my solution, which simplifies
+
+83
+00:09:54,548 --> 00:10:01,548
+and takes us to the next level, any other questions over at least what this looks like?
+
+84
+00:10:01,548 --> 00:10:08,548
+We'll get some examples where you can see the before and after and we'll run them, so you can kind of follow through.
+
+85
+00:10:08,548 --> 00:10:15,548
+This is one of those things where I think the more you see it, the more it sinks in and you go oh now I get it,
+
+86
+00:10:15,548 --> 00:59:59,999
+I'm seeing where you're going with that. So we're all good?
+

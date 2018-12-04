@@ -1,0 +1,192 @@
+1
+00:00:01,1 --> 00:00:09,795
+Now one thing that gave me a bit of issues from the very early start is the,
+
+2
+00:00:09,795 --> 00:00:17,795
+if you look at your vSphere environment, there's an inventory tree, which comprises datacenters, folders,
+
+3
+00:00:17,795 --> 00:00:26,795
+clusters, resource pools, and so on. This complete hierarchy was conceived historical, so that means some
+
+4
+00:00:26,795 --> 00:00:32,795
+stuff was edited after the initial concept. So there are some things in there that are not that logical or
+
+5
+00:00:32,795 --> 00:00:38,795
+that not that obvious how you would reach. For example, look where you can define a folder.
+
+6
+00:00:38,795 --> 00:00:45,795
+You can define a folder, a yellow folder in this case, you can define a yellow folder on the root of your vCenter
+
+7
+00:00:45,795 --> 00:00:51,795
+environment, you can define it on the datacenter, yeah, on the date and you can go on like that.
+
+8
+00:00:51,795 --> 00:00:57,795
+Blue folders, on the other hand, which can contain only your virtual machines, you can only define in your
+
+9
+00:00:57,795 --> 00:01:04,795
+VM and template infrastructure. So there's a bit of complexity in there.
+
+10
+00:01:04,795 --> 00:01:09,795
+And before I forget, and on top of that, there are a number of hidden folders that you don't even see in your
+
+11
+00:01:09,795 --> 00:01:17,795
+WebClient or your vSphere client thinking of datacenters, VMHost, all these folders will pop-up if you do a
+
+12
+00:01:17,795 --> 00:01:24,795
+Get-Folder, but you won't see them in your hierarchy in the clients.
+
+13
+00:01:24,795 --> 00:01:29,795
+Now one question I had to answer. If you want to create a new resource, you have to give about where it
+
+14
+00:01:29,795 --> 00:01:37,795
+should create this new resource and the parameter in the classes, of course, obvious that's the part one,
+
+15
+00:01:37,795 --> 00:01:45,795
+but the questions I had to ask there and answer more particularly is will I include the hidden folders.
+
+16
+00:01:45,795 --> 00:01:50,795
+Am I going to indicate that home lab is a datacenter in this case or am I just going to give the name of the
+
+17
+00:01:50,795 --> 00:01:59,795
+part and let my function be intelligent enough to know that it should be a datacenter or look.
+
+18
+00:01:59,795 --> 00:02:03,795
+If it is a datacenter, is there a possibility that I have a folder with the same name?
+
+19
+00:02:03,795 --> 00:02:11,795
+So in the end, I succeeded in creating a function that can find whatever node in your vSphere hierarchy tree
+
+20
+00:02:11,795 --> 00:02:16,795
+just based on a path like that. First, let me show you.
+
+21
+00:02:16,795 --> 00:02:23,795
+I made a summary and this is of purpose complex because that's the reality of a vSphere environment.
+
+22
+00:02:23,795 --> 00:02:28,795
+If you look at all the objects in there and it starts at the top with the vCenter, datacenter, and so on,
+
+23
+00:02:28,795 --> 00:02:35,795
+but also all the connectivity in there, a one-to-end, end-to-end, folder can be there and there.
+
+24
+00:02:35,795 --> 00:02:42,795
+This is where all the complex, complex means hard to automate, hard to program in a script, so this is what I
+
+25
+00:02:42,795 --> 00:02:55,795
+used as a starting point to create that all-purpose find my node function that I included in the resources.
+
+26
+00:02:55,795 --> 00:03:03,795
+And this is the function, in fact. It uses some internal helper functions recursively, so
+
+27
+00:03:03,795 --> 00:03:06,795
+I will publish this. I'm not going to run through all these lines.
+
+28
+00:03:06,795 --> 00:03:13,795
+I know it's 4:00. I'm the one sitting between you and your dinner in half an hour, so I'm not going to torture
+
+29
+00:03:13,795 --> 00:03:19,795
+you any further. But be aware that these are all the complex function that can handle all these node retrievals
+
+30
+00:03:19,795 --> 00:03:25,795
+that you need, so it can resolve all these parts that you specify in your DSC resource.
+
+31
+00:03:25,795 --> 00:03:28,795
+And there's one other thing that is quite important and this was
+
+32
+00:03:28,795 --> 00:03:37,795
+a very helpful discovery feature that I used. What it does, in fact, when it finds the node or the leaf for
+
+33
+00:03:37,795 --> 00:03:43,795
+you in your path, it should return normally on an object or a point and the point in vSphere as some of you
+
+34
+00:03:43,795 --> 00:03:52,795
+may know is called a MoRef, Managed object Reference, which is a specific object type that comes with PowerCLI.
+
+35
+00:03:52,795 --> 00:03:59,795
+If I was going to use that in my basic Get, Set, and Test functions, I would have to be including statements
+
+36
+00:03:59,795 --> 00:04:06,795
+with using because they need to know how this object looks. Now the big thing is that you can convert such
+
+37
+00:04:06,795 --> 00:04:12,795
+a managed object reference to a string and the second big thing is you can use that string on the Get-View
+
+38
+00:04:12,795 --> 00:04:14,795
+cmdlet to retrieve the object.
+
+39
+00:04:14,795 --> 00:04:23,795
+So there's no need whatsoever to use a Manage Object Reference object in your basic class functions like
+
+40
+00:04:23,795 --> 00:04:26,795
+Get, Set, and Test. So this was a very
+
+41
+00:04:26,795 --> 00:04:33,795
+lucky feature that I could use to my advantage.
+
+42
+00:04:33,795 --> 00:04:41,795
+And that's the example, so this is from the VMHost resource. This is a helper function.
+
+43
+00:04:41,795 --> 00:04:45,795
+What we're doing is we had the path and the definition in the configuration file.
+
+44
+00:04:45,795 --> 00:04:53,795
+He passes this path to this Find-VmwLeaf function. He comes back with a node, if he finds a node, I need to
+
+45
+00:04:53,795 --> 00:05:00,795
+retrieve the object node as a point. If he finds a node, he needs to retrieve the object, and as you saw in
+
+46
+00:05:00,795 --> 00:05:07,795
+the previous slides, this is a string, but thank God Get-View with id can use a string instead of an actual
+
+47
+00:05:07,795 --> 00:05:12,795
+managed object reference object. So that was, I was quite happy that was possible.
+
+48
+00:05:12,795 --> 00:59:59,999
+Otherwise, it would have become a bit more obnoxious to code on.
+

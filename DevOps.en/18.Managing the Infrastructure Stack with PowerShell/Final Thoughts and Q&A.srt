@@ -1,0 +1,212 @@
+1
+00:00:00,0 --> 00:00:07,059
+Any other questions? Thoughts? Funny stories?
+
+2
+00:00:07,059 --> 00:00:15,059
+So Josh. I noticed on your third slide you had a whole VMware stack and a very popular vRealize orchestrator.
+
+3
+00:00:15,059 --> 00:00:22,059
+Yeah. I'm curious. How do you use an orchestrator because we developed and raised PowerShell scripts that
+
+4
+00:00:22,059 --> 00:00:29,059
+makes all these decisions for us and I feel silly for bringing an orchestrator because I've just taken all
+
+5
+00:00:29,059 --> 00:00:34,059
+that logic out and I build it and I run _____ as something stupid like that.
+
+6
+00:00:34,059 --> 00:00:38,059
+Yeah. So how do you use it? Or do you use it and use the dev?
+
+7
+00:00:38,059 --> 00:00:46,059
+Yeah, so I use Orchestrator primarily if there's any decisions that need to make, if there's going to be any
+
+8
+00:00:46,059 --> 00:00:58,059
+branch like if anything will change as a result of a condition or I need to do things like it will change
+
+9
+00:00:58,059 --> 00:01:04,059
+due to a condition. It says that if this condition exists, go this way, if it doesn't, go that way.
+
+10
+00:01:04,059 --> 00:01:12,059
+I tend to use Orchestrator for that. But it also really comes down to with Orchestrator what you have plug-ins
+
+11
+00:01:12,059 --> 00:01:18,059
+for and what you have actions and workflows for and that's where you hit a point and you're like well time to
+
+12
+00:01:18,059 --> 00:01:27,059
+go to PowerShell and then you can call from that. So I've tended towards Orchestrator primarily, and again,
+
+13
+00:01:27,059 --> 00:01:31,059
+anyway I'll talk about the hammer like when you're hammering everything is a nail like I always start with PowerShell.
+
+14
+00:01:31,059 --> 00:01:36,059
+I force myself to use Orchestrator and other tools. The biggest advantage and
+
+15
+00:01:36,059 --> 00:01:50,059
+I didn't show it here, but right here is the same idea, yeah, so that's vRealize Orchestrator is also object
+
+16
+00:01:50,059 --> 00:01:54,059
+aware in the VStore WebClient and it's supported like fully supported.
+
+17
+00:01:54,059 --> 00:01:56,059
+So you can create the workflows right in that, so a lot of the stuff
+
+18
+00:01:56,059 --> 00:02:02,059
+that I'm talking about, you can do with Orchestrator as well. This is PowerShell conference.
+
+19
+00:02:02,059 --> 00:02:15,059
+But with PowerActions, I like it because it also allows me to do more things because Orchestrator doesn't cover everything.
+
+20
+00:02:15,059 --> 00:02:21,059
+And that's the part that I'm struggling with is that I want to expose something simple to people.
+
+21
+00:02:21,059 --> 00:02:29,059
+Yeah. I don't want it to let them... Yeah, and for me everything is if I can just give you an
+
+22
+00:02:29,059 --> 00:02:35,059
+opportunity to run it and you not care how it's built on the back-end.
+
+23
+00:02:35,059 --> 00:02:41,059
+I tend towards Orchestrator primarily because it's fully supported from VMware and it's not handing someone a
+
+24
+00:02:41,059 --> 00:02:45,059
+PowerCLI script, but if you look at my GitHub repos, it's all PowerShell stuff, right.
+
+25
+00:02:45,059 --> 00:02:52,059
+I haven't released the Orchestrator stuff yet. But we have some customers using it, I just don't, I help them,
+
+26
+00:02:52,059 --> 00:03:03,059
+but I don't publish it. (Audience comment) Yep, so the primary requirements you have to have a PowerShell
+
+27
+00:03:03,059 --> 00:03:13,059
+Server and when you do the install, you have to make some modifications to the vSphere Virtual Center Server appliance
+
+28
+00:03:13,059 --> 00:03:17,059
+and there's some files that you have to make a slight modification to and there's that modification is
+
+29
+00:03:17,059 --> 00:03:31,059
+just so it will show up in the UI. (Audience comment) I think it's 5.5 is the one with the newer VStore WebClient.
+
+30
+00:03:31,059 --> 00:03:38,059
+So I've run it in 6, I had it running in 5.5. I don't think it's supported in 5.1 because I just don't think
+
+31
+00:03:38,059 --> 00:03:54,059
+that the WebClient functions with it. And then from the PowerShell side, Server 2012, actually I can pull it up.
+
+32
+00:03:54,059 --> 00:04:00,059
+So it's labs.vmware.com/flings and their site was down the other day for maintenance, so I'm hoping it's back up.
+
+33
+00:04:00,059 --> 00:04:13,059
+It is. Good. (Audience comment) What's that? There we go. So look for PowerActions and it goes right in
+
+34
+00:04:13,059 --> 00:04:19,059
+system requirements, 5.1 is included, so that 1 is included. Alright.
+
+35
+00:04:19,059 --> 00:04:26,059
+Server 2003 or higher, .NET framework 4, and 4.5 and then all the PowerShell versions.
+
+36
+00:04:26,059 --> 00:04:27,059
+And of course,
+
+37
+00:04:27,059 --> 00:04:31,059
+whatever version that you have. And here's the thing. You have to have all the modules for the different
+
+38
+00:04:31,059 --> 00:04:36,059
+layers in infrastructure onto that PowerShell server, otherwise, it can't run.
+
+39
+00:04:36,059 --> 00:04:43,059
+(Audience comment) No. It'll be separate unless you were running the Windows version.
+
+40
+00:04:43,059 --> 00:04:50,059
+If you're running the Windows version of the Virtual Center Server, it can all be native.
+
+41
+00:04:50,059 --> 00:04:55,059
+I think VMware has made it sufficiently painful to run the Windows version.
+
+42
+00:04:55,059 --> 00:05:01,059
+I think a lot of people have, they've improved the appliance sufficiently that a lot of people have moved
+
+43
+00:05:01,059 --> 00:05:08,059
+over to that, at least that I'm seeing. Alright, well I guess I'll just close it out.
+
+44
+00:05:08,059 --> 00:05:13,059
+If anybody wants to talk with me after, you'll get a little bit of time back.
+
+45
+00:05:13,059 --> 00:05:20,059
+I hope that this kind of gave you some insight into how PowerShell's being leveraged across the stack.
+
+46
+00:05:20,059 --> 00:05:26,059
+I also hope that when you start thinking about some of the challenges of taking advantage of those, this kind of
+
+47
+00:05:26,059 --> 00:05:30,059
+gets you in that frame of mind. Like I said at the beginning, I don't pretend to have all the answers.
+
+48
+00:05:30,059 --> 00:05:37,059
+I just simply know some of the questions that you need to be asking and wanted to feed some thoughts into how
+
+49
+00:05:37,059 --> 00:05:44,059
+you might tackle those things. And so, once I get that repo out, I'll make sure that I hit the
+
+50
+00:05:44,059 --> 00:05:50,059
+PowerShell summit hashtag when I deploy that out and I'll let everybody know and I'll look forward to your contributions.
+
+51
+00:05:50,059 --> 00:05:53,059
+Thank you for your time and your feedback and your participation.
+
+52
+00:05:53,059 --> 00:05:59,059
+I appreciate it. And despite what my wife says, I don't really feel the need to talk for long periods of time
+
+53
+00:05:59,059 --> 00:59:59,999
+without people talking back, so thank you for that and I appreciate it.
+

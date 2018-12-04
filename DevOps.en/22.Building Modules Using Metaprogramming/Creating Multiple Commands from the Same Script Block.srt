@@ -1,0 +1,412 @@
+1
+00:00:00,0 --> 00:00:11,048
+The very first thing we're going to do is we're going to make a little module that will allow us to just build
+
+2
+00:00:11,048 --> 00:00:20,048
+dynamic commands that don't do much of anything, but we will go over how to, that concept of building a
+
+3
+00:00:20,048 --> 00:00:21,048
+reference script block
+
+4
+00:00:21,048 --> 00:00:27,048
+and then having all the other command and having that reference script block be smart enough to know to do something different.
+
+5
+00:00:27,048 --> 00:00:33,048
+I mean, obviously if you make two commands that have the exact same definition, it sounds like they're going
+
+6
+00:00:33,048 --> 00:00:36,048
+to do the same thing, and so why is that useful?
+
+7
+00:00:36,048 --> 00:00:44,048
+So our first module we're going to make, we're going to set this up, let's see, can everybody see that?
+
+8
+00:00:44,048 --> 00:00:51,048
+I'll zoom in a little bit. Alright, so first thing you're going to see, we're not going to actually create
+
+9
+00:00:51,048 --> 00:00:56,048
+modules that are on disk, but this is going to behave exactly. If you were to write all this stuff that's
+
+10
+00:00:56,048 --> 00:01:02,048
+inside these braces to a file and then call Import-Module, it does the exact same thing.
+
+11
+00:01:02,048 --> 00:01:06,048
+There's nothing special about this. This is just an in-memory dynamic module.
+
+12
+00:01:06,048 --> 00:01:11,048
+But again, if you were to take this, write it to a file, and call Import-Module on it, it's going to do the
+
+13
+00:01:11,048 --> 00:01:15,048
+exact same thing. This is just so I don't have to switch between files.
+
+14
+00:01:15,048 --> 00:01:22,048
+Alright, so our first one you'll see that inside this module we're going to define our reference command and
+
+15
+00:01:22,048 --> 00:01:26,048
+this is going to be the thing that we'll go in and tweak as we want to add more functionality.
+
+16
+00:01:26,048 --> 00:01:33,048
+And our, this is kind of our Hello World example. All this is going to do is call Write-Host and it's going
+
+17
+00:01:33,048 --> 00:01:41,048
+to say I'm the whatever the command name is command. Useless function, but the more important part here is
+
+18
+00:01:41,048 --> 00:01:46,048
+how we're going to spin these commands up. So we're going to create a little, like a little miniature
+
+19
+00:01:46,048 --> 00:01:51,048
+domain-specific language. We're going to have this function called DynCommand.
+
+20
+00:01:51,048 --> 00:02:00,048
+It will act as a keyword, right. So you see that it will take a CommandName in and it's going to take a
+
+21
+00:02:00,048 --> 00:02:05,048
+scope right now. This is more to kind of, I'm going to show you one of the pitfalls to doing this.
+
+22
+00:02:05,048 --> 00:02:12,048
+At first, when you create this, you're probably not going to want to play with the scope on this, but all DynCommand
+
+23
+00:02:12,048 --> 00:02:18,048
+is going to do is take the CommandName and then it's going to take that ReferenceCommand, it's going to
+
+24
+00:02:18,048 --> 00:02:22,048
+create a new function and it's going to use whatever scope you have there.
+
+25
+00:02:22,048 --> 00:02:26,048
+By default, is going to use the script scope and that's honestly and truly the one you do want to use,
+
+26
+00:02:26,048 --> 00:02:30,048
+but again, I'm going to show you one of the early pitfalls I came across.
+
+27
+00:02:30,048 --> 00:02:38,048
+And then it's going to call Export-ModuleMember. So this function, well let's import this real quick,
+
+28
+00:02:38,048 --> 00:02:42,048
+and we have DynamicModule, so we should be able to call, whoop, no I guess we can't do that.
+
+29
+00:02:42,048 --> 00:02:50,048
+Get-Command -Module. At some point IntelliSense will kick in. Yeah, so you can see it has one command
+
+30
+00:02:50,048 --> 00:03:00,048
+that's exported right now that's called DynCommand. So if we call it and try to create a command called Command1,
+
+31
+00:03:00,048 --> 00:03:09,048
+let's do this, so if you take a look at the exported commands, you can see Command1 is listed and then you
+
+32
+00:03:09,048 --> 00:03:16,048
+have, we still have remember DynCommand that was also exported, but there is a problem.
+
+33
+00:03:16,048 --> 00:03:23,048
+If we call Get-Command on command1, you'll see that it can't find it.
+
+34
+00:03:23,048 --> 00:03:34,048
+So if we create a command and put it in the global scope, again, you're not going to want to do this,
+
+35
+00:03:34,048 --> 00:03:39,048
+but and I'll explain what's going on here in just a second, and then take a look at the exported commands,
+
+36
+00:03:39,048 --> 00:03:46,048
+you'll see that this Command2 isn't listed in the exported commands from this module, but if you call
+
+37
+00:03:46,048 --> 00:03:53,048
+Get-Command, you do see it there, right. Now Command1, remember we don't have it here, but if we were to
+
+38
+00:03:53,048 --> 00:04:01,048
+actually call inside that dynamic module scope, it is in there. It did truly create a function, but it was
+
+39
+00:04:01,048 --> 00:04:03,048
+in that script scope. So what's happening here
+
+40
+00:04:03,048 --> 00:04:10,048
+is when the module is imported and when we're calling new module there, it's the same steps that are occurring.
+
+41
+00:04:10,048 --> 00:04:15,048
+When the module is imported, there's some special logic that it comes through and realizes hey, I have this
+
+42
+00:04:15,048 --> 00:04:23,048
+list of commands that need to be exported and it's smart enough to realize whether or not it's a nested
+
+43
+00:04:23,048 --> 00:04:28,048
+module and those need to be hidden from global scope or whether or not it's a, those functions are supposed
+
+44
+00:04:28,048 --> 00:04:32,048
+to truly be exported into global scope and it handles that for you.
+
+45
+00:04:32,048 --> 00:04:35,048
+If you try to go in like we did a second ago
+
+46
+00:04:35,048 --> 00:04:41,048
+and do this, you'll see that it wasn't listed as an exported function from the module and it is truly in the global scope.
+
+47
+00:04:41,048 --> 00:04:49,048
+If you tried to call this as a nested module, it would come out into the global scope and you probably don't want that.
+
+48
+00:04:49,048 --> 00:04:56,048
+So the whole point of that exercise there was to show that we probably, you'll probably want to keep that
+
+49
+00:04:56,048 --> 00:05:01,048
+dynamic command keyword inside the module scope and not expose it and as long as you call it inside the
+
+50
+00:05:01,048 --> 00:05:08,048
+module, you're fine. So that's why in the database examples that I was showing you saw that inside the module
+
+51
+00:05:08,048 --> 00:05:14,048
+I was calling the commands there. It's not if you, this doesn't really work very well for allowing someone
+
+52
+00:05:14,048 --> 00:05:20,048
+to at the command line create something, and to be honest, I don't know that there's much reason to do that.
+
+53
+00:05:20,048 --> 00:05:26,048
+So we'll look at this and this is exactly the same. We had the exact same reference command.
+
+54
+00:05:26,048 --> 00:05:34,048
+The only difference between this module and the previous one is that we call the DynCommand keyword inside the module.
+
+55
+00:05:34,048 --> 00:05:40,048
+So we'll import this module. So we'll import this module in. If we take a look at what's exported,
+
+56
+00:05:40,048 --> 00:05:47,048
+instead of Command2, I created one called AnotherCommand, but you'll see that those are both exported, so that's good.
+
+57
+00:05:47,048 --> 00:05:56,048
+We can call Get-Command on it. That works. If we actually call these commands, that works too.
+
+58
+00:05:56,048 --> 00:06:00,048
+But again, this doesn't do anything useful. They do technically do something different, but they're not
+
+59
+00:06:00,048 --> 00:06:05,048
+doing anything that is useful. And as a matter of fact, they're still very similar.
+
+60
+00:06:05,048 --> 00:06:15,048
+They have the same command syntax, which is they just take common parameters.
+
+61
+00:06:15,048 --> 00:06:17,048
+I would show you the other command, but it's going to look just like that.
+
+62
+00:06:17,048 --> 00:06:27,048
+There's no point. So the next step on here and then after this, I promise we will do something that has potential use.
+
+63
+00:06:27,048 --> 00:06:32,048
+The next thing I want to do is show how you can make the ReferenceCommand scriptblock smart enough to
+
+64
+00:06:32,048 --> 00:06:41,048
+actually present itself as a command with different parameters and how you can make it actually do something
+
+65
+00:06:41,048 --> 00:06:49,048
+so that the commands can differentiate themselves. So if you look here, we have our ReferenceCommand again
+
+66
+00:06:49,048 --> 00:06:57,048
+and the difference here, so we still write to the screen and say which command we're coming from, we're also going
+
+67
+00:06:57,048 --> 00:07:04,048
+to output the BoundParameters. So other than that, the process block is exactly the same.
+
+68
+00:07:04,048 --> 00:07:10,048
+The big difference is, oh and I did skip over one thing. One thing that's different between this module and the
+
+69
+00:07:10,048 --> 00:07:15,048
+previous one is that we're going to create a hash table that will live just in module scope and this is going
+
+70
+00:07:15,048 --> 00:07:21,048
+to contain whatever command metadata that we want to have and the reference scriptblock is going to be smart
+
+71
+00:07:21,048 --> 00:07:26,048
+enough to go look into that and figure out how it needs to behave differently.
+
+72
+00:07:26,048 --> 00:07:35,048
+So the easiest way to get the syntax to be different and to have different parameters is to just use dynamic parameters.
+
+73
+00:07:35,048 --> 00:07:41,048
+It's not the only way that those database readers weren't using dynamic parameters, but that's going to be
+
+74
+00:07:41,048 --> 00:07:51,048
+the easiest way to do it. And all this is doing is this is looking into that CommandInfo hash table up here
+
+75
+00:07:51,048 --> 00:07:58,048
+and it's just depending on a dynamic parameter dictionary to already be present and to be returned.
+
+76
+00:07:58,048 --> 00:08:10,048
+So we will make a change. Now we're going to actually change our dynamic command function here, so we'll still
+
+77
+00:08:10,048 --> 00:08:15,048
+take a CommandName, but we'll also take a scriptblock that's going to be the definition and all we're going
+
+78
+00:08:15,048 --> 00:08:24,048
+to do is end up invoking this, but we need a way to, when we create the command, we need a way to tell it to added
+
+79
+00:08:24,048 --> 00:08:34,048
+parameters to it. So inside here, we're going to create just another function and this way you can't
+
+80
+00:08:34,048 --> 00:08:41,048
+accidentally call this parameter keyword outside the scope of the dynamic command.
+
+81
+00:08:41,048 --> 00:08:50,048
+But all this thing is going to do is it will take a ParameterType, a ParameterName, and a set of parameter attributes.
+
+82
+00:08:50,048 --> 00:08:58,048
+And then it's going to do what the work you normally you have happen inside a DynamicParam block and create
+
+83
+00:08:58,048 --> 00:09:06,048
+a dynamic parameter and it will put it into this same CommandInfo hash table that was defined above.
+
+84
+00:09:06,048 --> 00:09:16,048
+It's going to add the dynamic parameter into the dictionary up there and in the process block of the dynamic
+
+85
+00:09:16,048 --> 00:09:26,048
+command keyword, this is new, so this is where when it first starts to execute, it's going to create an empty
+
+86
+00:09:26,048 --> 00:09:30,048
+runtime define parameter dictionary, then it's going to execute the code inside the scriptblock,
+
+87
+00:09:30,048 --> 00:09:38,048
+which is where the parameters will be defined. Alright, so now if we have our Command1 and Command2,
+
+88
+00:09:38,048 --> 00:09:44,048
+what we're doing here is telling it we're going to create a new command, we're going to call it Command1,
+
+89
+00:09:44,048 --> 00:09:50,048
+and Command1 is going to have a single parameter, it's going to be a string, and we'll name it Parameter1.
+
+90
+00:09:50,048 --> 00:09:57,048
+Dynamic command. Then we'll make another dynamic command. We'll call it Command2 and it's going to have 3 parameters.
+
+91
+00:09:57,048 --> 00:10:01,048
+The first one is going to be an integer. It's going to be called Id.
+
+92
+00:10:01,048 --> 00:10:07,048
+It will have two attributes. One is a parameter attribute. We're going to make it mandatory and put it inside
+
+93
+00:10:07,048 --> 00:10:15,048
+of a ParameterSet and the other one is a ValidateSet. Then we will have a name parameter that's a string.
+
+94
+00:10:15,048 --> 00:10:20,048
+It's going to be in a different ParameterSet, and this is just to kind of show you can give it any attributes
+
+95
+00:10:20,048 --> 00:10:27,048
+you'd like, and then we're going to create just a generic object parameter that's going to be an object of,
+
+96
+00:10:27,048 --> 00:10:33,048
+it'll take objects and it'll be named object. I'm simple. Oops.
+
+97
+00:10:33,048 --> 00:10:44,048
+So we'll read that in and if you take a look at the syntax, you will see in just a second that Command1 and
+
+98
+00:10:44,048 --> 00:10:53,048
+Command2 do indeed have different syntaxes. Command1 has our first parameter, just the single parameter,
+
+99
+00:10:53,048 --> 00:11:01,048
+well, hold on, along with the other common parameters, but you can feed something to it, and Command2 has 2
+
+100
+00:11:01,048 --> 00:11:07,048
+and you can see up there where it does have 2 ParameterSets, so the syntax is showing correctly.
+
+101
+00:11:07,048 --> 00:11:16,048
+And again, this doesn't do anything, let's do Id because it had a ValidateSet, but shows that we were able to
+
+102
+00:11:16,048 --> 00:11:25,048
+spin up two commands that do completely or that have different signatures, I guess.
+
+103
+00:11:25,048 --> 00:59:59,999
+So let's take that and actually try to apply it to something that could be potentially of use.
+

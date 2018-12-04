@@ -1,0 +1,716 @@
+1
+00:00:00,0 --> 00:00:00,951
+Yeah, yes.
+
+2
+00:00:00,951 --> 00:00:07,951
+We can't resist. Now we're into the more fun predictions. We always have, we've always believed in
+
+3
+00:00:07,951 --> 00:00:13,951
+PowerShell and in audit, it's PowerShell or no UI, it's UI or no PowerShell.
+
+4
+00:00:13,951 --> 00:00:18,951
+We've always believed the worlds that peanut butter and chocolate work better together, unless you're allergic
+
+5
+00:00:18,951 --> 00:00:24,951
+to peanuts, but that's not the problem. So what we're trying to say here is that over time we want to make
+
+6
+00:00:24,951 --> 00:00:31,951
+sure we have great UI over PowerShell. And so, we've actually plumbed a few things, but we will get
+
+7
+00:00:31,951 --> 00:00:37,951
+seriously considering, notice the word consider, it's might caveat.
+
+8
+00:00:37,951 --> 00:00:38,951
+Seriously.
+
+9
+00:00:38,951 --> 00:00:44,951
+But seriously, find some way to actually auto-generate UI out of PowerShell modules.
+
+10
+00:00:44,951 --> 00:00:47,951
+Yeah, awesome.
+
+11
+00:00:47,951 --> 00:00:52,951
+It might not be the prettiest, but it should be sufficient and then hopefully we're even looking at ways for
+
+12
+00:00:52,951 --> 00:00:56,951
+you then to be able to do curate a UI on top of that. It's an interesting project.
+
+13
+00:00:56,951 --> 00:01:06,951
+A few people told us we were crazy and that we would fail, but we're having a lot of fun and we are somewhat confident.
+
+14
+00:01:06,951 --> 00:01:16,951
+Community. I think, we've been talking a lot about community and definitely the future of PowerShell is the community.
+
+15
+00:01:16,951 --> 00:01:22,951
+It's all of us. It's the people here, the people who is basically around the planet using PowerShell every day
+
+16
+00:01:22,951 --> 00:01:29,951
+and I think as we start thinking about communication, like how we're going to work together, we want you to
+
+17
+00:01:29,951 --> 00:01:35,951
+be a significant part of the future of PowerShell. We are introducing an RFC process.
+
+18
+00:01:35,951 --> 00:01:39,951
+I believe in the MVP summit for all of you who are MVPs, you got a preview of that.
+
+19
+00:01:39,951 --> 00:01:44,951
+But this is something that we want more and more. PowerShell file.
+
+20
+00:01:44,951 --> 00:01:49,951
+We've done amazing stuff together. We're going to continue investing in PowerShell when it comes to
+
+21
+00:01:49,951 --> 00:01:55,951
+integrating into Windows, integrating with some of the Microsoft technologies, but there's this other aspect
+
+22
+00:01:55,951 --> 00:02:02,951
+about you are the expert in PowerShell. We need your help. So if you have ideas, if you want to request
+
+23
+00:02:02,951 --> 00:02:06,951
+changes, design, we want to provide you a vehicle to do that.
+
+24
+00:02:06,951 --> 00:02:08,951
+UserVoice, that kind of stuff.
+
+25
+00:02:08,951 --> 00:02:11,951
+Absolutely. And the RFC process, as well, right.
+
+26
+00:02:11,951 --> 00:02:12,951
+Absolutely.
+
+27
+00:02:12,951 --> 00:02:16,951
+And the other thing too about the GitHub, I think that this is another thing, GitHub will begin our official
+
+28
+00:02:16,951 --> 00:02:22,951
+place where we want our communities to work together and you're going to start seeing a lot more and more of
+
+29
+00:02:22,951 --> 00:02:25,951
+GitHub open source projects. A lot more.
+
+30
+00:02:25,951 --> 00:02:26,951
+We just started.
+
+31
+00:02:26,951 --> 00:02:32,951
+This is just the starting of what is coming next and we want that to be absolutely the repository for all of us,
+
+32
+00:02:32,951 --> 00:02:39,951
+for you to start sharing and we're going to start providing, how many of you know Joey?
+
+33
+00:02:39,951 --> 00:02:45,951
+Joey's somewhere in the back. He's what I call our community problem manager, it's the best description,
+
+34
+00:02:45,951 --> 00:02:51,951
+and he's working right now in our government about how we're going to be doing these, how it's going to help
+
+35
+00:02:51,951 --> 00:02:56,951
+the community to work together about sharing artifacts and technology moving forward.
+
+36
+00:02:56,951 --> 00:03:00,951
+Yeah, and I don't want to hit, I know we've hit the community a lot and open stuff, so I won't belabor it anymore.
+
+37
+00:03:00,951 --> 00:03:04,951
+The one thing worth noting is over time PowerShell gallery will continue to become a more and more trusted
+
+38
+00:03:04,951 --> 00:03:08,951
+distribution surface for many things, possibly and besides just PowerShell artifacts, but certainly for
+
+39
+00:03:08,951 --> 00:03:16,951
+PowerShell artifacts both from inside of those which we produce as Microsoft, but also we're trying to find
+
+40
+00:03:16,951 --> 00:03:21,951
+ways where if another company produced an artifact that you know it's supported and validated,
+
+41
+00:03:21,951 --> 00:03:27,951
+it's actually from them, that kind of stuff. So we're trying to make sure that it is a trusted place or at
+
+42
+00:03:27,951 --> 00:03:31,951
+the least you know which modules are highly trusted you can go download and use and we'll continue to grow
+
+43
+00:03:31,951 --> 00:03:37,951
+that over time. It is something that Microsoft all up is sort of beginning to learn and get their head around.
+
+44
+00:03:37,951 --> 00:03:42,951
+We are in many ways the PowerShell team has been a great place to work at, I kind of stepped back a little bit,
+
+45
+00:03:42,951 --> 00:03:46,951
+and a horrible place. It's been great because we always get to do something new and crazy.
+
+46
+00:03:46,951 --> 00:03:51,951
+It's been horrible because everybody looks around and says what are you doing and then we have to sort of
+
+47
+00:03:51,951 --> 00:03:54,951
+fight our way free of the entanglements that come with the past.
+
+48
+00:03:54,951 --> 00:03:59,951
+But that's another case where we kind of stood out there and we started stood it up and you've guys have been really
+
+49
+00:03:59,951 --> 00:04:04,951
+supportive, that's really helped us get the message out and more teams are looking at it going hey we could
+
+50
+00:04:04,951 --> 00:04:08,951
+use something like this, and so we're working with them. Some of that is artifacts might show up here,
+
+51
+00:04:08,951 --> 00:04:11,951
+some might show up somewhere else, but thank you again for your help.
+
+52
+00:04:11,951 --> 00:04:13,951
+But this should become a trusted place to go.
+
+53
+00:04:13,951 --> 00:04:16,951
+Yep. And I think in the open source, so just to point out a couple of things.
+
+54
+00:04:16,951 --> 00:04:21,951
+One of the things there we highlighted earlier was the concept of how we started using our platform to
+
+55
+00:04:21,951 --> 00:04:26,951
+integrate into open source technologies like Chef. And I think that you're going to start seeing this trend
+
+56
+00:04:26,951 --> 00:04:32,951
+should become more and more broad. I mean, the goal, I mean, the dream for some of us is imagine the day
+
+57
+00:04:32,951 --> 00:04:35,951
+that no matter what language that you use to actually build your application.
+
+58
+00:04:35,951 --> 00:04:40,951
+You can use PowerShell and DSC as the automation language, the utility language, if you will,
+
+59
+00:04:40,951 --> 00:04:45,951
+and the configuration method for actually deploy your application in the cloud and manage it in the cloud.
+
+60
+00:04:45,951 --> 00:04:49,951
+I mean that is the dream. That's what we want to get to. I mean, how we're going to do that is by doing this
+
+61
+00:04:49,951 --> 00:04:54,951
+level of integration with a number of technologies that are available today in the open source community.
+
+62
+00:04:54,951 --> 00:05:02,951
+And just a couple of more predictions here moving forward, one, now this is kind of a different one than the others.
+
+63
+00:05:02,951 --> 00:05:07,951
+This is where we're actually just beginning. We're going to use a lot more telemetry and metrics of success
+
+64
+00:05:07,951 --> 00:05:12,951
+across our team. How do I know we've had a good community engagement?
+
+65
+00:05:12,951 --> 00:05:15,951
+I'm going to have some statistic that I try to get some sense on it.
+
+66
+00:05:15,951 --> 00:05:20,951
+Now that's not the only way we'll do things and the only way we'll measure success, but we would love to
+
+67
+00:05:20,951 --> 00:05:28,951
+engage with those of you who are crazy statisticians and have some ideas as to how we can measure your guy's
+
+68
+00:05:28,951 --> 00:05:32,951
+success because one of the things I do struggle with is I don't just care about our success, okay I've got
+
+69
+00:05:32,951 --> 00:05:38,951
+tons of downloads, but I'd also love to reach pass that a little bit and say, okay, how do I know that my
+
+70
+00:05:38,951 --> 00:05:45,951
+community has been successful in deployment? How do I know that people are not stuck on something?
+
+71
+00:05:45,951 --> 00:05:55,951
+How do I know that the corporation received great value from the PowerShell, their use of PowerShell or DSC?
+
+72
+00:05:55,951 --> 00:06:00,951
+How do I measure the fact that DSC actually, in some cases, it's easy.
+
+73
+00:06:00,951 --> 00:06:06,951
+Well DSC reduced my deployment and reconfiguration time from a week to three hours.
+
+74
+00:06:06,951 --> 00:06:12,951
+Okay, that's a great measurement. Anything like that you can give us or any other ideas you have around that,
+
+75
+00:06:12,951 --> 00:06:16,951
+please feed them in because it's really more of a request for information this one is as a prediction
+
+76
+00:06:16,951 --> 00:06:22,951
+because we're going to do something here, it be great to have it actually be great.
+
+77
+00:06:22,951 --> 00:06:30,951
+Micro-services. I think that this is a, you probably got a taste of that with OMS Azure automation with our DSC integration.
+
+78
+00:06:30,951 --> 00:06:36,951
+In reality, that's a pull server that we have basically deployed into the cloud using Azure.
+
+79
+00:06:36,951 --> 00:06:40,951
+Yeah I think one of the things that which they're seeing is more and more of an investment in our platform
+
+80
+00:06:40,951 --> 00:06:45,951
+than this one should just deliver in the platform. We're going to start delivering services that you can
+
+81
+00:06:45,951 --> 00:06:51,951
+actually use for doing things like, David communicated yesterday in a presentation, editor services.
+
+82
+00:06:51,951 --> 00:07:00,951
+How can I plug in my favorite editor in order to do PowerShell? How can I basically do validation of my
+
+83
+00:07:00,951 --> 00:07:05,951
+scripting into the cloud, so I can have it hosted validation services, maybe Pester is a service,
+
+84
+00:07:05,951 --> 00:07:12,951
+think about it that way. Configuration. DSC is a platform, well what is configuration as a service?
+
+85
+00:07:12,951 --> 00:07:14,951
+Things like pull server.
+
+86
+00:07:14,951 --> 00:07:19,951
+Pull server's been a big one. We just had a whole discussion around pull server and it's a great little
+
+87
+00:07:19,951 --> 00:07:22,951
+product, in fact, we put it out there first originally, more as a sample.
+
+88
+00:07:22,951 --> 00:07:27,951
+We sort of backed into it a little bit. It's like hey we got this platform, we got this LCM, how do we make
+
+89
+00:07:27,951 --> 00:07:31,951
+sure you can actually use it in pull mode. Oh, we'll write a little piece of code to make sure it works.
+
+90
+00:07:31,951 --> 00:07:35,951
+Okay, well that's a good, we need to make it a bigger piece of code. Let's make sure
+
+91
+00:07:35,951 --> 00:07:39,951
+we actually have a good sample out there. Oh, okay let's take the next step.
+
+92
+00:07:39,951 --> 00:07:44,951
+Let's actually oh people might want to use that sample as a test case, and over time, we've grown this thing
+
+93
+00:07:44,951 --> 00:07:50,951
+to actually be something that Azure put out there with the intent that people would actually write larger
+
+94
+00:07:50,951 --> 00:07:53,951
+tools and more complete tools on top of the basic underlying protocol.
+
+95
+00:07:53,951 --> 00:07:58,951
+What we discovered is everybody says oh I want a pull server and starts using it automatically.
+
+96
+00:07:58,951 --> 00:08:00,951
+They exceeded our expectations.
+
+97
+00:08:00,951 --> 00:08:07,951
+Our adoption and the speed of adoption certainly exceeded our original expectation, which is great and
+
+98
+00:08:07,951 --> 00:08:12,951
+certainly we're stepping back and saying okay how do we fill that need in a way that will meet the overall business
+
+99
+00:08:12,951 --> 00:08:17,951
+objectives, but also just meet the community's. And so we're thinking through how to do that in a way again
+
+100
+00:08:17,951 --> 00:08:23,951
+that would be open and thoughtful and bring everybody in and let us create a great experience instead of
+
+101
+00:08:23,951 --> 00:08:26,951
+one right now, which needs some improvement. We're going to keep working on it.
+
+102
+00:08:26,951 --> 00:08:31,951
+If you're hitting roadblocks in the pull server, file those, tell us, and work with us in the future.
+
+103
+00:08:31,951 --> 00:08:39,951
+I think it's really important too that the role of micro-services in the hybrid scenarios, it just kind of
+
+104
+00:08:39,951 --> 00:08:45,951
+goes to the point that Erin made earlier, is we start thinking about heterogeneous, we start thinking gross cloud
+
+105
+00:08:45,951 --> 00:08:49,951
+type of integration. It's really important having the sort of services that allows you to do both.
+
+106
+00:08:49,951 --> 00:08:54,951
+You can be on-prem, but if you want to go to the cloud, it allows you to easily integrate with other types
+
+107
+00:08:54,951 --> 00:08:58,951
+of cloud services. So I think this is a scenario, especially like deployment it would be a good example of
+
+108
+00:08:58,951 --> 00:08:59,951
+that as well.
+
+109
+00:08:59,951 --> 00:09:03,951
+Absolutely. And another place is where this does pivot us a little bit towards, as Angel was talking about
+
+110
+00:09:03,951 --> 00:09:08,951
+the scenarios and solutions, we will pivot. We're a platform as you mentioned in that other meeting,
+
+111
+00:09:08,951 --> 00:09:14,951
+we're a platform first and foremost and we want to make sure people succeed and we'll probably start picking
+
+112
+00:09:14,951 --> 00:09:15,951
+a couple of vertical
+
+113
+00:09:15,951 --> 00:09:18,951
+places of like deployment or something like that. Make sure okay you can really get the bits out there,
+
+114
+00:09:18,951 --> 00:09:23,951
+they're really going to be successful and have an all up solution with the package manager, DSC,
+
+115
+00:09:23,951 --> 00:09:26,951
+PowerShell all combined together.
+
+116
+00:09:26,951 --> 00:09:32,951
+And I think another thing that's about a good reason why I think the name of the summit has changed.
+
+117
+00:09:32,951 --> 00:09:37,951
+I mean, I think it was a year ago, Don and I, and a few others, Jeff and we were having this idea about how
+
+118
+00:09:37,951 --> 00:09:43,951
+we evolve it, how the summit will evolve and I think Don came up it's like well you guys got to think about
+
+119
+00:09:43,951 --> 00:09:46,951
+these DevOps then, right. We were like looking at each other like yeah I guess this is for real.
+
+120
+00:09:46,951 --> 00:09:53,951
+It's really a culture shift in IT. And we realized that wow there is this amazing opportunity for PowerShell
+
+121
+00:09:53,951 --> 00:10:01,951
+to become the language that basically ties things together and the concept of both the tool, if you will,
+
+122
+00:10:01,951 --> 00:10:07,951
+chain of DevOps, as well as, as people start evolving and moving the solutions that you want agile deployment
+
+123
+00:10:07,951 --> 00:10:13,951
+and operations of those solutions, PowerShell and DSC can play a significant role of that.
+
+124
+00:10:13,951 --> 00:10:17,951
+So I think that moving into the future, this is a scenario that we're going to be investing more and more,
+
+125
+00:10:17,951 --> 00:10:21,951
+and we're going to be working with our community of tying that to a chain all of us together.
+
+126
+00:10:21,951 --> 00:10:24,951
+And this is kind of the area which PowerShell is sort of born to do, right.
+
+127
+00:10:24,951 --> 00:10:30,951
+The reason we have PowerShell in the first place is not everything was a file, document-based management in
+
+128
+00:10:30,951 --> 00:10:37,951
+Windows it was goo, right. You had stuff in registry, stuff in API, stuff in XML, stuff who knows where,
+
+129
+00:10:37,951 --> 00:10:42,951
+and so PowerShell kind of originated as a glue language within Windows and has continued to grow into a bit
+
+130
+00:10:42,951 --> 00:10:48,951
+of a glue language as Erin pointed out, even a little bit of the we do spread our arms a little bit across
+
+131
+00:10:48,951 --> 00:10:57,951
+the shell and the developer scripting scenario and that's actually on purpose, right.
+
+132
+00:10:57,951 --> 00:11:02,951
+And there's that intent to have always be able to make you be able to do things in PowerShell.
+
+133
+00:11:02,951 --> 00:11:07,951
+It's not a single-purpose language on purpose, in this case, unlike other languages that I've participated in.
+
+134
+00:11:07,951 --> 00:11:14,951
+So we think in fact it as before in the DevOps world become more and more of a glue logic, our intention is
+
+135
+00:11:14,951 --> 00:11:16,951
+that it will in fact become known there and be able to do that.
+
+136
+00:11:16,951 --> 00:11:23,951
+As a part of making sure that happens, in version 2, we have no major announcements.
+
+137
+00:11:23,951 --> 00:11:31,951
+And in version 2, actually in version 1 of PowerShell when it first went out, we had no PowerShell on Windows.
+
+138
+00:11:31,951 --> 00:11:34,951
+You had to just download it. You guys might not remember. I remember this, right.
+
+139
+00:11:34,951 --> 00:11:37,951
+You remember. Okay, it was just a pain. You had to download it all.
+
+140
+00:11:37,951 --> 00:11:45,951
+In version 2, we wrote on the board our mantra was before everything else, PowerShell everywhere so that people
+
+141
+00:11:45,951 --> 00:11:51,951
+didn't have to do that, right. So our goal, in that case, drive was getting all skews of Windows.
+
+142
+00:11:51,951 --> 00:11:55,951
+And you'll see as we move forward and try to become more of both the glue language and technologies,
+
+143
+00:11:55,951 --> 00:12:01,951
+that we're going to try to make sure we're able to push PowerShell technology everywhere whether it be DSC
+
+144
+00:12:01,951 --> 00:12:08,951
+or gallery or different components, we want to make sure that in fact that we're able to push things.
+
+145
+00:12:08,951 --> 00:12:15,951
+And we said before the open source will go or go on as fast as we can with as much as we can within the realms
+
+146
+00:12:15,951 --> 00:12:25,951
+of reasonable business and within the realms of our resources. And so, we're continuing to evolve that story,
+
+147
+00:12:25,951 --> 00:12:30,951
+but our goal is to make sure that our tools are available for you.
+
+148
+00:12:30,951 --> 00:12:35,951
+Yeah, I think as Kenneth say, well we want PowerShell everywhere, I mean, I think is the---
+
+149
+00:12:35,951 --> 00:12:36,951
+Technology everywhere.
+
+150
+00:12:36,951 --> 00:12:41,951
+Yeah, we want technology everywhere, but we want it to be a tool for everybody and I think that this is
+
+151
+00:12:41,951 --> 00:12:46,951
+something that as you start, you saw some of the predictions in the past and some of the predictions in the future,
+
+152
+00:12:46,951 --> 00:12:50,951
+you're going to start seeing more and more of that. Stay tuned.
+
+153
+00:12:50,951 --> 00:12:56,951
+Velocity. We haven't, we did start moving things a little quicker as you noticed.
+
+154
+00:12:56,951 --> 00:13:03,951
+That will continue. We're going to try to move them quicker and with higher quality moving forward and with
+
+155
+00:13:03,951 --> 00:13:08,951
+a little bit of communication all simultaneously. We'll try to get that stutter step working a little better.
+
+156
+00:13:08,951 --> 00:13:12,951
+There is a drive towards simplicity. Now this might not be obvious.
+
+157
+00:13:12,951 --> 00:13:18,951
+This is our last line. This might not be obvious, but we do actually try to make this so, that was the whole
+
+158
+00:13:18,951 --> 00:13:25,951
+intent of DSC. If you take a look at it from the user perspective, if there's a good match and take a look
+
+159
+00:13:25,951 --> 00:13:31,951
+at the PowerShell code, you get about a 10x factor of simplicity out of just a DSC configuration when it matches.
+
+160
+00:13:31,951 --> 00:13:39,951
+Now what we've got to do with DSC is make it easier to get there and make that more complete coverage.
+
+161
+00:13:39,951 --> 00:13:47,951
+Does that make sense? But the whole intent was reduce the challenge of complexity, so that we can achieve the
+
+162
+00:13:47,951 --> 00:13:52,951
+scale we need to in this industry and the rapidity of release we have to.
+
+163
+00:13:52,951 --> 00:13:58,951
+That's why we do DSC. And so we will take a look at both DSC and other technologies to try to make it
+
+164
+00:13:58,951 --> 00:14:03,951
+simpler and simpler for the end user or in certain cases. We recognize we don't always land in the first
+
+165
+00:14:03,951 --> 00:14:10,951
+place when you start looking at things like the pull server. And then last, but not least, there's _____ of completeness.
+
+166
+00:14:10,951 --> 00:14:16,951
+We talked a little about the scenario issues. How do we actually make sure we are complete and well-rounded?
+
+167
+00:14:16,951 --> 00:14:25,951
+That's where we're counting on you guys to do some UserVoice and feedback and to tell us what those issues are.
+
+168
+00:14:25,951 --> 00:14:28,951
+So with that said.
+
+169
+00:14:28,951 --> 00:14:34,951
+Yeah, I think, thank you. I think that the best way to finish is to thank all of you.
+
+170
+00:14:34,951 --> 00:14:39,951
+I mean, we come to work every day at Microsoft because of you. I mean, really.
+
+171
+00:14:39,951 --> 00:14:44,951
+PowerShell has been an amazing experiment. I've been with the team now; I think it's my fifth year now coming
+
+172
+00:14:44,951 --> 00:14:47,951
+in as a different role. Kenneth has been here for 10 years, 13, 13 years.
+
+173
+00:14:47,951 --> 00:14:49,951
+Thirteen years, something like that, maybe 14.
+
+174
+00:14:49,951 --> 00:14:55,951
+And it's amazing to see where we are. I mean, for me from five years ago to today, I mean I'm looking in this
+
+175
+00:14:55,951 --> 00:15:02,951
+room and I'm looking at the other people and I'm looking at the momentum and it could not happen without you, your help.
+
+176
+00:15:02,951 --> 00:15:06,951
+So we need more help. We need more of you to basically contribute.
+
+177
+00:15:06,951 --> 00:15:13,951
+You know to help is basically take PowerShell for another amazing 10 years, so thank you from my point of view.
+
+178
+00:15:13,951 --> 00:15:14,951
+I don't know.
+
+179
+00:15:14,951 --> 00:59:59,999
+Thank you very much.
+

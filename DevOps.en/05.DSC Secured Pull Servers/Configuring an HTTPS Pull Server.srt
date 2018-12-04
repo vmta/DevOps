@@ -1,0 +1,400 @@
+1
+00:00:01,941 --> 00:00:10,941
+Now when you guys, don't worry, when you guys get the code for this, I'll wait for it, it's going to look like this.
+
+2
+00:00:10,941 --> 00:00:18,941
+You're going to download this thing called DSC, boy that's really irritating, sorry guys, DSCPreCon and you're
+
+3
+00:00:18,941 --> 00:00:23,941
+going to have all of these sections under there of code. The section that we're starting
+
+4
+00:00:23,941 --> 00:00:31,941
+at is section seven. So you got six earlier sections of wonderful code just for you.
+
+5
+00:00:31,941 --> 00:00:35,941
+Okay, don't be so happy about it. Section seven is the pull server, so I'm going to go in there and I'll
+
+6
+00:00:35,941 --> 00:00:40,941
+show it to you. And here's how I construct everything. You have a demo file.
+
+7
+00:00:40,941 --> 00:00:47,941
+This demo file walks you through the entire process. Ready? Say yes.
+
+8
+00:00:47,941 --> 00:00:52,941
+Yes. Wow, you guys are tough.
+
+9
+00:00:52,941 --> 00:00:58,941
+I'm going to set my directory here. Now here's what I did. I wrote the entire process
+
+10
+00:00:58,941 --> 00:01:06,941
+down for you in a short list so that you can see what the whole process is and then I demo and create the
+
+11
+00:01:06,941 --> 00:01:12,941
+entire thing for you. So here's what I want you to know. Don't panic about this thing flashing.
+
+12
+00:01:12,941 --> 00:01:13,941
+Just get the
+
+13
+00:01:13,941 --> 00:01:15,941
+concept that I'm trying to convey to you because you
+
+14
+00:01:15,941 --> 00:01:20,941
+have the code and I've written it all out for you. Are we good so far?
+
+15
+00:01:20,941 --> 00:01:26,941
+Good so far. So relax. I'm relaxing. Okay, good. I like that.
+
+16
+00:01:26,941 --> 00:01:27,941
+So one of the first things
+
+17
+00:01:27,941 --> 00:01:33,941
+you're going to need is you are going to need a couple of things right out the bat to make a secured pull server.
+
+18
+00:01:33,941 --> 00:01:37,941
+You're going to need a certificate. Now this pull server is an internal pull server.
+
+19
+00:01:37,941 --> 00:01:45,941
+You can use your own internal PKI to put an SSL cert on it. I never recommend wildcard certs, but if you
+
+20
+00:01:45,941 --> 00:01:50,941
+must, you must. So you can put an SSL cert on the box that's going to be the pull server.
+
+21
+00:01:50,941 --> 00:01:54,941
+In my case, I'm going to use a box called DC,
+
+22
+00:01:54,941 --> 00:01:59,941
+which happens to also be a domain controller, don't do that in real life, but you can do it in lab,
+
+23
+00:01:59,941 --> 00:02:06,941
+that we're going to turn into a pull server. This gets a little bit complicated because it's not you making
+
+24
+00:02:06,941 --> 00:02:10,941
+a website and putting a certificate on it. We need some special services in there.
+
+25
+00:02:10,941 --> 00:02:15,941
+Microsoft has bundled this for us to make life easier. So the first thing I'm going to do
+
+26
+00:02:15,941 --> 00:02:21,941
+is I'm going to create a DNS record for the pull server. This DNS record is what I'm going to teach all my
+
+27
+00:02:21,941 --> 00:02:26,941
+nodes how to use, how to get to, to find their configs. I'm going to forget what this is,
+
+28
+00:02:26,941 --> 00:02:34,941
+but it's DSC.Company.Pri, so I'll just add the DNS record. And here's what I want to show you as soon as
+
+29
+00:02:34,941 --> 00:02:43,941
+he's done with that. We need a DSC resource module off of the gallery.
+
+30
+00:02:43,941 --> 00:02:44,941
+The DSC resource module
+
+31
+00:02:44,941 --> 00:02:48,941
+that we need to get is called, and don't write this down because I have it written here, it's called
+
+32
+00:02:48,941 --> 00:02:56,941
+XPSDesiredStateConfiguration. This module gives us a couple of capabilities and some documentation that I
+
+33
+00:02:56,941 --> 00:03:01,941
+want to show you. Now do you want me to give you the truth or the story?
+
+34
+00:03:01,941 --> 00:03:09,941
+Truth. Aww. Because see the story is a nice, easy polite thing and the truth is painful.
+
+35
+00:03:09,941 --> 00:03:13,941
+Okay, truth it is. Blame him. Blame him. So look,
+
+36
+00:03:13,941 --> 00:03:19,941
+let me show you how to find this module. You can find this module, and I've written it out for you, of course.
+
+37
+00:03:19,941 --> 00:03:32,941
+I'll show it to you. Oh, yes please. NuGet, NuGet, NuGet. Come on, Come on.
+
+38
+00:03:32,941 --> 00:03:37,941
+Snap to it, snap to it, baby. At least I think we're going to find the module.
+
+39
+00:03:37,941 --> 00:03:43,941
+There it goes. That's awesome. No, that's not awesome. There it goes.
+
+40
+00:03:43,941 --> 00:03:49,941
+There. So here's the module XPSDesiredState. I want you to notice the version numbers 3.9.
+
+41
+00:03:49,941 --> 00:03:51,941
+Friday of last week, it was 3.8.
+
+42
+00:03:51,941 --> 00:03:55,941
+Wednesday of last week, it was 3.7. I'll get back to that in a moment.
+
+43
+00:03:55,941 --> 00:04:04,941
+But so they're updating it. But you need this on the pull server and the box you're writing the config to
+
+44
+00:04:04,941 --> 00:04:11,941
+make the pull server, so your author box and your target. So
+
+45
+00:04:11,941 --> 00:04:19,941
+here's what I'm going to do. I'm going to get rid of this right now.
+
+46
+00:04:19,941 --> 00:04:22,941
+No, I can't get rid of that. Oh, this is going to cost me... Oh, that's okay, I'll fix it.
+
+47
+00:04:22,941 --> 00:04:27,941
+So here's where, how am I going to do this, I'm going to use install module to install XPSDesiredState.
+
+48
+00:04:27,941 --> 00:04:35,941
+I need another resource module because the way I like to write my configs, install it on my author box,
+
+49
+00:04:35,941 --> 00:04:38,941
+and then I need to install it on the box that's going to become the pull server.
+
+50
+00:04:38,941 --> 00:04:44,941
+The resources must exist there. So you can see the next command I'm going to run is Invoke-Command on DSC
+
+51
+00:04:44,941 --> 00:04:49,941
+to do that exact same thing. Are you with me so far? Yeah. Yeah, okay.
+
+52
+00:04:49,941 --> 00:04:52,941
+So we'll do that.
+
+53
+00:04:52,941 --> 00:04:58,941
+In here, I want to show you something. One of the best things about DSC resources is Microsoft gives you
+
+54
+00:04:58,941 --> 00:05:07,941
+some documentation to help you learn how to use the resource. So what I wanted to show you was right here
+
+55
+00:05:07,941 --> 00:05:15,941
+Where that module is getting installed, out here, and I have to change this to 3.9, out here underneath
+
+56
+00:05:15,941 --> 00:05:22,941
+examples, there's a sample of how to set up a pull server. This is really nice of them, right?
+
+57
+00:05:22,941 --> 00:05:28,941
+Don't you think that's nice they give you a sample? Okay, you don't seem all excited.
+
+58
+00:05:28,941 --> 00:05:33,941
+Let me show you a sample. We're not going to do it this way, but.
+
+59
+00:05:33,941 --> 00:05:41,941
+So they give you a sample. This is a configuration of how to set up a pull server.
+
+60
+00:05:41,941 --> 00:05:45,941
+And here are a couple of things that we need. First of all, we need to have a special Windows feature called
+
+61
+00:05:45,941 --> 00:05:51,941
+DSC service that has to be installed first. When that's installed, now we can start to set up our pull server
+
+62
+00:05:51,941 --> 00:05:57,941
+and I want to show you some of the configuration settings here.
+
+63
+00:05:57,941 --> 00:06:02,941
+These are things that we have to tell the pull server how to configure its website.
+
+64
+00:06:02,941 --> 00:06:06,941
+I want you to do me a favor and look at, the endpoint name is going to be the website name, what I want you
+
+65
+00:06:06,941 --> 00:06:12,941
+to do is look at port, Port 8080. This is the port that the websites going to run on.
+
+66
+00:06:12,941 --> 00:06:18,941
+Now I want a secured website, so what port should this be?
+
+67
+00:06:18,941 --> 00:06:26,941
+Four four three. Four four three. Does it have to be 443? No. See SSL works on any port.
+
+68
+00:06:26,941 --> 00:06:33,941
+Why do we usually set it for 443 though? (Audience Answer) Yeah because users don't know how to type in
+
+69
+00:06:33,941 --> 00:06:38,941
+colon for whatever and there's no way to communicate, so we make it easy because the browser makes it
+
+70
+00:06:38,941 --> 00:06:44,941
+easiest for us. Here's what I don't like to do. I don't like to set pull servers up on 443 and there's a
+
+71
+00:06:44,941 --> 00:06:52,941
+reason for this. I can teach the LCMs, the nodes, how to get to the pull server by giving them the port number,
+
+72
+00:06:52,941 --> 00:06:59,941
+but I might on this pull server want to set up something else on this pull server like a self-service portal
+
+73
+00:06:59,941 --> 00:07:06,941
+or PowerShell web access, things that I need users to access that are on 443.
+
+74
+00:07:06,941 --> 00:07:11,941
+And here's why and some people will go, do I have any Exchange guys in here?
+
+75
+00:07:11,941 --> 00:07:16,941
+When you set up a KAS box, are you allowed to put any other websites on that KAS box?
+
+76
+00:07:16,941 --> 00:07:24,941
+No, sir. No sir. Don't call me sir. No! I want to tell you something.
+
+77
+00:07:24,941 --> 00:07:32,941
+I want you to think about this. Configurations that you put on this pull server are little tiny text files.
+
+78
+00:07:32,941 --> 00:07:38,941
+Even if you have a 1,000 or 6,000 configurations, they're little tiny text files, do you know what a web server
+
+79
+00:07:38,941 --> 00:07:43,941
+dishes out really well? Little tiny text files. Little tiny text files!
+
+80
+00:07:43,941 --> 00:07:51,941
+You know how well it dishes it out? That millions of people can get little tiny text files from a web server.
+
+81
+00:07:51,941 --> 00:07:58,941
+So I want you to, I want you to, this web server you're building is never going to be doing any real work
+
+82
+00:07:58,941 --> 00:08:05,941
+because your nodes are going to ask for a text file and it's going to go…
+
+83
+00:08:05,941 --> 00:08:12,941
+One of these can handle everything you've got. Everything. So I want you to just kind of think about that
+
+84
+00:08:12,941 --> 00:08:19,941
+for a second because he's not working hard, so I like to put other things, management things, on him to use
+
+85
+00:08:19,941 --> 00:08:23,941
+up that resource a little bit more. Does that make sense? Yeah.
+
+86
+00:08:23,941 --> 00:08:27,941
+So if you take a look up here, I'm going to leave it at port 8080.
+
+87
+00:08:27,941 --> 00:08:30,941
+Here's how we're telling it, though, to be a secured website.
+
+88
+00:08:30,941 --> 00:08:37,941
+We need to give it this information. The Certificate ThumbPrint of the certificate and I'm going to show you
+
+89
+00:08:37,941 --> 00:08:42,941
+how I get that to fill that in. Now I want to point out a couple of other things.
+
+90
+00:08:42,941 --> 00:08:52,941
+ModulePath and ConfigurationPath. This is the physical location on the pull server where you will put your
+
+91
+00:08:52,941 --> 00:08:55,941
+configs and your DSC resource modules.
+
+92
+00:08:55,941 --> 00:09:02,941
+You can change this. I do not recommend it. In other words, why are you changing it?
+
+93
+00:09:02,941 --> 00:09:08,941
+If you don't have a really good reason, don't do it. I also want to point something else out here.
+
+94
+00:09:08,941 --> 00:09:17,941
+I skipped over the physical path to where the website files reside and when this comes back up, it's missing something.
+
+95
+00:09:17,941 --> 00:09:22,941
+This is wrong. The documentation is wrong. And I don't know if you'll stay lit long enough,
+
+96
+00:09:22,941 --> 00:09:27,941
+but the documentation is wrong. Does anybody find that funny? No.
+
+97
+00:09:27,941 --> 00:09:34,941
+Oh, I find it funny. I find it typical. Oh, typical. It says iNetPub, but it should say iNetPubwww is the
+
+98
+00:09:34,941 --> 00:09:46,941
+location where the physical files are. Don't worry about it. I'm going to give you a config that's correct.
+
+99
+00:09:46,941 --> 00:09:51,941
+The state is going to be started, other than that, let me show you my config, and we're going to run it,
+
+100
+00:09:51,941 --> 00:59:59,999
+and make a pull server.
+

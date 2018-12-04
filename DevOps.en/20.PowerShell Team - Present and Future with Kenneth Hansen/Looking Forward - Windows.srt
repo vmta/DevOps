@@ -1,0 +1,520 @@
+1
+00:00:00,0 --> 00:00:00,183
+Alright, I think we can move on.
+
+2
+00:00:00,183 --> 00:00:03,183
+We're going to shift a little bit. Absolutely.
+
+3
+00:00:03,183 --> 00:00:05,183
+We have a guest speaker today
+
+4
+00:00:05,183 --> 00:00:13,183
+who's going to join us. How many of you know Erin? Yeah.
+
+5
+00:00:13,183 --> 00:00:21,183
+Erin is my boss, that's one thing and she also runs Windows Server completely and a few other things
+
+6
+00:00:21,183 --> 00:00:24,183
+as well, so she's going to tell us a little more about the future.
+
+7
+00:00:24,183 --> 00:00:29,183
+Awesome. It's great to be here. It's amazing to see from kind of coming
+
+8
+00:00:29,183 --> 00:00:33,183
+into this room, was it two years ago Don that I think we were here.
+
+9
+00:00:33,183 --> 00:00:34,183
+Three, two years ago.
+
+10
+00:00:34,183 --> 00:00:35,183
+Two years ago here.
+
+11
+00:00:35,183 --> 00:00:42,183
+Two years ago and just seeing the increase in folks that are seeing and interested in PowerShell,
+
+12
+00:00:42,183 --> 00:00:47,183
+interested in what we're doing in a DevOp space and here both learning from what we're putting out,
+
+13
+00:00:47,183 --> 00:00:53,183
+but also sharing the collective wisdom that's in this room. It's amazing to see.
+
+14
+00:00:53,183 --> 00:00:58,183
+As Kenneth said, I'm Erin Chaplin, the director of program management for the Windows Server team and I
+
+15
+00:00:58,183 --> 00:01:04,183
+thought I would just share a few top of mind things around what we're doing in Windows Server in particularly
+
+16
+00:01:04,183 --> 00:01:10,183
+how PowerShell and the whole DevOps experience fits into that. We're working, we're hard at work right now
+
+17
+00:01:10,183 --> 00:01:15,183
+on Windows Server 2016. Our technical preview for it came out late last year.
+
+18
+00:01:15,183 --> 00:01:25,183
+We're kind of on the eve of having a technical preview 5 that should be out later this month and that's kind of
+
+19
+00:01:25,183 --> 00:01:34,183
+our last big release before we'll hit like the final version of Windows Server that's due out later this year.
+
+20
+00:01:34,183 --> 00:01:38,183
+Windows Server is an interesting point, right, it's an interesting product and it's an interesting point in
+
+21
+00:01:38,183 --> 00:01:44,183
+the industry and just in general, right. We're at a transition period and when we think about Windows Server,
+
+22
+00:01:44,183 --> 00:01:51,183
+we really think about two roles that Windows Server plays. Traditionally, it's been very much part of the
+
+23
+00:01:51,183 --> 00:01:56,183
+infrastructure and that whole space and as we see the infrastructure and where that's moving,
+
+24
+00:01:56,183 --> 00:02:02,183
+that's undergoing a lot of changes, particularly as we think about the whole transition to the cloud, right,
+
+25
+00:02:02,183 --> 00:02:07,183
+and I think one of the things for you to think about or have in context is when we think about the cloud,
+
+26
+00:02:07,183 --> 00:02:13,183
+we really, we don't think about kind of public cloud or private cloud or something, we think about cloud as a model, right.
+
+27
+00:02:13,183 --> 00:02:18,183
+And that's a big transition that we're going through just in terms of how do you deliver applications
+
+28
+00:02:18,183 --> 00:02:24,183
+and services in a more agile way and we haven't got it perfect yet, right, but we're working through that
+
+29
+00:02:24,183 --> 00:02:31,183
+transition as we think about where we go and how we help customers embrace that cloud model on whatever term
+
+30
+00:02:31,183 --> 00:02:37,183
+that they have. And Windows Server plays a key role of that because it fulfills the on-premises sort of
+
+31
+00:02:37,183 --> 00:02:44,183
+promise to customers of being able to stand up a cloud model and stand up their infrastructure on their terms.
+
+32
+00:02:44,183 --> 00:02:51,183
+And so, Windows Server is kind of part of the whole cloud ecosystem we would say either running it on-premises
+
+33
+00:02:51,183 --> 00:02:56,183
+in a data center running it, in some service provider, or Windows Server is actually the underpinnings of
+
+34
+00:02:56,183 --> 00:03:03,183
+what the Azure cloud runs on top of, and so a lot of the work that you'll see with us in Windows Server 2016
+
+35
+00:03:03,183 --> 00:03:08,183
+that's coming out is focused very much on that cloud model and how are we the cloud-ready operating system.
+
+36
+00:03:08,183 --> 00:03:14,183
+What are we doing in terms of taking the learnings that we have from Azure and running kind of this public
+
+37
+00:03:14,183 --> 00:03:19,183
+cloud at very large hyper scale and then bringing that down and delivering it to customers to provide the
+
+38
+00:03:19,183 --> 00:03:25,183
+Fabric of the infrastructure within their environment. So huge investments we've made in the whole software
+
+39
+00:03:25,183 --> 00:03:30,183
+define space, so software define networking, really kind of providing that infrastructure
+
+40
+00:03:30,183 --> 00:03:34,183
+that allows you to have the portability of your applications and be able to move them right between different
+
+41
+00:03:34,183 --> 00:03:41,183
+clouds, between on-prem, between the public cloud, work that we're doing in the software define storage
+
+42
+00:03:41,183 --> 00:03:48,183
+space to really let you kind of get the power of software and the high resiliency that you've had and historically
+
+43
+00:03:48,183 --> 00:03:53,183
+through hardware, but delivered through software to lay as the foundation and then all the investments that
+
+44
+00:03:53,183 --> 00:03:58,183
+we're making kind of in the Hyper-V layer and the compute layer that go along with that.
+
+45
+00:03:58,183 --> 00:04:04,183
+One of the big things that I'll just kind of put because I think it's important in the context of this community
+
+46
+00:04:04,183 --> 00:04:08,183
+is a lot of the work that we're doing around assurance, right, and we know the world has changed from a
+
+47
+00:04:08,183 --> 00:04:15,183
+security point of view in just in terms of how people think about their operating environment and wanting
+
+48
+00:04:15,183 --> 00:04:20,183
+that assurance that what they're running in the Fabric and the infrastructure is secure.
+
+49
+00:04:20,183 --> 00:04:27,183
+We've done a lot of work in 2016 introducing a new set of functionality around shielded VMs and this ability
+
+50
+00:04:27,183 --> 00:04:32,183
+to really kind of encrypt using BitLocker your virtual machines that are running on top of the Fabric and
+
+51
+00:04:32,183 --> 00:04:39,183
+then have that, the Fabric tested in a way so that you can guarantee that the Fabric is the Fabric you want
+
+52
+00:04:39,183 --> 00:04:43,183
+it to be and that the VM won't boot. And a lot of these things where
+
+53
+00:04:43,183 --> 00:04:47,183
+we're thinking about, okay these things you maybe don't need to worry about when you're in a public cloud
+
+54
+00:04:47,183 --> 00:04:51,183
+environment, right, because you trust the provider or what not, but when you are wanting to stand up your own
+
+55
+00:04:51,183 --> 00:04:58,183
+infrastructure, they become super important for you to have. So we play a huge role in Windows Server just
+
+56
+00:04:58,183 --> 00:05:04,183
+around that infrastructure and how we're taking that forward and how we're helping organizations in a
+
+57
+00:05:04,183 --> 00:05:09,183
+modernized the underlying infrastructure that they have. The other part that's kind of super relevant to
+
+58
+00:05:09,183 --> 00:05:14,183
+this audience is the role that we play as an application platform, right.
+
+59
+00:05:14,183 --> 00:05:17,183
+Really you have an infrastructure. Why do you have an infrastructure?
+
+60
+00:05:17,183 --> 00:05:22,183
+It's to run virtual machines and the new world containers. Why do you have those?
+
+61
+00:05:22,183 --> 00:05:23,183
+It's to run applications.
+
+62
+00:05:23,183 --> 00:05:27,183
+And we really see that whole space is changing pretty dramatically, right.
+
+63
+00:05:27,183 --> 00:05:35,183
+If you went back and thought about how applications go from conception through to the deployment in an
+
+64
+00:05:35,183 --> 00:05:39,183
+environment 10 years ago, we're in a very, very different world right now.
+
+65
+00:05:39,183 --> 00:05:44,183
+That's why you're seeing kind of a lot of work that we're doing, particularly around PowerShell,
+
+66
+00:05:44,183 --> 00:05:51,183
+Desired State Configuration, but also then the ecosystem around that of Nano and the new installer work that
+
+67
+00:05:51,183 --> 00:05:55,183
+we're doing and contributing to the testing environment through things like Pester and all of those things as
+
+68
+00:05:55,183 --> 00:06:01,183
+being super important to our strategy and we're trying to figure out how we modernize that as well and how do
+
+69
+00:06:01,183 --> 00:06:05,183
+we take a lot of the agile concepts and things that we're seeing more
+
+70
+00:06:05,183 --> 00:06:11,183
+in the OSS world and kind of Linux world and community of how people put together applications and how they
+
+71
+00:06:11,183 --> 00:06:16,183
+go and kind of get the packages they need, put them together, integrate them, have configuration as code,
+
+72
+00:06:16,183 --> 00:06:23,183
+do that in a kind of heterogeneous world and put that plumbing and that basis into what we provide from a
+
+73
+00:06:23,183 --> 00:06:30,183
+platform point of view for Windows Server. So 2016, there's a ton of stuff in it.
+
+74
+00:06:30,183 --> 00:06:38,183
+It is I would say the start of this pivot towards this more cloud model and how we're thinking about
+
+75
+00:06:38,183 --> 00:06:45,183
+taking it into and landing that transformation in organizations all the way from the infrastructure up to the
+
+76
+00:06:45,183 --> 00:06:54,183
+development space and we see PowerShell as being kind of in some sense a bit of the glue between those two worlds, right.
+
+77
+00:06:54,183 --> 00:06:59,183
+It has a lot of and when we initially developed PowerShell,
+
+78
+00:06:59,183 --> 00:07:04,183
+there was a lot of emphasis around it being a language and it having a lot of these properties that were really
+
+79
+00:07:04,183 --> 00:07:09,183
+important from a development space and if you have a development background, those things being things that
+
+80
+00:07:09,183 --> 00:07:15,183
+you come to expect and come to need in a scripting environment, etc.
+
+81
+00:07:15,183 --> 00:07:22,183
+But it also, we've done it and put a lot of our IT hat on it as we implemented it to make sure it was kind of
+
+82
+00:07:22,183 --> 00:07:27,183
+user friendly and it mapped into what you need to do from an IT infrastructure point of view.
+
+83
+00:07:27,183 --> 00:07:32,183
+And so we really do think it's positioned as being the glue between these two worlds and a lot of the
+
+84
+00:07:32,183 --> 00:07:38,183
+investments that you've probably had Kenneth and Angel talk about today are part of us thinking about how do
+
+85
+00:07:38,183 --> 00:07:47,183
+we evolve it and take it forward and have it be a showcase in our arsenal of tools in this new model, in this new
+
+86
+00:07:47,183 --> 00:07:51,183
+world as we think about really helping people embrace the cloud.
+
+87
+00:07:51,183 --> 00:07:55,183
+Again, whether or not that be public, whether or not that be on-premise or through a
+
+88
+00:07:55,183 --> 00:08:00,183
+partner or trusted service provider. So hopefully that gives you a little bit of
+
+89
+00:08:00,183 --> 00:08:07,183
+context to kind of where we are in server, where we're going. It's a release that we're incredibly proud of
+
+90
+00:08:07,183 --> 00:08:11,183
+just in terms of the amount of innovation that I think that we're bringing to bear.
+
+91
+00:08:11,183 --> 00:08:16,183
+And so if you haven't checked it out, I would encourage you not only to check out the PowerShell and the kind
+
+92
+00:08:16,183 --> 00:08:23,183
+of WMF aspects of it, but also a bunch of the core investments that are going in the platform underneath both
+
+93
+00:08:23,183 --> 00:08:30,183
+from an IT infra-sight point of view, but also then as the next generation application platform when that's
+
+94
+00:08:30,183 --> 00:08:36,183
+really starting to be designed or optimized for more of that cloud first world.
+
+95
+00:08:36,183 --> 00:08:38,183
+So with that, I think I'll stop and yeah.
+
+96
+00:08:38,183 --> 00:08:42,183
+Awesome. We're looking forward to it. Nano's going to be a great one in Windows Server.
+
+97
+00:08:42,183 --> 00:08:44,183
+Nano, well I just want to say Nano and containers, right,
+
+98
+00:08:44,183 --> 00:08:47,183
+are pretty big in terms of the transformation that we're making.
+
+99
+00:08:47,183 --> 00:08:53,183
+I mean just seem odd where we talk about Nano and the impact it's going to have just for the size, for an automation,
+
+100
+00:08:53,183 --> 00:08:58,183
+for a performance, so definitely the role that PowerShell is going to play there like Erin says it's going to be significant.
+
+101
+00:08:58,183 --> 00:09:03,183
+We're going to need the help of our community to actually start taking some of the assisting cmdlets and
+
+102
+00:09:03,183 --> 00:09:08,183
+investments that we manuscript and you bring those down through Nano because we start thinking about
+
+103
+00:09:08,183 --> 00:09:10,183
+heterogeneous type of environments, but in management and
+
+104
+00:09:10,183 --> 00:09:17,183
+automation, if we want PowerShell to assist in investments that you have to be reused when managing Nano as well.
+
+105
+00:09:17,183 --> 00:09:22,183
+And simultaneously when the server, as we just talked about before, spans this broad spectrum of customers,
+
+106
+00:09:22,183 --> 00:09:28,183
+and so we're actually able to land you for those who are going a little slower than necessarily the Nano adoption,
+
+107
+00:09:28,183 --> 00:09:35,183
+so we really think 2016 is sort of began to both show the future and handle the past and kind of bring them a
+
+108
+00:09:35,183 --> 00:09:38,183
+little more together in a more cohesive way.
+
+109
+00:09:38,183 --> 00:09:47,183
+And so the last thing I can say is probably in a little bit of a request and an invitation, I would say,
+
+110
+00:09:47,183 --> 00:09:54,183
+and that is we're going through a transition. I think if you, it's an exciting time to be at Microsoft right now.
+
+111
+00:09:54,183 --> 00:09:59,183
+I've been there for almost 18 years and it's just the climate internally and just the
+
+112
+00:09:59,183 --> 00:10:04,183
+willingness for people to take a look at how we've done things in the past and really to go oh does that
+
+113
+00:10:04,183 --> 00:10:10,183
+really work, is that really what the world needs, is that really how we should interface externally, is just amazing.
+
+114
+00:10:10,183 --> 00:10:16,183
+And so, we are going through this transition. I think we don't have it all figured out, but I think we have
+
+115
+00:10:16,183 --> 00:10:22,183
+a pretty good idea based upon input from folks like yourself about what's needed and what the problem space is
+
+116
+00:10:22,183 --> 00:10:27,183
+and what could help and we're trying to do our best to kind of match, I would say, that input that we have with
+
+117
+00:10:27,183 --> 00:10:32,183
+what we put out. And so, it would be first kind of a request to have a little patience, right.
+
+118
+00:10:32,183 --> 00:10:37,183
+We're going through this journey and this transformation together and we're going to get hopefully more right
+
+119
+00:10:37,183 --> 00:10:42,183
+than wrong, but the good news is that we are increasing our frequency of getting things out there, and so we
+
+120
+00:10:42,183 --> 00:10:49,183
+can adjust as we go along. But we won't get it right unless we have the partnership with folks like you that
+
+121
+00:10:49,183 --> 00:10:54,183
+are in this room, and so please take advantage of the various different community organizations,
+
+122
+00:10:54,183 --> 00:11:00,183
+the UserVoice site that we have, all of those pieces, in order to really channel your feedback in because I
+
+123
+00:11:00,183 --> 00:11:07,183
+will tell you if anything this is one of the teams that I think it takes that input more to heart than other
+
+124
+00:11:07,183 --> 00:11:12,183
+parts of the organization that have been less, more isolated in the past and like
+
+125
+00:11:12,183 --> 00:11:17,183
+it's a little bit more of a heavy lift for me to get the folks that are working on kind of core protocol level
+
+126
+00:11:17,183 --> 00:11:23,183
+stuff that they don't really have a community to interface with to go accept some piece of user input.
+
+127
+00:11:23,183 --> 00:11:32,183
+I think the PowerShell team has a reputation of listening to those things and have the kind of request that
+
+128
+00:11:32,183 --> 00:11:39,183
+we're not going to get it all right, but keep it coming because I think that only benefits both of us in the long run.
+
+129
+00:11:39,183 --> 00:11:40,183
+So thank you.
+
+130
+00:11:40,183 --> 00:59:59,999
+Thank you very much.
+

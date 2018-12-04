@@ -1,0 +1,216 @@
+1
+00:00:00,235 --> 00:00:04,235
+So the next thing I want to show you is, it's the last thing we're going to do on ValidateSet, and it's really
+
+2
+00:00:04,235 --> 00:00:13,235
+a way to, it's really, in my opinion, abusing ValidateSet, taking it completely past what its intention or
+
+3
+00:00:13,235 --> 00:00:19,235
+what its use is for, but for the longest time before I knew about argument completers, what we're going to
+
+4
+00:00:19,235 --> 00:00:26,235
+talk about next, I always wanted a way to use a ValidateSet the way that argument completers are used the way
+
+5
+00:00:26,235 --> 00:00:31,235
+like when you're working in with normal PowerShell commands and they give you that IntelliSense, but you're not
+
+6
+00:00:31,235 --> 00:00:39,235
+forced to pick what's there. I used to always look for a way to do that and obviously argument completers
+
+7
+00:00:39,235 --> 00:00:45,235
+are the way to do that, but there is a way you can do it with ValidateSet, again, using dynamic parameters.
+
+8
+00:00:45,235 --> 00:00:50,235
+I'm not saying this is a good idea, but it doesn't use reflection or anything like that.
+
+9
+00:00:50,235 --> 00:00:55,235
+Essentially what we're going to do, if we look, so this function is going to do the same thing,
+
+10
+00:00:55,235 --> 00:00:59,235
+except it's going to allow, let me show you what I'm talking about like I want
+
+11
+00:00:59,235 --> 00:01:06,235
+Show-DynamicValidateSetExample. Maybe I want to be able to put in wild cards right there and have that
+
+12
+00:01:06,235 --> 00:01:11,235
+actually bring back those two values. That's not going to work when you're using ValidateSet the way that we
+
+13
+00:01:11,235 --> 00:01:21,235
+just did because pro* is not a valid folder on there. ValidateSet is doing its job and it's not allowing me
+
+14
+00:01:21,235 --> 00:01:29,235
+to input that. But if you want to do that, it would look something like this.
+
+15
+00:01:29,235 --> 00:01:36,235
+So here we're doing a dynamic parameter and this part right here is exactly the same as the previous one.
+
+16
+00:01:36,235 --> 00:01:42,235
+We get the list of folder names, we create the dictionary, we start to create an attribute collection.
+
+17
+00:01:42,235 --> 00:01:47,235
+This part right here is exactly the same where we create the parameter and we add the attributes to it and
+
+18
+00:01:47,235 --> 00:01:52,235
+add it to the dictionary. The difference is this part right here.
+
+19
+00:01:52,235 --> 00:01:54,235
+So a little bit of background,
+
+20
+00:01:54,235 --> 00:02:00,235
+when you interactively type a command in PowerShell, the completion engine in the background, to do its job,
+
+21
+00:02:00,235 --> 00:02:04,235
+it needs to know as much information about that command as possible.
+
+22
+00:02:04,235 --> 00:02:08,235
+So internally, it's essentially calling like Get-Command to get the metadata for the command.
+
+23
+00:02:08,235 --> 00:02:15,235
+So it needs, because it needs to know hey maybe they've provided like for Get-ChildItem, maybe they provided
+
+24
+00:02:15,235 --> 00:02:22,235
+a certificate path or certificate store path, so I need to know that code signing is a switch parameter
+
+25
+00:02:22,235 --> 00:02:26,235
+that's valid here so that it can actually complete those parameter names.
+
+26
+00:02:26,235 --> 00:02:33,235
+So when you're interactively typing on the command-line, when it's trying to get the metadata for this command,
+
+27
+00:02:33,235 --> 00:02:36,235
+it's going to internally call the DynamicParam block
+
+28
+00:02:36,235 --> 00:02:42,235
+multiple times potentially. I mean you don't really get to control how often it calls that.
+
+29
+00:02:42,235 --> 00:02:48,235
+So when you do that, the MyInvocation automatic variable, it has a property on it called CommandOrigin.
+
+30
+00:02:48,235 --> 00:02:51,235
+It has two possible values, it's either internal or runspace.
+
+31
+00:02:51,235 --> 00:02:58,235
+So when PowerShell's calling that on your behalf to try to Get-Command metadata information, it sees it as,
+
+32
+00:02:58,235 --> 00:03:03,235
+it was called internally. PowerShell itself called this to try to get some information.
+
+33
+00:03:03,235 --> 00:03:07,235
+So what we're going to do here is we're going to lie to the engine.
+
+34
+00:03:07,235 --> 00:03:11,235
+When it's doing it internally to try to get parameter completion information, we're going to tell it that you
+
+35
+00:03:11,235 --> 00:03:17,235
+need this ValidateSet. And then when the user actually, when you press enter and you submit your command,
+
+36
+00:03:17,235 --> 00:03:20,235
+that's when the command gets run for the last time. It runs the DynamicParam block.
+
+37
+00:03:20,235 --> 00:03:27,235
+It runs the begin, and your process, and your end blocks. And then in that situation, we're not going to add
+
+38
+00:03:27,235 --> 00:03:31,235
+the ValidateSet attribute. Now again, I'm not saying this is the best idea.
+
+39
+00:03:31,235 --> 00:03:38,235
+There may be reasons that I haven't even thought of that it's a bad idea, but it does seem to work.
+
+40
+00:03:38,235 --> 00:03:46,235
+So if we Show-DynamicValidateSetSuggestion and we come in---oh one other thing, notice on the other one to show
+
+41
+00:03:46,235 --> 00:03:51,235
+that end block was much simpler, I just told it to show the PSBoundParameters.
+
+42
+00:03:51,235 --> 00:03:53,235
+Well in this case,
+
+43
+00:03:53,235 --> 00:03:58,235
+because we're not letting ValidateSet do its job, we're actually on the hook for doing the validation to make
+
+44
+00:03:58,235 --> 00:04:04,235
+sure that the user puts something in that is valid. So of course, if you try to use suggestions,
+
+45
+00:04:04,235 --> 00:04:08,235
+it's going to be the same thing with argument completers. If you allow the user to type anything and you just
+
+46
+00:04:08,235 --> 00:04:15,235
+provide IntelliSense to help them out, you're on the hook for validating that they actually put,
+
+47
+00:04:15,235 --> 00:04:22,235
+that they gave you valid input. So anyway, let's come back down.
+
+48
+00:04:22,235 --> 00:04:27,235
+So it comes up with the IntelliSense. Now can I type in that? I can't.
+
+49
+00:04:27,235 --> 00:04:38,235
+So that's a way to, again it's abusing ValidateSet. It's not using ValidateSet for its intended purpose and
+
+50
+00:04:38,235 --> 00:04:43,235
+the way, if you have PowerShell V5, you really shouldn't try to use this for any reason.
+
+51
+00:04:43,235 --> 00:04:51,235
+PowerShell V5 offers argument completers an easy way for everybody to use them out-of-the-box without doing anything special.
+
+52
+00:04:51,235 --> 00:04:57,235
+So we're going to---I keep talking about these argument completers, I guess let's jump into them and actually talk.
+
+53
+00:04:57,235 --> 00:05:03,235
+Before I do that, any questions on using ValidateSet to get IntelliSense or…
+
+54
+00:05:03,235 --> 00:59:59,999
+No. Alright.
+

@@ -1,0 +1,268 @@
+1
+00:00:14,14 --> 00:00:19,19
+Alright so, I'm Matt. This is Jared, and today we're going to be talking about Creating an Agent-less Host
+
+2
+00:00:19,19 --> 00:00:25,25
+Intrusion Detection System using PowerShell and WMI. So what do I mean by agent-less?
+
+3
+00:00:25,25 --> 00:00:31,31
+I mean we're not actually installing any software on our targets.
+
+4
+00:00:31,31 --> 00:00:38,38
+We're using effectively permanent WMI event subscriptions to trigger off certain events and then to use
+
+5
+00:00:38,38 --> 00:00:46,46
+built-in classes within WMI to respond to those events accordingly all without dropping any MSIs, exes, dlls,
+
+6
+00:00:46,46 --> 00:00:48,48
+drivers to disk.
+
+7
+00:00:48,48 --> 00:00:56,56
+A little bit about myself. This is my Twitter handle. Right now, I'm the R&amp;D capability lead with the Veris Group
+
+8
+00:00:56,56 --> 00:01:03,63
+Adaptive Threat Division. Previously, I was on the FireEye FLARE team doing malware reversing.
+
+9
+00:01:03,63 --> 00:01:08,68
+And then before that, I did some red teaming on a government red team.
+
+10
+00:01:08,68 --> 00:01:17,77
+Parts of that, I was enlisted Navy. I was a Chinese linguist. I'm a CDM MVP, although with my specialty
+
+11
+00:01:17,77 --> 00:01:22,82
+obviously being in PowerShell, although I wouldn't really call myself a cloud or datacenter expert, so it is
+
+12
+00:01:22,82 --> 00:01:26,86
+what it is. I'm also the creator of PowerSploit and PowerShellArsenal.
+
+13
+00:01:26,86 --> 00:01:35,95
+I've also got various other modules and repositories on GitHub that you're welcome to check out under mattifestation.
+
+14
+00:01:35,95 --> 00:01:40,100
+Cool. And I'm Jared Atkinson. I'm the Hunt technical lead. I just got a new job at Veris Group in this
+
+15
+00:01:40,100 --> 00:01:45,105
+Adaptive Threat Division as well. Former, I was in the US Air Force on the Hunt team.
+
+16
+00:01:45,105 --> 00:01:50,110
+I mentioned on Monday I was the 2015 Black Hat Minesweeper champion, so before PowerShell there was Minesweeper
+
+17
+00:01:50,110 --> 00:01:56,116
+and I was obsessive compulsive with that as well. I'm the moderator of the powershell.com security forum,
+
+18
+00:01:56,116 --> 00:02:01,121
+which if you have PowerShell security questions, please come ask them and we'll try to help you out.
+
+19
+00:02:01,121 --> 00:02:09,129
+And then I developed PowerForensics, WMIEvent, and Uproot IDS, which the last two we will be talking about today.
+
+20
+00:02:09,129 --> 00:02:13,133
+Alright, so generally, what is Uproot. I'm kind of setting the stage.
+
+21
+00:02:13,133 --> 00:02:19,139
+Uproot is a host-based intrusion detection system built on permanent WMI event subscriptions, so
+
+22
+00:02:19,139 --> 00:02:24,144
+permanent WMI event subscriptions allow you to monitor for changes in the operating system and why not
+
+23
+00:02:24,144 --> 00:02:28,148
+monitor for activities that may be associated with an intrusion.
+
+24
+00:02:28,148 --> 00:02:29,149
+That was kind of the thought process.
+
+25
+00:02:29,149 --> 00:02:34,154
+And it leverages this WmiEvent module to easily manage subscriptions.
+
+26
+00:02:34,154 --> 00:02:38,158
+What is WmiEvent you might ask? Well it's a PowerShell module that abstracts the complexities of permanent
+
+27
+00:02:38,158 --> 00:02:41,161
+WMI event subscriptions. So
+
+28
+00:02:41,161 --> 00:02:46,166
+WMI event subscriptions, there's a lot of background knowledge that you need to have in order to get them working,
+
+29
+00:02:46,166 --> 00:02:52,172
+and so WmiEvent is trying to kind of bridge that gap for kind of a new user of WMI event subscriptions to be
+
+30
+00:02:52,172 --> 00:02:57,177
+able to easily create and modify these subscriptions.
+
+31
+00:02:57,177 --> 00:02:59,179
+That's a CDXML module, right?
+
+32
+00:02:59,179 --> 00:03:01,181
+The base is built on CDXML, yeah.
+
+33
+00:03:01,181 --> 00:03:03,183
+Sweet.
+
+34
+00:03:03,183 --> 00:03:11,191
+Okay, so a little motivation behind our work here. In my previous job, we were investigating the group known
+
+35
+00:03:11,191 --> 00:03:21,201
+as APT29 and some of the techniques and tools that they used involved using permanent WMI event subscriptions,
+
+36
+00:03:21,201 --> 00:03:29,209
+both as a persistence mechanism, right, so their code would execute after boot every time and also as like a
+
+37
+00:03:29,209 --> 00:03:37,217
+covert storage mechanism, so they were using the WMI repository itself as a means of storing their payloads
+
+38
+00:03:37,217 --> 00:03:46,226
+and what that enabled them to do was both store their payloads, perform persistence, and also execute those
+
+39
+00:03:46,226 --> 00:03:50,230
+payloads entirely remotely using nothing but WMI, which is pretty cool.
+
+40
+00:03:50,230 --> 00:03:57,237
+So a buddy of mine during our holiday party was asking me because that they were, I mean they were kind of down
+
+41
+00:03:57,237 --> 00:04:04,244
+in the weeds investigating this really extensive breach that had occurred and he was already pretty experienced
+
+42
+00:04:04,244 --> 00:04:11,251
+with WMI permanent event subscriptions, but he was kind of curious like, so he asked me how would you go about
+
+43
+00:04:11,251 --> 00:04:20,260
+detecting the like WMI persistence, right, so in other words, the creation of permanent WMI event subscriptions.
+
+44
+00:04:20,260 --> 00:04:26,266
+So I started thinking and actually it occurred to me like you could use, you could create a permanent WMI event
+
+45
+00:04:26,266 --> 00:04:30,270
+subscription to detect the creation of permanent WMI event subscriptions.
+
+46
+00:04:30,270 --> 00:04:36,276
+So that's what kind of lead me down this path to think that there's like, there's all these built-in WMI methods,
+
+47
+00:04:36,276 --> 00:04:45,285
+or sorry, WMI events and classes that you could potentially trigger off of to detect all kinds of malicious actions.
+
+48
+00:04:45,285 --> 00:04:49,289
+And so it is actually kind of an interesting concept because before Matt and I actually knew each other,
+
+49
+00:04:49,289 --> 00:04:56,296
+we both came up with the idea of using permanent WMI event subscriptions as an IDS completely on our own and
+
+50
+00:04:56,296 --> 00:05:03,303
+then like the genesis of our relationship, I guess, was talking about this concept, so that was pretty neat.
+
+51
+00:05:03,303 --> 00:05:08,308
+The reason why I kind of came about it was I was in the Air Force and as you can imagine, the DOD in general was
+
+52
+00:05:08,308 --> 00:05:13,313
+very specific on what type of software can be added to their systems and there's a very long change process,
+
+53
+00:05:13,313 --> 00:05:19,319
+and so we were often running into issues with being able to push out continuous monitoring applications,
+
+54
+00:05:19,319 --> 00:05:25,325
+and so one of the reasons why I got interested in PowerShell is if you could script it, then it's not considered
+
+55
+00:05:25,325 --> 00:05:30,330
+a software change, and so you could literally script anything. And so, the idea
+
+56
+00:05:30,330 --> 00:05:40,340
+was to create a continuous monitoring capability that leveraged WMI and PowerShell as a mechanism to monitor
+
+57
+00:05:40,340 --> 00:05:45,345
+for adversary intrusions. And now as a consultant, I still have that same kind of idea, right, so as a
+
+58
+00:05:45,345 --> 00:05:50,350
+consultant, I can't go into a Fortune 100 company and say hey guys you're just going to randomly deploy this
+
+59
+00:05:50,350 --> 00:05:56,356
+software that I'm giving you. We could just go in and make changes to configuration as opposed to actually
+
+60
+00:05:56,356 --> 00:05:59,359
+changes in software deployment.
+
+61
+00:05:59,359 --> 00:06:07,367
+And the great thing about WMI is that it's been preset on every version of Windows going back to like Windows 98.
+
+62
+00:06:07,367 --> 00:06:14,374
+So theoretically, you could use like say the v3 CIM cmdlets to administer a Windows 98 box, although,
+
+63
+00:06:14,374 --> 00:06:20,380
+I think you'd have to install WMI, I think, by default it comes installed in like Windows XP and above.
+
+64
+00:06:20,380 --> 00:06:29,389
+Correct me if I'm wrong. But I actually use the CIM cmdlets very often to do WMI tasks in Windows XP where
+
+65
+00:06:29,389 --> 00:06:35,395
+PowerShell isn't even installed, so it's great. So If you have a capability like this, then all you need is
+
+66
+00:06:35,395 --> 00:06:44,404
+like your host machine with PowerShell on it to run like these WMI or CIM cmdlets onto and install these like
+
+67
+00:06:44,404 --> 00:59:59,999
+these signatures on remote systems all without needing to have PowerShell on any of them, just the WMI service listening.
+

@@ -1,0 +1,456 @@
+1
+00:00:00,0 --> 00:00:07,539
+So let's dive into the lab here and take a look.
+
+2
+00:00:07,539 --> 00:00:15,539
+So first off, I've staged some changes in the environment I want us to look at and what I want to do is look
+
+3
+00:00:15,539 --> 00:00:23,539
+at the Active Directory RIDs, Relative IDs, essentially. I want to look at in descending order what are the
+
+4
+00:00:23,539 --> 00:00:27,539
+most recent new accounts that were created in the environment?
+
+5
+00:00:27,539 --> 00:00:37,539
+Now the scary statistic that I've heard is that the hackers have been in your network 11 months before you're
+
+6
+00:00:37,539 --> 00:00:45,539
+even aware that they're there. So this is all best effort really here, but what we're going to do is we're
+
+7
+00:00:45,539 --> 00:00:52,539
+going to look at a list of accounts, newest accounts, from the moment we discover the breech, we're going to
+
+8
+00:00:52,539 --> 00:00:57,539
+look at the newest accounts and determine do any of these look suspicious in any way.
+
+9
+00:00:57,539 --> 00:01:05,539
+Alright. So I'm going to take a look here, Get-ADObject. Now the SearchBase is going to be here, the Path,
+
+10
+00:01:05,539 --> 00:01:13,539
+the root of the domain, and I'm going to do a Subtree search Get-ADObject standard kind of deal here.
+
+11
+00:01:13,539 --> 00:01:18,539
+And so I'm looking for all the accounts that have an object SID.
+
+12
+00:01:18,539 --> 00:01:24,539
+Any object in Active Directory that has a SID, that's going to be a security identifier, which would be users,
+
+13
+00:01:24,539 --> 00:01:31,539
+computers, and groups. We're going to pull back those types of objects and then I'm going to put some funny
+
+14
+00:01:31,539 --> 00:01:36,539
+business calculation in here for the date of when it was created to get something that's recent.
+
+15
+00:01:36,539 --> 00:01:43,539
+And let's see. I'm going to do ResultPageSize. We were just talking about paging here a second ago.
+
+16
+00:01:43,539 --> 00:01:49,539
+One of the things I discovered working in this particular lab environment that they gave me was I'm working
+
+17
+00:01:49,539 --> 00:01:56,539
+with a large data set, thousands of accounts, and the Active Directory cmdlets were choking and timing out in
+
+18
+00:01:56,539 --> 00:02:01,539
+places, so I had to put a page size, and I had to kind of play with how big the page size was, and I found that
+
+19
+00:02:01,539 --> 00:02:09,539
+100 was about right for the chunks of data to process. And so I'm going to pull back from those objects the
+
+20
+00:02:09,539 --> 00:02:16,539
+whenCreated, the objectSID, and some other things, isDeleted. And what we'll do then is we're going to
+
+21
+00:02:16,539 --> 00:02:24,539
+actually take the objectSID, which is the domain SID- the RID, that last little bit on the SID and just parse out
+
+22
+00:02:24,539 --> 00:02:32,539
+the RID just for information and it doesn't have to be sequential necessarily, but we're just going to take a
+
+23
+00:02:32,539 --> 00:02:42,539
+look at these most recent accounts in the environment. And if I zoom in here with mark's tool, so here we've
+
+24
+00:02:42,539 --> 00:02:50,539
+got the objects SID, the RID, when it was created, is it deleted, and this is just looking at accounts in the
+
+25
+00:02:50,539 --> 00:02:57,539
+last few days or the last week. So is it deleted, what type of object is it, user or group, and you can see
+
+26
+00:02:57,539 --> 00:03:05,539
+GoodGuy and GoodGuys. Those are the demo accounts that I've created for us to play with here because we're the
+
+27
+00:03:05,539 --> 00:03:12,539
+good guys, right. So that's just a quick way to look and see what's the newest accounts.
+
+28
+00:03:12,539 --> 00:03:20,539
+Not a big deal there, just a quick query to say alright looking at around the point that this event happened,
+
+29
+00:03:20,539 --> 00:03:24,539
+we're there any new accounts that were created that look suspicious.
+
+30
+00:03:24,539 --> 00:03:30,539
+Now, how many have heard of something called Admin SD holder?
+
+31
+00:03:30,539 --> 00:03:32,539
+Alright, so if you're not aware,
+
+32
+00:03:32,539 --> 00:03:38,539
+there's a process that runs on a domain controller, your PDC, every hour, and anybody that's a member of those
+
+33
+00:03:38,539 --> 00:03:46,539
+specially protected groups like account operators, backup operators, domain admins, it's going to run a
+
+34
+00:03:46,539 --> 00:03:52,539
+process to make sure that people in those groups haven't found some nefarious way to elevate their access and it
+
+35
+00:03:52,539 --> 00:03:57,539
+resets their access on their accounts, so this is called the Admin SD holder.
+
+36
+00:03:57,539 --> 00:04:04,539
+Anytime you're put into a group that's nested into one of those groups, there's a flag that gets set on your
+
+37
+00:04:04,539 --> 00:04:09,539
+account that's called Admin account. So let's take a look here.
+
+38
+00:04:09,539 --> 00:04:17,539
+So I've got a little script that's going to query for this property AdminCount.
+
+39
+00:04:17,539 --> 00:04:25,539
+If it's set to 1, then I know that's a protected group member. So an account that's somehow nested into
+
+40
+00:04:25,539 --> 00:04:31,539
+another group that's nested into a privileged group that's going to be reset automatically on that hour interval.
+
+41
+00:04:31,539 --> 00:04:39,539
+So what I'm looking for then is I'm going to process through these protected groups, and then for each one of
+
+42
+00:04:39,539 --> 00:04:45,539
+those groups, I'm going to get a member list, but I'm going to do this a really special way here with
+
+43
+00:04:45,539 --> 00:04:54,539
+something called Get-ADReplicationAttributeMetadata. Boy, that cmdlet is a mouthful.
+
+44
+00:04:54,539 --> 00:05:00,539
+This cmdlet never gets old. I've been demoing this cmdlet for years and it is your best friend when it comes
+
+45
+00:05:00,539 --> 00:05:06,539
+to forensics in Active Directory. So before I get into the function here that I've created, let's just kind of
+
+46
+00:05:06,539 --> 00:05:12,539
+step through this a little bit. So I'm just going to pick a domain controller and give me an hour's interval
+
+47
+00:05:12,539 --> 00:05:24,539
+of 24/7 and I'm going to query Get-ADGroup where AdminCount is equal to 1, and then I'm going to look at my protected groups.
+
+48
+00:05:24,539 --> 00:05:31,539
+So here's my protected group list, print operators, replicator, backup operators, and then notice this
+
+49
+00:05:31,539 --> 00:05:38,539
+GroupLevel1, GroupLevel2, GroupLevel3. I put this in here on purpose to show you that no matter how deep you
+
+50
+00:05:38,539 --> 00:05:45,539
+nest the groups, these are all just nested. Group 1 has group 2, has group 3 and then group 1 itself is
+
+51
+00:05:45,539 --> 00:05:53,539
+actually nested in 1 of these privileged groups like domain admins, I believe, over here, so we can look at
+
+52
+00:05:53,539 --> 00:06:02,539
+those protected groups. So now, let's take a look at something called Get-ADReplicationAttributeMetadata
+
+53
+00:06:02,539 --> 00:06:09,539
+on the Domain Admins group. Now somebody was telling me earlier today that they had used this cmdlet,
+
+54
+00:06:09,539 --> 00:06:18,539
+but they didn't use the ShowAllLinkedValues. This cmdlet is going to show you, Active Directory keeps track
+
+55
+00:06:18,539 --> 00:06:19,539
+of what you do,
+
+56
+00:06:19,539 --> 00:06:28,539
+and if you update any single attribute on any single object, there's a version stamp for every attribute on every object.
+
+57
+00:06:28,539 --> 00:06:36,539
+So I can see how many times that one lady in the company that's been married five times and her last name
+
+58
+00:06:36,539 --> 00:06:42,539
+attribute has changed every other month, okay. I can see there's been version that many times every time we
+
+59
+00:06:42,539 --> 00:06:45,539
+had to go update the last name attribute, okay.
+
+60
+00:06:45,539 --> 00:06:52,539
+So ShowAllLinkedValues though is especially for groups with that linked value replication I mentioned just a
+
+61
+00:06:52,539 --> 00:07:02,539
+second ago, so it'll show me all the users that are members of those groups and when they were added to that group.
+
+62
+00:07:02,539 --> 00:07:09,539
+So let's take a look at this particular example here. Piping everything to Out-GridView, my favorite cmdlet,
+
+63
+00:07:09,539 --> 00:07:17,539
+right after Import-Csv. So here we go. It's showing me that the object category is a group, gives me each
+
+64
+00:07:17,539 --> 00:07:22,539
+one of these things, there's the Sid, there's the adminCount, it's a special adminCount is 1,
+
+65
+00:07:22,539 --> 00:07:27,539
+it's a special group, here's the description and so forth, it's the cn.
+
+66
+00:07:27,539 --> 00:07:35,539
+But if I slide over here to the right, what I want you to notice, let me scroll across here, I have to scroll
+
+67
+00:07:35,539 --> 00:07:41,539
+across my view and this is all tiny. That's the one thing I don't like about demoing Out-GridView, I have to
+
+68
+00:07:41,539 --> 00:07:50,539
+scroll a lot. So last originating change time up here says this is the last time that attribute was ever
+
+69
+00:07:50,539 --> 00:07:55,539
+changed on that object and if I scroll all the way to the right, I'll see a version stamp.
+
+70
+00:07:55,539 --> 00:08:01,539
+And that version stamp says how many times 1 is the time when it was originally created as an object, when it was
+
+71
+00:08:01,539 --> 00:08:10,539
+born in AD, and then any increment above 1 indicates that attribute has been changed, how many times,
+
+72
+00:08:10,539 --> 00:08:14,539
+just subtract one from it. So if I come down through here I can see look there's some attributes that have
+
+73
+00:08:14,539 --> 00:08:23,539
+been versioned significantly. So let's slide back over here and what I want you to see is that in this domain
+
+74
+00:08:23,539 --> 00:08:30,539
+admins group, you can actually take a look at the members in the group.
+
+75
+00:08:30,539 --> 00:08:35,539
+Now you can see here's a deleted user GoodGuy that I've been playing with a couple times setting up for the demo.
+
+76
+00:08:35,539 --> 00:08:39,539
+Here's a migration account from the AD migration that you had to set up.
+
+77
+00:08:39,539 --> 00:08:45,539
+Here's Bob. Somehow Bob made it into admins. And there's GroupLevel1 that has a GroupLevel2 and 3 nested
+
+78
+00:08:45,539 --> 00:08:55,539
+inside of it, so those are members. And over here, we can see the date that they were added to domain admins.
+
+79
+00:08:55,539 --> 00:09:05,539
+That's interesting. Then if I keep going across here, it'll show me which domain controller the update originated from.
+
+80
+00:09:05,539 --> 00:09:16,539
+So the ADReplicationAttributeMetadata will show me the last change to every attribute on an object and which
+
+81
+00:09:16,539 --> 00:09:21,539
+domain controller initiated it and the date and time. Does that sound handy?
+
+82
+00:09:21,539 --> 00:09:27,539
+Yeah. Sounds pretty handy. As long as it was the last change that we're looking for there.
+
+83
+00:09:27,539 --> 00:09:31,539
+There's also another property over here that will tell us if it was deleted.
+
+84
+00:09:31,539 --> 00:09:39,539
+So if the user was ever a member, here's a last originating delete timestamp.
+
+85
+00:09:39,539 --> 00:09:45,539
+If we look at the column title here, LastOriginatingDeleteTime and there's the value of 2/23 whoever that
+
+86
+00:09:45,539 --> 00:09:53,539
+user was there was deleted out of domain admins on that date. So we can see additions and deletions using
+
+87
+00:09:53,539 --> 00:10:02,539
+this cmdlet to view group memberships here. Now the one thing to mention is that this is linked value replication.
+
+88
+00:10:02,539 --> 00:10:10,539
+If you've got the old school 2002, 2003 early era, the group memberships are in a blob in a member's property
+
+89
+00:10:10,539 --> 00:10:15,539
+and it's replicated as a blob, then this doesn't apply necessarily.
+
+90
+00:10:15,539 --> 00:10:20,539
+But with the linked value replication that we enabled in 2003 and above, you should see this, so all your new
+
+91
+00:10:20,539 --> 00:10:22,539
+groups should be seeing this.
+
+92
+00:10:22,539 --> 00:10:27,539
+And to comment on that, if you upgraded, do you delete the members and add them back to the…
+
+93
+00:10:27,539 --> 00:10:31,539
+Right. Right. You've got to reset the group membership to make them LVR.
+
+94
+00:10:31,539 --> 00:10:36,539
+So if I add a group member, actually, he's already a member of that group.
+
+95
+00:10:36,539 --> 00:10:43,539
+Let's say we remove Bob from the group there and we can go look at it again and then we can see that Bob here,
+
+96
+00:10:43,539 --> 00:10:47,539
+I bet this is the one I've already demoed earlier. Let's see, is he still in there.
+
+97
+00:10:47,539 --> 00:10:52,539
+Yeah, he's already been deleted, so it would update his delete date.
+
+98
+00:10:52,539 --> 00:10:59,539
+So what are we getting at here. What we can do then is we can say for each one of those members, we can go
+
+99
+00:10:59,539 --> 00:11:13,539
+through here and take a look. So what this report then shows me is these are all of my privileged groups,
+
+100
+00:11:13,539 --> 00:11:19,539
+Backup Operators, Domain Admins, Administrators, Enterprise Admins, all those special groups, and here's a
+
+101
+00:11:19,539 --> 00:11:27,539
+list if I scroll to the right who are the members that have been added or removed from those groups within a date range.
+
+102
+00:11:27,539 --> 00:11:35,539
+So I can filter on that property over here FirstOriginatingCreateTime is not what we're looking for.
+
+103
+00:11:35,539 --> 00:11:43,539
+We're looking for LastOriginatingChangeTime, which tells me that this attribute, this user was added or
+
+104
+00:11:43,539 --> 00:11:47,539
+removed on this date, so this is just PowerShell objects filtering, right.
+
+105
+00:11:47,539 --> 00:11:54,539
+So I can just filter that now and run that once a day, once every six hours, put it in my monitoring tools,
+
+106
+00:11:54,539 --> 00:12:03,539
+and filter on all my privileged groups, filter on that date, and I can get an email now around the clock anytime
+
+107
+00:12:03,539 --> 00:12:09,539
+somebody's been added or removed from a privileged group. Does that sound like a good idea?
+
+108
+00:12:09,539 --> 00:12:14,539
+How many of you get notifications on privileged group changes? Alright, for the rest of you that don't have
+
+109
+00:12:14,539 --> 00:12:22,539
+your hand in the air, this is a free no-frills way to do that with just a couple lines of PowerShell.
+
+110
+00:12:22,539 --> 00:12:27,539
+And this is all documented out on my blog, so the code is out there for you to get publicly.
+
+111
+00:12:27,539 --> 00:12:31,539
+I'll give you that URL here in a minute. So what I did was I just took all that code and put it into a
+
+112
+00:12:31,539 --> 00:12:38,539
+function and the function just has a domain controller parameter and how many hours in the history you want
+
+113
+00:12:38,539 --> 00:12:44,539
+to look and it'll go grab all your protected members, ProtectedGroups, enumerate through all their members,
+
+114
+00:12:44,539 --> 00:59:59,999
+and see which ones have been added or changed in the last X hours, so that's a handy way to go drill into that.
+

@@ -1,0 +1,92 @@
+1
+00:00:00,0 --> 00:00:07,946
+So the model you're describing so far my understanding you can bring node oriented and during Dekens talk about
+
+2
+00:00:07,946 --> 00:00:14,946
+VMware, it would be in that, Oh he had to instantiate a system to use its LCM to manage the rest of
+
+3
+00:00:14,946 --> 00:00:19,946
+the environment, so when you compare it to _____ software, the whole infrastructure had this scripted thing
+
+4
+00:00:19,946 --> 00:00:22,946
+talking about it wasn't just one node, it was all sorts of things.
+
+5
+00:00:22,946 --> 00:00:25,946
+How does DSC have it mapped to---?
+
+6
+00:00:25,946 --> 00:00:34,946
+So yeah, so this does not really talk about just one node. Take Elastic Beanstalk, for example, if you work
+
+7
+00:00:34,946 --> 00:00:41,946
+for a large company and you've got an enormous website, that push the button might be spinning up 300 VMs,
+
+8
+00:00:41,946 --> 00:00:46,946
+some of those might be a database, some of them might be front-end servers, it's the whole application.
+
+9
+00:00:46,946 --> 00:00:54,946
+Same thing here. Same thing here. You usually try to segment your environment into functional chunks,
+
+10
+00:00:54,946 --> 00:01:00,946
+which we kind of do that anyway, right. I mean if you've got a three-tier application, you kind of have its
+
+11
+00:01:00,946 --> 00:01:08,946
+back-end and its middle tier and we try at least not to cross things, right, we want one server to basically
+
+12
+00:01:08,946 --> 00:01:15,946
+do kind of one role in the environment. Yeah, you might have machines that are AD and DNS and DHCP, but we call
+
+13
+00:01:15,946 --> 00:01:19,946
+those infrastructure servers and that's a role and we try not to put anything else on those, right.
+
+14
+00:01:19,946 --> 00:01:23,946
+And so, you can have multiple things happening as part of an operation.
+
+15
+00:01:23,946 --> 00:01:30,946
+You just try to put some role boundaries around it so that you can manage those things as a unit and I use
+
+16
+00:01:30,946 --> 00:01:39,946
+the virtual machine a lot. Might not be a VM, might be a container, might be client machines.
+
+17
+00:01:39,946 --> 00:01:44,946
+How many of you have ever screwed up a Group Policy? Because you're live editing the stupid things.
+
+18
+00:01:44,946 --> 00:01:53,946
+There's not a save button. I wonder what happens if I click, what's the screaming all about?
+
+19
+00:01:53,946 --> 00:02:00,946
+So I mean we could absolutely apply these types of things to the existing infrastructure the way we already do things.
+
+20
+00:02:00,946 --> 00:02:05,946
+Remember, this is an approach, this is sort of a guidance on how to go about this.
+
+21
+00:02:05,946 --> 00:02:09,946
+It's not a fixed set of tools, it's not a fixed set of scenarios.
+
+22
+00:02:09,946 --> 00:02:16,946
+We can use examples using concrete things like DSC or Elastic Beanstalk, but those are just examples of the
+
+23
+00:02:16,946 --> 00:59:59,999
+philosophy and that's really what this is. You can apply the philosophy to anything.
+

@@ -1,0 +1,60 @@
+1
+00:00:00,0 --> 00:00:06,518
+Yeah, so that is the module and now it's available, you can go download it, you could go comment on my GitHub.
+
+2
+00:00:06,518 --> 00:00:14,518
+One thing I wanted to note is I took a very kind of simple approach to this and there's a couple things that
+
+3
+00:00:14,518 --> 00:00:19,518
+you might want to consider before actually doing it exactly this way.
+
+4
+00:00:19,518 --> 00:00:24,518
+Like this is a great way to kind of get up and running, but for one example is anytime I commit anything,
+
+5
+00:00:24,518 --> 00:00:29,518
+it's now publishing to the gallery, so it's updating my module and really it's just running automated tests,
+
+6
+00:00:29,518 --> 00:00:34,518
+no one is really smoke testing it by hand or anything like that, not the best idea.
+
+7
+00:00:34,518 --> 00:00:38,518
+What you could do is create two different branches, one a development branch where you do all your
+
+8
+00:00:38,518 --> 00:00:43,518
+development in testing, and then once you're satisfied that something is complete, then you merge it into master.
+
+9
+00:00:43,518 --> 00:00:49,518
+So the development branch still runs your AppVeyor tests, it just skips the publishing step.
+
+10
+00:00:49,518 --> 00:00:52,518
+And then when you pull request into master, that's when you can decide to publish.
+
+11
+00:00:52,518 --> 00:01:00,518
+The other you could do is have a manual build on AppVeyor to actually say I want to publish this module now,
+
+12
+00:01:00,518 --> 00:01:07,518
+so over on AppVeyor, publish, and complete that, and publish it to the gallery, so it's a little more manual steps,
+
+13
+00:01:07,518 --> 00:01:12,518
+so you can decide when to release rather than doing it automatically.
+
+14
+00:01:12,518 --> 00:01:20,518
+Yeah, so that is kind of what I wanted to cover. If you guys have any questions, I'd be happy to take them now.
+
+15
+00:01:20,518 --> 00:59:59,999
+Otherwise, feel free to get a hold of me. Cool. Alright, well thank you very much.
+

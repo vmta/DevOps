@@ -1,0 +1,384 @@
+1
+00:00:01,1 --> 00:00:03,989
+So since this presentation is supposed to be about the future of PowerShell ISE,
+
+2
+00:00:03,989 --> 00:00:07,989
+let's talk about the ISE preview. We made an announcement a couple months ago that we
+
+3
+00:00:07,989 --> 00:00:13,989
+had shipped an alternative version of the ISE via the PowerShell gallery, which gives us the opportunity to
+
+4
+00:00:13,989 --> 00:00:19,989
+try out some new features and new ideas while keeping the built-in ISE stable.
+
+5
+00:00:19,989 --> 00:00:24,989
+Our intention is to ship updates with new features somewhere between a monthly and a bi-monthly cadence.
+
+6
+00:00:24,989 --> 00:00:28,989
+Having said that, you may have notice that it's been a little while since the first release.
+
+7
+00:00:28,989 --> 00:00:33,989
+I think that we released it in February and it's still lacking another release since then, but that's for a
+
+8
+00:00:33,989 --> 00:00:39,989
+good reason though. I've actually been working over the last few weeks to put together a new release that
+
+9
+00:00:39,989 --> 00:00:44,989
+addresses some of the most highly uploaded feedback on UserVoice and also a new feature that I think all of
+
+10
+00:00:44,989 --> 00:00:49,989
+you are going to like. So instead of just showing you a list of what these new features would be,
+
+11
+00:00:49,989 --> 00:00:53,989
+why don't I just give you a quick demo to kind of show it that way.
+
+12
+00:00:53,989 --> 00:01:01,989
+Let's see if I can pull that up. Alright,
+
+13
+00:01:01,989 --> 00:01:07,989
+so one of the first things you may notice that's a little bit different is that there's this little icon here
+
+14
+00:01:07,989 --> 00:01:15,989
+in the lower left-hand corner. So now we have the ability when the ISE preview starts up to do a scan for
+
+15
+00:01:15,989 --> 00:01:20,989
+any PowerShell gallery modules that you may have installed and to check if there's any updates for those
+
+16
+00:01:20,989 --> 00:01:26,989
+because currently there's not a really good way to see which gallery modules you have that may have updates
+
+17
+00:01:26,989 --> 00:01:31,989
+that you haven't installed yet, so I decided to put a little piece of UI here that will give you the
+
+18
+00:01:31,989 --> 00:01:37,989
+information for this. Alright, so when I click the icon, there's a new window that appears that gives me a
+
+19
+00:01:37,989 --> 00:01:44,989
+list of the modules that currently have updates and we can see here that the Pscx module needs to be updated.
+
+20
+00:01:44,989 --> 00:01:49,989
+Of course, this was released in 2015 so it's sort of contrive example.
+
+21
+00:01:49,989 --> 00:01:53,989
+Also, there's PSScriptAnalyzer, which has been updated to version 1.5.
+
+22
+00:01:53,989 --> 00:02:00,989
+So you can see that we're actually gathering the release notes and the version information from the gallery information.
+
+23
+00:02:00,989 --> 00:02:06,989
+You can see that sort of all the details are here. Also, you can select whether you want all updates or just
+
+24
+00:02:06,989 --> 00:02:13,989
+uncheck various updates that you're not interested in. And another interesting thing here is that the Pscx
+
+25
+00:02:13,989 --> 00:02:18,989
+module actually was installed system wide. It wasn't installed for just a current user.
+
+26
+00:02:18,989 --> 00:02:23,989
+So I'm not actually running the ISE preview elevator right now, so it's sort of interesting to see what
+
+27
+00:02:23,989 --> 00:02:29,989
+happens whenever we do this. So I'm going to go ahead and just click Update to update these modules.
+
+28
+00:02:29,989 --> 00:02:35,989
+So since Pscx needs admin level credentials, we actually see an error that sort of shows you.
+
+29
+00:02:35,989 --> 00:02:39,989
+It's basically just an error that comes directly from PowerShell from the cmdlet.
+
+30
+00:02:39,989 --> 00:02:45,989
+And also, you'll see that there's a prompt for the untrusted repository, but I think that should change soon.
+
+31
+00:02:45,989 --> 00:02:51,989
+But now since it's all in PSScriptAnalyzer and if I had other modules that needed to be updated, they would all
+
+32
+00:02:51,989 --> 00:02:57,989
+be installed as well, so pretty easy. Just install like all your updated modules.
+
+33
+00:02:57,989 --> 00:03:02,989
+It's nice for people who actually are module developers so that whenever you push a new version of your module,
+
+34
+00:03:02,989 --> 00:03:07,989
+people who are using the ISE will actually be able to install it, they'll know that it exists.
+
+35
+00:03:07,989 --> 00:03:15,989
+So since this functionality starts automatically with ISE, some people may not want to have like the initial
+
+36
+00:03:15,989 --> 00:03:19,989
+performance hit of having this sort of module scan and update scan happening, so we've actually
+
+37
+00:03:19,989 --> 00:03:27,989
+added a new option in the Options dialog, in the General Settings tab, so you can actually uncheck the Check
+
+38
+00:03:27,989 --> 00:03:33,989
+for module updates automatically option. So that will stop it from happening at start up.
+
+39
+00:03:33,989 --> 00:03:37,989
+And if you ever want to invoke the process, you can go to the Help menu and click Check for updates so that
+
+40
+00:03:37,989 --> 00:03:43,989
+will kick off the update process. So that's sort of the big new feature.
+
+41
+00:03:43,989 --> 00:03:45,989
+There's another thing that we're doing that sort of sets the stage
+
+42
+00:03:45,989 --> 00:03:50,989
+for future work on the PowerShell Editor Services integration and that is the
+
+43
+00:03:50,989 --> 00:03:57,989
+new experimental PowerShell tab. So if you click the File menu, you'll see that there is a new item for an
+
+44
+00:03:57,989 --> 00:04:01,989
+Experimental PowerShell tab, and right now if you open it, there's really nothing different.
+
+45
+00:04:01,989 --> 00:04:07,989
+It's the same functionality that we currently have, but the point is to have the separate tab so that we can
+
+46
+00:04:07,989 --> 00:04:14,989
+start to gradually do the integration with PowerShell Editor Services over time and not disrupt the core
+
+47
+00:04:14,989 --> 00:04:21,989
+PowerShell ISE experience. This also helps people like Tobias Weltner who have ISE Steroids and he sort of
+
+48
+00:04:21,989 --> 00:04:27,989
+reached into the functionality of the ISE a little too much and if I do anything drastic with the existing
+
+49
+00:04:27,989 --> 00:04:32,989
+PowerShell functionality, it's going to break all the ISE Steroids users, so don't really want to do that.
+
+50
+00:04:32,989 --> 00:04:38,989
+But in the future, you'll be able to try out new features that come from PowerShell Editor Services in this
+
+51
+00:04:38,989 --> 00:04:44,989
+type of tab, so as those things get developed, they'll be talking about it on Twitter probably and let people
+
+52
+00:04:44,989 --> 00:04:49,989
+know that new things are available there.
+
+53
+00:04:49,989 --> 00:04:56,989
+Alright, so there's one UserVoice issue, I think it was filed by Bartech and it was sort of an annoyance for
+
+54
+00:04:56,989 --> 00:05:01,989
+people and a lot of people expressed some interest in getting this removed or getting this changed.
+
+55
+00:05:01,989 --> 00:05:12,989
+Let me see if I can pull up the inbox ISE. So right now, if you were to type something like Get-Process, whoops,
+
+56
+00:05:12,989 --> 00:05:18,989
+and you see there's a lot of output and you want to scroll up in the output pane and sort of see what's going on
+
+57
+00:05:18,989 --> 00:05:23,989
+there then maybe you go into the script editor and mess around a little bit, then you come back and click in the
+
+58
+00:05:23,989 --> 00:05:31,989
+output pane because you want to copy something, but it jumps down to the end, which is a little bit annoying.
+
+59
+00:05:31,989 --> 00:05:41,989
+So now I've removed that behavior. So if we type Get-Process here in ISE preview, you'll see the same output
+
+60
+00:05:41,989 --> 00:05:48,989
+a little bit slower because I'm running it in a debugger. And if I scroll up here and click inside of the
+
+61
+00:05:48,989 --> 00:05:51,989
+script editor and mess around then come back, it doesn't actually jump to the end.
+
+62
+00:05:51,989 --> 00:05:56,989
+So there probably needs to be a little more polish on this to kind of deal with a
+
+63
+00:05:56,989 --> 00:06:01,989
+couple cases where maybe you do want to jump to the end or maybe if you click in here, you may want to like
+
+64
+00:06:01,989 --> 00:06:04,989
+hit a button and have it jump to the end, so there's a little bit more polishing that needs to be done.
+
+65
+00:06:04,989 --> 00:06:10,989
+But really what I'd like to do is just sort of ship this and see what they've been think and just get some
+
+66
+00:06:10,989 --> 00:06:17,989
+feedback from the community and see what people want it to do. So that's kind of helpful, a little less annoying now.
+
+67
+00:06:17,989 --> 00:06:25,989
+Also just in general, productivity improvements, for instance, when people want to like comment multiple lines
+
+68
+00:06:25,989 --> 00:06:31,989
+of code out, what they've been told in the past is oh just use multiple cursives, and that's not really the
+
+69
+00:06:31,989 --> 00:06:36,989
+ideal way to do this because most editors give you a way to select multiple lines and comment them out,
+
+70
+00:06:36,989 --> 00:06:38,989
+so I've been working on a feature that allows you to just do that.
+
+71
+00:06:38,989 --> 00:06:48,989
+So if you select a few lines of code and hit Ctrl+K, it just comments all of them out and also Ctrl+Shift+K
+
+72
+00:06:48,989 --> 00:06:52,989
+will uncomment them, but you may notice that the indentations a little bit different now.
+
+73
+00:06:52,989 --> 00:06:57,989
+I need to work on this a little bit, but I think that this is sort of a Windows Core
+
+74
+00:06:57,989 --> 00:07:03,989
+features for an editor that's really necessary that just wasn't there before and I think the reason why it
+
+75
+00:07:03,989 --> 00:07:07,989
+wasn't implemented before is there's little edge cases here and there like detecting whether there are spaces
+
+76
+00:07:07,989 --> 00:07:12,989
+between the comment character, etc. that maybe it just wasn't seen as worth the effort, but I think it's worth
+
+77
+00:07:12,989 --> 00:07:17,989
+the effort, so we're going to try to finish that and get it shipped in the next update.
+
+78
+00:07:17,989 --> 00:07:25,989
+Also, another big problem is if you have a file open in the ISE preview and for whatever reason, the file changes
+
+79
+00:07:25,989 --> 00:07:29,989
+on the file system outside of the ISE, there's no notification. It doesn't tell you that it's been changed,
+
+80
+00:07:29,989 --> 00:07:35,989
+so you might start editing your file here again and save it and then overwrite whatever the external changes were.
+
+81
+00:07:35,989 --> 00:07:42,989
+So now I've tried to get the .NET Framework's file system watcher hooked up to solve this problem, so let's see
+
+82
+00:07:42,989 --> 00:07:50,989
+if it works and doesn't crash and burn. So actually, I'll just go ahead and open this file in Notepad,
+
+83
+00:07:50,989 --> 00:08:06,989
+the same file in Notepad, and let's see. So I'm going to go and just make a change here in this file and
+
+84
+00:08:06,989 --> 00:08:13,989
+you'll, oh, let me just undo whatever I did here. So this file is unsaved at the moment, sorry, it's saved at
+
+85
+00:08:13,989 --> 00:08:22,989
+the moment, so if I go ahead and just add some text here, save it, then you'll see that it, okay, this time it
+
+86
+00:08:22,989 --> 00:08:29,989
+didn't work, but it crashed. So this was a good time to tell you that
+
+87
+00:08:29,989 --> 00:08:34,989
+.NET's file system watcher is a little unreliable and this crash may be my fault.
+
+88
+00:08:34,989 --> 00:08:40,989
+But the point is that when this first comes out, it's actually probably going to be a little flaky,
+
+89
+00:08:40,989 --> 00:08:46,989
+so we're going to have to do a little work to see what we can do to make it a little bit more reliable.
+
+90
+00:08:46,989 --> 00:08:52,989
+So actually, I'll give it one more shot and see if it works, and if it doesn't, we'll just move on.
+
+91
+00:08:52,989 --> 00:09:07,989
+(Running) It happened again. Well at least you can't edit it after it…
+
+92
+00:09:07,989 --> 00:09:10,989
+Yeah, yeah. That's true. Actually, maybe I'll just leave it like this.
+
+93
+00:09:10,989 --> 00:09:12,989
+Yeah, it's a feature, so we'll just
+
+94
+00:09:12,989 --> 00:09:17,989
+restart the session. It's great. We'll just reload the files, no problem.
+
+95
+00:09:17,989 --> 00:09:22,989
+That's right. You guys should all be my marketing team. I'll just let you guys explain all the problems
+
+96
+00:09:22,989 --> 00:59:59,999
+that we have. That's great. Alright, so let me---
+

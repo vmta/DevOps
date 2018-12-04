@@ -1,0 +1,228 @@
+1
+00:00:12,12 --> 00:00:22,5
+Hey, welcome. So welcome to creating a DSC or welcome to creating a PowerShell Toolkit to Demystify DSC.
+
+2
+00:00:22,5 --> 00:00:26,5
+For those of you who don't know me, I'm Mike Robbins. I go by Mike F Robbins online.
+
+3
+00:00:26,5 --> 00:00:32,5
+I'm a Microsoft MVP on Windows PowerShell, a SAPIEN technologies MVP, leader and co-founder of the PowerShell
+
+4
+00:00:32,5 --> 00:00:37,5
+user group, the Mississippi PowerShell user group, co-author of Windows PowerShell TFM 4th Edition,
+
+5
+00:00:37,5 --> 00:00:44,5
+author of Chapter 6 in the PowerShell Deep Dives book, winner of the advanced category in the 2013 Scripting games.
+
+6
+00:00:44,5 --> 00:00:47,5
+You're not here to learn about me, but if you want to know more about me, see my blog site.
+
+7
+00:00:47,5 --> 00:00:56,5
+I blog every week. I've got about 400 blog articles out there. I've been blogging since 2009 and get most of
+
+8
+00:00:56,5 --> 00:01:02,5
+my hits from Google searches or Bing searches and I get about 2,000 hits a day, so that should tell you what
+
+9
+00:01:02,5 --> 00:01:06,5
+type of content I have.
+
+10
+00:01:06,5 --> 00:01:09,5
+Okay, so I've got some questions for the audience. This one thing of
+
+11
+00:01:09,5 --> 00:01:13,5
+the sessions I've seen this morning, I'm not just going to get up here and preach to you because I want to
+
+12
+00:01:13,5 --> 00:01:18,5
+know what level you guys are at before I start that. I don't want to talk over your head, but I don't want
+
+13
+00:01:18,5 --> 00:01:21,5
+to talk underneath you as well.
+
+14
+00:01:21,5 --> 00:01:25,5
+So how many IT pros do we have in the room?
+
+15
+00:01:25,5 --> 00:01:32,5
+Okay. And how many developers? Okay, looks like we've got a mix of people in the room.
+
+16
+00:01:32,5 --> 00:01:38,5
+So okay, so how many people are using PowerShell V4 or higher?
+
+17
+00:01:38,5 --> 00:01:46,5
+Hopefully, that's going to be everybody in the room. So hopefully everybody here is writing functions.
+
+18
+00:01:46,5 --> 00:01:54,5
+Okay and modules? How many people in the room are using Desired State Configuration today?
+
+19
+00:01:54,5 --> 00:02:00,5
+Okay, good. I'm glad I started with some questions because I probably would have been talking over your head.
+
+20
+00:02:00,5 --> 00:02:04,5
+I would have assumed that everybody in the room is using Desired State Configuration.
+
+21
+00:02:04,5 --> 00:02:09,5
+It looks like we've probably got less than half of the room who's using it.
+
+22
+00:02:09,5 --> 00:02:13,5
+Okay and how many people are familiar with Public Key Infrastructure?
+
+23
+00:02:13,5 --> 00:02:17,5
+Okay, if you're not familiar with that, you're going to use DSC, that's something you want to invest some
+
+24
+00:02:17,5 --> 00:02:24,5
+time in learning because that's how you're going to prevent putting passwords in your MOF configuration
+
+25
+00:02:24,5 --> 00:02:31,5
+documents that are in plaintext and that was a capability that was possible in PowerShell V4,
+
+26
+00:02:31,5 --> 00:02:36,5
+but in version 5, you can actually encrypt the entire MOF document.
+
+27
+00:02:36,5 --> 00:02:42,5
+So how many people are placing their PowerShell code in some type of source control system today?
+
+28
+00:02:42,5 --> 00:02:47,5
+Good, I actually see more hands than I expected.
+
+29
+00:02:47,5 --> 00:02:52,5
+Okay and how many people are using Pester or some type of unit testing for their PowerShell code?
+
+30
+00:02:52,5 --> 00:02:58,5
+Good. These are things if you're not doing today and definitely invest some time in doing them,
+
+31
+00:02:58,5 --> 00:03:01,5
+it'll save you a lot of time down the road.
+
+32
+00:03:01,5 --> 00:03:07,5
+So what about your---I want to talk a little bit about job responsibilities.
+
+33
+00:03:07,5 --> 00:03:14,5
+You're here at the PowerShell summit this week, so who is back on site doing your job this week?
+
+34
+00:03:14,5 --> 00:03:20,5
+You know, if nobody has to be doing your job this week, then are you really needed, you know?
+
+35
+00:03:20,5 --> 00:03:26,5
+And my question too is do you really trust the people that are there on site doing your job.
+
+36
+00:03:26,5 --> 00:03:32,5
+Now hopefully, you've automated the majority of your job and I don't know about you guys, but I don't worry
+
+37
+00:03:32,5 --> 00:03:39,5
+about automating myself out of a job because if I do, then I'll just find another one and do the same thing again.
+
+38
+00:03:39,5 --> 00:03:46,5
+So anyway, what this session is really about is when you figure something out, create a tool to accomplish
+
+39
+00:03:46,5 --> 00:03:52,5
+that task and then maybe you want to create some documentation. My documentation is my blog site.
+
+40
+00:03:52,5 --> 00:03:58,5
+I left early Friday to take my wife out to dinner since I was going to be here this week.
+
+41
+00:03:58,5 --> 00:04:04,5
+Well my boss calls me after work. He says, hey you know that code you wrote to do X, where can I find a copy of that?
+
+42
+00:04:04,5 --> 00:04:08,5
+I said I'll give you one even better than that. Just go to my blog site, put in this key word.
+
+43
+00:04:08,5 --> 00:04:12,5
+It'll be the only article that will come up. You'll not only find the code to do what you want to do,
+
+44
+00:04:12,5 --> 00:04:18,5
+but it'll walk you through it step by step. So that was the end of the conversation and I was able to enjoy
+
+45
+00:04:18,5 --> 00:04:25,5
+the rest of my evening, instead of having to get into the system remotely or spend usually most of these more
+
+46
+00:04:25,5 --> 00:04:31,5
+complicated things, you can spend twice as long on the phone with somebody trying to explain to them than just
+
+47
+00:04:31,5 --> 00:04:38,5
+do it yourself. But once you figure out how to do something right, a tool to accomplish it because if you
+
+48
+00:04:38,5 --> 00:04:44,5
+don't do something for six months, unless you're a lot smarter than me, then you're not going to remember the
+
+49
+00:04:44,5 --> 00:04:51,5
+details of how to accomplish that task. But you write a tool, you figure it out once, you write a tool,
+
+50
+00:04:51,5 --> 00:04:58,5
+you never have to figure it out again unless things change like from PowerShell V4 to 5 with DSC,
+
+51
+00:04:58,5 --> 00:05:04,5
+there are some differences. And I've got some tools that it, I try to make my tools version agnostic
+
+52
+00:05:04,5 --> 00:05:08,5
+so it doesn't matter what version you're using.
+
+53
+00:05:08,5 --> 00:05:13,5
+Okay, so the content we're going to cover in this session will briefly touch on all this, so we'll talk about
+
+54
+00:05:13,5 --> 00:05:20,5
+DSC, Desired State Configuration, we'll talk about the Local Configuration Manager, Push mode, Pull mode,
+
+55
+00:05:20,5 --> 00:05:26,5
+a little bit about DSC resources, some new features in PowerShell V5 as far as DSC goes, we'll talk about
+
+56
+00:05:26,5 --> 00:05:33,333
+functions, modules, toolmaking, automation. It's not a deep dive into any one of those topics, but we'll touch
+
+57
+00:05:33,333 --> 00:59:59,999
+on each one of those. So it's time for the demo.
+

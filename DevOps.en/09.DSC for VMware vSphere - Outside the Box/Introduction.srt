@@ -1,0 +1,144 @@
+1
+00:00:12,12 --> 00:00:19,19
+Okay. Welcome. I'm glad to see there are still people awake after this day of brain-melting sessions,
+
+2
+00:00:19,19 --> 00:00:26,26
+at least for me. I learned quite a lot of stuff. I hope this brings a bit of new stuff or gives you a better
+
+3
+00:00:26,26 --> 00:00:31,31
+insight in what we're going to talk about.
+
+4
+00:00:31,31 --> 00:00:37,37
+I'm probably a bit of the odd one out. Since you saw the title, I'm talking about VMware vSphere.
+
+5
+00:00:37,37 --> 00:00:42,42
+First of all, are there many vSphere users in the audience? Okay, oh wow.
+
+6
+00:00:42,42 --> 00:00:52,52
+Great. As you probably know, I'm quite keen on PowerShell and more specifically, on PowerCLI, which is the
+
+7
+00:00:52,52 --> 00:01:01,61
+snap-in and nowadays nearly all modules, but there's still a few snap-ins left to manage your vSphere environment.
+
+8
+00:01:01,61 --> 00:01:07,67
+Just a minute.
+
+9
+00:01:07,67 --> 00:01:15,75
+Okay, this slide this is a big thank you from the complete PowerShell community and users to the guys who
+
+10
+00:01:15,75 --> 00:01:22,82
+made all of this possible for it's now 10 years ago and without them, we wouldn't be here and we wouldn't
+
+11
+00:01:22,82 --> 00:01:28,88
+have this marvelous tool to automate and manage our environment, so thank you guys.
+
+12
+00:01:28,88 --> 00:01:31,91
+Much appreciated.
+
+13
+00:01:31,91 --> 00:01:37,97
+What am I going to do today here? First of all, it's 4:00, so I'm not going to show you hundreds of lines
+
+14
+00:01:37,97 --> 00:01:44,104
+of codes and I want to avoid the snoring in the room after 5 minutes in, so we'll keep it very light.
+
+15
+00:01:44,104 --> 00:01:52,112
+What I'm trying to go for is DSC, Desired State Configuration. This was something we're all looking at probably.
+
+16
+00:01:52,112 --> 00:01:58,118
+It's very interesting. There are a number of reasons why you would use that and my question, already some time
+
+17
+00:01:58,118 --> 00:02:03,123
+ago was why wouldn't we use this for our VMware vSphere environment?
+
+18
+00:02:03,123 --> 00:02:11,131
+Now unfortunately, at the moment, there aren't any public DSC resources available that will allow you to do that
+
+19
+00:02:11,131 --> 00:02:18,138
+and that's where I'm going to try and help or start at least because this is definitely something that will
+
+20
+00:02:18,138 --> 00:02:25,145
+be so huge once it is usable that it's not a one-person job. So what will happen is I will push some stuff
+
+21
+00:02:25,145 --> 00:02:33,153
+into the community and I hope there will be some participation from the community on setting up the DSC resources.
+
+22
+00:02:33,153 --> 00:02:45,165
+The agenda is very straightforward. I'll just tell you about the long and winding road that's in fact especially winding.
+
+23
+00:02:45,165 --> 00:02:46,166
+Although, I like
+
+24
+00:02:46,166 --> 00:02:56,176
+all the WMF5 previews, I've felt often like one step ahead and two steps backwards, so stuff that you thought
+
+25
+00:02:56,176 --> 00:03:03,183
+was implemented wasn't implemented or didn't exactly work as you expected it to work, but now with RTM,
+
+26
+00:03:03,183 --> 00:03:10,190
+I think we reached the stage where we can start actually using this environment, the 5 version I mean.
+
+27
+00:03:10,190 --> 00:03:14,194
+The 4 was already available long before that.
+
+28
+00:03:14,194 --> 00:03:22,202
+For those, this is a quick introductory stuff. Who is this guy on stage, that's me, look ridiculous.
+
+29
+00:03:22,202 --> 00:03:27,207
+I'm from Belgium, so I had a bit of a trouble to get here, but okay, we got here in the end.
+
+30
+00:03:27,207 --> 00:03:35,215
+I appear from time to time at VMworld. We have this PowerCLI reference for those of you that are busy with vSphere.
+
+31
+00:03:35,215 --> 00:03:37,217
+I suppose you know that book.
+
+32
+00:03:37,217 --> 00:03:45,225
+Second edition just came out last February, so the shameless plug, go, and get it, but okay it's up to you.
+
+33
+00:03:45,225 --> 00:03:53,233
+I'm most of the time, as you can see on the right I put some pictures with my partner in crime, Alan Renouf,
+
+34
+00:03:53,233 --> 00:03:58,238
+which is probably also well known. Who, by the way, is using his vCheck module here?
+
+35
+00:03:58,238 --> 00:04:04,244
+Okay, that's not as much as we normally, but okay great. If you don't know it, you should check it out.
+
+36
+00:04:04,244 --> 00:59:59,999
+It allows you to schedule reports of your complete vSphere environment.
+

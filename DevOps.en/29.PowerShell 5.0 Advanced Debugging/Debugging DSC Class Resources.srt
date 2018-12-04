@@ -1,0 +1,396 @@
+1
+00:00:00,0 --> 00:00:04,169
+So, oh good, so we have some time.
+
+2
+00:00:04,169 --> 00:00:14,169
+I have 15 minutes. What I'd like to do is go from here to more, actually a real debugging scenario,
+
+3
+00:00:14,169 --> 00:00:25,169
+which with DSC resources. Let me just get back to the, if this is going to work.
+
+4
+00:00:25,169 --> 00:00:34,169
+So DSC class resource. The way DSC class resources execute, you see that all these things that we just
+
+5
+00:00:34,169 --> 00:00:39,169
+talked about can be used to debug those because it follows actually the same pattern.
+
+6
+00:00:39,169 --> 00:00:49,169
+DSC configuration is usually run on a remote machine, it's run in a host process, some obscure WmiPrvSE host
+
+7
+00:00:49,169 --> 00:00:55,169
+process, and inside of that host process, there's a runspace that's running your script, and so it would be really
+
+8
+00:00:55,169 --> 00:01:02,169
+great if you could attach a debugger to it when your script is not working correctly.
+
+9
+00:01:02,169 --> 00:01:08,169
+And just again, for a little bit of visualization, see how kind of complex it is, you have your machine on
+
+10
+00:01:08,169 --> 00:01:13,169
+one side of town, you want to connect to another machine or maybe a virtual machine, and inside that,
+
+11
+00:01:13,169 --> 00:01:20,169
+there is some process that DSC has created and is running your script and you want to attach to that and
+
+12
+00:01:20,169 --> 00:01:23,169
+debug that script.
+
+13
+00:01:23,169 --> 00:01:30,169
+I kind of wanted to take a quick second here and show something that's actually kind of cool.
+
+14
+00:01:30,169 --> 00:01:37,169
+In order to demo this, what I did was I've created a couple of virtual machines on this laptop, and on that machine,
+
+15
+00:01:37,169 --> 00:01:47,169
+I have a very simple DSC configuration that I want to run and that I want to debug.
+
+16
+00:01:47,169 --> 00:01:52,169
+As it turns out, when I was doing this in my office, all of the machines are domain joined, and so when I was
+
+17
+00:01:52,169 --> 00:01:58,169
+at home trying it, I'm no longer connected to that domain, and so I can't connect to it, so I can't do the
+
+18
+00:01:58,169 --> 00:02:06,169
+full demo that I would like to do, but I can do enough to show how to debug basically a DSC resource and just
+
+19
+00:02:06,169 --> 00:02:13,169
+kind of how that pattern works. One thing I just wanted to show real quickly though, which is kind of neat is
+
+20
+00:02:13,169 --> 00:02:20,169
+that even though I can't connect to my VM through WinRM because I'm not domain joined anymore, there is something
+
+21
+00:02:20,169 --> 00:02:22,169
+new called PowerShell Direct and
+
+22
+00:02:22,169 --> 00:02:30,169
+we worked with the, or actually I worked with the Hyper-V team and it's not possible to connect PowerShell
+
+23
+00:02:30,169 --> 00:02:39,169
+to a VM on your machine without running it all, and in fact, there's not a network enable at all because it
+
+24
+00:02:39,169 --> 00:02:45,169
+goes through a new socket layer that the Hyper-V team has created.
+
+25
+00:02:45,169 --> 00:02:58,169
+So you can do something like these are the VMs that I have and you can do Enter-PSSession now and give it a
+
+26
+00:02:58,169 --> 00:03:09,169
+name and then just try not to type quite so much.
+
+27
+00:03:09,169 --> 00:03:11,169
+You missed the R.
+
+28
+00:03:11,169 --> 00:03:29,169
+Did I miss the R? Okay, thanks. (Typing) So and then so now you can manage this VM what we would just kind of
+
+29
+00:03:29,169 --> 00:03:45,169
+need without having to go through WinRM remoting. And then on this VM here, I have a DSC class just for testing.
+
+30
+00:03:45,169 --> 00:03:49,169
+Just make sure that everything is set up. Yeah, just the way I want it to.
+
+31
+00:03:49,169 --> 00:03:56,169
+And so, how do you go about debugging this DSC resource class? So you start out and what the DSC team
+
+32
+00:03:56,169 --> 00:04:08,169
+created was Enable-DscDebug and you set it to BreakAll and what that means is that now when it runs,
+
+33
+00:04:08,169 --> 00:04:14,169
+it's kind of a big hammer. When you run DSC resource scripts, it's going to be in BreakAll mode, it's going to
+
+34
+00:04:14,169 --> 00:04:19,169
+be into the debugger and wait for a debugger attach, but to give you some information about that, so now you
+
+35
+00:04:19,169 --> 00:04:34,169
+can say Start-DscConfiguration, give it the class, you want to wait, Verbose.
+
+36
+00:04:34,169 --> 00:04:43,169
+So it runs and then it gets to a point and it tells you with a warning, the resource, which is test,
+
+37
+00:04:43,169 --> 00:04:49,169
+is waiting for a PowerShell script debugger to attach. Use the following commands to begin debugging this resource script.
+
+38
+00:04:49,169 --> 00:04:52,169
+And then it gives you a series of commands that you can run, and of course, they look familiar because they're
+
+39
+00:04:52,169 --> 00:05:02,169
+exact same things that we were just talking about and I'll just put it up here to see.
+
+40
+00:05:02,169 --> 00:05:06,169
+And again, you can do an Enter-PSSession if you need to connect to the remote computer.
+
+41
+00:05:06,169 --> 00:05:10,169
+A lot of times you don't need to because you might just have a remote desktop, and in fact, that's how I'm
+
+42
+00:05:10,169 --> 00:05:16,169
+going to do it, so you can skip that step. And again, this is something that we've seen before in our PSHostProcess
+
+43
+00:05:16,169 --> 00:05:20,169
+and the nice thing is that it tells you which process because there's probably a ton of WMI processes on there,
+
+44
+00:05:20,169 --> 00:05:26,169
+so it gives you the process. Another interesting thing is that it actually runs in a non-default AppDomain,
+
+45
+00:05:26,169 --> 00:05:33,169
+so when that's the case, you have to specify the AppDomain name, and then finally it gives you the runspace
+
+46
+00:05:33,169 --> 00:05:38,169
+that you want to debug. And of course, everybody sees this like well why do I have to execute three commands
+
+47
+00:05:38,169 --> 00:05:45,169
+and that's a good point and actually I have a prototype not released, not fully tested yet, but I will release
+
+48
+00:05:45,169 --> 00:05:50,169
+at some point where instead of executing all three commands, you just execute Debug-runspace with basically
+
+49
+00:05:50,169 --> 00:05:53,169
+a kind of a connection string. It's just a hash table.
+
+50
+00:05:53,169 --> 00:06:00,169
+That has all the information, so you don't have to type in three or four commands or whatever, you can just do one.
+
+51
+00:06:00,169 --> 00:06:08,169
+Something, again that I can't demo here because right now it's just based on connecting via WinRM and that's
+
+52
+00:06:08,169 --> 00:06:16,169
+not working right now on my laptop, but it's something that we'll get out at some point.
+
+53
+00:06:16,169 --> 00:06:22,169
+So okay, so anyway so the DSC configuration is stopped, waiting for a debugger attach.
+
+54
+00:06:22,169 --> 00:06:35,169
+What I'm going to do, since I can't remote in with PowerShell, I'm just going to go directly to, (Clicking)
+
+55
+00:06:35,169 --> 00:06:46,169
+why won't that maximized, there it goes, and what you can do is you can just copy and paste those commands or
+
+56
+00:06:46,169 --> 00:06:51,169
+it's pretty easy also to just do Get-PSHostProcessInfo and if we look, we can see like well there's really
+
+57
+00:06:51,169 --> 00:06:59,169
+only one WMI process that's attachable that's running a DSC worker, so we're pretty sure that this is the one
+
+58
+00:06:59,169 --> 00:07:10,169
+that we want. You do Post-Process, get same pattern, and then we can do a Get-Runspace and we see that
+
+59
+00:07:10,169 --> 00:07:15,169
+oh there's just one that's in breakpoint mode, so that's the one that we want to do.
+
+60
+00:07:15,169 --> 00:07:23,169
+So then we can do Debug-Runspace number 3. And now this is kind of interesting and the blog, actually I created
+
+61
+00:07:23,169 --> 00:07:29,169
+a blog about how to debug DSC resource classes. This is a little bit confusing because what's happening is
+
+62
+00:07:29,169 --> 00:07:35,169
+that we don't see any file, right, we kind of expect it to go into the DSC resource implementation,
+
+63
+00:07:35,169 --> 00:07:41,169
+but really what happened is when you say, when you set the runspace to BreakAll mode, it just says stop at
+
+64
+00:07:41,169 --> 00:07:53,169
+the very first script execution point and what happens is that each of these methods in the DSC resource class
+
+65
+00:07:53,169 --> 00:07:58,169
+is executed within a helper script, and so the debugger doesn't know that, it just stops in that helper script,
+
+66
+00:07:58,169 --> 00:08:04,169
+so it's a little bit confusing. So what it's doing is it's getting ready to call the Test method on the class,
+
+67
+00:08:04,169 --> 00:08:11,169
+but it hasn't yet, so in this case, what you need to do is you just need to do F11 and just step in until it
+
+68
+00:08:11,169 --> 00:08:16,169
+finally is executing the actual script and then ISE will bring up the file.
+
+69
+00:08:16,169 --> 00:08:19,169
+Now the good news about this, oh question.
+
+70
+00:08:19,169 --> 00:08:29,169
+(Audience comment)
+
+71
+00:08:29,169 --> 00:08:32,169
+So oh there was a demo yesterday about this?
+
+72
+00:08:32,169 --> 00:08:35,169
+Yes, that this problem was fixed.
+
+73
+00:08:35,169 --> 00:08:40,169
+Oh, I was just going to say that. Yeah, so I wanted to show this because it hasn't been released yet,
+
+74
+00:08:40,169 --> 00:08:44,169
+but the problem is fixed and I was going to demo it on my other VM that has the fix in it.
+
+75
+00:08:44,169 --> 00:08:54,169
+So yeah, a person in the DSC team very cleverly fixed it by before they execute the Class method, they get the
+
+76
+00:08:54,169 --> 00:08:59,169
+class file, parse it, and find out the line number, so it actually said breakpoints on the line numbers.
+
+77
+00:08:59,169 --> 00:09:05,169
+So the nice thing is that in the next release you won't have this problem, but I just wanted to mention it
+
+78
+00:09:05,169 --> 00:09:11,169
+so that when people see this, they're not too confused about what's going on.
+
+79
+00:09:11,169 --> 00:09:18,169
+So yeah, this has been fixed. And so yeah, we're just about done.
+
+80
+00:09:18,169 --> 00:09:24,169
+So I think this is probably about as far as I want to go right now, we can go, oh there is one thing we
+
+81
+00:09:24,169 --> 00:09:39,169
+could talk about real quickly. And again, we have some time for questions if you like, so I'll let you decide.
+
+82
+00:09:39,169 --> 00:09:42,169
+So we're going to talk about some of the gotchas and one of them we just talked about now and that is that the
+
+83
+00:09:42,169 --> 00:09:51,169
+Enable-DSC BreakAll stops in class in the calling script and that's been fixed, that's not true anymore.
+
+84
+00:09:51,169 --> 00:09:58,169
+Another kind of a downside to DSC debugging is that every time a new Class method is called, they reset the
+
+85
+00:09:58,169 --> 00:10:03,169
+runspace, but when you reset the runspace, also removes all the breakpoints, so all the breakpoints that you
+
+86
+00:10:03,169 --> 00:10:08,169
+put in are gone, so you have to put them in again and that's going to be a little bit confusing.
+
+87
+00:10:08,169 --> 00:10:13,169
+There's a bug on that and I think that can be addressed for the DSC team.
+
+88
+00:10:13,169 --> 00:10:21,169
+The LCM hosting process that you attach to, that can go away. That's not always a problem, but sometimes when
+
+89
+00:10:21,169 --> 00:10:30,169
+you have your ISE attached to it, you can do things like edit files through the remoting system,
+
+90
+00:10:30,169 --> 00:10:36,169
+but underneath it, they recycle the process regularly, so if you do something like try to save the file that
+
+91
+00:10:36,169 --> 00:10:42,169
+you edited, sometimes the underlying process goes away and then you get an error and that can be really annoying,
+
+92
+00:10:42,169 --> 00:10:49,169
+that's just something to keep in mind. And then the last thing is that just BreakAll is painful.
+
+93
+00:10:49,169 --> 00:10:54,169
+If you're running a number of classes, more than one class, it's going to stop in every one of those Class
+
+94
+00:10:54,169 --> 00:11:00,169
+methods each time, and if you're running like 10 and it's the 7th one that you want to debug, you have to go
+
+95
+00:11:00,169 --> 00:11:06,169
+through each one. And really, ideally, what you would like to do
+
+96
+00:11:06,169 --> 00:11:12,169
+is set a breakpoint, so I really want to debug this class file at this line and that's not supported in DSC
+
+97
+00:11:12,169 --> 00:11:18,169
+now, but I'm pushing the DSC team to add that. So it'd be really cool where you say Enable-DscDebug,
+
+98
+00:11:18,169 --> 00:11:23,169
+instead of BreakAll, you say give it maybe like a hash table of this is the file and these are the line
+
+99
+00:11:23,169 --> 00:59:59,999
+numbers and I want it to break at that point.
+

@@ -1,0 +1,264 @@
+1
+00:00:00,0 --> 00:00:04,027
+Okay, so there's something else called SQL management objects.
+
+2
+00:00:04,027 --> 00:00:13,027
+So I can use SQL management objects and I want you to remember that SQL03 that I'm about to query does not
+
+3
+00:00:13,027 --> 00:00:22,027
+have any PowerShell installed on it. So I can create a new object and then I can use that object.
+
+4
+00:00:22,027 --> 00:00:31,027
+Guess what? I just got the same output as space_who2 store procedure with PowerShell from a machine that doesn't
+
+5
+00:00:31,027 --> 00:00:37,027
+have any PowerShell installed. Pretty cool, huh.
+
+6
+00:00:37,027 --> 00:00:39,027
+How do you connect to that machine?
+
+7
+00:00:39,027 --> 00:00:45,027
+I just created a new object and this actually uses DLLs behind the scene that are on the client, on the machine
+
+8
+00:00:45,027 --> 00:00:50,027
+you're querying from. So
+
+9
+00:00:50,027 --> 00:00:57,027
+using SQL management objects has the dependency of having the SQL management tools installed on the client
+
+10
+00:00:57,027 --> 00:01:04,027
+you're accessing the server from, but it does not have the dependency of having anything like PowerShell
+
+11
+00:01:04,027 --> 00:01:12,027
+installed on the server end. It does require SQL Server, of course, and this is one of the ways you'll see
+
+12
+00:01:12,027 --> 00:01:20,027
+developers actually access SQL Server. And SQL management objects, I'm going to show you something here in a
+
+13
+00:01:20,027 --> 00:01:27,027
+few minutes that it's what the PowerShell provider uses, it's also what the cmdlets that they, all they're doing
+
+14
+00:01:27,027 --> 00:01:34,027
+is wrapping their 57 cmdlets around SMO.
+
+15
+00:01:34,027 --> 00:01:40,027
+So when do you find yourself using let's say a connection string, instead of loading all of the objects in (Inaudible)?
+
+16
+00:01:40,027 --> 00:01:49,027
+I recommend using the .NET Framework like you're talking about instead of SMO if you can because it eliminates
+
+17
+00:01:49,027 --> 00:01:58,027
+the dependency of having the SQL management studio or at least the PowerShell module installed or the DLL specifically.
+
+18
+00:01:58,027 --> 00:02:01,027
+Can you give examples of use cases for instance?
+
+19
+00:02:01,027 --> 00:02:05,027
+Well the use cases would be if I want to deploy something on a 1000 machines, I don't want to put the SQL
+
+20
+00:02:05,027 --> 00:02:13,027
+management studio on all those machines, I just want to run the command, and I've got some examples of that as well.
+
+21
+00:02:13,027 --> 00:02:19,027
+I've actually got a data reader that I've created and if you don't write .NET, then there's actually some
+
+22
+00:02:19,027 --> 00:02:26,027
+really good stuff because I don't know that Warren Frame is in here, but I stole a command from his GitHub
+
+23
+00:02:26,027 --> 00:02:33,027
+repository and you can find it in my repository now and I don't feel bad about stealing it because he stole
+
+24
+00:02:33,027 --> 00:02:40,027
+it as well, but everybody who's changed that code is actually noted in the comments.
+
+25
+00:02:40,027 --> 00:02:46,027
+Justin Dearing, he's another PowerShell and SQL guy, if you know him, he's noted in there.
+
+26
+00:02:46,027 --> 00:02:53,027
+And I don't mind getting commands off the internet if it's all text based, but if it's a DLL and it's a black box,
+
+27
+00:02:53,027 --> 00:02:59,027
+then hey that's another story. But even if you're not allowed to download commands from the internet and run
+
+28
+00:02:59,027 --> 00:03:05,027
+it, you're allowed to create your own, so you can just go get Invoke-SqlCmd2 and take a look at what
+
+29
+00:03:05,027 --> 00:03:10,027
+they're doing and then write your own version of it. Or if you're allowed to copy and paste, then you can
+
+30
+00:03:10,027 --> 00:03:16,027
+just copy and paste and create your own command. Let's just do the same.
+
+31
+00:03:16,027 --> 00:03:18,027
+Did that answer your question?
+
+32
+00:03:18,027 --> 00:03:19,027
+Yeah.
+
+33
+00:03:19,027 --> 00:03:27,027
+And there's really different use cases. I know a lot of DBAs and they actually prefer SQL management objects,
+
+34
+00:03:27,027 --> 00:03:32,027
+they prefer to work with those because they're not developers and they really don't feel comfortable working
+
+35
+00:03:32,027 --> 00:03:43,027
+the .NET Framework, so that would be one reason is sometimes like me, I'm not a developer either, but I was
+
+36
+00:03:43,027 --> 00:03:49,027
+able to figure out how to write a data reader and then I found the SQL command, Invoke-SqlCmd2 and I was like
+
+37
+00:03:49,027 --> 00:03:55,027
+hey I'm kind of wasting my time. I'll use this one because it's much more efficient and well-written than
+
+38
+00:03:55,027 --> 00:03:59,027
+what I had written.
+
+39
+00:03:59,027 --> 00:04:10,027
+We'll run the same command just to show you that the same command would work on a 2014 server.
+
+40
+00:04:10,027 --> 00:04:15,027
+And we're kind of covering these rapidly. I just want to show you some of the options that we have and then
+
+41
+00:04:15,027 --> 00:04:28,027
+we'll get into a few more advanced things. Okay, so one thing I want you to notice here is we now have a SQLPS provider.
+
+42
+00:04:28,027 --> 00:04:40,027
+It's right here at the very bottom. So that's part of the SQL management or the SQL PowerShell module and it
+
+43
+00:04:40,027 --> 00:04:49,027
+also shows up as a PS drive. So you can use that PS drive and you can actually, I've got a list of my
+
+44
+00:04:49,027 --> 00:04:54,027
+databases and what recovery model they're in and so on and that was fairly easy.
+
+45
+00:04:54,027 --> 00:05:00,027
+But I don't know about you guys, but I actually hate using the providers because they're not very well
+
+46
+00:05:00,027 --> 00:05:06,027
+documented and if you're trying to use tab completion, especially in a SQL provider, a lot of times it'll hang.
+
+47
+00:05:06,027 --> 00:05:14,027
+So it's not one of my favorite ways to query SQL Server and I'll show you that it really doesn't matter.
+
+48
+00:05:14,027 --> 00:05:19,027
+So we still have our SQL object that we created, so we can use it.
+
+49
+00:05:19,027 --> 00:05:28,027
+And you'll notice that both of these commands, the output is basically the same from the SQL provider or from SMO
+
+50
+00:05:28,027 --> 00:05:37,027
+and there's a good reason for that. So if you see what type of object we created here, we created an SMO
+
+51
+00:05:37,027 --> 00:05:44,027
+database object and that was with the SQL management object option.
+
+52
+00:05:44,027 --> 00:05:50,027
+Well I'm going to show you what type of object the PS provider creates.
+
+53
+00:05:50,027 --> 00:05:54,027
+So it creates the same type of object, so all they're doing with the SQL PowerShell provider is wrapping it
+
+54
+00:05:54,027 --> 00:06:04,027
+around SMO so that you don't have to be a developer if you don't want to and you may ask why don't these
+
+55
+00:06:04,027 --> 00:06:12,027
+commands look the same, the output of these commands. One's got more databases than the other.
+
+56
+00:06:12,027 --> 00:06:22,027
+They're doing some filtering with the SQL PS provider. So if I use the Force parameter and run the
+
+57
+00:06:22,027 --> 00:06:28,027
+same command, I'll actually get all the databases. So with the SQL PS provider they had the system databases,
+
+58
+00:06:28,027 --> 00:06:43,027
+unless you use the Force parameter. Okay, I just have a quick example of, I can also run Get-Database,
+
+59
+00:06:43,027 --> 00:06:49,027
+which is one of the newer cmdlets. Guess what, same information.
+
+60
+00:06:49,027 --> 00:06:54,027
+You know what type of, I bet you could guess what type of objects it's going to create.
+
+61
+00:06:54,027 --> 00:07:01,027
+Guess what, SQL management object. So all those commands, the PS provider and the cmdlets, all they're doing
+
+62
+00:07:01,027 --> 00:07:18,027
+is wrapping around SQL SMO. (Working) Okay, I think I've already imported these modules, but yeah I've
+
+63
+00:07:18,027 --> 00:07:26,027
+imported those already. This is actually what you used to have to do to import the SQLPS module and keep it
+
+64
+00:07:26,027 --> 00:07:33,027
+from complaining about the names as you would do DisableNameChecking.
+
+65
+00:07:33,027 --> 00:07:41,027
+One question I hear from DBAs is why do this in PowerShell? Why just not do it in SQL?
+
+66
+00:07:41,027 --> 00:59:59,999
+What's the big deal?
+

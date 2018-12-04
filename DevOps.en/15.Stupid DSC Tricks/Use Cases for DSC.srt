@@ -1,0 +1,584 @@
+1
+00:00:00,0 --> 00:00:07,735
+What are some use cases, some things that you wish you could do with DSC?
+
+2
+00:00:07,735 --> 00:00:10,735
+Before, because I have another tangent I want to go down, but before we do that, what are some things that
+
+3
+00:00:10,735 --> 00:00:16,735
+you think you want to do with DSC that on the surface doesn't appear you could do because of where the logic lives.
+
+4
+00:00:16,735 --> 00:00:22,735
+Well I want to get from having pets to having cattle. Pets, that's actually my next tangent.
+
+5
+00:00:22,735 --> 00:00:29,735
+But right now, I've got pets, so how do I get the DSC to make my pet into cattle?
+
+6
+00:00:29,735 --> 00:00:37,735
+Hold that thought. Yeah. I want to get the output of one resource as input to another resource.
+
+7
+00:00:37,735 --> 00:00:41,735
+You want to get the output of one resource as input to another resource.
+
+8
+00:00:41,735 --> 00:00:51,735
+Yeah, I want my pool to not have algae, but that I think is a more fundamental design issue.
+
+9
+00:00:51,735 --> 00:00:53,735
+Hang on. I don't want you to wear your arm out. We'll get there.
+
+10
+00:00:53,735 --> 00:00:59,735
+We've talked about that because that's a really serious need. It would be best for the product to address
+
+11
+00:00:59,735 --> 00:01:05,735
+that, but since it doesn't, we decided to hack around with it. How comfortable are you modifying every
+
+12
+00:01:05,735 --> 00:01:13,735
+resource you use? Fine. Sure, good, brave man. I like you. We're going to drink tonight.
+
+13
+00:01:13,735 --> 00:01:24,735
+It won't go well. Our idea was to take the same basic hash table that is in the configuration script that
+
+14
+00:01:24,735 --> 00:01:29,735
+essentially goes into the MOF that becomes the input to both your test, and your site, and your app, right,
+
+15
+00:01:29,735 --> 00:01:36,735
+and persist that in just a known location that every resource can then choose to read in.
+
+16
+00:01:36,735 --> 00:01:40,735
+We've even, talk to me and you might be able to talk me into getting access to our private Slack channel
+
+17
+00:01:40,735 --> 00:01:47,735
+because we've even started hacking around with some tools to kind of abstract that, right, so you can just
+
+18
+00:01:47,735 --> 00:01:55,735
+include this module and then have a persist function and whatever the opposite verb is function to add to
+
+19
+00:01:55,735 --> 00:02:03,735
+your resources so you can do that. One of the reasons we felt that would be better than a memory-based solution
+
+20
+00:02:03,735 --> 00:02:09,735
+is because it almost acts a little bit more like workflow in that if something happens midway through and
+
+21
+00:02:09,735 --> 00:02:16,735
+there's a reboot or whatever, right, the whole idea behind DSC is it should be able to just pick right back up again.
+
+22
+00:02:16,735 --> 00:02:23,735
+Well, that would give you some state information about where you were because the LCM will know, but you won't.
+
+23
+00:02:23,735 --> 00:02:32,735
+Yeah. Yeah, we've been hacking that around. You. So the package resource and binaries like the canyon virus,
+
+24
+00:02:32,735 --> 00:02:39,735
+where it's a gig in size. Every time a consistency check runs whether I need the version installed or not,
+
+25
+00:02:39,735 --> 00:02:44,735
+it's going to download that thing again long enough to look at it and say oh no I've got this looking, forget it.
+
+26
+00:02:44,735 --> 00:02:53,735
+Yeah, so short version of question, package manager sucks because it has to go get the file in order for it
+
+27
+00:02:53,735 --> 00:02:58,735
+to determine if that's open and when the file is huge, it just takes a long time and hold things up and I
+
+28
+00:02:58,735 --> 00:03:03,735
+think it really we can boil that down to the current package resource sucks.
+
+29
+00:03:03,735 --> 00:03:07,735
+And that is really not the fault of the people who wrote the package resource.
+
+30
+00:03:07,735 --> 00:03:13,735
+It's the fault of the people who wrote Windows Installer and InstallShield and all this other garbage.
+
+31
+00:03:13,735 --> 00:03:16,735
+So Windows itself just does not have a great way of doing that.
+
+32
+00:03:16,735 --> 00:03:22,735
+I think the go forward solution there and we're just like on the precipice of this starting to become a thing
+
+33
+00:03:22,735 --> 00:03:28,735
+is PowerShell Package Manager, which if you're using the right repository that supports checksums and
+
+34
+00:03:28,735 --> 00:03:34,735
+everything else would let us author a new package resource that could check things that way.
+
+35
+00:03:34,735 --> 00:03:39,735
+It would be nice if package manager would look at the product Id and say it's installed.
+
+36
+00:03:39,735 --> 00:03:44,735
+Well lots of things would be nice, but it doesn't. We can write our own.
+
+37
+00:03:44,735 --> 00:03:50,735
+I don't think writing a better package manager is at all outside the scope of what DSC does and let's take
+
+38
+00:03:50,735 --> 00:03:56,735
+that as a philosophical point. I'm not actually picking on you, well a little bit, but not really.
+
+39
+00:03:56,735 --> 00:04:05,735
+If you're looking at one of the Microsoft provided resources for DSC, other than the file one, which is binary,
+
+40
+00:04:05,735 --> 00:04:09,735
+right, so if you're looking at those and you're like yeah this kind of sucks.
+
+41
+00:04:09,735 --> 00:04:14,735
+It'd be nice if it did this instead. You need to get your butt on GitHub, fork the project, and fix it instead
+
+42
+00:04:14,735 --> 00:04:20,735
+of complaining, right, because there's certain bits of the product that only Microsoft can do, right,
+
+43
+00:04:20,735 --> 00:04:25,735
+like we can't fix the LCM. We can't fix the pull server code. We don't have access to that.
+
+44
+00:04:25,735 --> 00:04:31,735
+The things we can't fix are the things they need to focus on and the rest of the stuff, we need to do for ourselves.
+
+45
+00:04:31,735 --> 00:04:36,735
+And that's just how it is. It'd be nice if they gave us everything, but then they could do our jobs and we
+
+46
+00:04:36,735 --> 00:04:41,735
+wouldn't need our jobs. So that's where we are right now. So the package, there's actually a lot of people
+
+47
+00:04:41,735 --> 00:04:46,735
+who are hacking away to make better versions of that. Get involved in one of those projects.
+
+48
+00:04:46,735 --> 00:04:53,735
+Okay. The current one relies too much on the Windows Installer database and anything not hooked up to
+
+49
+00:04:53,735 --> 00:04:58,735
+Windows Installer sucks and then the Windows Installer validation process sucks.
+
+50
+00:04:58,735 --> 00:05:04,735
+Anybody ever query 132 product on a Server 2003 machine and then lose your job?
+
+51
+00:05:04,735 --> 00:05:10,735
+Why is the server slow for six hours a day? Virus, I don't know.
+
+52
+00:05:10,735 --> 00:05:22,735
+I'll run a scan. That's my log in script story. So anymore? Any things that I'd love it if DSC could do
+
+53
+00:05:22,735 --> 00:05:24,735
+this, but it just doesn't seem possible the way it's architected.
+
+54
+00:05:24,735 --> 00:05:27,735
+Because that's why we're here. We're here to hack the architecture.
+
+55
+00:05:27,735 --> 00:05:31,735
+Okay, so you're completely satisfied with everything DSC does and you feel the architecture is completely
+
+56
+00:05:31,735 --> 00:05:34,735
+approachable and finished. That's fantastic. We'll pass that onto the team.
+
+57
+00:05:34,735 --> 00:05:39,735
+They'll appreciate that. Ordering like composites can't be dependsOn, right?
+
+58
+00:05:39,735 --> 00:05:47,735
+Ordering and composites. Right, you can't do a dependsOn. I would argue that you probably don't want it to
+
+59
+00:05:47,735 --> 00:05:52,735
+because the amount of logic that would go into tearing those apart and going down that rabbit hole would make
+
+60
+00:05:52,735 --> 00:06:02,735
+the thing impossible. I'll make a design argument, which is---so do you guys know the whole reason that---
+
+61
+00:06:02,735 --> 00:06:06,735
+you guys know what dependsOn is, right? You need to jiggle your heads.
+
+62
+00:06:06,735 --> 00:06:14,735
+Okay. The whole argument in favor of doing dependsOn is in case the LCM ever becomes multithreaded.
+
+63
+00:06:14,735 --> 00:06:19,735
+If the LCM is doing 10 things at once, it needs to know which ones not to do yet and that's what dependsOn
+
+64
+00:06:19,735 --> 00:06:27,735
+is designed to document. My argument because that becomes a problem for composites, I have an argument
+
+65
+00:06:27,735 --> 00:06:31,735
+against dependsOn, which is that it makes your configuration document harder to read.
+
+66
+00:06:31,735 --> 00:06:38,735
+Unless you actually list everything voluntarily in dependsOn order, it becomes hard for a human being to parse that.
+
+67
+00:06:38,735 --> 00:06:42,735
+Alright, so that's going to happen and that's going to happen, and that's going to happen, and oh, oh no,
+
+68
+00:06:42,735 --> 00:06:45,735
+that's going to happen, then that's going to happen because this has to.
+
+69
+00:06:45,735 --> 00:06:51,735
+It gets harder just to mentally grasp it. Make file. Kind of like a make file.
+
+70
+00:06:51,735 --> 00:06:55,735
+My argument and this is a design thing and this is something Microsoft would have to address.
+
+71
+00:06:55,735 --> 00:07:00,735
+My argument is that a not doing dependsOn and instead doing a sequential, which is like what Chef and Puppet
+
+72
+00:07:00,735 --> 00:07:08,735
+and those guys do and occasionally giving us a keyword called coalesce meaning here's 10 things, do them first
+
+73
+00:07:08,735 --> 00:07:13,735
+in whatever order you want to and then stop until all of those things are done and then continue with phase 2.
+
+74
+00:07:13,735 --> 00:07:18,735
+That would have been semantically I think a lot easier to read, a lot easier to implement, and avoided that
+
+75
+00:07:18,735 --> 00:07:25,735
+whole problem because then sequence becomes important. So we can talk about that with them tomorrow because
+
+76
+00:07:25,735 --> 00:07:30,735
+they'll be here. Yes, we can suggest that. Jump up and down and scream.
+
+77
+00:07:30,735 --> 00:07:36,735
+Anything else architectural? I want to do dynamically generated configurations.
+
+78
+00:07:36,735 --> 00:07:41,735
+I want to do dynamically generate config, yeah. That, right. Locally.
+
+79
+00:07:41,735 --> 00:07:50,735
+Yeah. Yeah, I'll give you two places I think we could do and I think we can do this almost nearly today-ish
+
+80
+00:07:50,735 --> 00:07:56,735
+in terms of dynamically-generated configurations. I think we can do locally dynamically-generated
+
+81
+00:07:56,735 --> 00:08:00,735
+configurations on the node today. You're going to have to write your own resource to do that,
+
+82
+00:08:00,735 --> 00:08:06,735
+but that's what we're talking about here. I think we are nearly to the point where we could also dynamically
+
+83
+00:08:06,735 --> 00:08:14,735
+generate them on the pull server. Now that pull server protocol is documented, we just don't have any code
+
+84
+00:08:14,735 --> 00:08:21,735
+to look at so that we can make our own smarter pull server. I think we will get that.
+
+85
+00:08:21,735 --> 00:08:25,735
+I mean, they've been pretty clear that their goal is to open source at least sample code where you can build
+
+86
+00:08:25,735 --> 00:08:32,735
+your own and at that point, we could have our own pull server taking state data from right then and
+
+87
+00:08:32,735 --> 00:08:37,735
+dynamically generating a MOF to hand to the node. I think we're close to that.
+
+88
+00:08:37,735 --> 00:08:41,735
+We can do everything now except the actual pull server because we don't know what the code looks like and
+
+89
+00:08:41,735 --> 00:08:47,735
+none of us wants to just reverse engineer the protocol. I think we're nearly there.
+
+90
+00:08:47,735 --> 00:08:56,735
+Let's talk about cattles and pets. The cattle versus pet thing is something that's going to require 10%
+
+91
+00:08:56,735 --> 00:09:00,735
+operating system design change and I don't think these are major.
+
+92
+00:09:00,735 --> 00:09:08,735
+I think it's just a very evolutionary step and 90% us changing our processes.
+
+93
+00:09:08,735 --> 00:09:11,735
+How many of you, for example, assign static IP addresses to your servers?
+
+94
+00:09:11,735 --> 00:09:18,735
+Why? Do you not have DHCP? Did you not know about DHCP? Are you afraid of DHCP?
+
+95
+00:09:18,735 --> 00:09:25,735
+Are you superstitious about DHCP? How many of you just think DHCP is freaking voodoo?
+
+96
+00:09:25,735 --> 00:09:29,735
+Who thinks it's science? Yeah, so let's take that for a second.
+
+97
+00:09:29,735 --> 00:09:34,735
+Vendor requirement is bull. That is the 90% us changing our processes.
+
+98
+00:09:34,735 --> 00:09:38,735
+Right. You can't say I wish I could do X, but there are stupid people in the world.
+
+99
+00:09:38,735 --> 00:09:44,735
+I know that. We're all surrounded by them on the highway every single day, but that's not a reason to,
+
+100
+00:09:44,735 --> 00:09:48,735
+you can't say I need to re-engineer the entire universe because of stupid people.
+
+101
+00:09:48,735 --> 00:09:51,735
+No, that's an HR problem. You need to bury the stupid people in the desert.
+
+102
+00:09:51,735 --> 00:09:59,735
+That's why I live in Vegas. If you've got stupid people, you can't have nice things, period.
+
+103
+00:09:59,735 --> 00:10:03,735
+So we're not talking about the situation where you just politically can't have nice things because you've got
+
+104
+00:10:03,735 --> 00:10:09,735
+the option to go find a different job. So let's talk about the technology things, right.
+
+105
+00:10:09,735 --> 00:10:17,735
+There is no reason to not have your servers getting their IP addresses from a DHCP server or a DHCP-like entity.
+
+106
+00:10:17,735 --> 00:10:22,735
+Right, you get on SCVMM, for example, and you've got like IP address pools and things like that aren't DHCP,
+
+107
+00:10:22,735 --> 00:10:28,735
+but they're vaguely similar, right. There's no reason that a configuration, a DSC configuration MOF needs
+
+108
+00:10:28,735 --> 00:10:34,735
+to be pushing a static IP address. They should be set for DHCP. And if you want to as you're kind of
+
+109
+00:10:34,735 --> 00:10:41,735
+MetaConfiguration be configuring reservations and stuff like that, God be with you, that's fine,
+
+110
+00:10:41,735 --> 00:10:48,735
+but cattle don't have names and an IP address is a name, and so you should not be assigning names.
+
+111
+00:10:48,735 --> 00:10:51,735
+You should be doing that at a metalevel. That's problem number one.
+
+112
+00:10:51,735 --> 00:10:56,735
+Problem number two, machine name. Right, that's the other unique piece of information we have to set, well ish.
+
+113
+00:10:56,735 --> 00:11:01,735
+Windows anymore makes up a name for itself when you first install it.
+
+114
+00:11:01,735 --> 00:11:07,735
+Let it keep it. Who cares what the cattle thinks its name is. I don't care.
+
+115
+00:11:07,735 --> 00:11:12,735
+As part of the configuration, rather than assigning a name because your configuration is often going to be
+
+116
+00:11:12,735 --> 00:11:16,735
+role-based, right. You're configuration's telling a machine to be a certain way.
+
+117
+00:11:16,735 --> 00:11:21,735
+Part of who it should be is registering the necessary CNAME records in DNS.
+
+118
+00:11:21,735 --> 00:11:27,735
+That's what you talk to it by. Right, if you're in this application, well then register that name and that's
+
+119
+00:11:27,735 --> 00:11:33,735
+what we're all going to call you. The only couple of, and this is where we get to the 10% that has to be an
+
+120
+00:11:33,735 --> 00:11:40,735
+OS design change, the only couple of weirdnesses you get there is let's say PowerShell remoting becomes involved.
+
+121
+00:11:40,735 --> 00:11:48,735
+Can I easily remote to a machine via a CNAME? Yeah, not as easily as knowing its name because I need to
+
+122
+00:11:48,735 --> 00:11:52,735
+know its canonical Active Directory name if it's in Active Directory, so I can get a Kerberos ticket for it.
+
+123
+00:11:52,735 --> 00:11:58,735
+It won't work with a CNAME. But you can certainly work around that, right.
+
+124
+00:11:58,735 --> 00:12:03,735
+If, for example, you were doing the right thing and that machine was requesting a certificate for itself with
+
+125
+00:12:03,735 --> 00:12:09,735
+its CNAME, then that certificate could be used on an HTTPS listener, which is what you should be doing
+
+126
+00:12:09,735 --> 00:12:15,735
+anyway because none of us are dumb enough to be doing remoting over HTTP, right?
+
+127
+00:12:15,735 --> 00:12:25,735
+Right. Home Depot, guys, Target. It's going to happen. So if the machine knows its role, then it knows
+
+128
+00:12:25,735 --> 00:12:31,735
+what CNAME to set up for itself. And yeah, are you going to have to then come up with a back-end process
+
+129
+00:12:31,735 --> 00:12:38,735
+to periodically scour or scavenge those? Possibly. You could certainly have things like expirations on them
+
+130
+00:12:38,735 --> 00:12:42,735
+because the LCM is going to run periodically and make sure that it's re-registered.
+
+131
+00:12:42,735 --> 00:12:48,735
+So you just look to see the last time it was just every hour, right, the LCM doesn't have to run every 15 minutes.
+
+132
+00:12:48,735 --> 00:12:55,735
+You know that, right. It can do it less frequently. Every hour, go update the update record on your CNAME
+
+133
+00:12:55,735 --> 00:13:00,735
+so that I know it's recent and if anything becomes too old, I'll have another process that scavenges those.
+
+134
+00:13:00,735 --> 00:13:04,735
+Pretty much exactly like DHCP works. So you've got your CNAME record there.
+
+135
+00:13:04,735 --> 00:13:09,735
+That means you can go to our PKI. How many of you have PKI? The rest of you need to catch up.
+
+136
+00:13:09,735 --> 00:13:16,735
+We all need PKI. Go to the PKI and get a certificate in that name and now you can hook that up to an HTTPS
+
+137
+00:13:16,735 --> 00:13:22,735
+remoting listener, and so now I can remote easily into the machine using its CNAME.
+
+138
+00:13:22,735 --> 00:13:30,735
+I never need to know its natural machine name. You think Microsoft knows the machine names of all the crap
+
+139
+00:13:30,735 --> 00:13:36,735
+they have running in Azure? I doubt it. They sure as heck don't have an Excel spreadsheet somewhere
+
+140
+00:13:36,735 --> 00:13:44,735
+tracking all that garbage, which is what you use, I know. How many of you use Excel to track your static IP
+
+141
+00:13:44,735 --> 00:13:46,735
+addresses or servers. Yeah, of course you do. He's the only brave one who admits it.
+
+142
+00:13:46,735 --> 00:13:53,735
+The rest of you are lying. I know. So when you start thinking about the things that are unique, most of them
+
+143
+00:13:53,735 --> 00:14:00,735
+are only unique because of the way we're accustomed to doing things, not because there's a tremendous technological hurdle.
+
+144
+00:14:00,735 --> 00:14:07,735
+Is it inconvenient to change? Well no. It's only inconvenient if you're holding onto your old processes.
+
+145
+00:14:07,735 --> 00:14:16,735
+If you just let go, then it's actually not hard at all. Static IP addresses for servers, I mean, move on.
+
+146
+00:14:16,735 --> 00:59:59,999
+Let it go. Let it go. I'm not singing, don't worry. We only do that in the closing session and it's a song about beer.
+

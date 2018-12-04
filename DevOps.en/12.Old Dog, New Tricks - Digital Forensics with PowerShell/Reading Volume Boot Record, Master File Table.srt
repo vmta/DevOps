@@ -1,0 +1,140 @@
+1
+00:00:00,0 --> 00:00:01,943
+So now we're looking at this again
+
+2
+00:00:01,943 --> 00:00:05,943
+and we're taking that partition 0 and we're looking at StartSector and we're going to read 512 bytes.
+
+3
+00:00:05,943 --> 00:00:12,943
+So the StartSector is the beginning of the logic, the bootable volume, right, or the C drive in this case.
+
+4
+00:00:12,943 --> 00:00:18,943
+So when we read that, again, not very much stuff. What we do see up here is NTFS, which is a good indicator
+
+5
+00:00:18,943 --> 00:00:25,943
+that we're looking at NTFS volume boot record, but still, not very much stuff to go off of, right.
+
+6
+00:00:25,943 --> 00:00:32,943
+Let's go back to, luckily there's a Get-ForensicVolumeBootRecord cmdlet, and in this case, we're hard passing
+
+7
+00:00:32,943 --> 00:00:40,943
+it C: sorry, C: and then you just run that, and now we have the VolumeBootRecord object, and this is what it looks like.
+
+8
+00:00:40,943 --> 00:00:45,943
+So we have things like total sectors of this volume, the number of hidden sectors, bytes per sector,
+
+9
+00:00:45,943 --> 00:00:51,943
+bytes per cluster, we have the MFTStartIndex, which is going to point us to,
+
+10
+00:00:51,943 --> 00:00:55,943
+and this is relative to the beginning of the actual of volume itself, so the C drive.
+
+11
+00:00:55,943 --> 00:00:56,943
+It's going to point us to
+
+12
+00:00:56,943 --> 00:01:03,943
+the master file table, so we can start understanding what files are on the disk and start doing forensics on those.
+
+13
+00:01:03,943 --> 00:01:10,943
+So just for the sake of needing that later, we're going to store that, and then we're going to go down,
+
+14
+00:01:10,943 --> 00:01:16,943
+we're done with the volume boot record. Okay, now we're back at the master file table, so we're just kind of
+
+15
+00:01:16,943 --> 00:01:21,943
+doing the same thing, you know, expecting the same results, insanity.
+
+16
+00:01:21,943 --> 00:01:28,943
+And so, what we did here, let's go back up, so we're looking at the C volume now, so this is what June was
+
+17
+00:01:28,943 --> 00:01:36,943
+talking about, \\.\C: and then we have vbr.MftStartIndex, then we're multiplying it by the BytesPerCluster,
+
+18
+00:01:36,943 --> 00:01:38,943
+so because the start index is stored in
+
+19
+00:01:38,943 --> 00:01:42,943
+clusters, we want to understand how large a cluster is, and the we're saying hey we want to take
+
+20
+00:01:42,943 --> 00:01:50,943
+the bytes per file record and we want to read one file record, so this is the MFT record for the MFT itself.
+
+21
+00:01:50,943 --> 00:01:57,943
+Somewhere in here, you see $MFT is the name of the MFT file, so the MFT record for the MFT itself is always
+
+22
+00:01:57,943 --> 00:01:58,943
+at offset 0
+
+23
+00:01:58,943 --> 00:02:04,943
+within the MFT, so we always know it's the first record. And so, within that, let's go
+
+24
+00:02:04,943 --> 00:02:08,943
+back here, we can now interpret that with Get-ForensicFileRecord, right.
+
+25
+00:02:08,943 --> 00:02:12,943
+So now we see hey that's human readable, right. It makes a little more sense.
+
+26
+00:02:12,943 --> 00:02:18,943
+There's some timestamps in there. It tells you who the ParentRecordNumber is, so we see that its parent is
+
+27
+00:02:18,943 --> 00:02:29,943
+RecordNumber 5, which is the root directory. And then we're going to store that for use here in a second.
+
+28
+00:02:29,943 --> 00:02:33,943
+Okay, now I just kind of wanted to show the different properties.
+
+29
+00:02:33,943 --> 00:02:39,943
+So these are proper .NET objects, so we have PowerForensics.Ntfs.FileRecord object and there's tons of
+
+30
+00:02:39,943 --> 00:02:45,943
+different properties more than we're showing, so I have a formatter, which only shows default properties,
+
+31
+00:02:45,943 --> 00:02:52,943
+but you can see a lot more if you ask. So what we're going to do, for instance there's an attribute property,
+
+32
+00:02:52,943 --> 00:02:57,943
+which wasn't shown originally. Let's look at that and this is an array of different attributes.
+
+33
+00:02:57,943 --> 00:03:02,943
+So here's that Standard_Information attribute, the File_Name attribute, which has, whoops,
+
+34
+00:03:02,943 --> 00:03:09,943
+which has the MFT, the name of the file, and then we have this is one of those fragmented files, so we have
+
+35
+00:03:09,943 --> 00:59:59,999
+two data runs, which we have to follow in order to find the data within the MFT file.
+

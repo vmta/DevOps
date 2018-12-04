@@ -1,0 +1,288 @@
+1
+00:00:00,0 --> 00:00:06,799
+Another really cool thing you can do is make use of partial configurations. These you'll see applied
+
+2
+00:00:06,799 --> 00:00:13,299
+in the Meta Configuration that you send to the LCM. So you'll see here we're using this PartialConfiguration
+
+3
+00:00:13,299 --> 00:00:18,299
+resource to tell the LCM about all the pieces that we're going to be sending it.
+
+4
+00:00:18,299 --> 00:00:24,299
+In this mode, in this example rather, we're using Push mode. So you can use push or pull and I'll show you
+
+5
+00:00:24,299 --> 00:00:30,299
+pull in a second, but this is an example of configuring a Push mode PartialConfiguration, in our case,
+
+6
+00:00:30,299 --> 00:00:33,299
+we have three different pieces.
+
+7
+00:00:33,299 --> 00:00:41,299
+Some notes about using partial configurations. Once you configure the LCM to expect partial configurations,
+
+8
+00:00:41,299 --> 00:00:44,299
+you can no longer use Start-DscConfiguration
+
+9
+00:00:44,299 --> 00:00:48,299
+for that normal default operation that we do to send and immediately apply.
+
+10
+00:00:48,299 --> 00:00:53,299
+PowerShell will yell at you. What you have to do, what they want you to do is to use
+
+11
+00:00:53,299 --> 00:00:58,299
+Publish-DscConfiguration. Just as we saw before, we'll send the configuration over in a pending state.
+
+12
+00:00:58,299 --> 00:01:05,299
+At that point, you can use Start-DscConfiguration with the use existing flag and that will trigger the LCM to
+
+13
+00:01:05,299 --> 00:01:11,299
+check for those pending configurations, suck them in, and apply them.
+
+14
+00:01:11,299 --> 00:01:17,299
+Another really important detail is that the names of your partial configurations matter.
+
+15
+00:01:17,299 --> 00:01:23,299
+Basically, in the PartialConfiguration resource of your Meta Configuration, if you give it name X when you
+
+16
+00:01:23,299 --> 00:01:28,299
+publish a configuration to it, that configuration must be defined with configuration X.
+
+17
+00:01:28,299 --> 00:01:32,299
+The names have to match because that's how the LCM knows what you're giving it.
+
+18
+00:01:32,299 --> 00:01:35,299
+Otherwise, it would just be alright, well now I've got three configurations.
+
+19
+00:01:35,299 --> 00:01:39,299
+I don't know which ones what. To do partial configurations
+
+20
+00:01:39,299 --> 00:01:48,299
+in pull mode, we see a little bit more complexity. We've now added this ConfigurationID, which is a GUID,
+
+21
+00:01:48,299 --> 00:01:53,299
+which we haven't seen a GUID this whole time and I was so happy that we don't have to rely on GUIDs anymore,
+
+22
+00:01:53,299 --> 00:02:01,299
+but in this scenario, we still do. ConfigurationID ties all of your pieces together when you're in pull mode.
+
+23
+00:02:01,299 --> 00:02:08,299
+The rest, pretty similar, we're using again the PartialConfiguration resource and this time because it's pull
+
+24
+00:02:08,299 --> 00:02:11,299
+mode, we have to tell it where it's pulling from so you have a reference.
+
+25
+00:02:11,299 --> 00:02:18,299
+Just like any other reference that you would see, like if you were doing a dependsOn in any of your other resources,
+
+26
+00:02:18,299 --> 00:02:27,299
+you reference the ConfigurationRepository resource that holds the configuration that you're going to be pulling.
+
+27
+00:02:27,299 --> 00:02:32,299
+Lastly, you tell it that we're in Pull mode.
+
+28
+00:02:32,299 --> 00:02:45,299
+So quick question. (Audience question) The MOF file that you place on your pull server?
+
+29
+00:02:45,299 --> 00:02:49,299
+Yep, I'm getting to that right now actually. Here's exactly what it is.
+
+30
+00:02:49,299 --> 00:02:53,299
+So normally, you'd be able to deploy a pull configuration by just putting the friendly name of your
+
+31
+00:02:53,299 --> 00:02:59,299
+configuration.mof in that ConfigurationRepository folder on your pull server.
+
+32
+00:02:59,299 --> 00:03:05,299
+With partial configurations in pull mode, you have to use a friendly name .configurationid on both the MOF
+
+33
+00:03:05,299 --> 00:03:10,299
+and the MOF checksum file. So again, this is kind of, you're using your familiar names,
+
+34
+00:03:10,299 --> 00:03:16,299
+but the ConfigurationID ties everything together so the LCM knows alright, well these are all pieces of the
+
+35
+00:03:16,299 --> 00:03:27,299
+same one thing. Does that answer your question? It sure does. Another cool thing about partial configurations
+
+36
+00:03:27,299 --> 00:03:31,299
+in pull mode, you can actually put the different configurations on different servers.
+
+37
+00:03:31,299 --> 00:03:37,299
+This is one of the really powerful features because if you've got a large organization and you've got different
+
+38
+00:03:37,299 --> 00:03:41,299
+people in different departments and they all want a shot at your nodes,
+
+39
+00:03:41,299 --> 00:03:47,299
+you can give them their own pull servers. Have them set up their own pull servers so your security team gets
+
+40
+00:03:47,299 --> 00:03:52,299
+their pull server and I reference that and all the other teams get their own and you can reference all of
+
+41
+00:03:52,299 --> 00:03:57,299
+them separately, pull the pieces together, and apply one final configuration.
+
+42
+00:03:57,299 --> 00:03:59,299
+One caveat to that,
+
+43
+00:03:59,299 --> 00:04:03,299
+oh I guess I get to the caveat later.
+
+44
+00:04:03,299 --> 00:04:09,299
+It's on this slide. I'll get to that in a second. So partial configurations, we talked about push and pull,
+
+45
+00:04:09,299 --> 00:04:16,299
+but you can also do mixed node. So I can define a Meta Configuration to my LCM and I can tell it well I've
+
+46
+00:04:16,299 --> 00:04:21,299
+got a partial configuration for you. It's got four parts. This one is pull, this one is push, and these other
+
+47
+00:04:21,299 --> 00:04:25,299
+two are pull and it works.
+
+48
+00:04:25,299 --> 00:04:32,299
+I haven't been able to think of a use case for it, but I'm sure there is one, so it's very nice that it supports it.
+
+49
+00:04:32,299 --> 00:04:38,299
+As I said, this is great for splitting up large or overly complex configurations to make them a little more manageable.
+
+50
+00:04:38,299 --> 00:04:40,299
+One of the things I don't care for, although I don't
+
+51
+00:04:40,299 --> 00:04:46,299
+have a better solution, so I'm not complaining is that you have to custom tailor your LCM configuration up front.
+
+52
+00:04:46,299 --> 00:04:49,299
+Your LCM has to know all the pieces that are coming to it.
+
+53
+00:04:49,299 --> 00:04:54,299
+You can't just say alright well here take this configuration and then a few days later decide well I'll take
+
+54
+00:04:54,299 --> 00:04:59,299
+this one too, but don't get rid of the old one, apply them both.
+
+55
+00:04:59,299 --> 00:05:02,299
+You have to know up front all the pieces that you're going to be sending.
+
+56
+00:05:02,299 --> 00:05:07,299
+And here's my caveat, when you have your partial configurations, if they're coming from all over the place,
+
+57
+00:05:07,299 --> 00:05:11,299
+conflict protection doesn't happen until we're applying them all on the node.
+
+58
+00:05:11,299 --> 00:05:14,299
+And if you think about it, that's really the only way you can do it, especially if they're coming from
+
+59
+00:05:14,299 --> 00:05:21,299
+different pull servers, but it is important to remember because it's probably going to be a real pain to debug.
+
+60
+00:05:21,299 --> 00:05:28,299
+In general, when you're making configuration changes to the LCM, important things to remember are a lot of
+
+61
+00:05:28,299 --> 00:05:34,299
+these options are not dependent on one another, configuration mode, refresh mode, they operate independently.
+
+62
+00:05:34,299 --> 00:05:35,299
+So depending on the scenario
+
+63
+00:05:35,299 --> 00:05:41,299
+you have, you can pick and choose only the pieces that you're really going to need in that case.
+
+64
+00:05:41,299 --> 00:05:45,299
+That flexibility also means you can mix and match those settings to suit your need.
+
+65
+00:05:45,299 --> 00:05:50,299
+Configuration mode and refresh mode have three options each. That's nine different choices that you can make
+
+66
+00:05:50,299 --> 00:05:53,299
+just with those two options. That leave me to my
+
+67
+00:05:53,299 --> 00:05:59,299
+other recommendation. There are so many permutations of ways to configure the LCM.
+
+68
+00:05:59,299 --> 00:06:05,299
+If you come across something and you're wondering how it's going to work, build it quick in a lab, test it out.
+
+69
+00:06:05,299 --> 00:06:09,299
+That's actually how I got a lot of the information that I needed for this talk, which coming from a software
+
+70
+00:06:09,299 --> 00:06:12,299
+engineer, it was a lot of fun trying to create a domain
+
+71
+00:06:12,299 --> 00:06:18,299
+and install the certificate authority, yeah, that was fun. But we figured it out.
+
+72
+00:06:18,299 --> 00:59:59,999
+We got everything and I got all the info I needed.
+

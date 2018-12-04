@@ -1,0 +1,308 @@
+1
+00:00:00,0 --> 00:00:04,919
+Okay, so let me show you this. So bringing your investments into the automation service.
+
+2
+00:00:04,919 --> 00:00:06,919
+So now I want to tell you a story.
+
+3
+00:00:06,919 --> 00:00:15,919
+So Sunday night, we were there at the hotel, the scripting life is like downstairs talking to about 20 or 40
+
+4
+00:00:15,919 --> 00:00:20,919
+different people that were like hanging around the bar area down there, yeah, and I went up and I was having
+
+5
+00:00:20,919 --> 00:00:25,919
+like some issues, so I sent Teresa an email and I said hey, I need you to come up to the room.
+
+6
+00:00:25,919 --> 00:00:35,919
+I need you to help me with my demo. And she goes, huh? I said yeah.
+
+7
+00:00:35,919 --> 00:00:41,919
+So why did I need her to help me with her demo? Well because she is an MVP, which means that she has a free Azure subscription.
+
+8
+00:00:41,919 --> 00:00:51,919
+So I wanted her to activate her Azure subscription, I wanted her to set up an automation account, and all of that.
+
+9
+00:00:51,919 --> 00:00:56,919
+So she did it and I didn't help here because I was like busy working on something else.
+
+10
+00:00:56,919 --> 00:01:02,919
+And she did all of this and then of course, then she made the mistake after she put her credit card in and
+
+11
+00:01:02,919 --> 00:01:10,919
+made the mistake of giving me her credentials, so I said wahoo! So I'm lined up.
+
+12
+00:01:10,919 --> 00:01:18,919
+So that's why this actually, it is the scripting watch portal and Teresa is the automation account name.
+
+13
+00:01:18,919 --> 00:01:26,919
+Now one of the things that's really, really cool and we just introduced this recently, and so and I've got,
+
+14
+00:01:26,919 --> 00:01:31,919
+I'm going to be writing some OMST blog articles about this. So if you go back and you're looking at Azure
+
+15
+00:01:31,919 --> 00:01:38,919
+automation and some of the scripts and tried to automate some stuff, you'll see that there's a lot of stuff out there.
+
+16
+00:01:38,919 --> 00:01:43,919
+A lot of this stuff is kind of difficult to word I mean because it's using Azure cmdlets, it's using Azure
+
+17
+00:01:43,919 --> 00:01:50,919
+RM cmdlets, there's talks of different, talks about trying to get access to your particular subscription and
+
+18
+00:01:50,919 --> 00:01:59,919
+all of this stuff and all of that is pretty much a nightmare, especially if you're just trying to learn this stuff.
+
+19
+00:01:59,919 --> 00:02:04,919
+So what we did is we created a run as account and Teresa did this automatically.
+
+20
+00:02:04,919 --> 00:02:09,919
+I didn't even tell her to do this because the GUI, when you're setting stuff up, it's smart enough to say
+
+21
+00:02:09,919 --> 00:02:15,919
+hey do you want to create a run as account and she said yeah. Well once you create the run as account,
+
+22
+00:02:15,919 --> 00:02:24,919
+then it does three things for you. It creates a run as certificate, it takes your account that you use and
+
+23
+00:02:24,919 --> 00:02:30,919
+actually creates an account for that, it also saves your credentials as a credential object, and it makes a
+
+24
+00:02:30,919 --> 00:02:40,919
+connection to your default subscription. All of these things were issues before.
+
+25
+00:02:40,919 --> 00:02:41,919
+Okay.
+
+26
+00:02:41,919 --> 00:02:46,919
+It definitely solves a lot of that. I think if you tried this out, depends on your organization, a lot of times
+
+27
+00:02:46,919 --> 00:02:52,919
+you can't really use your user account because you might have to factor auth enabled, which won't work inside the service.
+
+28
+00:02:52,919 --> 00:02:56,919
+Whereas now, we basically take advantage of service principles inside of Azure ID and that's what we
+
+29
+00:02:56,919 --> 00:03:01,919
+create behind the scenes for you and then we do cert auth against those, so you can manage your certs and
+
+30
+00:03:01,919 --> 00:03:05,919
+then we add you as a contributor to the subscription, but you could go in and manage and change that
+
+31
+00:03:05,919 --> 00:03:12,919
+and do anything you want, but it just does all of this by default just by checking the box during creation right now.
+
+32
+00:03:12,919 --> 00:03:20,919
+Okay, so this is a little bit of code that Teresa did, yeah, and it's pretty.
+
+33
+00:03:20,919 --> 00:03:30,919
+So once you've done that, then you use Get-AutomationConnection and the name is the AzureRunAsConnection,
+
+34
+00:03:30,919 --> 00:03:37,919
+and then you add your Azure RM account, specify your service principle, you've got Tenant, the TenantID,
+
+35
+00:03:37,919 --> 00:03:38,919
+the ApplicationId, blah, blah, blah.
+
+36
+00:03:38,919 --> 00:03:44,919
+Now I say she wrote it. She wrote this probably the way that lots of you write code.
+
+37
+00:03:44,919 --> 00:03:50,919
+She found it and cut and pasted it, right. So the other thing that's really cool is that once you've set up this
+
+38
+00:03:50,919 --> 00:03:56,919
+run as account, it automatically does a demo test script---
+
+39
+00:03:56,919 --> 00:03:57,919
+It's a tutorial, yep---
+
+40
+00:03:57,919 --> 00:04:04,919
+to the tutorial and that's where this code came from. Okay, but now you just simply past this into all of
+
+41
+00:04:04,919 --> 00:04:11,919
+your other stuff. But you can see how easy it is to come over here.
+
+42
+00:04:11,919 --> 00:04:18,919
+So there's the code. She kind of cleaned it up a little bit, but so add your RM account, blah, blah, blah,
+
+43
+00:04:18,919 --> 00:04:25,919
+and that's all you really need. And then at that point, your scripts, you add this in and then your scripts
+
+44
+00:04:25,919 --> 00:04:37,919
+will just simply work. So let's go back over here and I want to show you two runbooks and these runbooks
+
+45
+00:04:37,919 --> 00:04:47,919
+are using this service principle and this one here. So this is it.
+
+46
+00:04:47,919 --> 00:04:54,919
+It's a workflow, okay. Workflows start VMs. Now the one thing is you're naming your workflow and the name
+
+47
+00:04:54,919 --> 00:05:00,919
+of your runbook, those names need to match, okay. You'll get an error message that'll be very obvious if
+
+48
+00:05:00,919 --> 00:05:07,919
+they don't work. So there's that code right there that Teresa wrote to make my connection and then the rest
+
+49
+00:05:07,919 --> 00:05:13,919
+of it, this is standard PowerShell. Basically, it's three lines of code 7, 8, and 9.
+
+50
+00:05:13,919 --> 00:05:15,919
+My VMs get the AzureRmVMs.
+
+51
+00:05:15,919 --> 00:05:23,919
+Now these are your new Azure VMs, not the classic mode ones. Okay.
+
+52
+00:05:23,919 --> 00:05:27,919
+If you're creating new VMs in Azure, you want to be using the new ones, not the classic ones.
+
+53
+00:05:27,919 --> 00:05:30,919
+The classic ones are stuff you created a long time ago.
+
+54
+00:05:30,919 --> 00:05:37,919
+So we get all of those stored in a variable and just simply use foreach, walk through the loop, VM,
+
+55
+00:05:37,919 --> 00:05:45,919
+and then Start-AzureRmVM, that's a tongue twister, and then give it the name and the resource group.
+
+56
+00:05:45,919 --> 00:05:51,919
+Okay, so Teresa created all of her resource servers in a resource group called server.
+
+57
+00:05:51,919 --> 00:06:00,919
+Make sense, it's servers. So this starts them up and then the one that goes exactly with this is called
+
+58
+00:06:00,919 --> 00:06:13,919
+Stop-VMs basically. It helps, if I can tell you this, it helps if you create within your company a naming
+
+59
+00:06:13,919 --> 00:06:20,919
+convention and kind of stick to it. You see this is a stupid name.
+
+60
+00:06:20,919 --> 00:06:26,919
+But because I was wanting to figure out how to stop them because they were already running.
+
+61
+00:06:26,919 --> 00:06:33,919
+And as they're running, they're tick, tick, tick, tick, tick, tick, tick, just taking money out of your credit card.
+
+62
+00:06:33,919 --> 00:06:36,919
+So I wanted to figure out how to stop them really quick and I didn't want to do a bunch of clicky,
+
+63
+00:06:36,919 --> 00:06:38,919
+clicky things because I'm a PowerShell dude, right.
+
+64
+00:06:38,919 --> 00:06:46,919
+So workflow stop all of these. Now that obviously if I have more than a few, I'll be using foreach parallel
+
+65
+00:06:46,919 --> 00:06:51,919
+because this is a workflow, okay, but I didn't want to get things too complicated here.
+
+66
+00:06:51,919 --> 00:06:57,919
+If you know workflows, obviously you want it to know that one of the advantages is doing this stuff in parallel.
+
+67
+00:06:57,919 --> 00:07:05,919
+Same code, exact same code, cut and paste, but instead of Start-AzureRmVM, it was Stop-AzureRmVM.
+
+68
+00:07:05,919 --> 00:07:12,919
+So there's your two runbooks. Schedule them. This will help you when you start or you're playing with this
+
+69
+00:07:12,919 --> 00:07:21,919
+stuff doing your development and everything else, these two are going to save you some money guaranteed.
+
+70
+00:07:21,919 --> 00:07:22,919
+Start them up, shut them down. Now
+
+71
+00:07:22,919 --> 00:07:31,919
+not only that, let me show you this because I really and truly mean it when I say I really don't like mices.
+
+72
+00:07:31,919 --> 00:07:44,919
+Okay, so look what I did. Stop. So this is the schedule. I stopped these at, okay, so this is stop on
+
+73
+00:07:44,919 --> 00:07:50,919
+April the 7th, I'm going to stop these at what is it 7 am, is that what it says?
+
+74
+00:07:50,919 --> 00:07:51,919
+Yep.
+
+75
+00:07:51,919 --> 00:07:57,919
+Ah, different time zone. Okay. Different time zone. Okay.
+
+76
+00:07:57,919 --> 00:08:02,919
+So we're going to start these things at one time, we're going to stop them at another time.
+
+77
+00:08:02,919 --> 00:59:59,999
+Okay and so they start up, I work, they shut down.
+

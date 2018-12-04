@@ -1,0 +1,116 @@
+1
+00:00:00,0 --> 00:00:08,958
+This is a resource slide. There's some free stuff. PowerShell.org, the PowerShell Virtual Chapter of SQL PASS.
+
+2
+00:00:08,958 --> 00:00:13,958
+They do like lunch time meetings. They had one today, matter of fact.
+
+3
+00:00:13,958 --> 00:00:22,958
+SQL Saturday Technology Events. I'm speaking at SQL Saturday Atlanta on May 21 on toolmaking and I'm speaking
+
+4
+00:00:22,958 --> 00:00:28,958
+at SQL Saturday Pensacola the first weekend in June on Desired State Configuration.
+
+5
+00:00:28,958 --> 00:00:32,958
+And I've spoke at tons of SQL Saturdays. I speak in Baton Rouge every year.
+
+6
+00:00:32,958 --> 00:00:40,958
+I've spoke at Birmingham, Alabama, Mobile, Alabama. I've spoke at Atlanta before and so on.
+
+7
+00:00:40,958 --> 00:00:46,958
+I speak at some SharePoint Saturdays as well. I spoke last year at SharePoint Saturday in Nashville.
+
+8
+00:00:46,958 --> 00:00:54,958
+The Microsoft Virtual Academy. Now SAPIEN Technologies, the reason I have them under the free section is they
+
+9
+00:00:54,958 --> 00:00:59,958
+have some really good blog articles that June Blender is writing and also their forums.
+
+10
+00:00:59,958 --> 00:01:03,958
+They actually have some decent forums and it's not just related to their products.
+
+11
+00:01:03,958 --> 00:01:09,958
+They have some on just writing PowerShell code because as a SAPIEN Technologies MVP, I've been answering some
+
+12
+00:01:09,958 --> 00:01:14,958
+of those questions. PowerShell Magazine. I've written numerous articles there.
+
+13
+00:01:14,958 --> 00:01:18,958
+User groups. I run the Mississippi PowerShell user group as I mentioned earlier.
+
+14
+00:01:18,958 --> 00:01:25,958
+That's a virtual user group. If you don't have a local user group and we record our meetings as well on our YouTube channel.
+
+15
+00:01:25,958 --> 00:01:30,958
+You can, an alias for that user group website is mspowershell.com.
+
+16
+00:01:30,958 --> 00:01:37,958
+Twitter is another resource. GitHub, blogs. If you want to find a list of good blogs, go to my blog site
+
+17
+00:01:37,958 --> 00:01:39,958
+and see my blog role.
+
+18
+00:01:39,958 --> 00:01:45,958
+If the people that I have in my blog role are not writing good code or not consistently blogging, then they get
+
+19
+00:01:45,958 --> 00:01:51,958
+deleted off the list and somebody else gets added.
+
+20
+00:01:51,958 --> 00:01:59,958
+There's a PowerShell Best Practices and Style Guide and this slide deck is also on GitHub under my presentations repository.
+
+21
+00:01:59,958 --> 00:02:06,958
+All these are links to these sites, but that's the reading material I referenced at the beginning if your code
+
+22
+00:02:06,958 --> 00:02:11,958
+is not passing script analyzer. Okay, there's a couple of paid product.
+
+23
+00:02:11,958 --> 00:02:16,958
+I was actually the technical author for this Pro PowerShell for Database Developers.
+
+24
+00:02:16,958 --> 00:02:23,958
+It's a good book. And then also Pluralsight. We've got one more slide.
+
+25
+00:02:23,958 --> 00:02:28,958
+So that's my contact info. There's the book I co-authored and also the one I wrote a chapter in.
+
+26
+00:02:28,958 --> 00:02:33,958
+I'm a big believer in personal branding, so you'll find me at mikefrobbins pretty much anywhere.
+
+27
+00:02:33,958 --> 00:02:41,958
+Sign up for services, even if I don't use them. If you want my email address, I have a challenge for you.
+
+28
+00:02:41,958 --> 00:02:49,958
+Go out to my blog site, see the about page, my email address, my real email address is encoded, so decode it
+
+29
+00:02:49,958 --> 00:59:59,999
+and send me an email. And then there's the user group. Thank you guys for attending.
+

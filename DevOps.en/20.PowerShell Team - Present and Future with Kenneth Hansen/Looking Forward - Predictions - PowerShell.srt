@@ -1,0 +1,296 @@
+1
+00:00:00,0 --> 00:00:06,514
+Well that was a good view of the future of Windows Server, but I think we want to talk a little bit about
+
+2
+00:00:06,514 --> 00:00:09,514
+looking forward at our predictions for PowerShell in the future.
+
+3
+00:00:09,514 --> 00:00:16,514
+We can't have a looking forward discussion without some random predictions, so we have to.
+
+4
+00:00:16,514 --> 00:00:22,514
+Disclaimer, we are not architects like Jeffrey. These are predictions that I feel pretty good that I think
+
+5
+00:00:22,514 --> 00:00:23,514
+that we can achieve.
+
+6
+00:00:23,514 --> 00:00:27,514
+Well kind of in an order of like achievable to aspirational.
+
+7
+00:00:27,514 --> 00:00:33,514
+Exactly. So I feel pretty good about kind of our predictions, so I've got to bet, I would bet in our predictions---
+
+8
+00:00:33,514 --> 00:00:35,514
+I'm confident of that one.
+
+9
+00:00:35,514 --> 00:00:41,514
+I'm pretty confident about this one. So as Erin mentioned earlier, Windows Server 2016 is coming up
+
+10
+00:00:41,514 --> 00:00:47,514
+and it will be available sometime this year. And with that, we will release a WMF 5.1 update that will
+
+11
+00:00:47,514 --> 00:00:56,514
+contain all the changes from WMF 5.0 all the way through that what we call RTM release, so it will accumulate
+
+12
+00:00:56,514 --> 00:00:57,514
+those changes, yeah, whatever
+
+13
+00:00:57,514 --> 00:01:01,514
+we end up calling it, whatever marketing is used. GA I think is was we call it nowadays.
+
+14
+00:01:01,514 --> 00:01:02,514
+I think so, yes.
+
+15
+00:01:02,514 --> 00:01:09,514
+So GA will accumulate all the fixes and we'll re-release to help you take the latest changes.
+
+16
+00:01:09,514 --> 00:01:11,514
+One thing that's really important, it goes back to the feedback.
+
+17
+00:01:11,514 --> 00:01:16,514
+Please give us the feedback because this is the opportunity if there are some bugs, issues,
+
+18
+00:01:16,514 --> 00:01:22,514
+suggestions that you want us to consider that is this interesting time between now and then, they can help
+
+19
+00:01:22,514 --> 00:01:25,514
+you to get those changes and bug fixes into the WMF 5.1.
+
+20
+00:01:25,514 --> 00:01:30,514
+And the goal of this release of 5.1 is a little more of a service pack type of thing, if you will,
+
+21
+00:01:30,514 --> 00:01:38,514
+because in fact it will be the way that we support 5.0 moving forward, so we already put WMF 5.0 out there.
+
+22
+00:01:38,514 --> 00:01:43,514
+We'll be making the usually Microsoft support issues whatever it is with it all that we normally don't have
+
+23
+00:01:43,514 --> 00:01:49,514
+that many QFEs out of PowerShell, still we would do those kind of things, but we roll up any and all changes
+
+24
+00:01:49,514 --> 00:01:55,514
+into 5.1 and that's how we would actually support the 5.0 after that and then we'll be making changes on the
+
+25
+00:01:55,514 --> 00:02:02,514
+5.1 base and you'll get the usual Microsoft contract on 5.1, which would be required then like 3 or 4 months
+
+26
+00:02:02,514 --> 00:02:06,514
+after we put out 5.1. We'll do whatever sort of makes sense in that space.
+
+27
+00:02:06,514 --> 00:02:13,514
+Will those updates be released as KBs? We're still in discussion to figure out exactly how those will also be released.
+
+28
+00:02:13,514 --> 00:02:16,514
+That's a great, yeah. So we'll keep looking into that.
+
+29
+00:02:16,514 --> 00:02:20,514
+That's a good question by the way. That's actually we are going through that, internalizing that right now.
+
+30
+00:02:20,514 --> 00:02:23,514
+But this is a, anyway I just want to make sure people have got their head out, they know we've got a lot of
+
+31
+00:02:23,514 --> 00:02:28,514
+done with 5.0. We didn't want people to be surprised. We said oh by the way, now you need to roll to the 5.1
+
+32
+00:02:28,514 --> 00:02:35,514
+in order to continue forward as it will align with the Windows Server release and all the support alignment
+
+33
+00:02:35,514 --> 00:02:40,514
+with a Windows Server product, if that makes sense. And we'll blog about that later.
+
+34
+00:02:40,514 --> 00:02:41,514
+Oh, this one!
+
+35
+00:02:41,514 --> 00:02:46,514
+Yeah, OpenSSH. So OpenSSH is an open source project by the way.
+
+36
+00:02:46,514 --> 00:02:50,514
+It's already available for many of you. Please feel free to contribute.
+
+37
+00:02:50,514 --> 00:02:56,514
+We'll keep updating it. We will release an OpenSSH in Windows 2016.
+
+38
+00:02:56,514 --> 00:03:00,514
+It will be available. It will be just to give you visibility will be first of all.
+
+39
+00:03:00,514 --> 00:03:01,514
+It's not going to be perfect.
+
+40
+00:03:01,514 --> 00:03:04,514
+Oh no, nothing is perfect in software, but I'm sure we can make it awesome.
+
+41
+00:03:04,514 --> 00:03:06,514
+It's going to be great.
+
+42
+00:03:06,514 --> 00:03:12,514
+But I think the point here is that initial, just to set expectation, it will be kind of like WMF.
+
+43
+00:03:12,514 --> 00:03:16,514
+It would be what we call an autobahn, so it will be a package that we'll make available for you in the gallery
+
+44
+00:03:16,514 --> 00:03:20,514
+that you can install it. It will be supported. And then over time where one of the things that we are
+
+45
+00:03:20,514 --> 00:03:25,514
+considering is actually bring as part of Windows and install, but we need because we want to get some of the
+
+46
+00:03:25,514 --> 00:03:29,514
+feedback from you and from the community from using it and then we'll continue improving it.
+
+47
+00:03:29,514 --> 00:03:32,514
+We are working very closely with the OpenDSD community, as well.
+
+48
+00:03:32,514 --> 00:03:36,514
+They are helping us, especially about together the crypto security of
+
+49
+00:03:36,514 --> 00:03:41,514
+Windows with OpenSSH, which is really what we are spending most of time.
+
+50
+00:03:41,514 --> 00:03:45,514
+And we're really excited about this project because I think it's going to help us a lot in the enterprise.
+
+51
+00:03:45,514 --> 00:03:49,514
+This is a pick by many of you and by many other people who are not here today.
+
+52
+00:03:49,514 --> 00:03:55,514
+That's right. A lot of fun. Oh and this one. We are continuing to invest in security and breach.
+
+53
+00:03:55,514 --> 00:03:58,514
+I think Erin highlighted that a little bit. That hasn't gone away.
+
+54
+00:03:58,514 --> 00:04:04,514
+It's only become more important to us and to our customers. Even as a part of that, from our perspective in
+
+55
+00:04:04,514 --> 00:04:09,514
+security, it also goes back to some of the quality issues. We continually are asked hey we want the gallery
+
+56
+00:04:09,514 --> 00:04:14,514
+to be the place to go for high quality stuff. Security also is kind of related to that.
+
+57
+00:04:14,514 --> 00:04:20,514
+We're going to continue to focus on security and quality on a regular basis.
+
+58
+00:04:20,514 --> 00:04:23,514
+One thing just to point out, I mean, this is a really important area for investing.
+
+59
+00:04:23,514 --> 00:04:28,514
+How many of you know Lee Holmes? Okay, so Lee Holmes' role is changing.
+
+60
+00:04:28,514 --> 00:04:32,514
+Recently, we made an announcement internally in the company. He's going to be our lead architect for
+
+61
+00:04:32,514 --> 00:04:37,514
+security for Enterprise Cloud because we start realizing we need to start thinking about security,
+
+62
+00:04:37,514 --> 00:04:43,514
+not necessarily just within PowerShell, but when you take PowerShell and you put it in the cloud, how are we
+
+63
+00:04:43,514 --> 00:04:48,514
+going to be thinking about protecting, doing things like assume breach, and that sort of scenario.
+
+64
+00:04:48,514 --> 00:04:53,514
+So that tells you that we are really behind the security efforts.
+
+65
+00:04:53,514 --> 00:04:57,514
+It definitely is the top of mind for the company for us.
+
+66
+00:04:57,514 --> 00:04:58,514
+And it's kind of cool you came out of PowerShell.
+
+67
+00:04:58,514 --> 00:04:59,514
+Yeah.
+
+68
+00:04:59,514 --> 00:05:04,514
+For all the security, you might remember our very first PowerShell don't turn on remoting because of
+
+69
+00:05:04,514 --> 00:05:08,514
+the supposed exploit. And
+
+70
+00:05:08,514 --> 00:05:17,514
+documentation. How many people would like documentation? And here to make sure that in fact you get that,
+
+71
+00:05:17,514 --> 00:05:24,514
+where's Don? Right here. Don, please give us, stand up and give us just a few minutes if you will.
+
+72
+00:05:24,514 --> 00:05:27,514
+So I didn't realize that the tail end of that was bet Don's job.
+
+73
+00:05:27,514 --> 00:05:31,514
+That's right. I didn't warn him I was going to put that on the slide.
+
+74
+00:05:31,514 --> 00:59:59,999
+So not only was it this Don, but it was the Don that just came up.
+

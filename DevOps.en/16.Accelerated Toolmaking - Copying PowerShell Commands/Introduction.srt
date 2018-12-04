@@ -1,0 +1,332 @@
+1
+00:00:00,0 --> 00:00:22,22
+So we're supposed to spend roughly two hours talking about a topic that I've called Accelerated Toolmaking:
+
+2
+00:00:22,22 --> 00:00:29,29
+Copying PowerShell Commands. I do a lot of scripting and I have built my own set of tools to help me
+
+3
+00:00:29,29 --> 00:00:34,34
+Build tools faster. I'm assuming most of you have written a PowerShell scripter tool.
+
+4
+00:00:34,34 --> 00:00:40,40
+Is that correct? Okay. And it can be kind of a tedious process.
+
+5
+00:00:40,40 --> 00:00:47,47
+We're always looking for shortcuts and other ways to do that. So that's kind of the premise for my talk today
+
+6
+00:00:47,47 --> 00:00:54,54
+is what can you do to kind of speed up this process and I'll go into this in a bit more
+
+7
+00:00:54,54 --> 00:00:59,59
+detail. Again, for those of you just here, you've seen this slide many times.
+
+8
+00:00:59,59 --> 00:01:02,62
+It's kind of amazing that I've known a number of these people for 10 years.
+
+9
+00:01:02,62 --> 00:01:07,67
+That's really kind of hard for me to get my head around sometimes.
+
+10
+00:01:07,67 --> 00:01:11,71
+Alright, so those of you who don't know me and there are people who don't.
+
+11
+00:01:11,71 --> 00:01:13,73
+I was at a bar last night and
+
+12
+00:01:13,73 --> 00:01:17,77
+someone recognized Adam Bertram and then he turned to me and he said who are you.
+
+13
+00:01:17,77 --> 00:01:25,85
+I loved it. That's perfectly fine and made Adam's night. So,
+
+14
+00:01:25,85 --> 00:01:36,96
+I am a grizzled IT Pro veteran. Not quite as grizzled as Richard Siddoway or Mark here, but I'm up there.
+
+15
+00:01:36,96 --> 00:01:37,97
+Well you know if
+
+16
+00:01:37,97 --> 00:01:47,107
+someone's got to be the old alpha IT pros and I've been around, I've seen a lot of things, and I try to bring
+
+17
+00:01:47,107 --> 00:01:53,113
+all of that experience to the work that I do and the books that I write, the classes that I teach, the sessions,
+
+18
+00:01:53,113 --> 00:01:55,115
+the blog articles, all
+
+19
+00:01:55,115 --> 00:02:02,122
+of that. I'm a long time PowerShell MVP, oh cloud and data center now, but
+
+20
+00:02:02,122 --> 00:02:05,125
+I don't know, I'm still always going to call myself a PowerShell MVP.
+
+21
+00:02:05,125 --> 00:02:09,129
+The whole cloud and data center, that's just too much
+
+22
+00:02:09,129 --> 00:02:17,137
+to say. I am a PowerShell teacher, author, I've written a few books, I do some consulting and project work,
+
+23
+00:02:17,137 --> 00:02:21,141
+so some of you know me and have seen me, I've been around a bit.
+
+24
+00:02:21,141 --> 00:02:28,148
+I do a lot of my writing at petri.com, I do courses for Pluralsight, and I am pretty active on Twitter.
+
+25
+00:02:28,148 --> 00:02:32,152
+I've got a slide at the end that has all my contact information.
+
+26
+00:02:32,152 --> 00:02:40,160
+Alright, so getting into this here. So what's the problem? Well, you have some sort of PowerShell scripting
+
+27
+00:02:40,160 --> 00:02:44,164
+or toolmaking requirement. Someone has come to you and said
+
+28
+00:02:44,164 --> 00:02:48,168
+hey we need a tool or a script to do X.
+
+29
+00:02:48,168 --> 00:02:54,174
+And you look around and go oh well you know we have this one PowerShell command and it does almost everything
+
+30
+00:02:54,174 --> 00:02:58,178
+that we need it to do. Almost. If we just
+
+31
+00:02:58,178 --> 00:03:04,184
+had like maybe one more parameter or maybe if it didn't have a particular parameter or if I could just
+
+32
+00:03:04,184 --> 00:03:15,195
+combine this with another command, it would be perfect. Now I could, me, I'm talking in your stead, say I'm a
+
+33
+00:03:15,195 --> 00:03:21,201
+PowerShell expert, yeah, I could sit and I would know what to type, but often you're building stuff for other people.
+
+34
+00:03:21,201 --> 00:03:26,206
+You don't want them to have to rely on knowing what to type, how to plug stuff together.
+
+35
+00:03:26,206 --> 00:03:32,212
+You want to build braindead simple tools, right. So how do we
+
+36
+00:03:32,212 --> 00:03:39,219
+get there? You may also need a tool or script or something for delegation.
+
+37
+00:03:39,219 --> 00:03:42,222
+You're building a server. You may have a constrained endpoint.
+
+38
+00:03:42,222 --> 00:03:49,229
+You want to put something on there that you're going to delegate to the help desk, or junior IT admin,
+
+39
+00:03:49,229 --> 00:03:56,236
+or an end user or perhaps you're even using JEA. And again, you want to have some sort of tool in place that is
+
+40
+00:03:56,236 --> 00:04:06,246
+based on something that is there now, but more customized to do exactly what you need to have done.
+
+41
+00:04:06,246 --> 00:04:12,252
+Now instead of reinventing the wheel, just build a better wheel.
+
+42
+00:04:12,252 --> 00:04:18,258
+Now fortunately, I'm going to show you some gimmicks, or tricks, or hacks, or
+
+43
+00:04:18,258 --> 00:04:24,264
+tools that I have built to help speed up this process of building a better wheel because like you, the last thing
+
+44
+00:04:24,264 --> 00:04:32,272
+I want to do is open up Visual Code, or ISE, or PowerShell Studio, whatever tool you're using, #Requires S version
+
+45
+00:04:32,272 --> 00:04:41,281
+4.0 and type everything out. I'm assuming most of you use things like templates and have other snippets and
+
+46
+00:04:41,281 --> 00:04:46,286
+all these other tools to help speed up the process. Well what I want to talk about today
+
+47
+00:04:46,286 --> 00:04:51,291
+is some other ways that we can speed up this process of building tools.
+
+48
+00:04:51,291 --> 00:05:00,300
+So I have this little kind of a copy-a-command concept and this idea of copying a command, you can go down
+
+49
+00:05:00,300 --> 00:05:03,303
+two paths and we're going to look at both paths. I've got
+
+50
+00:05:03,303 --> 00:05:08,308
+lots of demonstrations of this is the command I started with, this is what I ended up with, and we'll walk
+
+51
+00:05:08,308 --> 00:05:15,315
+through it and look, and so you can see the changes that I made. Everything I'll show you, I will share at some point.
+
+52
+00:05:15,315 --> 00:05:21,321
+Follow me on Twitter because that's probably where I'll announce where to go to get the download link.
+
+53
+00:05:21,321 --> 00:05:29,329
+So we can create a proxy version. A proxy version is a way of creating kind of a copy of the command,
+
+54
+00:05:29,329 --> 00:05:35,335
+but you actually are still running, when you get to running it, the actual command and you'll see that.
+
+55
+00:05:35,335 --> 00:05:43,343
+Anyone here ever build a proxy function? A few. Okay. Was it easy to do?
+
+56
+00:05:43,343 --> 00:05:48,348
+In some ways it's kind of easy. I'm going to try to show you
+
+57
+00:05:48,348 --> 00:05:55,355
+how to speed up that process. I mean, it actually is easy because it's really almost a two-step process.
+
+58
+00:05:55,355 --> 00:06:04,364
+You run this command and then Get-Foo will be whatever command you want and that will create an object that has
+
+59
+00:06:04,364 --> 00:06:14,374
+command Metadata, basically, the parameters and the ScriptBlocks and all the stuff that defines that command.
+
+60
+00:06:14,374 --> 00:06:19,379
+You then create a new proxy function. I think I've got more code examples here.
+
+61
+00:06:19,379 --> 00:06:26,386
+And then you edit, take away what you don't need, add in what you do need, and when you're done, you have a new command.
+
+62
+00:06:26,386 --> 00:06:30,390
+Your proxy command can have a totally new name or you
+
+63
+00:06:30,390 --> 00:06:34,394
+can reuse the name. Personally, I always come up with new names.
+
+64
+00:06:34,394 --> 00:06:41,401
+I'm not. The only reason you would create a proxy command with the same name is if you were going to be
+
+65
+00:06:41,401 --> 00:06:45,405
+doing some delegation probably with JEA. For the most
+
+66
+00:06:45,405 --> 00:06:51,411
+part though, the tools that I build I'm building to help me do my work and help other people.
+
+67
+00:06:51,411 --> 00:06:57,417
+I don't really do a lot with delegation right now. Maybe once JEA really
+
+68
+00:06:57,417 --> 00:07:07,427
+matures in v5, I'll move into that more and look into that, but and you'll see all these in action in a moment.
+
+69
+00:07:07,427 --> 00:07:12,432
+The other approach I take is to create what I call a wrapper function and probably many of you have built
+
+70
+00:07:12,432 --> 00:07:22,442
+things like this. It's a function Get-Foo that at the very heart of it, then call some other PowerShell command.
+
+71
+00:07:22,442 --> 00:07:29,449
+Those can be kind of tedious to write because you have to generate the help.
+
+72
+00:07:29,449 --> 00:07:39,459
+How many of you just love writing comment-based help? Yeah. So hire June and she'll write your comment.
+
+73
+00:07:39,459 --> 00:07:45,465
+Use Visual Studio to right-click your function and click Generate in PowerShell.
+
+74
+00:07:45,465 --> 00:07:48,468
+You have a question or you like writing help? I like writing help.
+
+75
+00:07:48,468 --> 00:07:51,471
+Okay. So we've got a few people who like writing help.
+
+76
+00:07:51,471 --> 00:08:00,480
+You'll see that I don't write help. I copy it. And but you also then assume multiple same parameters for
+
+77
+00:08:00,480 --> 00:08:06,486
+your underlying function or an underlying command that you are calling, but you have to type, do a lot of typing,
+
+78
+00:08:06,486 --> 00:08:14,494
+or manual copying and pasting. And when I build my wrapper functions, I leverage splatting
+
+79
+00:08:14,494 --> 00:08:24,504
+because I'm going to assume that the parameters for my wrapper function are mostly the same parameters for
+
+80
+00:08:24,504 --> 00:08:31,511
+the underlying command, which makes it really easy to just splat PSBoundParameters right to that command,
+
+81
+00:08:31,511 --> 00:08:41,521
+so it makes my code really simple to look at and I'm all about having really simple-looking code.
+
+82
+00:08:41,521 --> 00:08:51,531
+Alright, so that's really all the slides I have, so I'm going to go into PowerShell, walk through lots of demos.
+
+83
+00:08:51,531 --> 00:59:59,999
+We'll come back to the slides, ask questions, give you a few references,
+

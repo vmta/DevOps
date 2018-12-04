@@ -1,0 +1,448 @@
+1
+00:00:00,0 --> 00:00:11,11
+Hi. So I'm going to talk about a couple of things about how do you set up your own private gallery in your enterprise,
+
+2
+00:00:11,11 --> 00:00:19,19
+for example, and how do you populate your gallery with the things you need, and I know how we can make sure
+
+3
+00:00:19,19 --> 00:00:28,28
+all the machines in your enterprise can point to this gallery and get all the work done.
+
+4
+00:00:28,28 --> 00:00:34,34
+So this will be mostly a technical deep dive of the configuration and the DSC resources and all the things
+
+5
+00:00:34,34 --> 00:00:36,36
+which make up the system.
+
+6
+00:00:36,36 --> 00:00:42,42
+So if people start want to I mean look at the code that's on PowerShell GitHub page, so if you go to
+
+7
+00:00:42,42 --> 00:00:47,47
+PSPrivateGallery, you can take a look at the modules of the configuration.
+
+8
+00:00:47,47 --> 00:00:53,53
+So there are a couple of high-level configurations, which are self-customer facing.
+
+9
+00:00:53,53 --> 00:01:00,60
+One is the ability to deploy our own private gallery, which is this configuration.
+
+10
+00:01:00,60 --> 00:01:08,68
+So essentially, what it's doing is it's setting up your front-end, which is IS, in this case, it's setting up
+
+11
+00:01:08,68 --> 00:01:15,75
+the database and it sets up all the Entity Framework later aspects.
+
+12
+00:01:15,75 --> 00:01:26,86
+So you could take a NuGet gallery code base and plug it in here under and it should setup a NuGet-based repository.
+
+13
+00:01:26,86 --> 00:01:34,94
+So it's got four high-level steps. So what I'm going to do is kick this off first, and then explain as to the
+
+14
+00:01:34,94 --> 00:01:40,100
+different components of the configuration itself. So let's go ahead and run this on the machine.
+
+15
+00:01:40,100 --> 00:01:51,111
+So if I look at my IS, I don't have any websites set up. And I'm going to run this configuration to set up
+
+16
+00:01:51,111 --> 00:01:54,114
+my gallery infrastructure.
+
+17
+00:01:54,114 --> 00:01:55,115
+Does ISE need to be installed first?
+
+18
+00:01:55,115 --> 00:02:02,122
+This does all that, so you can take a brand new VM auto machine and just run this configuration.
+
+19
+00:02:02,122 --> 00:02:06,126
+It's going to install all the dependencies, it's going to add on the Windows features, it's going to do
+
+20
+00:02:06,126 --> 00:02:08,128
+everything for you.
+
+21
+00:02:08,128 --> 00:02:13,133
+(Audience Comment)
+
+22
+00:02:13,133 --> 00:02:23,143
+Yes. So wherever you got IS, a set of magic cmdlets, and DSC configuration.
+
+23
+00:02:23,143 --> 00:02:29,149
+Then our composite resources some are class-based resources, so I'm going to go through the code.
+
+24
+00:02:29,149 --> 00:02:35,155
+So I just wanted to show you how quick and easy it is to deploy your own private gallery.
+
+25
+00:02:35,155 --> 00:02:43,163
+This is a just a deployment phase. We haven't gotten into the populating phase yet.
+
+26
+00:02:43,163 --> 00:02:50,170
+So let me go back, yeah, so in about 60 seconds, which is about a minute, I was able to deploy a private gallery.
+
+27
+00:02:50,170 --> 00:02:59,179
+So let me go back and refresh and yeah, it's set up your own private gallery and it's running under a user,
+
+28
+00:02:59,179 --> 00:03:05,185
+which is low privileged, in this case, it's a non-admin user called GalleryAdmin.
+
+29
+00:03:05,185 --> 00:03:12,192
+That's app that running on there, so let me go back to my browser and try to browse this gallery.
+
+30
+00:03:12,192 --> 00:03:21,201
+I set it up on Port 8080. So the first time it has to start all the IS servers and it takes a couple of seconds.
+
+31
+00:03:21,201 --> 00:03:27,207
+Yeah, so there it is. So I just changed the branding information to be more generic.
+
+32
+00:03:27,207 --> 00:03:29,209
+You could put your own branding.
+
+33
+00:03:29,209 --> 00:03:32,212
+Can we add certain communication to this?
+
+34
+00:03:32,212 --> 00:03:40,220
+Yeah, we can do that. It probably needs a couple of other steps in the configuration, but I think as we
+
+35
+00:03:40,220 --> 00:03:45,225
+evolve the project on the GitHub page, we will add all that capability.
+
+36
+00:03:45,225 --> 00:03:51,231
+So yeah, this was just a proof of concept to show you that you could set up a private gallery.
+
+37
+00:03:51,231 --> 00:03:58,238
+The only things I have enabled on this page is the ability to discover modules and publish modules and that
+
+38
+00:03:58,238 --> 00:04:04,244
+changed the branding information and the ability to set up local users, so this is the deployment phase.
+
+39
+00:04:04,244 --> 00:04:11,251
+I was able to set up a big blown gallery in about a minute and you should be able to use package management cmdlets,
+
+40
+00:04:11,251 --> 00:04:15,255
+the PowerShellGet cmdlets to actually interact with this gallery.
+
+41
+00:04:15,255 --> 00:04:26,266
+So let me go ahead and do that. So let's do all the part one first where I talk about how the gallery is actually deployed.
+
+42
+00:04:26,266 --> 00:04:34,274
+So this configuration is controlled by this configuration data and all we are doing here is we are consuming
+
+43
+00:04:34,274 --> 00:04:41,281
+a couple of credential files to set up the gallery itself for the app pool and you can also control the name
+
+44
+00:04:41,281 --> 00:04:50,290
+of the website and where you want to deploy it and where to pick up the branding from, and also the database itself.
+
+45
+00:04:50,290 --> 00:04:57,297
+In this case, it's a one box scenario. I'm installing SQLExpress on the same box, but you could change this
+
+46
+00:04:57,297 --> 00:05:10,310
+to use full SQL on a different machine and you can use a connection string to point to the box.
+
+47
+00:05:10,310 --> 00:05:14,314
+So part one is setting up of the web server itself and that involves a couple of things.
+
+48
+00:05:14,314 --> 00:05:34,334
+One is installing all the dependencies and installing the website itself and this is actually a composite configuration.
+
+49
+00:05:34,334 --> 00:05:41,341
+(Typing) And all of them are shipped in the PSGallery module and we make this available on the gallery soon.
+
+50
+00:05:41,341 --> 00:05:51,351
+And the configuration I want to show is the configuration to set up the WebServer, which is this.
+
+51
+00:05:51,351 --> 00:06:00,360
+And let's actually go and open that. So this is a composite configuration that sets up the front-end,
+
+52
+00:06:00,360 --> 00:06:09,369
+and as you can see, it actually does a bunch of things under the hood, things like installing all the dependencies,
+
+53
+00:06:09,369 --> 00:06:18,378
+setting up the users, and setting up the app pool, doing all your final copies for the branding and the
+
+54
+00:06:18,378 --> 00:06:27,387
+gallery content itself, setting up the website and all that. So all the complexity is collapsed into this
+
+55
+00:06:27,387 --> 00:06:36,396
+composite configuration and what you see on the front is just one single configuration to just do the WebServers.
+
+56
+00:06:36,396 --> 00:06:46,406
+It's similar for database. So I'll quickly go over the database resource, which is this.
+
+57
+00:06:46,406 --> 00:06:54,414
+So this is actually installing your SQLExpress package itself. So we can take an empty VM and kick this off
+
+58
+00:06:54,414 --> 00:07:02,422
+and it's going to do everything for you. It's going to set up your instance, it's going to set up your database,
+
+59
+00:07:02,422 --> 00:07:11,431
+and it's going to use the credentials you supplied in the manifest of the configuration data.
+
+60
+00:07:11,431 --> 00:07:16,436
+So these are the primary couple of resources to set up the front-end and the database.
+
+61
+00:07:16,436 --> 00:07:22,442
+There's also the migration part. It's called migration because the NuGet uses Entity Framework and we are
+
+62
+00:07:22,442 --> 00:07:30,450
+actually creating this key-minded database. We are populating with empty tables and all of that there.
+
+63
+00:07:30,450 --> 00:07:38,458
+And some of this is specific to SQLExpress and you could plug in your own migration logic if you want to deploy
+
+64
+00:07:38,458 --> 00:07:43,463
+a different kind of repository and those pieces are separated out.
+
+65
+00:07:43,463 --> 00:07:49,469
+Are we going to be able to figure out how to do that credential piece?
+
+66
+00:07:49,469 --> 00:07:50,470
+The credential in the database?
+
+67
+00:07:50,470 --> 00:07:58,478
+Yeah. Is there a way that you can do that, Clixml and that stuff?
+
+68
+00:07:58,478 --> 00:08:01,481
+I just use a credential object and that's where the Clixml…
+
+69
+00:08:01,481 --> 00:08:09,489
+Exactly, so before you kick this off, you can take a credential object, something like this, we can say
+
+70
+00:08:09,489 --> 00:08:20,5
+$cred =, so $cred will have your credentials and you can actually export this into a file basically serializing
+
+71
+00:08:20,5 --> 00:08:29,509
+it to a file. So the password is a secure string, and the username will be recorded as this.
+
+72
+00:08:29,509 --> 00:08:35,515
+And actually, in the configuration, we actually leave that file here.
+
+73
+00:08:35,515 --> 00:08:41,521
+We actually import it and then use it. This is one we are supplying configuration if you wanted to make it
+
+74
+00:08:41,521 --> 00:08:50,530
+more secure, you can avoid using the, you can use actually source.
+
+75
+00:08:50,530 --> 00:08:57,537
+Yeah, so let's go ahead with the rest of the things. So that's our database resource and not the migration part.
+
+76
+00:08:57,537 --> 00:09:05,545
+Let me quickly go over the migration part where we actually populate it with the schema.
+
+77
+00:09:05,545 --> 00:09:11,551
+And it uses actual connection string to the database. This is actually a MOF-based resource.
+
+78
+00:09:11,551 --> 00:09:17,557
+So this is part one where we bring up an empty instance of the gallery, which is this.
+
+79
+00:09:17,557 --> 00:09:23,563
+So now we'll kick off part two, which is populating the gallery with certain modules and then we'll talk
+
+80
+00:09:23,563 --> 00:09:35,575
+about what that's made up of. So in part two, what you're actually doing is you're populating your local instance
+
+81
+00:09:35,575 --> 00:09:43,583
+or your private instance. Okay, I don't have internet, that's why it's failing.
+
+82
+00:09:43,583 --> 00:09:48,588
+You're populating your private instance with the modules from the source gallery.
+
+83
+00:09:48,588 --> 00:09:54,594
+In this case, I'm actually seeing that my source gallery is the public gallery and my destination gallery is
+
+84
+00:09:54,594 --> 00:10:03,603
+one I created privately, and I also need to know what modules I want to put in the local instance.
+
+85
+00:10:03,603 --> 00:10:09,609
+So let's say you need in an enterprise you have dependencies on certain modules and certain _____.
+
+86
+00:10:09,609 --> 00:10:15,615
+You can call up all that here. Just an example.
+
+87
+00:10:15,615 --> 00:10:27,627
+And this publishing configuration is actually very interesting. It does a bunch of things.
+
+88
+00:10:27,627 --> 00:10:34,634
+It actually just starts your source and private galleries first so that it knows where to pick up things from
+
+89
+00:10:34,634 --> 00:10:42,642
+and where to put it to, and it sets up a user for your gallery, so you can do all your user management using
+
+90
+00:10:42,642 --> 00:10:54,654
+a DSC configuration. The user means this user here. So you can manage local users, so we will add that
+
+91
+00:10:54,654 --> 00:11:02,662
+domain resource later. And the last part is the publishing pieces where the configuration actually takes the
+
+92
+00:11:02,662 --> 00:11:08,668
+specified modules from the source and publishes it to the destination.
+
+93
+00:11:08,668 --> 00:11:14,674
+And we're actually using the latest and greatest features from WMF5 and Windows 10 to do this, so things like RunAsCredential.
+
+94
+00:11:14,674 --> 00:11:26,686
+So all this is running out of the context stuff, the app pool user, which is low-privileged user.
+
+95
+00:11:26,686 --> 00:11:37,697
+So none of these run as high-privileged or a system context. So we are very careful as to run it under.
+
+96
+00:11:37,697 --> 00:11:47,707
+And let's quickly go over the code for the publishing pieces. So for this, it's actually a class-based resource
+
+97
+00:11:47,707 --> 00:11:47,707
+and there are two resources. One is the gallery module, which does the publishing and one is the user
+
+98
+00:11:47,707 --> 00:12:02,722
+management resource, which is right here. So you can create a local user and you can manage it.
+
+99
+00:12:02,722 --> 00:12:08,728
+And for the publishing piece, we are actually using the public interfaces of the private gallery we just set
+
+100
+00:12:08,728 --> 00:12:14,734
+up, so they're actually using the package management cmdlets and PowerShellGet's cmdlets to accomplish that.
+
+101
+00:12:14,734 --> 00:12:23,743
+So we are using things like Find-Module to discover what you needed from the public gallery and actually
+
+102
+00:12:23,743 --> 00:12:27,747
+Save-Module to actually take the module and put it on the local machine.
+
+103
+00:12:27,747 --> 00:12:42,762
+We don't install anything on this machine. We save it in a temporary location and then we publish it using
+
+104
+00:12:42,762 --> 00:12:43,763
+the public interfaces of the private gallery, so we go to the publish interfaces.
+
+105
+00:12:43,763 --> 00:12:49,769
+Yeah, if I had internet connection, I would have showed you when you populate that, you can actually see these
+
+106
+00:12:49,769 --> 00:12:52,772
+counters going up, but I don't know if you have time for that.
+
+107
+00:12:52,772 --> 00:12:55,775
+(Audience comment)
+
+108
+00:12:55,775 --> 00:12:58,778
+Yeah, so
+
+109
+00:12:58,778 --> 00:13:04,784
+all of this is DSC-based, check it out. The whole code is on GitHub on PSPrivateGallery.
+
+110
+00:13:04,784 --> 00:13:09,789
+I already see a few issues being opened for requests, so we will take a look at them.
+
+111
+00:13:09,789 --> 00:13:16,796
+And this is actually a community-driven project, so if you guys have ideas, if you want to contribute, please do so.
+
+112
+00:13:16,796 --> 00:59:59,999
+We're taking full requests then. Thank you all very much.
+

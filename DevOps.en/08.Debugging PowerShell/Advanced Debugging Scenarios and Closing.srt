@@ -1,0 +1,64 @@
+1
+00:00:00,0 --> 00:00:04,409
+And the last thing I was going to talk about, but I'm now at the end is some advanced
+
+2
+00:00:04,409 --> 00:00:12,909
+scenarios, which are brand new to DebugPX and you guys can take a look at and ask questions about if you want
+
+3
+00:00:12,909 --> 00:00:19,909
+to dig into them, in particular, to what you were talking about setting that debugger hidden attribute.
+
+4
+00:00:19,909 --> 00:00:23,909
+If it's on code you don't own, but you want to set that, you can do it with this.
+
+5
+00:00:23,909 --> 00:00:26,909
+So I have this Set-CommandDebug mode and I can turn it on for an entire module.
+
+6
+00:00:26,909 --> 00:00:31,909
+So if I'm debugging and calling code that calls other modules that I don't want to debug, I can basically say
+
+7
+00:00:31,909 --> 00:00:36,909
+turn the debugging off for that module, so then I can set breakpoints whether they're command breakpoints or
+
+8
+00:00:36,909 --> 00:00:43,909
+variable breakpoints and steps through only my stuff and take the other stuff as if it's a black box and
+
+9
+00:00:43,909 --> 00:00:47,909
+don't touch it. So it's very handy as well because you're often consuming, especially with PowerShell gallery,
+
+10
+00:00:47,909 --> 00:00:52,909
+you download script modules, you run them, and you don't want to debug those, you want to debug your code
+
+11
+00:00:52,909 --> 00:00:57,909
+that's running those, hopefully, unless they're not very well written modules.
+
+12
+00:00:57,909 --> 00:01:00,909
+So that's all I've got today. If you guys have more questions, I will be around all week.
+
+13
+00:01:00,909 --> 00:01:07,909
+I'm happy to pull, go aside, and talk about some of things in more detail or you can contact me through
+
+14
+00:01:07,909 --> 00:01:12,909
+on my slide deck, which you will receive. This is a link to the modules I talked about and
+
+15
+00:01:12,909 --> 00:01:17,909
+this is my contact information for reaching out to me, so feel free to contact me any time.
+
+16
+00:01:17,909 --> 00:59:59,999
+I'm happy to help.
+

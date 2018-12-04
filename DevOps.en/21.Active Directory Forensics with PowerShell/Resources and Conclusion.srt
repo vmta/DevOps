@@ -1,0 +1,172 @@
+1
+00:00:00,0 --> 00:00:15,838
+So let me wrap here. So where can I find these scripts? Go out to aka.ms/ADForensics and that is a link to
+
+2
+00:00:15,838 --> 00:00:23,838
+the blog feed that has all of my posts that are tagged with forensics-related topics.
+
+3
+00:00:23,838 --> 00:00:31,838
+So you can go check all of those aka.ms/ADForensics. Also, in my Microsoft Virtual Academy Video series,
+
+4
+00:00:31,838 --> 00:00:37,838
+I have eight video segments on MVA about doing Active Directory with PowerShell.
+
+5
+00:00:37,838 --> 00:00:43,838
+The fourth segment in that is all about forensics where I talk about some of these same topics, but I don't,
+
+6
+00:00:43,838 --> 00:00:47,838
+I didn't go into the same level of detail that I did today, but it's all there for you,
+
+7
+00:00:47,838 --> 00:00:55,838
+the ReplicationAttributeMetadata and things like that. Also, Microsoft is doing a lot in the area of cyber security.
+
+8
+00:00:55,838 --> 00:01:03,838
+I've been on a few of these covert dispatches myself where
+
+9
+00:01:03,838 --> 00:01:11,838
+they don't even tell me the name of the customer. I showed up, they said here's the address, I'll meet you there.
+
+10
+00:01:11,838 --> 00:01:17,838
+It was like I was volunteering to be abducted or something and I'm going to go in this secret door and it's a
+
+11
+00:01:17,838 --> 00:01:23,838
+need---it's like cloak and dagger stuff. They don't even---in our systems we don't even track the name of the customer.
+
+12
+00:01:23,838 --> 00:01:30,838
+We use a fake name all this because it's very confidential when we're dealing with cyber security investigations.
+
+13
+00:01:30,838 --> 00:01:37,838
+So we have a full team of PFEs and MCS consultants that specialize in cyber engagements.
+
+14
+00:01:37,838 --> 00:01:49,838
+If you're company has been hacked, if you get that call, if you become aware of it, please call us because
+
+15
+00:01:49,838 --> 00:01:54,838
+some of the kneejerk reactions that you take as soon as you find out you've been hacked, the things that you
+
+16
+00:01:54,838 --> 00:02:02,838
+think are the best thing to do, are not. And we have trained experts that will help you investigate and
+
+17
+00:02:02,838 --> 00:02:11,838
+remediate your situation, so please contact us. We also, there are a lot of vendors in this space and I'm
+
+18
+00:02:11,838 --> 00:02:19,838
+not trying to just say that we're the best, right, but we are because we have special tools in the world that
+
+19
+00:02:19,838 --> 00:02:26,838
+nobody else has because we're Microsoft. We have lots of special data that they simply don't have.
+
+20
+00:02:26,838 --> 00:02:27,838
+Please call us
+
+21
+00:02:27,838 --> 00:02:33,838
+if you have a cyber incident. Satya Nadella at the end of last year did a special press conference with some
+
+22
+00:02:33,838 --> 00:02:41,838
+people in DC about cyber security. The things that are really hard to track is when you're looking at millions
+
+23
+00:02:41,838 --> 00:02:49,838
+of event log entries across domain controllers for the last year, how do I know what's normal activity and
+
+24
+00:02:49,838 --> 00:02:59,838
+what's malicious activity. We're using machine learning to study event logs and identify abnormal activity
+
+25
+00:02:59,838 --> 00:03:02,838
+in your environment. So we're doing a lot of research in this space.
+
+26
+00:03:02,838 --> 00:03:06,838
+We have a lot of experts to help you with your cyber security needs.
+
+27
+00:03:06,838 --> 00:03:12,838
+And so I mentioned at the beginning that you really need to make sure that you have your auditing set up correctly.
+
+28
+00:03:12,838 --> 00:03:20,838
+Here are some blog links particularly to the Ask PFE Platforms blog that have some expert advice from some of
+
+29
+00:03:20,838 --> 00:03:25,838
+my peers on how to properly audit your Active Directory environment so that you don't have to worry about
+
+30
+00:03:25,838 --> 00:03:30,838
+these other methods to try to find the data when it's too late.
+
+31
+00:03:30,838 --> 00:03:38,838
+So, closing then. Don't be that company. Don't put clear text passwords in a spreadsheet.
+
+32
+00:03:38,838 --> 00:03:47,838
+It happens. These companies end up in the news. Audit your Active Directory environment the right way.
+
+33
+00:03:47,838 --> 00:03:53,838
+Set up alerts. Take the sample code, even if, most people are always complaining about IT budgets,
+
+34
+00:03:53,838 --> 00:03:59,838
+this is PowerShell. Do it for free, use these scripts, and set up alerts in your environment.
+
+35
+00:03:59,838 --> 00:04:04,838
+Learn this ReplicationAttributeMetadata cmdlet. It's going to be your best friend.
+
+36
+00:04:04,838 --> 00:04:10,838
+Cyber security is a huge topic. This is just a very small part. There's so much more we can do with cyber
+
+37
+00:04:10,838 --> 00:04:15,838
+forensics in Active Directory. This is just to get you started there.
+
+38
+00:04:15,838 --> 00:04:18,838
+So check out the new machine learning stuff I mentioned from Microsoft.
+
+39
+00:04:18,838 --> 00:04:24,838
+And if your company gets hacked, please call us. And I don't say that to put other vendors in a bad light.
+
+40
+00:04:24,838 --> 00:04:31,838
+It's just that we have experts that this is all they do and they live on site with customers for months
+
+41
+00:04:31,838 --> 00:04:37,838
+helping them recover from these terrible scenarios. And finally, if this has helped you, please send me a tweet
+
+42
+00:04:37,838 --> 00:04:42,838
+just so my boss knows that I'm actually not golfing, but I'm helping people in the real world.
+
+43
+00:04:42,838 --> 00:59:59,999
+Thank you. Alright.
+

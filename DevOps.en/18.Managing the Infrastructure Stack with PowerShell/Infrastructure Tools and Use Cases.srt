@@ -1,0 +1,596 @@
+1
+00:00:00,0 --> 00:00:04,835
+Alright, so let's start with some of the tools. Well here's the thing, right, we're all PowerShellers and
+
+2
+00:00:04,835 --> 00:00:09,835
+when we look at the things that we're trying to accomplish, a lot of the things that I mentioned earlier that
+
+3
+00:00:09,835 --> 00:00:12,835
+we're seeking, the first thing that we think to do is
+
+4
+00:00:12,835 --> 00:00:16,835
+can I do it with PowerShell. It's not always the best tool for it.
+
+5
+00:00:16,835 --> 00:00:23,835
+I would argue that generally it's a fantastic tool for doing these things, but for us as PowerShellers,
+
+6
+00:00:23,835 --> 00:00:27,835
+that is our native first response, like can I do it with PowerShell.
+
+7
+00:00:27,835 --> 00:00:28,835
+And one thing
+
+8
+00:00:28,835 --> 00:00:34,835
+that is fundamentally changed over the last five years is that in our infrastructure we have more APIs.
+
+9
+00:00:34,835 --> 00:00:37,835
+More products are coming to market and we are hitting
+
+10
+00:00:37,835 --> 00:00:42,835
+refresh cycles in our data centers where we're bringing these products in, where there is more extensibility,
+
+11
+00:00:42,835 --> 00:00:51,835
+right, APIs are made available that will allow you to remotely manage and configure and take care of your
+
+12
+00:00:51,835 --> 00:00:56,835
+infrastructure, and as such, we're seeing a lot more growth in PowerShell
+
+13
+00:00:56,835 --> 00:01:03,835
+modules that support that. Now this is not all-inclusive, in fact, everybody take a minute, absorb it,
+
+14
+00:01:03,835 --> 00:01:07,835
+and then we're going to have a sharing session where you can tell me the things I missed so that I can
+
+15
+00:01:07,835 --> 00:01:14,835
+include it later. And to be fair, right, I work for SolidFire with NetApp, right, we're a storage company,
+
+16
+00:01:14,835 --> 00:01:20,835
+but I'll include competitors on here because I think it's fantastic that PowerShell has become so pervasive
+
+17
+00:01:20,835 --> 00:01:27,835
+in our data center that we're able to do so many things with it, right, and when you look at this, right,
+
+18
+00:01:27,835 --> 00:01:32,835
+you've got your PowerShell, and then you got the Hypervisor stack, and of course, Hyper-VM is in there.
+
+19
+00:01:32,835 --> 00:01:36,835
+I kind of consider that rolled into PowerShell. Right. You've got some server technology.
+
+20
+00:01:36,835 --> 00:01:41,835
+I think Dell has a little bit of stuff, right. You've got storage or you have storage and then you have
+
+21
+00:01:41,835 --> 00:01:48,835
+things from the community where people are producing things and the reason they're doing this is because
+
+22
+00:01:48,835 --> 00:01:51,835
+there's an API. There is extensibility
+
+23
+00:01:51,835 --> 00:01:58,835
+in our data center unlike what we've had in the past and it is allowing us to tackle these challenges and to
+
+24
+00:01:58,835 --> 00:02:05,835
+jump on new things and deliver new capabilities in our data centers, and in this, we're going to talk about
+
+25
+00:02:05,835 --> 00:02:06,835
+how these layout, right? So
+
+26
+00:02:06,835 --> 00:02:14,835
+this is the stack that we talked about and when you look, as I mentioned, PowerShell is everywhere, right.
+
+27
+00:02:14,835 --> 00:02:19,835
+Most of these layers can be controlled with PowerShell one way or the other.
+
+28
+00:02:19,835 --> 00:02:22,835
+I found the dead zone and I don't know why I put that slide in there twice.
+
+29
+00:02:22,835 --> 00:02:26,835
+I just thought you liked it and so there we go. It's a great slide.
+
+30
+00:02:26,835 --> 00:02:35,835
+So community involvement. What did I miss? Just speak up. Did I miss one that you use?
+
+31
+00:02:35,835 --> 00:02:40,835
+I have used Dell EqualLogic. Dell EqualLogic. Revel of Intentry. Revel of Intentry.
+
+32
+00:02:40,835 --> 00:02:49,835
+Excellent. Okay, so I did pretty well then. Excellent. Nutanix.
+
+33
+00:02:49,835 --> 00:02:59,835
+Nutanix. Yep, excellent. Dell. Dell. Yep. System Center. System Center.
+
+34
+00:02:59,835 --> 00:03:06,835
+Pier Storage. Pier Storage, got it. That's it. Yep. Azure. Azure.
+
+35
+00:03:06,835 --> 00:03:15,835
+That's right. Any others that you use? AWS. AWS. Excellent. Alright, so for those listening at home and
+
+36
+00:03:15,835 --> 00:03:24,835
+people that are here, there is a lot that is possible, right, but there are also a lot of challenges.
+
+37
+00:03:24,835 --> 00:03:28,835
+Well we'll start with use cases, right.
+
+38
+00:03:28,835 --> 00:03:34,835
+What do we do with this big toolbox of PowerShell capabilities?
+
+39
+00:03:34,835 --> 00:03:41,835
+I have a meming problem. It's a fun problem. First step is admitting it.
+
+40
+00:03:41,835 --> 00:03:47,835
+Alright, so when you talk about PowerShell in the stack, see I worked really hard on this graphic, it's not really
+
+41
+00:03:47,835 --> 00:03:53,835
+complicated, but I'm just really proud of it, so I just want it on every slide that I can, right.
+
+42
+00:03:53,835 --> 00:03:58,835
+When you talk about PowerShell in the stack, there are a few low-hanging fruits, right.
+
+43
+00:03:58,835 --> 00:04:04,835
+You've got reporting, right, everybody's reporting, and the interesting thing is when you talk about reporting
+
+44
+00:04:04,835 --> 00:04:10,835
+is there's a lot of different things that you might be interested in seeing from a report and we'll talk
+
+45
+00:04:10,835 --> 00:04:13,835
+about a couple of those in a second. Implementation is another.
+
+46
+00:04:13,835 --> 00:04:20,835
+Being able to go out into your environment and configure net new resources, looking at DevOps, how do you
+
+47
+00:04:20,835 --> 00:04:26,835
+reduce time in the value string. How are you able to improve the effectiveness of your development team and
+
+48
+00:04:26,835 --> 00:04:30,835
+the consistency of your operations team leveraging PowerShell?
+
+49
+00:04:30,835 --> 00:04:36,835
+Maintaining configuration, obviously desired state configuration is a great example of that.
+
+50
+00:04:36,835 --> 00:04:42,835
+And then also we're going to touch on extending tools and these are tools that you already use that are able
+
+51
+00:04:42,835 --> 00:04:47,835
+to take advantage of PowerShell in managing your data center stack.
+
+52
+00:04:47,835 --> 00:04:54,835
+So the first example we'll look at is from a reporting standpoint and from an implementation and configuration standpoint.
+
+53
+00:04:54,835 --> 00:05:01,835
+If you were running a data center today, there is a high likelihood that you're running multiple VLANs.
+
+54
+00:05:01,835 --> 00:05:06,835
+There's a high likelihood that you're running jumbo frames and if you or any, and I see some heads nodding,
+
+55
+00:05:06,835 --> 00:05:12,835
+so if you're in an environment where you're doing this, has anybody ever seen a good situation from a VLAN
+
+56
+00:05:12,835 --> 00:05:18,835
+not being consistent up and down the stack and being exposed. It never ends well and it's a bear to find
+
+57
+00:05:18,835 --> 00:05:26,835
+sometimes, like where is this traffic dropping? Why am I not being able to get access to this application?
+
+58
+00:05:26,835 --> 00:05:32,835
+Same with MTU, right, when you're looking at jumbo frames for storage or for whatever the application is,
+
+59
+00:05:32,835 --> 00:05:38,835
+if it's not configured consistently everywhere, you've got problems and
+
+60
+00:05:38,835 --> 00:05:44,835
+the challenging thing is depending on the architecture and the infrastructure that you have, you may not have
+
+61
+00:05:44,835 --> 00:05:48,835
+PowerShell up and down that, but look at how many layers are involved, right.
+
+62
+00:05:48,835 --> 00:05:58,835
+If you were dealing with a VLAN and it needs to be a specific VLAN for an application, that's a lot of
+
+63
+00:05:58,835 --> 00:06:03,835
+layers to have to check and you have to deal with that with troubleshooting.
+
+64
+00:06:03,835 --> 00:06:09,835
+And at the end of this talk, I'm going to share an idea that I've had on how to help improve this.
+
+65
+00:06:09,835 --> 00:06:14,835
+So another great example storage. Anybody have storage in their environment?
+
+66
+00:06:14,835 --> 00:06:19,835
+If you have virtualization, you have storage. Storage is fundamentally critical in virtualized environments.
+
+67
+00:06:19,835 --> 00:06:24,835
+It is one of the key things that enable virtualization in the first place.
+
+68
+00:06:24,835 --> 00:06:32,835
+The ability to have a shared resource that's accessible to multiple hosts, and when you look at that,
+
+69
+00:06:32,835 --> 00:06:38,835
+there are some significant complexities around identifying, especially if you're dealing with performance and
+
+70
+00:06:38,835 --> 00:06:44,835
+capacity issues, which let's be honest, those are the storage issues that we deal with regularly, right,
+
+71
+00:06:44,835 --> 00:06:46,835
+to be able to identify that
+
+72
+00:06:46,835 --> 00:06:55,835
+this application has got a problem and where is that problem? Like where in the stack do we identify that?
+
+73
+00:06:55,835 --> 00:07:02,835
+And when you're looking at your entire infrastructure stack and you're trying to
+
+74
+00:07:02,835 --> 00:07:08,835
+get gain visibility in what's going on, understanding the configuration, understanding the relationships that
+
+75
+00:07:08,835 --> 00:07:13,835
+the different layers of your infrastructure have and leveraging PowerShell to do it, the most important thing
+
+76
+00:07:13,835 --> 00:07:15,835
+that you can understand is
+
+77
+00:07:15,835 --> 00:07:25,835
+that right there, that relationship, right. What is that piece of information that connects one layer to the next?
+
+78
+00:07:25,835 --> 00:07:32,835
+And for most people when they're looking at managing their infrastructure as a whole, this is one of the
+
+79
+00:07:32,835 --> 00:07:36,835
+biggest challenges that they have. How do I identify
+
+80
+00:07:36,835 --> 00:07:45,835
+what correlates that data store with this volume, right, or that VMDK to that Datastore, that Datastore to that volume.
+
+81
+00:07:45,835 --> 00:07:52,835
+Alright, what is that? And then this, I used SolidFire for this one because I already wrote this code and I
+
+82
+00:07:52,835 --> 00:07:59,835
+didn't have to write new code. But what we're looking at here is I need to understand what the volume is
+
+83
+00:07:59,835 --> 00:08:05,835
+that's supporting that Datastore and this is the Lun, like this is the physical storage that's being
+
+84
+00:08:05,835 --> 00:08:11,835
+presented to the Hypervisor to be shared so that we can provide resources to that application.
+
+85
+00:08:11,835 --> 00:08:13,835
+And in doing that,
+
+86
+00:08:13,835 --> 00:08:22,835
+I have to identify what piece of information is important and available both on the PowerCLI side, the VMware side,
+
+87
+00:08:22,835 --> 00:08:27,835
+and the SolidFire side that makes the connection, and in this case,
+
+88
+00:08:27,835 --> 00:08:36,835
+it's the SCSI Id, right, the NAAdeviceID, and by going to PowerCLI, right, and we use the Get-ScsiLun
+
+89
+00:08:36,835 --> 00:08:42,835
+by going into PowerCLI, we know the Datastore that we want, we collect, we find the CanonicalName,
+
+90
+00:08:42,835 --> 00:08:50,835
+which incidentally matches the NAAID, right, for the SolidFire side, we get that, we do a little manipulation
+
+91
+00:08:50,835 --> 00:08:54,835
+with splitting it, we get that part of the array, and we store that.
+
+92
+00:08:54,835 --> 00:09:00,835
+And when I go to find out what the volume is, I'm doing a Where statement, right.
+
+93
+00:09:00,835 --> 00:09:07,835
+So Where, I'm getting all of the volumes and saying where this value equals that.
+
+94
+00:09:07,835 --> 00:09:14,835
+Now is there anything in this that just throws up a red flag of inefficiency it?
+
+95
+00:09:14,835 --> 00:09:17,835
+I would get them all. Exactly.
+
+96
+00:09:17,835 --> 00:09:27,835
+Right. Why? Because it's easy. That's why. Right, but and then also with some implementations,
+
+97
+00:09:27,835 --> 00:09:30,835
+and this is something that I really wanted to point out. Anyway, I mean this is
+
+98
+00:09:30,835 --> 00:09:33,835
+I guess you would consider a negative on the SolidFire side, right.
+
+99
+00:09:33,835 --> 00:09:41,835
+We don't have a strong filtering mechanism. Why? Because the API was not designed to do that, right.
+
+100
+00:09:41,835 --> 00:09:47,835
+The API just considers it sufficient. Like it's okay if you pull it all to get that, right.
+
+101
+00:09:47,835 --> 00:09:53,835
+That's not neither good nor bad, but when you're thinking about a large environment, think about what it
+
+102
+00:09:53,835 --> 00:10:00,835
+would take to do a report when you have 100 Datastores and how much time that would take, okay.
+
+103
+00:10:00,835 --> 00:10:13,835
+So another use case, and it's in the book, just for you Luc. Okay, so when I was looking at contributing to
+
+104
+00:10:13,835 --> 00:10:20,835
+that book, I was trying to think from a VMware perspective, why would I care about DSC?
+
+105
+00:10:20,835 --> 00:10:26,835
+Because at the time, the work that Luc Dekens has done around DSC and VMware did not exist.
+
+106
+00:10:26,835 --> 00:10:33,835
+There were no resources. There were no capabilities, and it wasn't at the time you ask the question,
+
+107
+00:10:33,835 --> 00:10:38,835
+well what would you want DSC to do. Right. Still very much in that exploratory phase.
+
+108
+00:10:38,835 --> 00:10:44,835
+So I have this little bit of a conundrum. Alright, so how do I demonstrate the value of DSC that would be
+
+109
+00:10:44,835 --> 00:10:51,835
+useful to someone who manages the VMware environment. And so how many was it that manage VMware environments?
+
+110
+00:10:51,835 --> 00:10:56,835
+You don't count. You said you don't raise your hand at sessions.
+
+111
+00:10:56,835 --> 00:11:02,835
+Okay, so what I came up with is this concept of the DMZ, right, now that's not the concept I created.
+
+112
+00:11:02,835 --> 00:11:04,835
+The demilitarized zone, this is where its
+
+113
+00:11:04,835 --> 00:11:10,835
+front-end, right, it's behind a firewall, so it doesn't touch your regular infrastructure environment,
+
+114
+00:11:10,835 --> 00:11:16,835
+it's virtualized, right, so it's sitting on ESXi, it's managed by Virtual Center Server, these are VMs,
+
+115
+00:11:16,835 --> 00:11:24,835
+they're on a VLAN that is dedicated to the DMZ, so they have isolation, right, maybe not air gap, but anyway it's
+
+116
+00:11:24,835 --> 00:11:30,835
+still isolation, right. And you don't want to open a bunch of ports because every time you open a port,
+
+117
+00:11:30,835 --> 00:11:37,835
+that's an opportunity for penetration from the outside, right. You want your firewall as locked down as possible.
+
+118
+00:11:37,835 --> 00:11:44,835
+So how the hell do you use DSC in this environment? Let's just say we've got hundreds of machines sitting
+
+119
+00:11:44,835 --> 00:11:49,835
+there servicing a web application that is critical to your business and your businesses success.
+
+120
+00:11:49,835 --> 00:11:54,835
+How do you deal with that? How do you implement DSC? Well, I'm mean you can put your pull server out there,
+
+121
+00:11:54,835 --> 00:11:56,835
+but that's a bad idea, right.
+
+122
+00:11:56,835 --> 00:12:00,835
+You talk about honey pot. Somebody gets a hold of that, you're toast.
+
+123
+00:12:00,835 --> 00:12:04,835
+Right. They can configure whatever they want, so you don't want to do that.
+
+124
+00:12:04,835 --> 00:12:06,835
+So this hurt my head. It hurt my head
+
+125
+00:12:06,835 --> 00:12:13,835
+a lot. Like how would I accomplish this? Okay, so we have the DSC pull server, it's sitting inside of our
+
+126
+00:12:13,835 --> 00:12:19,835
+network, but we don't want to open up the ports, so how do you get it to communicate?
+
+127
+00:12:19,835 --> 00:12:25,835
+Anybody have a guess? Except for Luc. Invoke VM script. Invoke VM script.
+
+128
+00:12:25,835 --> 00:12:29,835
+That is a great way of doing that. So yeah, you leverage the VMware tools.
+
+129
+00:12:29,835 --> 00:12:37,835
+Right. For those who aren't aware, PowerCLI and VMware vSphere, you know with the VMware tools that are on a
+
+130
+00:12:37,835 --> 00:12:42,835
+virtual machine, you can actually remotely execute through the VMware tools.
+
+131
+00:12:42,835 --> 00:12:48,835
+It goes through the ESXi host directly into the guest and it leverages the VMware tools to do things.
+
+132
+00:12:48,835 --> 00:12:51,835
+Alright. And so what I did
+
+133
+00:12:51,835 --> 00:12:54,835
+and this is all available on GitHub, right, if you want to see the full code.
+
+134
+00:12:54,835 --> 00:13:02,835
+I just pulled snippets to describe, right. What I ended up having to do is we create the MOF file inside of
+
+135
+00:13:02,835 --> 00:13:11,835
+the network, we copy that MOF file using the, what was it, Copy-VMGuestFile, right, we copy that file into that
+
+136
+00:13:11,835 --> 00:13:18,835
+and then we use Invoke-VMScript to execute DSC and to execute on the MOF file, right to get the configuration.
+
+137
+00:13:18,835 --> 00:13:20,835
+Now recognizing
+
+138
+00:13:20,835 --> 00:13:28,835
+that this doesn't allow that LCM to be able to reach out and say hey am I still good, right.
+
+139
+00:13:28,835 --> 00:13:36,835
+This definitely you're pushing it out to the application's system, but it does enable that capability, right.
+
+140
+00:13:36,835 --> 00:13:42,835
+You are able to go in, configure that, and get it out there without having to open up all the ports.
+
+141
+00:13:42,835 --> 00:13:43,835
+So the key thing
+
+142
+00:13:43,835 --> 00:13:52,835
+here is you have to use multiple different layers of PowerShell to accomplish this and I will point out that
+
+143
+00:13:52,835 --> 00:14:01,835
+the original idea and the concept was I would just put the code from building the MOF file and everything and
+
+144
+00:14:01,835 --> 00:14:09,835
+do Invoke-VMScript. Well you're only allowed to send one line of code with Invoke-VMScript, right.
+
+145
+00:14:09,835 --> 00:14:15,835
+You can have it call a script file and have it do other things, but you're only allowed to send one line of code
+
+146
+00:14:15,835 --> 00:14:19,835
+and that just doesn't work with DSC. Alright, it's not going to happen.
+
+147
+00:14:19,835 --> 00:14:29,835
+Okay. So this was an example of how to leverage PowerShell in an environment against multiple different layers
+
+148
+00:14:29,835 --> 00:14:33,835
+in order to solve a problem. Alright, and it was helpful because I'd already written a code, so I didn't
+
+149
+00:14:33,835 --> 00:59:59,999
+have to write a whole bunch of code.
+

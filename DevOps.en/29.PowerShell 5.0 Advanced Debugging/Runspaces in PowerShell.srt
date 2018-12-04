@@ -1,0 +1,576 @@
+1
+00:00:00,0 --> 00:00:06,027
+So just take a second here. What are runspaces? And this basically says that every PowerShell script that
+
+2
+00:00:06,027 --> 00:00:14,027
+runs within a context called a runspace, as we call them internally, and what the runspace is basically the
+
+3
+00:00:14,027 --> 00:00:19,027
+context in which a script runs. It has the variables that you've defined, it has the functions that you've
+
+4
+00:00:19,027 --> 00:00:25,027
+defined, modules that you import, breakpoints that you set, everything is all kind of contained in something
+
+5
+00:00:25,027 --> 00:00:26,027
+called a runspace.
+
+6
+00:00:26,027 --> 00:00:31,027
+So when you talk about debugging script, it's kind of synonymous to say you're talking about debugging at runspace.
+
+7
+00:00:31,027 --> 00:00:38,027
+It's a runspace that's basically running the script and providing the context for that script to run.
+
+8
+00:00:38,027 --> 00:00:46,027
+So when you hear things like point a debugger to a runspace, what that means is it's really the framework in
+
+9
+00:00:46,027 --> 00:00:53,027
+which script is being run. And I just want to provide a diagram, just to kind of see it, kind of get your
+
+10
+00:00:53,027 --> 00:00:58,027
+head around it because it's fairly complex. You know over on one side of town you have your computer,
+
+11
+00:00:58,027 --> 00:01:07,027
+you have the PowerShell ISE open, but you want to debug script that's running on the machine someplace else,
+
+12
+00:01:07,027 --> 00:01:16,027
+and so the first thing you do is use Enter-PSSession so can connect to that machine across town, and then within
+
+13
+00:01:16,027 --> 00:01:20,027
+that machine, there can be multiple processes that are hosting PowerShell.
+
+14
+00:01:20,027 --> 00:01:26,027
+It could be a PowerShell console, it could be some sort of application process that you're interested in,
+
+15
+00:01:26,027 --> 00:01:34,027
+maybe like a DSC configuration, local configuration manager that's running script.
+
+16
+00:01:34,027 --> 00:01:39,027
+And so the next thing is you want to then point to that particular process that you're interested in and
+
+17
+00:01:39,027 --> 00:01:46,027
+that's when you use Enter-PSHostProcess cmdlet. Then within that process on that remote machine, there can be
+
+18
+00:01:46,027 --> 00:01:48,027
+multiple runspaces that are running script.
+
+19
+00:01:48,027 --> 00:01:54,027
+And then so one of those runspaces you're interested in is a script that you want to debug and then so you
+
+20
+00:01:54,027 --> 00:01:59,027
+want to use debug runspace to point to that particular runspace and debug that script.
+
+21
+00:01:59,027 --> 00:02:08,027
+So it's fairly complex. Either these cmdlets are not something that you're going to use every day because
+
+22
+00:02:08,027 --> 00:02:13,027
+this is kind of a complex debugging scenario, but when you need it, they're very powerful and it's something
+
+23
+00:02:13,027 --> 00:02:19,027
+that can really save you if you're just facing a problem. Scripts that aren't running and you're trying to
+
+24
+00:02:19,027 --> 00:02:26,027
+figure out why. It's just really nice to be able to debug it in a live session.
+
+25
+00:02:26,027 --> 00:02:36,027
+So from here, I want to pivot to the first demo. Basically, what I want to demonstrate here is the process
+
+26
+00:02:36,027 --> 00:02:43,027
+of redirecting to a host process that's running script that you're interested in, and within that process,
+
+27
+00:02:43,027 --> 00:02:49,027
+finding the runspace that's running the script that you want to debug and then attaching the debugger.
+
+28
+00:02:49,027 --> 00:02:59,027
+And actually what this demo is going to do is simulate a process that's running four simultaneous scripts.
+
+29
+00:02:59,027 --> 00:03:04,027
+One is going to be, actually I only have three here now, but one's going to be just a script that's running
+
+30
+00:03:04,027 --> 00:03:07,027
+in a continuous loop that's you're going to attach the debugger to.
+
+31
+00:03:07,027 --> 00:03:13,027
+Another one is called copy file script. It runs very quickly, and so this one's going to be set up so that as
+
+32
+00:03:13,027 --> 00:03:19,027
+soon as it starts running, it pauses and waits for a debugger attach so that you can debug it because it runs
+
+33
+00:03:19,027 --> 00:03:27,027
+in a few seconds and you want to debug the script. Third one is just a simple algorithm that extracts the
+
+34
+00:03:27,027 --> 00:03:34,027
+sub array from array, and in this case, it's going to use a new cmdlet called Wait-Debugger and what this does
+
+35
+00:03:34,027 --> 00:03:44,027
+is a cmdlet you put in the script and when it executes it puts the execution engine into a wait mode.
+
+36
+00:03:44,027 --> 00:03:51,027
+It stops execution and waits for a debugger attach. And the nice thing about wait debugger is that you can
+
+37
+00:03:51,027 --> 00:03:58,027
+put it anywhere you want inside the script, and so the debugger will stop and the script execution will stop
+
+38
+00:03:58,027 --> 00:04:02,027
+and wait for a debugger at a particular point, which is kind of nice when you're debugging.
+
+39
+00:04:02,027 --> 00:04:09,027
+And the fourth one I don't have listed here is set up a runspace, and again, it's going to run the copy file script,
+
+40
+00:04:09,027 --> 00:04:14,027
+but in this case, you're going to give it a line breakpoint and say I want it to stop at this particular line
+
+41
+00:04:14,027 --> 00:04:18,027
+and this script file, and then wait for a debugger attach.
+
+42
+00:04:18,027 --> 00:04:24,027
+So I've created a brand new console and pretending it's not an interactive console, but it is, and in it,
+
+43
+00:04:24,027 --> 00:04:38,027
+I have a script that's going to simulate what a PowerShell application, PowerShell hosting application would
+
+44
+00:04:38,027 --> 00:04:43,027
+do, which is basically create runspaces and then run script files.
+
+45
+00:04:43,027 --> 00:04:48,027
+I won't spend too much time on this, but I do want to show a little bit how this works because it's kind of
+
+46
+00:04:48,027 --> 00:04:55,027
+the same pattern over and over again on how to create a runspace and then execute a script inside it.
+
+47
+00:04:55,027 --> 00:05:02,027
+And then once this is running, and I'll show how you can attach to the process and then debug each of these
+
+48
+00:05:02,027 --> 00:05:09,027
+scripts that are running. And you can see it, okay good. So first one is basically a pattern where you
+
+49
+00:05:09,027 --> 00:05:17,027
+create a runspace and give it a name, creates a call to PowerShell object, you associate it with that runspace,
+
+50
+00:05:17,027 --> 00:05:22,027
+and then you say okay run the script file. And this is one that just runs continuously, so it's just going
+
+51
+00:05:22,027 --> 00:05:27,027
+to run in an infinite loop and it's going to have runspace and then call LogQueryRS.
+
+52
+00:05:27,027 --> 00:05:34,027
+The second one is the copy file. It runs very quickly, so again, we create the runspace, but this is a
+
+53
+00:05:34,027 --> 00:05:39,027
+little bit different. After we create the runspace, we use a cmdlet called Enable-RunspaceDebug.
+
+54
+00:05:39,027 --> 00:05:45,5
+What this does it sets up the runspace in debug mode and also sets a source called BreakAll.
+
+55
+00:05:45,5 --> 00:05:46,027
+So what
+
+56
+00:05:46,027 --> 00:05:51,027
+it's telling runspace is as soon as you start running script, stop at the very first execution point in the
+
+57
+00:05:51,027 --> 00:05:56,027
+script, and wait for a debugger attach. This is a little bit dangerous, something you definitely don't want
+
+58
+00:05:56,027 --> 00:06:02,027
+to have in a production environment because the script will look like it's hung, it's not running,
+
+59
+00:06:02,027 --> 00:06:11,027
+and that's because it's waiting for a debugger attach, so this is something you only want to do in investigations.
+
+60
+00:06:11,027 --> 00:06:15,027
+And the third one, and again, I kind of want to go through these because they're slightly different,
+
+61
+00:06:15,027 --> 00:06:24,027
+this one is the Max SubArray, again it's creating a runspace, adding in variables, and executing it.
+
+62
+00:06:24,027 --> 00:06:28,027
+The only difference is that inside the script, there's a Wait-Debugger command.
+
+63
+00:06:28,027 --> 00:06:34,027
+And so, it is also going to stop and wait for a debugger attach,
+
+64
+00:06:34,027 --> 00:06:40,027
+but there's nothing we did special to the runspace. We actually had to modify the source code.
+
+65
+00:06:40,027 --> 00:06:44,027
+So the Wait-Debugger is a very powerful, again something you don't want in your production environment
+
+66
+00:06:44,027 --> 00:06:50,027
+because it looks like your script is hung and the downside is that in order to use it, you have to modify
+
+67
+00:06:50,027 --> 00:06:55,027
+the script file, but it's very powerful for just saying I want the debugger to just stop at this point,
+
+68
+00:06:55,027 --> 00:06:58,027
+so I can investigate what's going on.
+
+69
+00:06:58,027 --> 00:07:05,027
+And then finally, the last one, again I'm doing a copy file. Again, the only difference is I am setting a
+
+70
+00:07:05,027 --> 00:07:15,027
+breakpoint in the runspace at this particular line in the file and one thing to keep in mind is again we have to
+
+71
+00:07:15,027 --> 00:07:24,027
+tell the runspace to be in debug mode because normally when runspace is executing script and a breakpoint
+
+72
+00:07:24,027 --> 00:07:30,027
+event fires, if there's no ISE debugger available to handle that, then it just ignores it, it just continues
+
+73
+00:07:30,027 --> 00:07:37,027
+running, but in this case, we don't want it to. We want it to stop and wait for the debugger attach.
+
+74
+00:07:37,027 --> 00:07:50,027
+Okay. So over here on my clean process, I'm just going to go ahead and run that script, get the process id 4112,
+
+75
+00:07:50,027 --> 00:07:57,027
+and then go back to here, and then I want to show a new cmdlet called Get-PSHostProcessInfo.
+
+76
+00:07:57,027 --> 00:08:05,027
+What this does is that a list all of the processes on your local machine that is hosting PowerShell and is
+
+77
+00:08:05,027 --> 00:08:10,027
+available for a connection and we see a bunch of them here because I have a few open, we see the ISE
+
+78
+00:08:10,027 --> 00:08:14,027
+obviously, the one I already forgot,
+
+79
+00:08:14,027 --> 00:08:15,027
+(Audience comment)
+
+80
+00:08:15,027 --> 00:08:23,027
+4112, thank you, is one that we're interested in, these are other consoles that are running.
+
+81
+00:08:23,027 --> 00:08:39,027
+So now we can use the new redirection cmdlet called Enter-PSHostProcess 4112 and we can attach to that process.
+
+82
+00:08:39,027 --> 00:08:44,027
+One thing I kind of wanted to show here and I think I'll just go ahead and do that now, just to back up a
+
+83
+00:08:44,027 --> 00:08:49,027
+little bit, that this Enter-PSHostProcess will work in a remote session.
+
+84
+00:08:49,027 --> 00:08:55,027
+So with just one laptop, it's hard to simulate all this, but I'm just going to pretend that this is running
+
+85
+00:08:55,027 --> 00:09:04,027
+on a remote machine, so I'm going to do an Enter-PSSession, actually it's a loop back to this computer,
+
+86
+00:09:04,027 --> 00:09:13,027
+and of course, for some reason my poor laptop seems to be really, really slow.
+
+87
+00:09:13,027 --> 00:09:18,027
+And if this is going to take too long, I can, okay there we go. So now we're, and again, we can do a
+
+88
+00:09:18,027 --> 00:09:24,027
+Get-PSHostProcess and we kind of pretend that okay we're remoting into a remote machine, we do get
+
+89
+00:09:24,027 --> 00:09:36,027
+PSHostProcess, we want to enter PSHostProcess 4112 and the thing to kind of look at is the command-line
+
+90
+00:09:36,027 --> 00:09:41,027
+because it tells you what's going on. It tells you that you're connected to the remote machine, localhost,
+
+91
+00:09:41,027 --> 00:09:46,027
+in this case, and within that, we're connected to the process 4112.
+
+92
+00:09:46,027 --> 00:09:51,027
+And then from here, we do a get, this is another important cmdlet, Get-Runspace.
+
+93
+00:09:51,027 --> 00:09:57,027
+What this does now is within this process, it'll list all of the runspaces after runspaces in this process.
+
+94
+00:09:57,027 --> 00:10:04,027
+And now finally, we see kind of what we expect to see. If we look at the first one, this is because this
+
+95
+00:10:04,027 --> 00:10:08,027
+process that we're in is actually a console host process and it always creates a default runspace,
+
+96
+00:10:08,027 --> 00:10:14,027
+so there's always a number 1 Runspace1 and that's been created so that when you type in the console,
+
+97
+00:10:14,027 --> 00:10:24,027
+that's what executes your command in your script. But then we see the runspaces that we've created and this
+
+98
+00:10:24,027 --> 00:10:29,027
+is what we expect, and of course, the first one the LogQueryRS, the availability is busy.
+
+99
+00:10:29,027 --> 00:10:34,027
+That's because it's running in continuous loops. Every time I look at it's going to show busy, but on the
+
+100
+00:10:34,027 --> 00:10:38,027
+CopyFileRS or these other three all show availability in breakpoint.
+
+101
+00:10:38,027 --> 00:10:43,027
+What that means is that they're not running script. It's stopped and it's waiting for a debugger attach.
+
+102
+00:10:43,027 --> 00:10:48,027
+Again, you have to be a little bit careful with that because if you're not aware of it, you just might think
+
+103
+00:10:48,027 --> 00:10:52,027
+that script is taken forever to run, it's not actually running.
+
+104
+00:10:52,027 --> 00:10:55,027
+And then the other one here is a little bitty string. This is called RemoteHost.
+
+105
+00:10:55,027 --> 00:11:00,027
+This is a temporary runspace that has been created when you run the Enter-PSHostProcess.
+
+106
+00:11:00,027 --> 00:11:06,027
+What that does is that executes the commands that you type on the command-line, so here like if you type in
+
+107
+00:11:06,027 --> 00:11:17,027
+your command, this is running in that RemoteHost process that its connected to.
+
+108
+00:11:17,027 --> 00:11:25,027
+When you exit the attachment to that host process, then that temporary runspace goes away.
+
+109
+00:11:25,027 --> 00:11:31,027
+So then I just show real quickly how then to debug these runspaces.
+
+110
+00:11:31,027 --> 00:11:41,027
+Each one is just a little bit different. So you do Debug-Runspace logqueryrs, that's the first one, and
+
+111
+00:11:41,027 --> 00:11:46,027
+what's happening is when you do a Debug-Runspace on script that's already running, it attaches debugger
+
+112
+00:11:46,027 --> 00:11:50,027
+and then it sets the debugger into step mode immediately, so it just stops at the very next execution,
+
+113
+00:11:50,027 --> 00:11:56,027
+and at this point, you can step through the code and do all the debugging
+
+114
+00:11:56,027 --> 00:12:03,027
+you want and you have the command-line here, so you can query state and machine state and variable and all the
+
+115
+00:12:03,027 --> 00:12:08,027
+things that you can debugging, so you have a nice live debugging session there.
+
+116
+00:12:08,027 --> 00:12:15,027
+What I'm going to do is a detach where you type detach at the debugger prompt, it detaches the debugger,
+
+117
+00:12:15,027 --> 00:12:24,027
+and so now if you do a Get-Runspace, we see that it's busy again, so it's busily running in that infinite loop.
+
+118
+00:12:24,027 --> 00:12:36,027
+Now if we do a Debug-Runspace on the first copyfilers and it did this before.
+
+119
+00:12:36,027 --> 00:12:46,027
+I'm not sure what's going on there, so we're going to skip that.
+
+120
+00:12:46,027 --> 00:12:53,027
+Oh, that's weird. So yeah, don't look at that. We're going to move to subarray.
+
+121
+00:12:53,027 --> 00:13:00,027
+I'll take a look at that later. This next one, this one is what we expect.
+
+122
+00:13:00,027 --> 00:13:06,027
+This is the code I was talking about. For the Wait-Debugger, what I did was if a global variable is defined
+
+123
+00:13:06,027 --> 00:13:12,027
+as true, then I go ahead and execute the Wait-Debugger, which means that it puts it in step mode so that the
+
+124
+00:13:12,027 --> 00:13:18,027
+very next line to execute is stopped and waiting for the debugger attach.
+
+125
+00:13:18,027 --> 00:13:25,027
+And now you can go through and do debugging as before until you're done.
+
+126
+00:13:25,027 --> 00:13:31,027
+And then if you want, what I kind of like about this is that it's conditional, so if you're done debugging,
+
+127
+00:13:31,027 --> 00:13:37,027
+you can do it, and this is in a loop, so if you don't want to do it in a loop anymore you can just, whoops,
+
+128
+00:13:37,027 --> 00:13:40,027
+set the variable to false.
+
+129
+00:13:40,027 --> 00:13:42,027
+(Audience comment)
+
+130
+00:13:42,027 --> 00:13:43,027
+I'm sorry?
+
+131
+00:13:43,027 --> 00:13:46,027
+You're missing a G on the debug.
+
+132
+00:13:46,027 --> 00:13:56,027
+Oh, thank you. It's these bifocals I can't see very well. And then you can just do an F5 to continue and
+
+133
+00:13:56,027 --> 00:14:02,027
+then it continues to run this very fast. One thing to keep in mind is that the debugger attach remains,
+
+134
+00:14:02,027 --> 00:14:09,027
+so you get this little warning that says command or script is completed, but the debugger is still attached.
+
+135
+00:14:09,027 --> 00:14:14,027
+So like if your new script started running, you can debug that if you want, but if you're done debugging,
+
+136
+00:14:14,027 --> 00:14:23,027
+then you can detach a debugger with just Ctrl+C then it takes you back to the command-line.
+
+137
+00:14:23,027 --> 00:14:33,027
+And let's go one more Debug-Runspace copyfilers2 and this is one where we set the breakpoint.
+
+138
+00:14:33,027 --> 00:14:43,027
+One thing to kind of keep in mind is that this one is still busy, this one has gone to available because it's
+
+139
+00:14:43,027 --> 00:14:47,027
+completed running the script, and so the runspace is available to run a new script, which is kind of
+
+140
+00:14:47,027 --> 00:14:51,027
+interesting to note. And this one is still waiting for a debugger attach.
+
+141
+00:14:51,027 --> 00:15:00,027
+And here is kind of what we expect, it's on Line 21, which is what we set, and so it can debug from that point.
+
+142
+00:15:00,027 --> 00:15:07,027
+And again, I'll just do a detach by typing detach at the debugger prompt.
+
+143
+00:15:07,027 --> 00:15:17,027
+So when you're done, you can just do an Exit-PSHostProcess Exit-PSSession and I don't know why that's taking so long.
+
+144
+00:15:17,027 --> 00:59:59,999
+I've been getting these weird pauses. Let's see if I can get back to the slides.
+

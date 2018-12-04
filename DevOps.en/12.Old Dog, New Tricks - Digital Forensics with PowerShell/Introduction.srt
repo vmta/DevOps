@@ -1,0 +1,384 @@
+1
+00:00:00,0 --> 00:00:12,5
+Alright. Welcome everybody.
+
+2
+00:00:12,5 --> 00:00:17,5
+This Old Dog, New Tricks Digital Forensics with PowerShell. I'm Jared Atkinson.
+
+3
+00:00:17,5 --> 00:00:23,5
+I'm from Veris Group's Adaptive Threat Division. I used to say that I was the token defender at Veris Group
+
+4
+00:00:23,5 --> 00:00:28,5
+Adaptive Threat Division because I work with very smart offensives lines like Matt Graver over there,
+
+5
+00:00:28,5 --> 00:00:34,5
+but since we've started hiring some more defensive people, so I have friends that aren't just breaking things.
+
+6
+00:00:34,5 --> 00:00:41,5
+I'm the hunt capability lead there, so the concept of hunting is practicing the assumed breach mentality in an enterprise.
+
+7
+00:00:41,5 --> 00:00:47,5
+So the basic idea is you have a really large organization, there's somebody out there that probably wants
+
+8
+00:00:47,5 --> 00:00:50,5
+to gain access to their network, steal data, do whatever they need
+
+9
+00:00:50,5 --> 00:00:56,5
+to do, and if there's somebody that wants to get in, there's a very likely chance that they will be able to
+
+10
+00:00:56,5 --> 00:01:02,5
+get in, and so our job is to go in and look through the network as if they have been breached and try to
+
+11
+00:01:02,5 --> 00:01:06,5
+determine where attackers have been or if there is a presence of attackers.
+
+12
+00:01:06,5 --> 00:01:12,5
+My background is that I was in the US Air Force on the Hunt team there from 2011 to 2015.
+
+13
+00:01:12,5 --> 00:01:16,5
+Probably one of my more proud achievements is in last year I had Black Eye, which is a big hacker in
+
+14
+00:01:16,5 --> 00:01:24,5
+conference in Las Vegas, I won the Minesweeper championship. So before PowerShell was my Microsoft love,
+
+15
+00:01:24,5 --> 00:01:31,5
+Minesweeper was the original. I'm also the moderator of powershell.com security forum, which if you have any
+
+16
+00:01:31,5 --> 00:01:38,5
+security questions, please come visit and ask the questions. And I also developed PowerForensics upper IDS
+
+17
+00:01:38,5 --> 00:01:44,5
+and WMI event, eventing, which are two modules that Matt and I will be talking about Wednesday.
+
+18
+00:01:44,5 --> 00:01:47,5
+So if you're interested in that, we'll definitely be touching on it.
+
+19
+00:01:47,5 --> 00:01:53,5
+I also really love forensics artifacts, which is what led me to talk about PowerForensics, so.
+
+20
+00:01:53,5 --> 00:01:59,5
+Going forward, so I kind of want to set the stage for what PowerForensics was created to do.
+
+21
+00:01:59,5 --> 00:02:04,5
+When you're looking at forensics in general, forensics is a very touchy word because it's typically the like true definition
+
+22
+00:02:04,5 --> 00:02:10,5
+has to do with law enforcement, law enforcement process where chain of custody is very important and all these
+
+23
+00:02:10,5 --> 00:02:16,5
+different things that when you're responding or practicing the assumed breach mentality in a 100,000 node
+
+24
+00:02:16,5 --> 00:02:20,5
+network, you can't necessarily take the time that a traditionally forensic investigator would take.
+
+25
+00:02:20,5 --> 00:02:29,5
+Forensics has taken on kind of a colloquial definition that is doing hard drive investigation or analysis,
+
+26
+00:02:29,5 --> 00:02:35,5
+and so or even memory analysis. So originally back in the day or even today in more law enforcementy-type circles,
+
+27
+00:02:35,5 --> 00:02:40,5
+folks are actually doing the kind of the image methodology for forensics.
+
+28
+00:02:40,5 --> 00:02:46,5
+So they'll take a suspected infected system, they'll take DD or something along those lines, make a bit for
+
+29
+00:02:46,5 --> 00:02:52,5
+bit copy of that hard drive, they'll keep the chain of custody records.
+
+30
+00:02:52,5 --> 00:02:57,5
+This is very good because it has, it's kind of the gold standard for forensics for the past couple decades,
+
+31
+00:02:57,5 --> 00:03:02,5
+very repeatable, meaning that any analysis that I do, I can go back to the evidence and reproduce that
+
+32
+00:03:02,5 --> 00:03:05,5
+analysis for like a court case, things of that nature, and it allows for thorough analysis.
+
+33
+00:03:05,5 --> 00:03:07,5
+One of the problems is that a typical
+
+34
+00:03:07,5 --> 00:03:12,5
+forensics investigation is typically going to take around three weeks or so for a single system, so like I
+
+35
+00:03:12,5 --> 00:03:17,5
+said you have 100,000 endpoints, you don't know if there's a bad guy there, but you need to be able to
+
+36
+00:03:17,5 --> 00:03:21,5
+quickly determine, make a determination of whether there has been some attacker activity.
+
+37
+00:03:21,5 --> 00:03:30,5
+You don't necessarily have three weeks per endpoint and you also lose volatile data if you haven't captured that.
+
+38
+00:03:30,5 --> 00:03:31,5
+Then folks started going into this
+
+39
+00:03:31,5 --> 00:03:36,5
+kind of collection script concept, so the idea is that I write a batch script and then I'm going to script out
+
+40
+00:03:36,5 --> 00:03:39,5
+and use PsExec or something along those lines to script out a bunch of tasks.
+
+41
+00:03:39,5 --> 00:03:40,5
+So maybe
+
+42
+00:03:40,5 --> 00:03:45,5
+one of the tasks is collect all the prefudge files or make a copy of the national file table, things of that nature.
+
+43
+00:03:45,5 --> 00:03:51,5
+I'm going to pull it back and then do offline analysis. So you're not taking a full image because in a
+
+44
+00:03:51,5 --> 00:03:57,5
+terabyte hard drive not all, you know, however many bytes that are really valuable from a forensics perspective.
+
+45
+00:03:57,5 --> 00:04:03,5
+I'm just getting the files or data that's important for my analysis.
+
+46
+00:04:03,5 --> 00:04:10,5
+The problem with this is that it's often messy, not forensically sound, right Matt, so that's one of my kind of
+
+47
+00:04:10,5 --> 00:04:12,5
+big pain points and it often uses
+
+48
+00:04:12,5 --> 00:04:18,5
+third-party dependency, so things like accessing a file, parsing the artifacts, and support for report capabilities.
+
+49
+00:04:18,5 --> 00:04:23,5
+So you may use PsExec to get remote execution, you may use
+
+50
+00:04:23,5 --> 00:04:30,5
+raw copy to copy off a file like the MFT and then you have to use like Analyze MFT to parse the MFT,
+
+51
+00:04:30,5 --> 00:04:33,5
+so there's tons of different tools that you're using that have to be all strung together and they're not
+
+52
+00:04:33,5 --> 00:04:39,5
+necessarily created to be put together in that way. So then we kind of move onto this live response,
+
+53
+00:04:39,5 --> 00:04:40,5
+which is kind of
+
+54
+00:04:40,5 --> 00:04:45,5
+the concept that I'm pushing with PowerForensics. So the idea is that you're able to quickly triage key
+
+55
+00:04:45,5 --> 00:04:50,5
+systems in order to determine where you need to look next and determine if something has indeed happened that
+
+56
+00:04:50,5 --> 00:04:53,5
+you need to investigate. And so the pros are
+
+57
+00:04:53,5 --> 00:04:59,5
+that it's very fast, forensically sound in the manner that I'm going to be doing it, it's self-contained,
+
+58
+00:04:59,5 --> 00:05:07,5
+so PowerForensics, the remote access, the file access, and the parsing are all built-in and they all build
+
+59
+00:05:07,5 --> 00:05:12,5
+upon each other. The cons are that it's not repeatable, so unless you're taking a copy of that data,
+
+60
+00:05:12,5 --> 00:05:16,5
+you're not going to necessarily be able to use this investigation in court.
+
+61
+00:05:16,5 --> 00:05:21,5
+So this is more focused towards your advanced persistent thread to write nation state type of text,
+
+62
+00:05:21,5 --> 00:05:28,5
+so trying to hacks Company X, Company X isn't going to get China to extradite the hacker in order to press charges, right.
+
+63
+00:05:28,5 --> 00:05:36,5
+So ultimately, it's about stopping them exfiltrating data before they're able to reach their objectives.
+
+64
+00:05:36,5 --> 00:05:37,5
+Alright, so
+
+65
+00:05:37,5 --> 00:05:43,5
+my solution to this is PowerForensics. So this is a PowerShell module for live forensics investigation.
+
+66
+00:05:43,5 --> 00:05:45,5
+I chose to write it in C#, so it's a compiled
+
+67
+00:05:45,5 --> 00:05:50,5
+C# DLL binary module for speed and things of that nature.
+
+68
+00:05:50,5 --> 00:05:54,5
+Minimizes the use of Windows APIs, so that whole forensically sound
+
+69
+00:05:54,5 --> 00:06:00,5
+concept, so attackers can use root-cutting techniques to basically lie to you if you're using the operating system's APIs.
+
+70
+00:06:00,5 --> 00:06:07,5
+So let's say you want to look at the SAM hive, for example. If you're using the operating system to look at
+
+71
+00:06:07,5 --> 00:06:13,5
+the SAM hive, somebody can basically intercept that request and know they'll lie to you when you're trying to
+
+72
+00:06:13,5 --> 00:06:17,5
+get data from them, and so I'm trying to parse it all on my own and not rely on the operating system,
+
+73
+00:06:17,5 --> 00:06:21,5
+which can be tampered with. Currently, we're parsing NTFS
+
+74
+00:06:21,5 --> 00:06:27,5
+data structure, so the new technology file system, which is the base file system for Microsoft Windows,
+
+75
+00:06:27,5 --> 00:06:32,5
+and then Windows-specific data structures like the registry, the Windows event log, scheduled jobs,
+
+76
+00:06:32,5 --> 00:06:35,5
+pre-fetch files, so on and so forth.
+
+77
+00:06:35,5 --> 00:06:39,5
+A couple design requirements that I had when I first started is it needs to be forensically sound,
+
+78
+00:06:39,5 --> 00:06:45,5
+if you haven't noticed, that's kind of my thing, so meaning it parses the raw disk structures on its own.
+
+79
+00:06:45,5 --> 00:06:46,5
+So all the parsing
+
+80
+00:06:46,5 --> 00:06:51,5
+code is stuff that I've written myself, as opposed to using some third-party library or some built-in library and
+
+81
+00:06:51,5 --> 00:06:57,5
+it can't alter like NTFS timestamps, things of that nature, so you don't want to actually affect the data
+
+82
+00:06:57,5 --> 00:07:02,5
+that you're dealing with. It can execute on a live running host, so that's really important.
+
+83
+00:07:02,5 --> 00:07:06,5
+I don't want to make an image and then be able to have to investigate that image.
+
+84
+00:07:06,5 --> 00:07:09,5
+I want to be able to do it on a live host without taking it offline.
+
+85
+00:07:09,5 --> 00:07:13,5
+It needs to be operationally fast, which I hope I'll be able to show you that here soon.
+
+86
+00:07:13,5 --> 00:07:19,5
+Lee really helped me on that. So I was at DerbyCon, which is a hacker conference in Louisville, Kentucky.
+
+87
+00:07:19,5 --> 00:07:20,5
+Lee
+
+88
+00:07:20,5 --> 00:07:26,5
+sat by me in a class taught my Carlos Perez and we literally just kind of went through on the MFT parsing.
+
+89
+00:07:26,5 --> 00:07:31,5
+I think it started at like 10 seconds to parse an MFT and we got it down to 4 seconds, so Lee showed me a
+
+90
+00:07:31,5 --> 00:07:36,5
+bunch of ways to kind of speed up the way that the code was running.
+
+91
+00:07:36,5 --> 00:07:40,5
+Everything needs to be modular, and so things like, for
+
+92
+00:07:40,5 --> 00:07:47,5
+instance, I have an invoke forensics DD cmdlet, which is going to allow you to read from a raw disk.
+
+93
+00:07:47,5 --> 00:07:53,5
+That capability needs to be built upon in order to, for instance, parse the MFT and so on, and so forth.
+
+94
+00:07:53,5 --> 00:07:58,5
+So everything is built off of each other, right. And then it needs to be capable of working remotely,
+
+95
+00:07:58,5 --> 00:07:59,5
+which there is,
+
+96
+00:07:59,5 --> 00:59:59,999
+we're at the proof of concept stage with that right now, so we'll talk about that at the end.
+

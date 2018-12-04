@@ -1,0 +1,412 @@
+1
+00:00:00,5 --> 00:00:05,828
+Alright so a quick refresher into WMI eventing. There's really like two event classes.
+
+2
+00:00:05,828 --> 00:00:12,828
+There's extrinsic and intrinsic classes. Extrinsic are my favorite because they trigger immediately.
+
+3
+00:00:12,828 --> 00:00:19,828
+Alright so if you've worked with WMI events before, you may have noticed that sometimes you need to add like
+
+4
+00:00:19,828 --> 00:00:23,828
+a polling interval, so that's a requirement of intrinsic events.
+
+5
+00:00:23,828 --> 00:00:29,828
+You don't need those with extrinsic, although, you're not getting quite the flexibility per say for extrinsic
+
+6
+00:00:29,828 --> 00:00:36,828
+events just because there's not as many available, whereas, you can get really creative with intrinsic events.
+
+7
+00:00:36,828 --> 00:00:40,828
+I always prefer to go to extrinsic first because I know they will fire.
+
+8
+00:00:40,828 --> 00:00:47,828
+Whereas with an intrinsic event, say you wanted to trigger off of process creation, so if you had like an
+
+9
+00:00:47,828 --> 00:00:55,828
+InstanceCreationEvent that triggered upon a creation of a Win32_Process class instance, there's a chance that
+
+10
+00:00:55,828 --> 00:01:01,828
+you might miss that within that polling interval if that process started and stopped within that polling
+
+11
+00:01:01,828 --> 00:01:09,828
+interval timeframe, so that's why I'm always hesitant to use those, but if I have to, then I have to because
+
+12
+00:01:09,828 --> 00:01:14,828
+I mean, there's not an extrinsic event for every conceivable event in existence.
+
+13
+00:01:14,828 --> 00:01:16,828
+So a good example of an extrinsic
+
+14
+00:01:16,828 --> 00:01:24,828
+event would be like the registry key chained event. So like you would specify the hive and the registry key
+
+15
+00:01:24,828 --> 00:01:30,828
+and then if there's any change within that immediate key, so like it doesn't work recursively.
+
+16
+00:01:30,828 --> 00:01:36,828
+It would trigger. And then like I said like with the InstanceCreationEvent as an intrinsic event, you'd have to
+
+17
+00:01:36,828 --> 00:01:42,828
+specify that polling interval, but you can get super creative. So like there's thousands of these WMI classes
+
+18
+00:01:42,828 --> 00:01:49,828
+built-in by default in the WMI repository, so really just like use your creativity to think about the possible
+
+19
+00:01:49,828 --> 00:01:53,828
+events that you might be able to trigger off of using intrinsic events.
+
+20
+00:01:53,828 --> 00:02:00,828
+Alright there's, using PowerShell, there's really like two ways to register WMI events.
+
+21
+00:02:00,828 --> 00:02:09,828
+The first would be local events, so using the older WMI cmdlets, you would use a Register-WmiEvent, and then the
+
+22
+00:02:09,828 --> 00:02:16,828
+newer CIM cmdlets available in v3 and above, you would use Register-CimIndicationEvent.
+
+23
+00:02:16,828 --> 00:02:20,828
+And most of the examples that I'll be showing you today will be using those CIM cmdlets.
+
+24
+00:02:20,828 --> 00:02:25,828
+And the great thing about the CIM cmdlets, at least from my perspective, is that they make deployment of
+
+25
+00:02:25,828 --> 00:02:31,828
+these WMI events and signatures so much easier because they give you the flexibility of being able to use
+
+26
+00:02:31,828 --> 00:02:38,828
+either WinRM as a transport or Legacy DCOM, right, so if I wanted to use the CIM cmdlets to deploy signatures
+
+27
+00:02:38,828 --> 00:02:45,828
+to Windows XP, I would just specify the CIM session option to use the DCOM protocol.
+
+28
+00:02:45,828 --> 00:02:51,828
+And then there's permanent WMI events. So what you need to use for the older cmdlets will be Set-WmiInstance
+
+29
+00:02:51,828 --> 00:03:00,828
+to create new instance of a set of classes I'll show you. Otherwise, using the CIM cmdlets, you would use New-CimInstance.
+
+30
+00:03:00,828 --> 00:03:01,828
+With the CIM cmdlets,
+
+31
+00:03:01,828 --> 00:03:07,828
+there's also like Set-CimInstance, so it's a little confusing, but actually it makes more sense with the CIM stuff.
+
+32
+00:03:07,828 --> 00:03:18,828
+Set-CimInstance will set the properties on an existing object, whereas New-CimInstance will instantiate a new WMI object.
+
+33
+00:03:18,828 --> 00:03:23,828
+Whereas, Set-WmiInstance kind of does double duty doing both.
+
+34
+00:03:23,828 --> 00:03:27,828
+Okay, so in order to set a permanent WMI event, you need the following.
+
+35
+00:03:27,828 --> 00:03:35,828
+You need an instance of an event consumer class and there are five standard event consumer classes I'll cover briefly.
+
+36
+00:03:35,828 --> 00:03:40,828
+So the EventConsumerClass, sorry that should just be EventConsumer.
+
+37
+00:03:40,828 --> 00:03:46,828
+This is the action that you want to perform upon your event filter triggering.
+
+38
+00:03:46,828 --> 00:03:54,828
+So the event filter is comprised of just AWQL event query and I'll show you some examples of those.
+
+39
+00:03:54,828 --> 00:03:55,828
+And then
+
+40
+00:03:55,828 --> 00:04:02,828
+to install the permanent WMI event, you just bind the filter and consumer together using an instance of a
+
+41
+00:04:02,828 --> 00:04:05,828
+FilterToConsumerBinding.
+
+42
+00:04:05,828 --> 00:04:14,828
+Alright, so let me run through a few examples here. So on intrinsic events, can anyone tell me what this is
+
+43
+00:04:14,828 --> 00:04:20,828
+interested in catching. I mean, it should be self-explanatory, I guess.
+
+44
+00:04:20,828 --> 00:04:25,828
+(Audience comment)
+
+45
+00:04:25,828 --> 00:04:36,828
+Yeah, so this will trigger anytime a service changes into the running state, so I emphasize changes by using
+
+46
+00:04:36,828 --> 00:04:42,828
+the instance modification event class. Now if you're interested in a new service being created, then you could
+
+47
+00:04:42,828 --> 00:04:48,828
+create a query using InstanceCreationEvent where TargetInstance is a Win32_Service.
+
+48
+00:04:48,828 --> 00:04:51,828
+In this case, the polling interval is 5 seconds that's set within 5.
+
+49
+00:04:51,828 --> 00:05:01,828
+Yep. So if for whatever reason this service went from a running back to a stopped state, there may be an instance
+
+50
+00:05:01,828 --> 00:05:05,828
+where you wouldn't catch that, although, I think in this case you probably would.
+
+51
+00:05:05,828 --> 00:05:11,828
+But again, intrinsic events can be kind of tricky with those polling intervals.
+
+52
+00:05:11,828 --> 00:05:17,828
+Alright, this one I really like. I love the Win32_StartupCommand from a defensive perspective, it's great.
+
+53
+00:05:17,828 --> 00:05:25,828
+So this will just monitor for any instances of new Win32_StartupCommand classes.
+
+54
+00:05:25,828 --> 00:05:34,828
+So what this class is it covers all user and system runkeys and user and system start menu items, so I don't
+
+55
+00:05:34,828 --> 00:05:40,828
+know if Microsoft had the intent that this would be great for defensive purposes for catching attacker
+
+56
+00:05:40,828 --> 00:05:50,828
+persistence actions, but that's what we love to use it for. Alright, some extrinsic events.
+
+57
+00:05:50,828 --> 00:05:56,828
+This one's kind of cool. I'll be demoing it shortly. This has nothing to do with the like volume on your
+
+58
+00:05:56,828 --> 00:06:04,828
+speakers, rather like disk volumes. So what I'll show you is I'll trigger an event upon inserting removable
+
+59
+00:06:04,828 --> 00:06:06,828
+media into my laptop.
+
+60
+00:06:06,828 --> 00:06:08,828
+What's EventType 2?
+
+61
+00:06:08,828 --> 00:06:14,828
+So I have it pulled up here. The question was what is EventType 2.
+
+62
+00:06:14,828 --> 00:06:23,828
+So I just pulled up Win32_VolumeChangeEvent in MSDN and EventType 2 is device arrival, so insertion of
+
+63
+00:06:23,828 --> 00:06:28,828
+removal media or any fixed or removable media.
+
+64
+00:06:28,828 --> 00:06:29,828
+Okay.
+
+65
+00:06:29,828 --> 00:06:37,828
+How is that going to care like if I were to dock my laptop on my docking station, would that detect all the
+
+66
+00:06:37,828 --> 00:06:40,828
+USB-based devices that are already plugged into that docking station?
+
+67
+00:06:40,828 --> 00:06:48,828
+So the question was would this extrinsic event trigger off of say like you attached your laptop to a docking
+
+68
+00:06:48,828 --> 00:06:54,828
+station, would it trigger for all of the new devices that were attached thereafter.
+
+69
+00:06:54,828 --> 00:07:03,828
+The answer is probably no. Unless you had like some like a removable drive plugged into the USB port on there.
+
+70
+00:07:03,828 --> 00:07:09,828
+I think if it gets registered as a logical volume, so like it gets a drive letter per say, then it will be
+
+71
+00:07:09,828 --> 00:07:11,828
+registered regardless of how it's attached.
+
+72
+00:07:11,828 --> 00:07:20,828
+All of the other devices that are registered would be registered as like a plug and play device and there are
+
+73
+00:07:20,828 --> 00:07:27,828
+WMI classes for plug and play stuff, so you could certainly trigger off like new device creation and what not.
+
+74
+00:07:27,828 --> 00:07:34,828
+Again, you can be very creative with this stuff and there's a huge WMI repository at your fingertips to
+
+75
+00:07:34,828 --> 00:07:37,828
+create some of these cool event filters.
+
+76
+00:07:37,828 --> 00:07:44,828
+Okay, and the last one is Win32_ProcessStartTrace. I really, really like this one again because it triggers immediately.
+
+77
+00:07:44,828 --> 00:07:52,828
+So let's say I was interested any time Chrome started up, I would be notified immediately with this event.
+
+78
+00:07:52,828 --> 00:07:59,828
+Okay. So the event consumers, you have five built-in event consumers provided by Microsoft, thank you.
+
+79
+00:07:59,828 --> 00:08:08,828
+So one is LogFileEventConsumer, so upon an event filter triggering, write some data to a file, and you can
+
+80
+00:08:08,828 --> 00:08:15,828
+actually pass the arguments provided from the event filter to these event consumers, so you can have like
+
+81
+00:08:15,828 --> 00:08:21,828
+contextual data provided to the event consumers that you would likely want.
+
+82
+00:08:21,828 --> 00:08:25,828
+So like in the case here of the ProcessStartTrace, if you wanted to
+
+83
+00:08:25,828 --> 00:08:30,828
+log the name of the process and the process Id to the log file, you would be able to do that.
+
+84
+00:08:30,828 --> 00:08:40,828
+ActiveScriptEventConsumer, this allows you to execute any WSH scripting language, so that includes VB script
+
+85
+00:08:40,828 --> 00:08:44,828
+and J script, sorry no PowerShell.
+
+86
+00:08:44,828 --> 00:08:52,828
+So Jared's going to show you a case where he uses this to make a call to make an HTTP Get-Request out to like
+
+87
+00:08:52,828 --> 00:08:57,828
+CIM and report some like security-related information.
+
+88
+00:08:57,828 --> 00:09:00,828
+It's for the people that like pain, the ActiveScriptEventConsumer.
+
+89
+00:09:00,828 --> 00:09:07,828
+Yeah. Attackers really like ActiveScriptEventConsumer too. They also really enjoy the
+
+90
+00:09:07,828 --> 00:09:13,828
+CommandLineEventConsumer, so say you have PowerShell present on the operating system and then you have some
+
+91
+00:09:13,828 --> 00:09:21,828
+interesting like attacker created event filter and then once that triggers, it would say execute something
+
+92
+00:09:21,828 --> 00:09:28,828
+like powershell.exe-encodedcommand and then some basic C4 encoded, super evil thing.
+
+93
+00:09:28,828 --> 00:09:35,828
+There's NTEventLogEventConsumer, so it creates an event log entry and I really like this one because the
+
+94
+00:09:35,828 --> 00:09:43,828
+event log already captures so much like security-related stuff anyway, but what permanent WMI events allow
+
+95
+00:09:43,828 --> 00:09:45,828
+you to do is supplement the event log.
+
+96
+00:09:45,828 --> 00:09:52,828
+For everything that the event log doesn't capture say like the creation of permanent WMI events, you would be
+
+97
+00:09:52,828 --> 00:09:59,828
+able to write those actions to the event log because those would otherwise never be detected.
+
+98
+00:09:59,828 --> 00:10:04,828
+And then NSMTPEventConsumer shoot out an email if some event occurs.
+
+99
+00:10:04,828 --> 00:10:08,828
+Yeah, don't do that when you're like monitoring process creation.
+
+100
+00:10:08,828 --> 00:10:17,828
+Yeah. Yeah, and as I kind of go through the methodology that we have for creating these signatures or really
+
+101
+00:10:17,828 --> 00:10:27,828
+when I refer to a signature, I'm referring to a WQL event query, you'll want to be very targeted in how you
+
+102
+00:10:27,828 --> 00:10:35,828
+create your filter so that they're not firing all the time or that they're extremely high fidelity such that
+
+103
+00:10:35,828 --> 00:59:59,999
+they only trigger when you know that something really, really bad is happening.
+
